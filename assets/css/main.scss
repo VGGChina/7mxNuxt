@@ -1,0 +1,136 @@
+html,
+body {
+  color: #222;
+  font-size: 16px;
+  font-family: -apple-system, "Microsoft YaHei", "arial", "PingFang SC";
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0 !important;
+}
+
+body {
+  // overflow-y: scroll !important;
+  overflow-x: hidden;
+  min-width: 1200px;
+}
+
+/* 避免chrome显示灰色边框 */
+img[src=""], img:not([src]){
+  opacity: 0;
+}
+
+// 选中文字的底色
+::-moz-selection{
+  background:#d6e8ec; 
+}
+  
+::selection { 
+  background:#d6e8ec; 
+}
+
+a {
+  text-decoration: none;
+  color: #4ca3f0;
+}
+
+input {
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid rgba(0,0,0,0.2);
+  padding-left: 10px;
+  border-radius: 6px;
+  outline: none;
+  &::placeholder {
+    color: rgba(0,0,0,0.4);
+  }
+}
+
+.clear {
+height: 1px;
+clear: both;
+}
+
+// 按钮基类
+.button {
+height: 42px;
+min-width: 100px;
+line-height: 42px;
+cursor: pointer;
+text-align: center;
+transition: all .3s;
+border-radius: 4px;
+}
+
+// 绿色按钮
+.button-green {
+  @extend .button;
+  background-color: #57cb8f;
+  text-shadow: 0 0 16px #34ab6d;
+  color: #fff;
+  &:hover {
+    background-color: #4cbc82;
+  }
+}
+
+// 白色按钮
+.button-white {
+  @extend .button;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  color: #000;
+  &:hover {
+    background-color: rgba(0,0,0,0.05);
+  }
+}
+
+// 灰色按钮
+.button-grey {
+  @extend .button;
+  background-color: rgba(0,0,0,0.15);
+  text-shadow: 0 0 16px rgba(0,0,0,0.25);
+  color: #fff;
+  cursor: inherit;
+}
+
+.opacity-enter-active,
+.opacity-leave-active {
+    transition: opacity .3s;
+}
+
+.opacity-enter,
+.opacity-leave-active {
+    opacity: 0 !important;
+}
+
+.opacity_transform-enter-active,
+.opacity_transform-leave-active {
+    transition: opacity .3s, transform .3s;
+}
+
+.opacity_transform-enter,
+.opacity_transform-leave-active {
+    opacity: 0 !important;
+    transform: translate3d(0, -20px, 0);
+}
+
+.opacity_transform_bottom-enter-active,
+.opacity_transform_bottom-leave-active {
+    transition: opacity .3s, transform .3s;
+}
+
+.opacity_transform_bottom-enter,
+.opacity_transform_bottom-leave-active {
+    opacity: 0 !important;
+    transform: translate3d(0, 20px, 0);
+}
+
+// 消失时无需transition
+.delay_appear-enter-active {
+  transition: opacity .5s .7s;
+}
+
+.delay_appear-enter,
+.delay_appear-leave-active {
+  opacity: 0 !important;
+}

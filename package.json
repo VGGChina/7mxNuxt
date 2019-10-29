@@ -1,0 +1,21 @@
+{
+  "name": "7MX_nuxt",
+  "version": "1.0.0",
+  "description": "My kryptonian Nuxt.js project",
+  "author": "feim123",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^2.0.0",
+    "scss": "^0.2.4"
+  },
+  "devDependencies": {
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0"
+  }
+}
