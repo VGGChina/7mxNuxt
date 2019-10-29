@@ -76,11 +76,6 @@ export default {
     toContributor() {
       this.$router.push({ name: 'contributor' })
     },
-    async getMessages() {
-      // let messages = await this.$apiFactory.getUserApi().getActivityList({ unread: 0 })
-      // console.log(messages)
-      // to do
-    },
     cancelPushNotifi() {
       this.$bus.on('cancel', e => {
         this.showPushNotifi = false
@@ -135,7 +130,6 @@ export default {
   },
   created() {
     this.cancelPushNotifi()
-    this.getMessages()
   },
   components: {
     AvatarList,

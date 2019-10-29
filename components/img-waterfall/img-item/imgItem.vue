@@ -119,6 +119,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   props: [
@@ -169,7 +170,7 @@ export default {
       }
 
       if (this.img.hasOwnProperty('user_id')) {
-        let res = await this.$apiFactory
+        let res = await apiFactory
           .getUserApi()
           .userDetail({ user_id: this.img.user_id })
 
@@ -181,7 +182,7 @@ export default {
       }
 
       if (this.img.hasOwnProperty('id')) {
-        let res = await this.$apiFactory
+        let res = await apiFactory
           .getMediaApi()
           .mediaDetail({ media_id: this.eputId })
 
@@ -208,7 +209,7 @@ export default {
       }
 
       if (this.img.is_like == '1') {
-        let res = await this.$apiFactory
+        let res = await apiFactory
           .getMediaApi()
           .dislike({ media_id: this.eputId })
 
@@ -218,7 +219,7 @@ export default {
           this.img.is_like = res.data.data.is_like
         }
       } else {
-        let res = await this.$apiFactory
+        let res = await apiFactory
           .getMediaApi()
           .like({ media_id: this.eputId })
 
@@ -273,7 +274,7 @@ export default {
           phone: obj.phone,
           qq: obj.qq
         }
-        let res = await this.$apiFactory.getMediaApi().needed(rqBody)
+        let res = await apiFactory.getMediaApi().needed(rqBody)
 
         if (res.data.out == '1') {
           this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
@@ -358,7 +359,7 @@ export default {
       }
 
       // 删除图片
-      let res = await this.$apiFactory
+      let res = await apiFactory
         .getMediaApi()
         .mediaDrop({ media_id: this.eputId })
 
@@ -380,7 +381,7 @@ export default {
     // 从灵感集中删除采集的图片
     async deleteImgFromAlbum(img) {
       // 删除图片
-      let res = await this.$apiFactory
+      let res = await apiFactory
         .getMediaApi()
         .dropFromAlbum({ media_id: this.eputId, album_id: this.albumId })
 

@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import apiFactory from '~/api/factory/apiFactory.js'
+
 export default {
   data: () => ({
     phone: '',
@@ -98,7 +100,7 @@ export default {
       }
 
       // 获取服务器时间
-      let timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      let timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
@@ -114,7 +116,7 @@ export default {
           this.phone + '@' + time)
       };
 
-      let res = await this.$apiFactory.getCommonApi().smcode(rqBody);
+      let res = await apiFactory.getCommonApi().smcode(rqBody);
       if (res.data.out === '1') {
         this.isTimer = true;
         this.time = 60;
@@ -168,7 +170,7 @@ export default {
       this.isRegisting = true
 
       // 获取服务器时间
-      let timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      let timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
@@ -185,7 +187,7 @@ export default {
         info: '1'
       }
 
-      let registerRes = await this.$apiFactory.getUserApi().registerByPhone(data)
+      let registerRes = await apiFactory.getUserApi().registerByPhone(data)
 
       if (registerRes.data.out === '1') {
         this.$toast.notice('注册成功');

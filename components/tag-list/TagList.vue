@@ -58,6 +58,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import noContent from '~/components/no-content/NoContent'
+import apiFactory from '~/api/factory/apiFactory.js'
+
 export default {
   name: 'tag-list',
   data: () => ({
@@ -71,7 +73,7 @@ export default {
         this.$store.commit('isShowLoginDialog', true);
         return;
       }
-      let res = await this.$apiFactory.getTagApi().followTag({ 'tag_id': item.id })
+      let res = await apiFactory.getTagApi().followTag({ 'tag_id': item.id })
       if (res.data.out > 0) {
         item.is_follow = 1
         this.tags.splice(this.tags.length)
@@ -82,7 +84,7 @@ export default {
         this.$store.commit('isShowLoginDialog', true);
         return;
       }
-      let res = await this.$apiFactory.getTagApi().unfollowTag({ 'tag_id': item.id })
+      let res = await apiFactory.getTagApi().unfollowTag({ 'tag_id': item.id })
       if (res.data.out > 0) {
         item.is_follow = 0
         this.tags.splice(this.tags.length)

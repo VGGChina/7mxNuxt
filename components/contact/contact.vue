@@ -58,6 +58,7 @@
         </div>
       </div>
     </transition>
+    <a ref='toQQ' href="http://q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank" style="position:absolute;opacity:0"/>
   </div>
 </template>
 
@@ -86,9 +87,6 @@ export default {
       } else {
         this.show()
       }
-    },
-    toFeedback() {
-      window.open('http://paixin.com/feedback', '_blank')
     },
     // 笑
     anime_smile(smile) {
@@ -159,17 +157,13 @@ export default {
     },
     toQQ() {
       this.contact_menu()
-      window.open('http://q.url.cn/CDzAE8?_type=wpa&qidian=true', '_blank')
+      this.$refs.toQQ.click()
     },
     show() {
       this.show_contact_menu = true
-      /*     this.$refs.st11.style = "opacity:0;transform:rotate(30deg) scale(.8)"
-          this.$refs.st12.style = "opacity:1;transform:rotate(0deg) scale(.8)" */
     },
     cancel() {
       this.show_contact_menu = false
-      /* this.$refs.st11.style = "opacity:1;transform:rotate(0deg) scale(1)"
-      this.$refs.st12.style = "opacity:0;transform:rotate(-60deg) scale(.8)" */
     }
   },
   watch: {

@@ -55,6 +55,7 @@
 import { mapGetters } from 'vuex'
 import WorkList from './work-list/WorkList'
 import NoContent from '~/components/no-content/NoContent'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data() {
@@ -90,7 +91,7 @@ export default {
         line: this.line
       }
 
-      let res = await this.$apiFactory.getMediaApi().originList(reBody, query);
+      let res = await apiFactory.getMediaApi().originList(reBody, query);
       if (res.data.out == '1') {
         this.worksList.push(...res.data.data);
         this.worksList.map(item => {

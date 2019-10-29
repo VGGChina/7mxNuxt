@@ -55,6 +55,7 @@ import sharetitle from '~/components/common/share-title.vue';
 import morecategory from '~/components/common/category_more.vue'
 import getFollow from '~/pages/friends/index'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
+import apiFactory from '~/api/factory/apiFactory.js'
 // import { clearTimeout } from 'timers';
 
 export default {
@@ -98,7 +99,7 @@ export default {
       } else {
         rqBody.category_id = this.categoryList[index].id
       }
-      let result = await this.$apiFactory.getUserApi().recommendUser(rqBody, { line: '1,0,0' })
+      let result = await apiFactory.getUserApi().recommendUser(rqBody, { line: '1,0,0' })
       let res = result.data.data
       if (res && res.length > 0) {
         this.firstAvatar = res.splice(0, 1)
@@ -106,7 +107,7 @@ export default {
       }
     },
     async fetchphotographyCategory() {
-      let res = await this.$apiFactory
+      let res = await apiFactory
         .getCommonApi()
         .categoryList({ type: '16' })
       let tempArr = [];

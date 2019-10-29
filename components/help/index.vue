@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import apiFactory from '~/api/factory/apiFactory.js'
+
 import { mapState } from 'vuex'
 
 export default {
@@ -52,7 +54,7 @@ export default {
     },
     async pullHelpList() {
       if (this.indexList.length > 1) return
-      let res = await this.$apiFactory.getCommonApi().getManualList()
+      let res = await apiFactory.getCommonApi().getManualList()
       res.data.data.map((ele, i) => {
         if (ele.category == '用户') {
           ele.icon = require('./img/user.svg')
@@ -77,7 +79,7 @@ export default {
       if (this.noQusetion()) return
       let id = this.indexList[this.current.index].data[this.current.subIndex].id
       if (!id) return
-      let res = await this.$apiFactory.getCommonApi().getQuestionDetail({id: id})
+      let res = await apiFactory.getCommonApi().getQuestionDetail({id: id})
       this.questionDetail = res.data.data.content
     },
     noQusetion() {

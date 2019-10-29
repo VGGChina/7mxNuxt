@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import apiFactory from '~/api/factory/apiFactory.js'
+
 export default {
   name: 'slide',
   data: () => ({
@@ -134,7 +136,7 @@ export default {
       if (!item.url) return
       if (item.url == 'http://www.hotspringphoto.com') {
         try {
-          await this.$apiFactory.getStatisticsApi().postBannerClickNum({id: '285671'})
+          await apiFactory.getStatisticsApi().postBannerClickNum({id: '285671'})
         } catch (error) {
           console.log(error)
         }

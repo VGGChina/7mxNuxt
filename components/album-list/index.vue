@@ -31,6 +31,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: 'album-list',
@@ -56,7 +57,7 @@ export default {
       })
     },
     async deleteAlbum(data) {
-      let res = await this.$apiFactory
+      let res = await apiFactory
         .getAlbumApi()
         .deleteAlbum({ album_id: data.album_id })
 

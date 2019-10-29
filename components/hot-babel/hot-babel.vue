@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import apiFactory from '~/api/factory/apiFactory.js'
 import sharetitle from '../common/share-title';
 import caregeorymore from '../common/category_more';
 import { setTimeout } from 'timers';
@@ -43,7 +44,7 @@ export default {
       this.isLoading = true
       if (this.categoryList.length > 0) {
         window.localStorage.setItem('crrentType', JSON.stringify(this.categoryList[index]))
-        let res = await this.$apiFactory.getMediaApi().recommendCategory({category_id: this.categoryList[index].id, type: 6}, {line: '1,0,0'})
+        let res = await apiFactory.getMediaApi().recommendCategory({category_id: this.categoryList[index].id, type: 6}, {line: '1,0,0'})
         res = res.data.data
         res.forEach(item => {
           item.image += '?imageView2/2/w/632/h/389'
@@ -56,7 +57,7 @@ export default {
     },
     // 获取图片分类
     async fetchpictureCategory() {
-      let res = await this.$apiFactory
+      let res = await apiFactory
         .getCommonApi()
         .categoryList({type: '6', category_id: '1'})
       let ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画'],
@@ -83,7 +84,6 @@ export default {
       this.getHotTags(index);
     });
   },
-  mounted() {},
   watch: {
     'categoryList': function(val) {
       this.getHotTags(0)

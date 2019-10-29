@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import apiFactory from '~/api/factory/apiFactory.js'
+
 import Lunbo1 from './lunbo1';
 import Lunbo2 from './lunbo2';
 import { setTimeout } from 'timers';
@@ -127,7 +129,7 @@ export default {
       }
     },
     async getImgList() {
-      let result = await this.$apiFactory.getTagApi().getActivityList(),
+      let result = await apiFactory.getTagApi().getActivityList(),
         res = result.data.data.filter(item => {
           return item.id !== '285671'
         })
@@ -145,7 +147,7 @@ export default {
       this.isshowArrow = true
     },
     async getLargeImageList(typeId) {
-      let res = await this.$apiFactory
+      let res = await apiFactory
         .getCommonApi()
         .getLargeImageList({ type: typeId });
       if (res.data.data.length <= 1) {
@@ -164,11 +166,13 @@ export default {
   },
   async created() {
     this.getImgList()
-  },
-  mounted() {
     this.getScreen() // 获取轮播图显示的宽度
     this.curentClick(this.isShowBanner)
   },
+  // mounted() {
+  //   this.getScreen() // 获取轮播图显示的宽度
+  //   this.curentClick(this.isShowBanner)
+  // },
   watch: {},
   computed: {},
   components: {

@@ -56,6 +56,7 @@
 import { mapGetters } from 'vuex'
 import uploadUtil from '~/utils/uploadUtil';
 import getUptoken from '~/service/uptokenService';
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data() {
@@ -124,7 +125,7 @@ export default {
                 key = infoJson.key,
                 url = 'http://images.gaga.me/' + key;
               // 发送修改头像的请求
-              this.$apiFactory.getUserApi().setAvatar({ 'avatar': url })
+              apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
                     this.$store.commit('loginUser', res.data.data);
@@ -163,7 +164,7 @@ export default {
       let data = {
         nick: this.nick
       };
-      this.$apiFactory.getUserApi().setNick(data)
+      apiFactory.getUserApi().setNick(data)
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg);
@@ -200,11 +201,11 @@ export default {
       let data = {
         name: this.name
       };
-      let res = await this.$apiFactory.getUserApi().userDetail({ name: this.name })
+      let res = await apiFactory.getUserApi().userDetail({ name: this.name })
       if (res.data.out == '1') {
         this.$toast.warn('该个性域名已被占用');
       } else {
-        this.$apiFactory.getUserApi().setName(data)
+        apiFactory.getUserApi().setName(data)
           .then(res1 => {
             if (res1.data.out === '1') {
               this.$toast.notice(res1.data.msg);

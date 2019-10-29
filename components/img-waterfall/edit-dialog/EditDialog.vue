@@ -45,6 +45,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Selection from '~/components/selection/Selection'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data: () => ({
@@ -95,7 +96,7 @@ export default {
         })
       }
 
-      this.$apiFactory.getPaixinApi().debug(rqBody)
+      apiFactory.getPaixinApi().debug(rqBody)
     }
   },
   methods: {
@@ -205,7 +206,7 @@ export default {
 
       this.isReleasing = true;
 
-      let res = await this.$apiFactory.getMediaApi().modify(rqBody);
+      let res = await apiFactory.getMediaApi().modify(rqBody);
 
       if (res.data.out == '1') {
         this.$toast.notice('修改成功')
@@ -234,7 +235,7 @@ export default {
         }
 
         // 发送错误信息
-        this.$apiFactory.getPaixinApi().debug(errData)
+        apiFactory.getPaixinApi().debug(errData)
       }
 
       this.isReleasing = false;

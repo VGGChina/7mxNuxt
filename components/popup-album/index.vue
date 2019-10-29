@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import apiFactory from '~/api/factory/apiFactory.js'
 import { mapGetters } from 'vuex'
 import noContent from '~/components/no-content/NoContent_2'
 
@@ -62,7 +63,7 @@ export default {
         return this.$toast.warn('已经添加过了')
       }
 
-      let res = await this.$apiFactory
+      let res = await apiFactory
         .getMediaApi()
         .addToAlbum({album_id: albumId, media_id: this.media_id})
 
@@ -81,7 +82,7 @@ export default {
         this.$toast.warn('您尚未输入任何名称')
         return
       }
-      let res = await this.$apiFactory.getAlbumApi().createAlbum({ name: this.submitName })
+      let res = await apiFactory.getAlbumApi().createAlbum({ name: this.submitName })
       if (res.data.out > 0) {
         this.$toast.notice(res.data.msg)
         setTimeout(() => {
@@ -95,7 +96,7 @@ export default {
     // 获取灵感集列表
     async getAlbumList() {
       this.switchMode = 0
-      let res = await this.$apiFactory.getAlbumApi().albumList({media_id: this.media_id})
+      let res = await apiFactory.getAlbumApi().albumList({media_id: this.media_id})
       if (res.data.out > 0) {
         this.list = res.data.data
       }

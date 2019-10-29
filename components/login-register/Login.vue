@@ -53,6 +53,7 @@
 
 <script>
 import Carousel from '~/components/carousel/Carousel'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data: () => ({
@@ -83,7 +84,7 @@ export default {
       }
 
       // 获取服务器时间
-      let timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      let timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
@@ -99,7 +100,7 @@ export default {
         reme: this.isRemember ? '1' : '0'
       }
 
-      let loginRes = await this.$apiFactory.getUserApi().login(rqBody)
+      let loginRes = await apiFactory.getUserApi().login(rqBody)
       if (loginRes.data.out == '1') {
         let data = loginRes.data.data
 
@@ -113,7 +114,7 @@ export default {
 
         // 如果关联过拍信账号，那么校验一遍，后端要求这样做
         if (data.gaga_id) {
-          let otherRes = await this.$apiFactory.getUserApi().intoOther();
+          let otherRes = await apiFactory.getUserApi().intoOther();
           if (otherRes.data.out == '1') {
             data.gaga_id = otherRes.data.data.gaga_id;
             this.$store.commit('loginUser', data);

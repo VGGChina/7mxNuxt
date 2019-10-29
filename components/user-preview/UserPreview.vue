@@ -60,6 +60,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   props: [
@@ -76,14 +77,14 @@ export default {
         user_id: user.id
       };
       if (user.is_follow === '1') {
-        this.$apiFactory.getUserApi().unfollow(rqBody)
+        apiFactory.getUserApi().unfollow(rqBody)
           .then(res => {
             if (res.data.out == '1') {
               user.is_follow = '0';
             }
           });
       } else {
-        this.$apiFactory.getUserApi().follow(rqBody)
+        apiFactory.getUserApi().follow(rqBody)
           .then(res => {
             if (res.data.out == '1') {
               user.is_follow = '1';

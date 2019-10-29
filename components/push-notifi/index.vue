@@ -48,6 +48,7 @@ import activityList from './activityList/index'
 import neededList from './neededList/index'
 import noticeList from './noticeList'
 import { mapGetters } from 'vuex'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: 'push-notifi',
@@ -102,25 +103,25 @@ export default {
     },
     // 动态列表
     async activityList() {
-      let res = await this.$apiFactory.getUserApi().getactivityList({}, { line: this.line })
+      let res = await apiFactory.getUserApi().getactivityList({}, { line: this.line })
       // 标识为已读
-      this.$apiFactory.getCommonApi().markActivityAsRead()
-      this.$apiFactory.getCommonApi().markNeededAsRead()
+      apiFactory.getCommonApi().markActivityAsRead()
+      apiFactory.getCommonApi().markNeededAsRead()
       this.afterPull(res)
       this.nothing()
     },
     // 心愿单列表
     async wantToShopList() {
-      let res = await this.$apiFactory.getUserApi().getactivityList({ type: 4, unread: 0 }, { line: this.line })
-      this.$apiFactory.getCommonApi().markNeededAsRead()
+      let res = await apiFactory.getUserApi().getactivityList({ type: 4, unread: 0 }, { line: this.line })
+      apiFactory.getCommonApi().markNeededAsRead()
       this.afterPull(res)
       this.nothing()
     },
     // 通知列表
     async noticeList() {
-      let res = await this.$apiFactory.getCommonApi().getNoticeList({}, { line: this.line })
+      let res = await apiFactory.getCommonApi().getNoticeList({}, { line: this.line })
       // 标识为已读
-      this.$apiFactory.getCommonApi().markNoticeAsRead()
+      apiFactory.getCommonApi().markNoticeAsRead()
       this.afterPull(res)
       this.nothing()
     },

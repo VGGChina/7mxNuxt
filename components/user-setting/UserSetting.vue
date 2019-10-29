@@ -100,6 +100,7 @@
 import { mapGetters } from 'vuex'
 import getUptoken from '~/service/uptokenService';
 import uploadUtil from '~/utils/uploadUtil'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: '',
@@ -146,7 +147,7 @@ export default {
       let data = {
         about: this.about
       };
-      this.$apiFactory.getUserApi().setUserInfo(data)
+      apiFactory.getUserApi().setUserInfo(data)
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice('个人简介设置成功');
@@ -166,7 +167,7 @@ export default {
           nick: this.nick || this.loginUser.nick
         }
 
-        let res = await this.$apiFactory.getUserApi().setNick(data)
+        let res = await apiFactory.getUserApi().setNick(data)
         if (res.data.out === '1') {
           this.$toast.notice('昵称设置成功');
           this.$store.commit('loginUser', res.data.data);
@@ -202,7 +203,7 @@ export default {
       }
 
       // 获取服务器时间
-      let timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      let timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
@@ -217,7 +218,7 @@ export default {
         smcode: 'test:' + this.$utilHelper.rsa_encrypt(this.smcode + '@' + time)
       }
 
-      let res = await this.$apiFactory.getUserApi().bindPhone(rqBody)
+      let res = await apiFactory.getUserApi().bindPhone(rqBody)
 
       if (res.data.out == '1') {
         this.loginUser.phone = this.phone
@@ -246,7 +247,7 @@ export default {
       }
 
       // 获取服务器时间
-      let timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      let timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
@@ -261,7 +262,7 @@ export default {
         phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.phone + '@' + time)
       };
 
-      let res = await this.$apiFactory.getCommonApi().smcode(rqBody)
+      let res = await apiFactory.getCommonApi().smcode(rqBody)
 
       if (res.data.out === '1') {
         this.isTimer = true
@@ -292,7 +293,7 @@ export default {
         oldpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.oldPassword),
         newpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.newPassword)
       };
-      this.$apiFactory.getUserApi().setPassword(data)
+      apiFactory.getUserApi().setPassword(data)
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg);
@@ -376,7 +377,7 @@ export default {
                 key = infoJson.key,
                 url = 'http://images.gaga.me/' + key;
               // 发送修改头像的请求
-              this.$apiFactory.getUserApi().setAvatar({ 'avatar': url })
+              apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
                     this.$store.commit('loginUser', res.data.data);

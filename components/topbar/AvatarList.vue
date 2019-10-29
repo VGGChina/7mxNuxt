@@ -28,6 +28,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   methods: {
@@ -58,7 +59,7 @@ export default {
       });
     },
     logout() {
-      this.$apiFactory
+      apiFactory
         .getUserApi()
         .logout()
         .then(res => {
@@ -73,7 +74,7 @@ export default {
         });
     },
     async uploadToPaixin() {
-      let res = await this.$apiFactory.getUserApi().currentUser();
+      let res = await apiFactory.getUserApi().currentUser();
 
       if (res.data.out != '1') {
         this.$store.commit('isShowLoginDialog', true);
@@ -92,7 +93,7 @@ export default {
       }, 30);
     },
     async intoOther() {
-      let otherRes = await this.$apiFactory.getUserApi().intoOther();
+      let otherRes = await apiFactory.getUserApi().intoOther();
 
       if (otherRes.data.out == '1') {
         this.loginUser.gaga_id = otherRes.data.data.gaga_id;

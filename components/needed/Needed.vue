@@ -34,6 +34,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import apiFactory from '~/api/factory/apiFactory.js'
+
 
 export default {
   data() {
@@ -64,7 +66,7 @@ export default {
         qq: this.qq
       }
 
-      let res = await this.$apiFactory.getMediaApi().needed(rqBody);
+      let res = await apiFactory.getMediaApi().needed(rqBody);
 
       if (res.data.out == '1') {
         let neededUserList = []

@@ -63,6 +63,7 @@
 import { mapGetters } from 'vuex'
 import Protocol from './protocol/Protocol'
 import WorkList from './work-list/WorkList'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 const catchHandler = error => ({
   payload: error,
@@ -142,7 +143,7 @@ export default {
         })
       }
 
-      this.$apiFactory.getPaixinApi().debug(rqBody)
+      apiFactory.getPaixinApi().debug(rqBody)
     }
   },
   methods: {
@@ -196,7 +197,7 @@ export default {
           gaga_id: this.loginUser.gaga_id
         }
 
-        promises.push(this.$apiFactory.getMediaApi().intoOther(rqBody))
+        promises.push(apiFactory.getMediaApi().intoOther(rqBody))
 
         dataArray.push(rqBody)
       })
@@ -229,7 +230,7 @@ export default {
           }
 
           // 发送错误信息
-          this.$apiFactory.getPaixinApi().debug(errorData)
+          apiFactory.getPaixinApi().debug(errorData)
         }
       })
 

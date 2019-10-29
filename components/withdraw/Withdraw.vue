@@ -27,6 +27,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   methods: {
@@ -34,7 +35,7 @@ export default {
       this.$store.commit('isShowWithdrawDialog', false);
     },
     commit() {
-      this.$apiFactory.getMediaApi().enchashment()
+      apiFactory.getMediaApi().enchashment()
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg);

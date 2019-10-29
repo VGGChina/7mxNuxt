@@ -180,6 +180,7 @@ import getUptoken from '~/service/uptokenService';
 import uploadUtil from '~/utils/uploadUtil'
 import { axiosPost } from '~/service/factory/axiosFactory'
 import Selection from '~/components/selection/Selection'
+import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data: () => ({
@@ -525,7 +526,7 @@ export default {
               })
             }
 
-            vm.$apiFactory.getPaixinApi().debug(rqBody)
+            apiFactory.getPaixinApi().debug(rqBody)
           },
           'UploadComplete': () => {
           },
@@ -536,7 +537,7 @@ export default {
       });
     },
     async fetchActivities() {
-      let res = await this.$apiFactory.getTagApi().getActivityList({ type: '1' })
+      let res = await apiFactory.getTagApi().getActivityList({ type: '1' })
 
       if (res.data.out == '1') {
         this.activities.push({ id: 0, name: '暂不参加' })
@@ -799,7 +800,7 @@ export default {
         is_water_mark: file.isWaterMark ? '1' : '0'
       }
 
-      let res = await this.$apiFactory.getMediaApi().put(data)
+      let res = await apiFactory.getMediaApi().put(data)
 
       if (res.data.out == '1') {
         // 反馈给码隆
@@ -832,7 +833,7 @@ export default {
         }
 
         // 发送错误信息
-        this.$apiFactory.getPaixinApi().debug(rqBody)
+        apiFactory.getPaixinApi().debug(rqBody)
 
         // 继续发布剩下的图片
         this.put()
@@ -1036,7 +1037,7 @@ export default {
             })
           }
 
-          this.$apiFactory.getPaixinApi().debug(rqBody)
+          apiFactory.getPaixinApi().debug(rqBody)
         }
       } else {
         window.onerror = null
