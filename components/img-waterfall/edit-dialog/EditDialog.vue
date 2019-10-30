@@ -1,40 +1,40 @@
 <template>
   <div class="img-edit-container">
-    <input v-model="worksName" placeholder="作品名称" />
+    <input v-model="worksName" placeholder="作品名称">
 
-    <textarea class="works-description" v-model="worksDescription" placeholder="作品描述"></textarea>
+    <textarea v-model="worksDescription" class="works-description" placeholder="作品描述" />
 
     <selection
-      class="category"
       v-model="categoryOne"
-      placeText="选择分类"
+      class="category"
+      place-text="选择分类"
       :options="categoryList"
       :option="categoryOne"
-      :optionKey="'name'"
-      :isNotAllow="false"
-      :maxNum="8"
-    ></selection>
+      :option-key="'name'"
+      :is-not-allow="false"
+      :max-num="8"
+    />
 
     <div class="upload-waterMark">
       <div class="check-box-min" @click="isWaterMark = !isWaterMark">
-        <div v-if="isWaterMark"></div>
+        <div v-if="isWaterMark" />
       </div>
       <span>图片是否添加水印</span>
     </div>
 
-    <div class="keyword">{{ keyword == '' ? '关键词' : '关键词（输入内容回车即可添加关键词）'}}</div>
+    <div class="keyword">{{ keyword == '' ? '关键词' : '关键词（输入内容回车即可添加关键词）' }}</div>
 
     <input
-      class="keyword-input"
       v-model="keyword"
-      v-on:keyup.enter="pushKeyword"
+      class="keyword-input"
       placeholder="输入内容回车即可添加关键词"
-    />
+      @keyup.enter="pushKeyword"
+    >
 
-    <div class="keyword-list" id="keyword-list">
-      <div class="keyword-item" v-for="(item, index) in keywordList" :key="index">
+    <div id="keyword-list" class="keyword-list">
+      <div v-for="(item, index) in keywordList" :key="index" class="keyword-item">
         <span>{{ item }}</span>
-        <div class="delete" @click="deleteKeyword(index)"></div>
+        <div class="delete" @click="deleteKeyword(index)" />
       </div>
     </div>
 
@@ -48,6 +48,9 @@ import Selection from '~/components/selection/Selection'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
+  props: [
+    'imgDetail'
+  ],
   data: () => ({
     worksName: '',
     worksDescription: '',
@@ -59,9 +62,6 @@ export default {
     originKeywordList: [],
     isReleasing: false
   }),
-  props: [
-    'imgDetail'
-  ],
   created() {
     this.worksName = this.imgDetail.title
     this.worksDescription = this.imgDetail.text
@@ -78,7 +78,7 @@ export default {
     }
 
     window.onerror = (message, source, lineno, colno, error) => {
-      let rqBody = {
+      const rqBody = {
         type: this.$utilHelper.debugTypes.MEDIA_EDIT_DIALOG_ERROR,
         client: this.$utilHelper.getBrowser(),
         content: JSON.stringify({
@@ -101,11 +101,11 @@ export default {
   },
   methods: {
     deleteKeyword(index) {
-      this.keywordList.splice(index, 1);
+      this.keywordList.splice(index, 1)
     },
     pushKeyword() {
       // 将所有的中文逗号和空格替换为英文逗号
-      let word = this.keyword.replace(new RegExp(' ', 'gm'), ',');
+      let word = this.keyword.replace(new RegExp(' ', 'gm'), ',')
       word = word.replace(new RegExp('，', 'gm'), ',')
 
       word = word.replace(new RegExp(';', 'gm'), ',')
@@ -117,38 +117,38 @@ export default {
       word = word.replace(new RegExp('、', 'gm'), ',')
 
       // 以英文逗号为分隔提取关键字
-      let list = word.split(',');
+      const list = word.split(',')
       list.forEach(e => {
         if (e != '') {
-          this.keywordList.push(e);
+          this.keywordList.push(e)
         }
       })
 
-      this.keyword = '';
+      this.keyword = ''
     },
     getTags(keywordList) {
-      let tags = '';
-      let length = keywordList.length;
+      let tags = ''
+      const length = keywordList.length
       for (let i = 0; i < length; i++) {
-        tags = tags + keywordList[i] + ',';
+        tags = tags + keywordList[i] + ','
       }
-      return tags.substring(0, tags.length - 1);
+      return tags.substring(0, tags.length - 1)
     },
     getTagList(keywordList) {
-      let list = [];
+      const list = []
       keywordList.map(e => {
         list.push({
           name: e
         })
       })
-      return list;
+      return list
     },
     async release() {
       if (this.isReleasing) {
-        return;
+        return
       }
 
-      let rqBody = {
+      const rqBody = {
         type: '6',
         media_id: this.imgDetail.id,
         title: this.worksName,
@@ -156,18 +156,18 @@ export default {
         is_water_mark: this.isWaterMark ? '1' : '0'
       }
 
-      let originLength = this.originKeywordList.length
+      const originLength = this.originKeywordList.length
 
-      let addList = this.keywordList.filter(e => {
-        if (originLength.length == 0) {
+      const addList = this.keywordList.filter(e => {
+        if (originLength.length === 0) {
           return true
         } else {
           let isAdd = true
 
           for (let i = 0; i < originLength; i++) {
             if (e == this.originKeywordList[i]) {
-              isAdd = false;
-              break;
+              isAdd = false
+              break
             }
           }
 
@@ -175,7 +175,7 @@ export default {
         }
       })
 
-      let reduceList = this.originKeywordList.filter(e => {
+      const reduceList = this.originKeywordList.filter(e => {
         let isReduce = true
         for (let i = 0; i < originLength; i++) {
           if (e == this.keywordList[i]) {
@@ -187,39 +187,39 @@ export default {
       })
 
       if (addList.length > 0) {
-        rqBody.tag_add = '';
+        rqBody.tag_add = ''
         addList.map((e, index, array) => {
-          rqBody.tag_add += (e + (index != array.length - 1 ? ',' : ''));
-        });
-      }
-
-      if (reduceList.length > 0) {
-        rqBody.tag_reduce = '';
-        reduceList.map((e, index, array) => {
-          rqBody.tag_reduce += (e + (index != array.length - 1 ? ',' : ''));
+          rqBody.tag_add += (e + (index !== array.length - 1 ? ',' : ''))
         })
       }
 
-      if (this.originCategoryOne.id != this.categoryOne.id) {
-        rqBody.category_id = this.categoryOne.id;
+      if (reduceList.length > 0) {
+        rqBody.tag_reduce = ''
+        reduceList.map((e, index, array) => {
+          rqBody.tag_reduce += (e + (index !== array.length - 1 ? ',' : ''))
+        })
       }
 
-      this.isReleasing = true;
+      if (this.originCategoryOne.id !== this.categoryOne.id) {
+        rqBody.category_id = this.categoryOne.id
+      }
 
-      let res = await apiFactory.getMediaApi().modify(rqBody);
+      this.isReleasing = true
+
+      const res = await apiFactory.getMediaApi().modify(rqBody)
 
       if (res.data.out == '1') {
         this.$toast.notice('修改成功')
 
-        for (let p in res.data.data) {
+        for (const p in res.data.data) {
           this.imgDetail[p] = res.data.data[p]
         }
 
         this.$emit('modifyMediaSuccess')
       } else {
-        this.$toast.warn(res.data.msg);
+        this.$toast.warn(res.data.msg)
 
-        let errData = {
+        const errData = {
           type: this.$utilHelper.debugTypes.MEDIA_EDIT_DIALOG_ERROR,
           client: this.$utilHelper.getBrowser(),
           content: JSON.stringify({
@@ -238,14 +238,14 @@ export default {
         apiFactory.getPaixinApi().debug(errData)
       }
 
-      this.isReleasing = false;
+      this.isReleasing = false
     },
     getKeywordList(tagList) {
-      let array = [];
+      const array = []
       tagList.map(e => {
         array.push(e.name)
-      });
-      return array;
+      })
+      return array
     }
   },
   computed: {
@@ -255,8 +255,8 @@ export default {
     ])
   },
   watch: {
-    'keyword': function (val) {
-      if (val.charAt(val.length - 1) == ' ') {
+    'keyword': function(val) {
+      if (val.charAt(val.length - 1) === ' ') {
         this.pushKeyword()
       }
     }

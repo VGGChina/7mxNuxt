@@ -9,7 +9,7 @@
             height: '20px'
           }"
           class="earth"
-        ></div>
+        />
 
         <span>简体中文</span>
 
@@ -19,7 +19,7 @@
             width: '20px',
             height: '10px'
           }"
-        ></div>
+        />
       </div>
 
       <div class="footer-community">
@@ -99,9 +99,9 @@
     </div>
 
     <div class="share">
-      <img src="./img/fb.svg" width="32px" alt />
-      <img src="./img/tw.svg" width="32px" alt />
-      <img src="./img/wb.svg" width="32px" alt />
+      <img src="./img/fb.svg" width="32px" alt>
+      <img src="./img/tw.svg" width="32px" alt>
+      <img src="./img/wb.svg" width="32px" alt>
     </div>
 
     <div class="mx-right">
@@ -116,20 +116,18 @@
 
 <script>
 export default {
-  name: 'indexFooter',
+  name: 'IndexFooter',
+  components: {
+
+  },
   data: () => ({
 
   }),
-  methods: {
-    toHelpCenter(to) {
-      if (!to) {
-        this.$store.commit('help_show')
-      } else if (to == 'create') {
-        this.$store.commit('help_show', { current: { index: 4, subIndex: 0 } })
-      } else if (to == 'order') {
-        this.$store.commit('help_show', { current: { index: 2, subIndex: 0 } })
-      }
-    }
+  computed: {
+
+  },
+  watch: {
+
   },
   created() {
 
@@ -137,14 +135,16 @@ export default {
   mounted() {
 
   },
-  watch: {
-
-  },
-  computed: {
-
-  },
-  components: {
-
+  methods: {
+    toHelpCenter(to) {
+      if (!to) {
+        this.$store.commit('help_show')
+      } else if (to === 'create') {
+        this.$store.commit('help_show', { current: { index: 4, subIndex: 0 }})
+      } else if (to === 'order') {
+        this.$store.commit('help_show', { current: { index: 2, subIndex: 0 }})
+      }
+    }
   }
 }
 </script>

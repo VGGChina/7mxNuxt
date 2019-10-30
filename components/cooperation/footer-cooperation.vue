@@ -1,53 +1,53 @@
 <template>
-  <div class='cooperation_container'>
-      <div class='content'>
-          <img :src="require(`${item.url}`)" class='imgItem' v-for='(item,index) in imgList' :key='item.id' v-show="currentIndex == index" @click="gokehu(index)">
-          <div class='dotted'>
-              <span :class='index == currentIndex ? "active" : null' v-for='(item,index) in countDotted' :key='item' @click='select(index)'></span>
-          </div>
+  <div class="cooperation_container">
+    <div class="content">
+      <img v-for="(item,index) in imgList" v-show="currentIndex == index" :key="item.id" :src="require(`${item.url}`)" class="imgItem" @click="gokehu(index)">
+      <div class="dotted">
+        <span v-for="(item,index) in countDotted" :key="item" :class="index == currentIndex ? 'active' : null" @click="select(index)" />
       </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: '',
+  components: {
+
+  },
 
   data: () => ({
     countDotted: [
       '1', '2'
     ],
     imgList: [
-      {id: 0, url: './images/cooperation-footer.png'},
-      {id: 1, url: './images/banner.png'}
+      { id: 0, url: './images/cooperation-footer.png' },
+      { id: 1, url: './images/banner.png' }
     ],
     currentIndex: 0
   }),
-  methods: {
-    select(index) {
-      this.currentIndex = index
-    },
-    gokehu(index) {
-      if (index == 0) {
-        window.location.href = 'http://q.url.cn/CDzAE8?_type=wpa&qidian=true'
-      } else if (index == 1) {
-        window.location.href = 'https://v.paixin.com/'
-      }
-    }
-  },
-  created() {
-  },
-  mounted () {
+  computed: {
 
   },
   watch: {
 
   },
-  computed: {
+  created() {
+  },
+  mounted() {
 
   },
-  components: {
-
+  methods: {
+    select(index) {
+      this.currentIndex = index
+    },
+    gokehu(index) {
+      if (index === 0) {
+        window.location.href = 'http://q.url.cn/CDzAE8?_type=wpa&qidian=true'
+      } else if (index === 1) {
+        window.location.href = 'https://v.paixin.com/'
+      }
+    }
   }
 }
 </script>

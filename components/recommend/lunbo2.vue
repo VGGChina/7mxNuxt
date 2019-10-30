@@ -1,76 +1,87 @@
 /* 正在进行 ,即将进行 */
 <template>
-    <div class="box">
-      <div class="slider-box" v-show="isImage">
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-        <ul class="second">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-      <div v-show="(isShowBanner == 0 ) && !isImage" class="slider-box" ref="sliderBox" :style="{width: width + 'px',top: 0, left: left + 'px',transition: transtion}">
-            <ul>
-                <router-link 
-                :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
-                v-for="(item) in imageListTop" 
-                :key="item.id + 'first'"
-                tag="li">
-                  <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
-                </router-link>
-                <router-link 
-                v-for="(item) in imageListTop" 
-                :key="item.id"
-                :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
-                tag="li">
-                   <img :src="item.image  + '?imageView2/2/w/1920/h/1000'">
-                </router-link>   
-               <router-link 
-               v-for="(item) in imageListTop" 
-               :key="item.id + 'last'"
-               :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
-               tag="li">
-                    <img :src="item.image  + '?imageView2/2/w/1920/h/1000'">
-                </router-link>
-            </ul>
-            <ul class="second">
-                <router-link v-for="(item) in imageListBottom"   
-                :key="item.id+ 'first' "
-                :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
-                tag="li">
-                    <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
-                </router-link>
-                <router-link v-for="(item) in imageListBottom"  
-                :key="item.id"
-                :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
-                tag="li">
-                    <img :src="item.image  + '?imageView2/2/w/1920/h/1000'">
-                </router-link>
-
-                <router-link v-for="(item) in imageListBottom" 
-                :key="item.id + 'last'"
-                :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
-                tag="li">
-                     <img :src="item.image  + '?imageView2/2/w/1920/h/1000'">
-                </router-link>
-            </ul>
-        </div> 
+  <div class="box">
+    <div v-show="isImage" class="slider-box">
+      <ul>
+        <li />
+        <li />
+        <li />
+        <li />
+        <li />
+      </ul>
+      <ul class="second">
+        <li />
+        <li />
+        <li />
+        <li />
+        <li />
+      </ul>
     </div>
+    <div v-show="(isShowBanner == 0 ) && !isImage" ref="sliderBox" class="slider-box" :style="{width: width + 'px',top: 0, left: left + 'px',transition: transtion}">
+      <ul>
+        <router-link
+          v-for="(item) in imageListTop"
+          :key="item.id + 'first'"
+          :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
+          tag="li"
+        >
+          <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
+        </router-link>
+        <router-link
+          v-for="(item) in imageListTop"
+          :key="item.id"
+          :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
+          tag="li"
+        >
+          <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
+        </router-link>
+        <router-link
+          v-for="(item) in imageListTop"
+          :key="item.id + 'last'"
+          :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
+          tag="li"
+        >
+          <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
+        </router-link>
+      </ul>
+      <ul class="second">
+        <router-link
+          v-for="(item) in imageListBottom"
+          :key="item.id+ 'first' "
+          :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
+          tag="li"
+        >
+          <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
+        </router-link>
+        <router-link
+          v-for="(item) in imageListBottom"
+          :key="item.id"
+          :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
+          tag="li"
+        >
+          <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
+        </router-link>
+
+        <router-link
+          v-for="(item) in imageListBottom"
+          :key="item.id + 'last'"
+          :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
+          tag="li"
+        >
+          <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
+        </router-link>
+      </ul>
+    </div>
+  </div>
 </template>
 <script>
-import { setTimeout, clearTimeout } from 'timers';
+import { setTimeout, clearTimeout } from 'timers'
 // import { setTimeout, clearTimeout, clearInterval } from 'timers';
 export default {
-  props: ['isShowBanner', 'screenWidthBanner', 'smallBannerList'],
   name: '',
+  components: {
+  },
+  props: ['isShowBanner', 'screenWidthBanner', 'smallBannerList'],
   data: () => ({
     imageList: [],
     imageListTop: [], // 小banner 列表
@@ -85,6 +96,24 @@ export default {
     setIntTImer: true,
     isImage: false // 图片加载
   }),
+  computed: {
+  },
+  watch: {
+    'smallBannerList': function(val, old) {
+      this.isImage = false
+      this.imageList = val
+      this.getSliderWidth() // 重新定义 轮播图的宽度
+      this.filterImageList()
+    }
+  },
+  created() {
+    this.imageList = this.smallBannerList
+    this.isImage = true
+  },
+  mounted() {
+    this.setInter() // 开启定时器
+    this.getSliderWidth()
+  },
   methods: {
     slider(direction) {
       // console.log('方向是否改变', direction)
@@ -103,15 +132,15 @@ export default {
         this.transtion = 'all 0.6s ease'
         syWidth = this.left
         if (syWidth < -this.width / 3) {
-          this.left += this.imageWidth;
+          this.left += this.imageWidth
         } else {
-          let sy = this.width / 3 + this.left
+          const sy = this.width / 3 + this.left
           this.transtion = ''
           this.left = -this.width / 3 * 2 + sy
           this.timer = setTimeout(() => {
             this.transtion = 'all 0.6s ease'
-            this.left += this.imageWidth;
-            this.timer = null;
+            this.left += this.imageWidth
+            this.timer = null
           }, 20)
         }
       } else {
@@ -120,7 +149,7 @@ export default {
     },
     moveLeft() {
       this.transtion = 'all 0.6s ease'
-      let syWidth2 = this.width / 3 * 2 + (this.left - this.screenWidthBanner)
+      const syWidth2 = this.width / 3 * 2 + (this.left - this.screenWidthBanner)
       if (syWidth2 > this.imageWidth) {
         this.left -= this.imageWidth
       } else {
@@ -134,11 +163,11 @@ export default {
       }
     },
     filterImageList() {
-      if (this.imageList === 0) return;
-      let T = [],
-        B = []
+      if (this.imageList === 0) return
+      const T = []
+      const B = []
       this.imageList.forEach((item, index) => {
-        if (index % 2 != 1) {
+        if (index % 2 !== 1) {
           T.push(item)
         } else {
           B.push(item)
@@ -150,7 +179,7 @@ export default {
     },
     getSliderWidth() { // 获取轮播图盒子的宽度
       this.width = (this.imageListTop.length * this.imageWidth) * 3
-      this.left = -this.imageListTop.length * this.imageWidth; // 初始画一次 轮播图的位置
+      this.left = -this.imageListTop.length * this.imageWidth // 初始画一次 轮播图的位置
     },
     setInter() {
       setInterval(() => {
@@ -159,26 +188,6 @@ export default {
         }
       }, 4000)
     }
-  },
-  created() {
-    this.imageList = this.smallBannerList
-    this.isImage = true
-  },
-  mounted () {
-    this.setInter() // 开启定时器
-    this.getSliderWidth()
-  },
-  watch: {
-    'smallBannerList': function(val, old) {
-      this.isImage = false
-      this.imageList = val
-      this.getSliderWidth() // 重新定义 轮播图的宽度
-      this.filterImageList()
-    }
-  },
-  computed: {
-  },
-  components: {
   }
 }
 </script>

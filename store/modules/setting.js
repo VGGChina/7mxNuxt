@@ -18,7 +18,7 @@ const actions = {
 // mutations
 const mutations = {
   isShowSettingDialog(state, isShow) {
-    state.isShowSettingDialog = isShow;
+    state.isShowSettingDialog = isShow
   }
 }
 

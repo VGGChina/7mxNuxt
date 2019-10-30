@@ -1,62 +1,66 @@
 <template>
-	<div class='recommend_container'>
-		<div class='content'>
-			<div class='banner' style='width: 100%' ref='screen'>
-				<!-- 正在进行 -->
-				<Lunbo2
-					:isShowBanner='isShowBanner'
-					:screenWidthBanner='screenWidthBanner'
-					ref='samllbanner'
-					:smallBannerList='smallBannerList'
-				></Lunbo2>
-				<!-- 苏宁寻色之旅 拍信创意推荐-->
-				<Lunbo1
-					:isShowBanner='isShowBanner'
-					:screenWidthBanner='screenWidthBanner'
-					:pic='pic'
-					ref='largebanner'
-				></Lunbo1>
-			</div>
-      	<!-- 控制箭头 -->
-          <div
-            class='left_arrow'
-            @click='isShowBanner == 0  ? slider(1) : templateBox(1)'
-            v-if="isshowArrow"
-          >
-            <span class='arrow_samll'></span>
-          </div>
-          <div
-            class='right_arrow'
-            @click='isShowBanner == 0  ? slider(-1) : templateBox(-1)'
-             v-if="isshowArrow"
-          >
-            <span class='arrow_samll'></span>
-          </div>
-			<!-- 左侧导航-->
-			<div class='nav_right'>
-				<h3 class='title'>7MX官方推荐</h3>
-				<a
-					href='javascript:void(0)'
-					:class='["nav-item",index == isShowBanner ? "active": null]'
-					v-for='(item,index) in navList'
-					:key='item.id'
-					@click='curentClick(index)'
-				>{{item.text}}</a>
-				<router-link tag='a' class='action' to='/activity/2'>申请活动</router-link>
-			</div>
-		</div>
-	</div>
+  <div class="recommend_container">
+    <div class="content">
+      <div ref="screen" class="banner" style="width: 100%">
+        <!-- 正在进行 -->
+        <Lunbo2
+          ref="samllbanner"
+          :is-show-banner="isShowBanner"
+          :screen-width-banner="screenWidthBanner"
+          :small-banner-list="smallBannerList"
+        />
+        <!-- 苏宁寻色之旅 拍信创意推荐-->
+        <Lunbo1
+          ref="largebanner"
+          :is-show-banner="isShowBanner"
+          :screen-width-banner="screenWidthBanner"
+          :pic="pic"
+        />
+      </div>
+      <!-- 控制箭头 -->
+      <div
+        v-if="isshowArrow"
+        class="left_arrow"
+        @click="isShowBanner === 0 ? slider(1) : templateBox(1)"
+      >
+        <span class="arrow_samll" />
+      </div>
+      <div
+        v-if="isshowArrow"
+        class="right_arrow"
+        @click="isShowBanner == 0 ? slider(-1) : templateBox(-1)"
+      >
+        <span class="arrow_samll" />
+      </div>
+      <!-- 左侧导航-->
+      <div class="nav_right">
+        <h3 class="title">7MX官方推荐</h3>
+        <a
+          v-for="(item,index) in navList"
+          :key="item.id"
+          href="javascript:void(0)"
+          :class="[&quot;nav-item&quot;,index == isShowBanner ? &quot;active&quot;: null]"
+          @click="curentClick(index)"
+        >{{ item.text }}</a>
+        <router-link tag="a" class="action" to="/activity/2">申请活动</router-link>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
 
-import Lunbo1 from './lunbo1';
-import Lunbo2 from './lunbo2';
-import { setTimeout } from 'timers';
+import Lunbo1 from './lunbo1'
+import Lunbo2 from './lunbo2'
+import { setTimeout } from 'timers'
 
 export default {
   name: '',
+  components: {
+    Lunbo1,
+    Lunbo2
+  },
   data: () => ({
     navList: [
       {
@@ -84,6 +88,17 @@ export default {
     flagClick: true,
     isshowArrow: true
   }),
+  computed: {},
+  // mounted() {
+  //   this.getScreen() // 获取轮播图显示的宽度
+  //   this.curentClick(this.isShowBanner)
+  // },
+  watch: {},
+  async created() {
+    this.getImgList()
+    this.getScreen() // 获取轮播图显示的宽度
+    this.curentClick(this.isShowBanner)
+  },
   methods: {
     slider(direction) {
       if (this.flagClick) {
@@ -109,77 +124,60 @@ export default {
     },
     getScreen() {
       // 获取轮播图显示去的宽度
-      let screenElement = this.$refs.screen;
-      this.screenWidthBanner = parseInt(
-        window.getComputedStyle(screenElement, null).width
-      );
+      if (process.server) return 1200
+      this.screenWidthBanner = parseInt(this.$refs.screen.style.width)
     },
     async curentClick(index) {
       // 点击显示当前轮播图
       this.isShowBanner = index
-      if (this.isShowBanner == 0) {
+      if (this.isShowBanner === 0) {
         this.getImgList()
       }
-      if (index == 2) {
-        this.getLargeImageList(1);
-      } else if (index == 3) {
-        this.getLargeImageList(2);
-      } else if (index == 1) {
-        this.getLargeImageList(1);
+      if (index === 2) {
+        this.getLargeImageList(1)
+      } else if (index === 3) {
+        this.getLargeImageList(2)
+      } else if (index === 1) {
+        this.getLargeImageList(1)
       }
     },
     async getImgList() {
-      let result = await apiFactory.getTagApi().getActivityList(),
-        res = result.data.data.filter(item => {
-          return item.id !== '285671'
-        })
-      let temp = []
+      const result = await apiFactory.getTagApi().getActivityList()
+      let res = result.data.data.filter(item => {
+        return item.id !== '285671'
+      })
+      const temp = []
       res.forEach(item => {
         if (item.close_time - new Date().getTime() / 1000 > 0) {
           temp.push(item)
         }
       })
       res = temp.length >= 20 ? temp : res
-      if (res.length % 2 == 1) {
+      if (res.length % 2 === 1) {
         res.push(res.slice(0, 1)[0])
       }
       this.smallBannerList = res
       this.isshowArrow = true
     },
     async getLargeImageList(typeId) {
-      let res = await apiFactory
+      const res = await apiFactory
         .getCommonApi()
-        .getLargeImageList({ type: typeId });
+        .getLargeImageList({ type: typeId })
       if (res.data.data.length <= 1) {
         this.isshowArrow = false
       }
-      let tempArr = [];
+      const tempArr = []
       if (res.data.data.length > 0) {
-        for (let item of res.data.data) {
-          let temp = {};
+        for (const item of res.data.data) {
+          const temp = {}
           temp.url = item.image
           tempArr.push(temp)
         }
         this.pic = tempArr
       }
     }
-  },
-  async created() {
-    this.getImgList()
-    this.getScreen() // 获取轮播图显示的宽度
-    this.curentClick(this.isShowBanner)
-  },
-  // mounted() {
-  //   this.getScreen() // 获取轮播图显示的宽度
-  //   this.curentClick(this.isShowBanner)
-  // },
-  watch: {},
-  computed: {},
-  components: {
-    Lunbo1,
-    Lunbo2
   }
-};
+}
 </script>
 
 <style lang='css' scoped>
@@ -283,9 +281,6 @@ export default {
   box-sizing: border-box;
   z-index: 100;
   background: rgba(26, 26, 26, 1);
-}
-.nav_right {
-  /*display: block;*/
 }
 .nav_right .title {
   margin: 0 0 7px 0;

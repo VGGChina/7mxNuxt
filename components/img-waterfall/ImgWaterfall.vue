@@ -1,78 +1,77 @@
 <template>
-<div>
-  <transition name='mask-fade'>
-    <div class='dialog-mask' v-if='isShowEditDialog' @click='cancelDialog'></div>
-  </transition>
+  <div>
+    <transition name="mask-fade">
+      <div v-if="isShowEditDialog" class="dialog-mask" @click="cancelDialog" />
+    </transition>
 
-  <transition name='dialog-fade'>
-    <edit-dialog v-if='isShowEditDialog'
-      :imgDetail='currnetEditImg'
-      @modifyMediaSuccess='onModifySuc'>
-    </edit-dialog>
-  </transition>
+    <transition name="dialog-fade">
+      <edit-dialog
+        v-if="isShowEditDialog"
+        :img-detail="currnetEditImg"
+        @modifyMediaSuccess="onModifySuc"
+      />
+    </transition>
 
-  <div class='img-waterfall'>
-    <waterfall
-      v-if='imgList.length > 0'
-      line='v'
-      :line-gap='columnWidth'
-      :watch='imgList'
-      align='center'
-      auto-resize='true'>
-      <waterfall-slot
-        v-for='(img, index) in imgList' 
-        :width='img.image_width || "600"' 
-        :height='img.image_height || "600"'
-        :order='index'
-        :key='img.id'
-        move-class='item-move'>
-        <img-item :imgList='imgList'
-          :img='img'
-          :index='index'
-          :isToPaixin='isToPaixin'
-          :isShowRemark='isShowRemark'
-          :isAlbumAuthor='isAlbumAuthor'
-          :albumId='albumId'
-          :isShowExclusive='isShowExclusive'
-          @imgWarterfallImgItemEditImg='editImg(img)'>
-        </img-item>
+    <div class="img-waterfall">
+      <waterfall
+        v-if="imgList.length > 0"
+        line="v"
+        :line-gap="columnWidth"
+        :watch="imgList"
+        align="center"
+        auto-resize="true"
+      >
+        <waterfall-slot
+          v-for="(img, index) in imgList"
+          :key="img.id"
+          :width="img.image_width || 600"
+          :height="img.image_height || 600"
+          :order="index"
+          move-class="item-move"
+        >
+          <img-item
+            :img-list="imgList"
+            :img="img"
+            :index="index"
+            :is-to-paixin="isToPaixin"
+            :is-show-remark="isShowRemark"
+            :is-album-author="isAlbumAuthor"
+            :album-id="albumId"
+            :is-show-exclusive="isShowExclusive"
+            @imgWarterfallImgItemEditImg="editImg(img)"
+          />
 
-      </waterfall-slot>
-    </waterfall>
+        </waterfall-slot>
+      </waterfall>
 
-    <loading :isLoading='isLoading' :loadingColor='"#000"' v-if='isShowLoading'></loading>
+      <loading v-if="isShowLoading" :is-loading="isLoading" :loading-color="'#000'" />
 
-    <div class='no-more' v-if='isShowNoMore && isNoMore'>—  <span>7MX</span>  —</div>
+      <div v-if="isShowNoMore && isNoMore" class="no-more">—  <span>7MX</span>  —</div>
 
-    <no-content :content='content'
-      :isNoContentShow='!isLoading && isShowNoContent'>
-    </no-content>
+      <no-content
+        :content="content"
+        :is-no-content-show="!isLoading && isShowNoContent"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import EditDialog from './edit-dialog/EditDialog'
 import ImgItem from './img-item/ImgItem'
-import NoContent from '~/components/no-content/NoContent';
+import NoContent from '~/components/no-content/NoContent'
 import Waterfall from './vue-waterfall/waterfall'
 import WaterfallSlot from './vue-waterfall/waterfall-slot'
 
 export default {
   name: '',
-  data: () => ({
-    columnWidth: 0,
-    bodyWidth: 0,
-    timer: false,
-    singleTimer: null,
-    isShowEditDialog: false,
-    currnetEditImg: null
-  }),
   props: {
     imgList: {
       type: Array,
-      default: []
+      default() {
+        return []
+      }
     },
     isLarge: {
       type: Boolean,
@@ -119,6 +118,41 @@ export default {
       default: '0'
     }
   },
+  data: () => ({
+    columnWidth: 0,
+    bodyWidth: 0,
+    timer: false,
+    singleTimer: null,
+    isShowEditDialog: false,
+    currnetEditImg: null
+  }),
+  watch: {
+    'onresizeFlag': function(val) {
+      this.bodyWidth = document.body.clientWidth
+      if (!this.timer) {
+        this.timer = true
+        setTimeout(() => {
+          this.setColumnWidth()
+          this.timer = false
+        }, 300)
+      }
+    },
+    'isLarge': function() {
+      this.setColumnWidth()
+    },
+    'isShowEditDialog': function(val) {
+      if (val) {
+        document.querySelector('html').style.overflow = 'hidden'
+      } else {
+        document.querySelector('html').style.overflow = 'auto'
+      }
+    }
+  },
+  mounted() {
+    this.bodyWidth = document.body.clientWidth
+
+    this.setColumnWidth()
+  },
   methods: {
     cancelDialog() {
       this.isShowEditDialog = false
@@ -135,52 +169,25 @@ export default {
     },
     setColumnWidth() {
       if (this.isLarge) {
-        this.columnWidth = this.bodyWidth * 0.7;
+        this.columnWidth = this.bodyWidth * 0.7
         if (this.columnWidth > 1600) {
-          this.columnWidth = 1600;
+          this.columnWidth = 1600
         }
       } else {
         if (this.bodyWidth <= 1200) {
-          this.columnWidth = Math.floor((1200 - 20) / 3);
+          this.columnWidth = Math.floor((1200 - 20) / 3)
         } else if (this.bodyWidth > 1200 && this.bodyWidth <= 1500) {
-          this.columnWidth = Math.floor((this.bodyWidth - 20) / 3);
+          this.columnWidth = Math.floor((this.bodyWidth - 20) / 3)
         } else if (this.bodyWidth > 1500) {
           this.columnWidth = Math.floor((this.bodyWidth - 20) / 4)
         }
       }
-      if (this.ifIndex == '1') {
+      if (this.ifIndex === '1') {
         this.columnWidth = 328
       }
     },
     noUser() {
       // no use
-    }
-  },
-  mounted() {
-    this.bodyWidth = document.body.clientWidth
-
-    this.setColumnWidth()
-  },
-  watch: {
-    'onresizeFlag': function (val) {
-      this.bodyWidth = document.body.clientWidth;
-      if (!this.timer) {
-        this.timer = true;
-        setTimeout(() => {
-          this.setColumnWidth();
-          this.timer = false;
-        }, 300);
-      }
-    },
-    'isLarge': function() {
-      this.setColumnWidth();
-    },
-    'isShowEditDialog': function (val) {
-      if (val) {
-        document.querySelector('html').style.overflow = 'hidden'
-      } else {
-        document.querySelector('html').style.overflow = 'auto'
-      }
     }
   },
   computed: {
@@ -193,23 +200,23 @@ export default {
       if (this.isLoading) {
         return false
       }
-      if (this.imgList.length > 0 && this.line == 'end') {
+      if (this.imgList.length > 0 && this.line === 'end') {
         return true
       }
-      if (this.imgList.length == 0 && this.line == 'end') {
+      if (this.imgList.length === 0 && this.line === 'end') {
         return false
       }
       return false
     },
     isShowNoContent() {
-      if (this.imgList.length < 1 && this.line == 'end') {
-        return true;
+      if (this.imgList.length < 1 && this.line === 'end') {
+        return true
       } else {
-        return false;
+        return false
       }
     },
     content() {
-      if (this.$route.name == 'user-id' || this.$route.name == 'user-home') {
+      if (this.$route.name === 'user-id' || this.$route.name === 'user-home') {
         return '这个人很懒，什么也没留下 ~'
       }
 
@@ -223,7 +230,7 @@ export default {
     ImgItem,
     EditDialog
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>

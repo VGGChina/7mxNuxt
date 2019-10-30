@@ -1,33 +1,35 @@
-/* 
+/*
 苏宁创意之旅
 拍信创意商店
  */
 <template>
-    <div class='banner-container'>
-        <div v-if='isShowBanner == 2 || isShowBanner == 3 || isShowBanner == 1' class='banner-template-box' :style='{width: largerBannerWidthBox + "px",left: left + "px",transition: transition}' ref='bannerBox'>
-            <!-- <a href='javascript:void(0)' :style='{width: largerBannerWidth + "px"}' >
+  <div class="banner-container">
+    <div v-if="isShowBanner == 2 || isShowBanner == 3 || isShowBanner == 1" ref="bannerBox" class="banner-template-box" :style="{width: largerBannerWidthBox + &quot;px&quot;,left: left + &quot;px&quot;,transition: transition}">
+      <!-- <a href='javascript:void(0)' :style='{width: largerBannerWidth + "px"}' >
                 <div class='imgItem' :style='{"backgroundImage": "url(" + lastUrl + ")"}'></div>
             </a> -->
-            <a href='javascript:void(0)' v-for='item in largerBannerList' :key='item.url' ref='lagerBanner' :style='{width: largerBannerWidth + "px"}'>
-                <!-- <div class='imgItem' :style='{"backgroundImage": "url(" + item.url + ")"}'></div> -->
-                <!-- <div v-if="isShowBanner == 1" class='imgItem' :style='{"backgroundImage": "url(/components/images/banner1.jpg)"}'></div> -->
-                <img class='imgItem' src="./images/banner1.jpg" v-if="isShowBanner == 1" alt="" @click="go(1)">
-                <img class='imgItem' src="./images/banner2.jpg" v-if="isShowBanner == 2" alt="" @click="go(2)">
-                <img class='imgItem' src="./images/banner3.jpg" v-if="isShowBanner == 3" alt="" @click="go(3)">
-                <!-- <div class='imgItem' :style='{"backgroundImage": "url(" + item.url + ")"}'></div> -->
-                <!-- <div class='imgItem' :style='{"backgroundImage": "url(" + item.url + ")"}'></div> -->
-            </a>
-            <!-- <a href='javascript:void(0)' :style='{width: largerBannerWidth + "px"}' >
+      <a v-for="item in largerBannerList" :key="item.url" ref="lagerBanner" href="javascript:void(0)" :style="{width: largerBannerWidth + &quot;px&quot;}">
+        <!-- <div class='imgItem' :style='{"backgroundImage": "url(" + item.url + ")"}'></div> -->
+        <!-- <div v-if="isShowBanner == 1" class='imgItem' :style='{"backgroundImage": "url(/components/images/banner1.jpg)"}'></div> -->
+        <img v-if="isShowBanner == 1" class="imgItem" src="./images/banner1.jpg" alt="" @click="go(1)">
+        <img v-if="isShowBanner == 2" class="imgItem" src="./images/banner2.jpg" alt="" @click="go(2)">
+        <img v-if="isShowBanner == 3" class="imgItem" src="./images/banner3.jpg" alt="" @click="go(3)">
+        <!-- <div class='imgItem' :style='{"backgroundImage": "url(" + item.url + ")"}'></div> -->
+        <!-- <div class='imgItem' :style='{"backgroundImage": "url(" + item.url + ")"}'></div> -->
+      </a>
+      <!-- <a href='javascript:void(0)' :style='{width: largerBannerWidth + "px"}' >
                 <div class='imgItem' :style='{"backgroundImage": "url(" + firstUrl + ")"}'></div>
             </a> -->
-        </div>
     </div>
+  </div>
 </template>
 
 <script>
-import { setTimeout, clearTimeout } from 'timers';
+import { setTimeout, clearTimeout } from 'timers'
 export default {
   name: '',
+  components: {
+  },
   props: ['isShowBanner', 'screenWidthBanner', 'pic'],
   data: () => ({
     largerBannerList: [],
@@ -38,6 +40,28 @@ export default {
     lastUrl: '',
     transition: ''
   }),
+  computed: {
+    largerBannerWidth: function() {
+      // this.left = -this.screenWidthBanner
+      return this.screenWidthBanner
+    },
+    largerBannerWidthBox: function() {
+      return this.largerBannerWidth * (this.largerBannerList.length + 2)
+    }
+  },
+  watch: {
+    'isShowBanner': function(val) {
+    },
+    'pic': function(val, old) {
+      this.largerBannerList = val
+      this.firstUrl = this.largerBannerList[0].url
+      this.lastUrl = this.largerBannerList[(this.largerBannerList.length - 1)].url
+    }
+  },
+  created() {
+    this.largerBannerList = this.pic
+  },
+  mounted() {},
   methods: {
     largebanner(direction) {
       clearTimeout(this.timer)
@@ -49,10 +73,10 @@ export default {
           this.left -= this.largerBannerWidth
         } else {
           this.transition = 'none'
-          this.left = 0;
+          this.left = 0
           this.timer = setTimeout(() => {
             this.transition = 'all 1s ease'
-            this.left = -this.largerBannerWidth;
+            this.left = -this.largerBannerWidth
           }, 30)
         }
       } else {
@@ -60,7 +84,7 @@ export default {
           this.left += this.largerBannerWidth
         } else {
           this.transition = 'none'
-          this.left = -this.largerBannerWidthBox + this.largerBannerWidth;
+          this.left = -this.largerBannerWidthBox + this.largerBannerWidth
           this.timer = setTimeout(() => {
             this.transition = 'all 1s ease'
             this.left += this.largerBannerWidth
@@ -70,37 +94,13 @@ export default {
     },
     go(index) {
       if (index == 1) {
-        this.$router.push({path: '/activity/286052/3/1'})
+        this.$router.push({ path: '/activity/286052/3/1' })
       } else if (index == 2) {
-        this.$router.push({path: '/activity/285880/3/1'})
+        this.$router.push({ path: '/activity/285880/3/1' })
       } else if (index == 3) {
         window.location.href = 'https://v.paixin.com/'
       }
     }
-  },
-  created() {
-    this.largerBannerList = this.pic
-  },
-  mounted () {},
-  watch: {
-    'isShowBanner': function(val) {
-    },
-    'pic': function (val, old) {
-      this.largerBannerList = val
-      this.firstUrl = this.largerBannerList[0].url
-      this.lastUrl = this.largerBannerList[(this.largerBannerList.length - 1)].url
-    }
-  },
-  computed: {
-    largerBannerWidth: function() {
-      // this.left = -this.screenWidthBanner
-      return this.screenWidthBanner
-    },
-    largerBannerWidthBox: function() {
-      return this.largerBannerWidth * (this.largerBannerList.length + 2)
-    }
-  },
-  components: {
   }
 }
 </script>

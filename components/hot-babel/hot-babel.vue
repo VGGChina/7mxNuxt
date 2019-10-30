@@ -1,26 +1,30 @@
 <template>
-    <div class='hot-babel-container'>
-      <!-- {{categoryList}} -->
-        <sharetitle :title='title' :categoryList='categoryList' :identity='2'></sharetitle>
-        <loading :isLoading='isLoading' :loadingColor='"#000"' v-if='true' class="loading"></loading>
-        <ul class='content'>
-            <li v-for='item in babelList' :key='item.id'>
-                <a :href='goDetai(item.id)'>
-                    <img :src="item.image" alt="" class="imgItem">
-                </a>       
-            </li>
-        </ul>
-        <caregeorymore :moreInfo='moreInfo' :moreText='moreText' :istype='"ishotimg"'></caregeorymore>
-    </div>
+  <div class="hot-babel-container">
+    <!-- {{categoryList}} -->
+    <sharetitle :title="title" :category-list="categoryList" :identity="2" />
+    <loading v-if="true" :is-loading="isLoading" :loading-color="&quot;#000&quot;" class="loading" />
+    <ul class="content">
+      <li v-for="item in babelList" :key="item.id">
+        <a :href="goDetai(item.id)">
+          <img :src="item.image" alt="" class="imgItem">
+        </a>
+      </li>
+    </ul>
+    <caregeorymore :more-info="moreInfo" :more-text="moreText" :istype="&quot;ishotimg&quot;" />
+  </div>
 </template>
 
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
-import sharetitle from '../common/share-title';
-import caregeorymore from '../common/category_more';
-import { setTimeout } from 'timers';
+import sharetitle from '../common/share-title'
+import caregeorymore from '../common/category_more'
+import { setTimeout } from 'timers'
 export default {
   name: '',
+  components: {
+    sharetitle,
+    caregeorymore
+  },
   data: () => ({
     title: '热门标签',
     moreText: '更多图片',
@@ -28,16 +32,28 @@ export default {
     moreInfo: 'ranking',
     isLoading: false,
     babelList: [
-      {id: 1},
-      {id: 2},
-      {id: 3},
-      {id: 4},
-      {id: 5},
-      {id: 6},
-      {id: 7},
-      {id: 8}
+      { id: 1 },
+      { id: 2 },
+      { id: 3 },
+      { id: 4 },
+      { id: 5 },
+      { id: 6 },
+      { id: 7 },
+      { id: 8 }
     ]
   }),
+  computed: {},
+  watch: {
+    'categoryList': function(val) {
+      this.getHotTags(0)
+    }
+  },
+  created() {
+    this.fetchpictureCategory();
+    this.$bus.on('choosebabel', index => {
+      this.getHotTags(index);
+    });
+  },
   methods: {
     async getHotTags(index) {
       this.babelList = []
@@ -77,24 +93,8 @@ export default {
     goDetai(id) {
       return `/photo/${id}`
     }
-  },
-  created() {
-    this.fetchpictureCategory();
-    this.$bus.on('choosebabel', index => {
-      this.getHotTags(index);
-    });
-  },
-  watch: {
-    'categoryList': function(val) {
-      this.getHotTags(0)
-    }
-  },
-  computed: {},
-  components: {
-    sharetitle,
-    caregeorymore
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>

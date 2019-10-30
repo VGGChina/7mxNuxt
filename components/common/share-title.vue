@@ -1,33 +1,48 @@
 <template>
-  <div class='share-title_cantainer'>
-      <div class='content'>
-        <h1 class='title'>{{title}}</h1>
-        <ul>
-           <li v-for='(item,index) in categoryList1' :key='index'>
-            <span v-if='index != 0'>/</span>
-            <span v-if='index == 0' style='opacity: 0'>/</span>
-            <span :class='index == activeIndex ? "first" : "second"' @click='chooseType(index)'>{{item.name}}</span>
-          </li>
-        </ul>
-        <div class='btn' v-if='false'>
-          <span>
-            <img :src='require("~/components/common/images/arrpw_l .png")' height='10' width='6' alt=''>
-            </span>
-          <span>
-            <img :src='require("~/components/common/images/arrpw_r.png")' height='10' width='6' alt=''>
-          </span>
-        </div>
+  <div class="share-title_cantainer">
+    <div class="content">
+      <h1 class="title">{{ title }}</h1>
+      <ul>
+        <li v-for="(item,index) in categoryList1" :key="index">
+          <span v-if="index != 0">/</span>
+          <span v-if="index == 0" style="opacity: 0">/</span>
+          <span :class="index == activeIndex ? 'first' : 'second'" @click="chooseType(index)">{{ item.name }}</span>
+        </li>
+      </ul>
+      <div v-if="false" class="btn">
+        <span>
+          <img :src="require('~/components/common/images/arrpw_l .png')" height="10" width="6" alt="">
+        </span>
+        <span>
+          <img :src="require('~/components/common/images/arrpw_r.png')" height="10" width="6" alt="">
+        </span>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: '',
+  components: {
+
+  },
   props: ['title', 'categoryList', 'identity'],
   data: () => ({
     activeIndex: 0
   }),
+  computed: {
+    categoryList1: function() {
+      return this.categoryList
+    }
+  },
+  watch: {
+  },
+  created() {
+
+  },
+  mounted() {
+  },
   methods: {
     chooseType(index) {
       this.activeIndex = index
@@ -39,21 +54,6 @@ export default {
         this.$bus.emit('choosebabel', index)
       }
     }
-  },
-  created() {
-
-  },
-  mounted () {
-  },
-  watch: {
-  },
-  computed: {
-    categoryList1: function() {
-      return this.categoryList
-    }
-  },
-  components: {
-
   }
 }
 </script>

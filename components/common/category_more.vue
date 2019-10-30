@@ -1,6 +1,6 @@
 <template>
-  <div class='more_container'>
-    <a href="javascript:void(0)" class="btn" @click="gode()">{{moreText}}</a>
+  <div class="more_container">
+    <a href="javascript:void(0)" class="btn" @click="gode()">{{ moreText }}</a>
     <!-- <router-link :to="{name: moreInfo,params: {tableIndex: 0,page: 1}}" tag="a" class="btn">{{moreText}}</router-link> -->
   </div>
 </template>
@@ -8,31 +8,31 @@
 <script>
 export default {
   name: '',
+  components: {
+
+  },
   props: ['moreInfo', 'moreText', 'istype'],
   data: () => ({
   }),
-  methods: {
-    gode() {
-      if (this.istype == 'ishotimg') {
-        let cur = JSON.parse(window.localStorage.getItem('crrentType'))
-        this.$router.push({path: `category/${cur.name}/${cur.id}/0/1`})
-      } else {
-        this.$router.push({path: 'ranking/0/1'})
-      }
-    }
-  },
-  created() {
-  },
-  mounted () {
+  computed: {
+
   },
   watch: {
 
   },
-  computed: {
-
+  created() {
   },
-  components: {
-
+  mounted() {
+  },
+  methods: {
+    gode() {
+      if (this.istype === 'ishotimg') {
+        const cur = JSON.parse(window.localStorage.getItem('crrentType'))
+        this.$router.push({ path: `category/${cur.name}/${cur.id}/0/1` })
+      } else {
+        this.$router.push({ path: 'ranking/0/1' })
+      }
+    }
   }
 }
 </script>

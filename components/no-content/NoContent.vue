@@ -26,7 +26,7 @@ export default {
       return this.content || 'Sorry，暂无内容'
     }
   }
-};
+}
 </script>
 
 <style scoped>

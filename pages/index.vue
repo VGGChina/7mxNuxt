@@ -9,29 +9,29 @@
     <!-- 热门图片 -->
     <div>
       <h3 class="hot-img-title">热门图片</h3>
-      <loading :isLoading="isLoading" :loadingColor="'#000'" v-if="true" class="loading" />
+      <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" />
       <div class="waterfallContainer">
         <img-waterfall
-          :imgList="imgList"
+          :img-list="imgList"
           :line="line"
-          :isLoading="isLoading"
-          :isShowLoading="false"
-          :isToPaixin="isToPaixin"
-          :ifIndex="'1'"
-        ></img-waterfall>
+          :is-loading="isLoading"
+          :is-show-loading="false"
+          :is-to-paixin="isToPaixin"
+          :if-index="'1'"
+        />
       </div>
     </div>
-    <loading :isLoading="isLoading" :loadingColor="'#000'" v-if="true" class="loading" />
+    <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" />
     <div
-      class="load-more"
       v-if="imgList.length > 0 && line != 'end'"
+      class="load-more"
       @click="getMoreData"
     >{{ isLoading ? '正在加载...' : '更多图片' }}</div>
 
     <!--更多合作 -->
-    <cooperation-footer></cooperation-footer>
+    <cooperation-footer />
     <!-- 页脚 -->
-    <index-footer></index-footer>
+    <index-footer />
   </div>
 </template>
 
@@ -51,8 +51,8 @@ import { setTimeout } from 'timers'
 
 export default {
   name: '',
-  head(){
-    return{
+  head() {
+    return {
       title: '7MX - 中国领先的视觉创作社区'
     }
   },
@@ -127,19 +127,19 @@ export default {
     showSearch: true
   }),
   created() {
-    this.fetchData();
+    this.fetchData()
   },
 
   methods: {
     onClickHot() {
-      if (this.currentItem == 1 || this.isLoading) {
+      if (this.currentItem === 1 || this.isLoading) {
         return
       }
       this.currentItem = 1
       this.reload()
     },
     onClickStore() {
-      if (this.currentItem == 2 || this.isLoading) {
+      if (this.currentItem === 2 || this.isLoading) {
         return
       }
       this.currentItem = 2
@@ -147,7 +147,7 @@ export default {
       this.reload()
     },
     onClickNew() {
-      if (this.currentItem == 3 || this.isLoading) {
+      if (this.currentItem === 3 || this.isLoading) {
         return
       }
 
@@ -166,27 +166,27 @@ export default {
     },
     async fetchData() {
       if (this.isLoading || this.line == 'end') {
-        return;
+        return
       }
-      let data = { type: '6' },
-        params = { line: this.line, limit: '40' }
+      const data = { type: '6' }
+      const params = { line: this.line, limit: '40' }
 
-      if (this.currentItem == 1) {
-        let res = await apiFactory.getMediaApi().randomRecommend(data, params)
+      if (this.currentItem === 1) {
+        const res = await apiFactory.getMediaApi().randomRecommend(data, params)
         this.afterResponse(res)
         return
       }
 
-      if (this.currentItem == 2) {
+      if (this.currentItem === 2) {
         data.product = '1'
-        let res = await apiFactory.getPaixinApi().recommendList(data, params)
+        const res = await apiFactory.getPaixinApi().recommendList(data, params)
         this.afterResponse(res)
         return
       }
 
-      if (this.currentItem == 3) {
+      if (this.currentItem === 3) {
         data.mode = 'desc'
-        let res = await apiFactory.getMediaApi().commonList(data, params)
+        const res = await apiFactory.getMediaApi().commonList(data, params)
         this.afterResponse(res)
       }
     },
@@ -207,28 +207,28 @@ export default {
       this.isLoading = true
     },
     setStyle(height, pageYOffset) {
-      let taopBar = document.getElementById('topbar')
+      const taopBar = document.getElementById('topbar')
       if (pageYOffset < 400) {
         this.showSearch = false
-        taopBar.style.position = 'absolute';
-        taopBar.style.background = '#1a1a1a';
+        taopBar.style.position = 'absolute'
+        taopBar.style.background = '#1a1a1a'
 
-        taopBar.style.opacity = '1';
+        taopBar.style.opacity = '1'
       } else if (pageYOffset > 400 && pageYOffset < height) {
-        taopBar.style.position = 'absolute';
+        taopBar.style.position = 'absolute'
         this.showSearch = true
-        taopBar.style.opacity = '0';
+        taopBar.style.opacity = '0'
       } else {
         this.showSearch = true
-        taopBar.style.position = 'fixed';
-        let transparent = (pageYOffset - height) / 200;
+        taopBar.style.position = 'fixed'
+        let transparent = (pageYOffset - height) / 200
         if (transparent > 1) {
-          transparent = 1;
+          transparent = 1
         }
 
-        taopBar.style.opacity = transparent;
+        taopBar.style.opacity = transparent
 
-        taopBar.style.background = 'rgba(26, 26, 26, ' + transparent + ')';
+        taopBar.style.background = 'rgba(26, 26, 26, ' + transparent + ')'
       }
     }
   },
@@ -240,14 +240,14 @@ export default {
     ]),
     isToPaixin() {
       if (this.currentItem == 2) {
-        return true;
+        return true
       } else {
-        return false;
+        return false
       }
     }
   },
   watch: {
-    'winPageYOffset': function (val) {
+    'winPageYOffset': function(val) {
       // 当页面的滚动条滚动时,会执行这里的代码
       this.setStyle(400, val)
     }
@@ -262,7 +262,7 @@ export default {
     hotBabel,
     cooperationFooter
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>
