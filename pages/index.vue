@@ -9,7 +9,7 @@
     <!-- 热门图片 -->
     <div>
       <h3 class="hot-img-title">热门图片</h3>
-      <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" />
+      <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
       <div class="waterfallContainer">
         <img-waterfall
           :img-list="imgList"
@@ -21,7 +21,7 @@
         />
       </div>
     </div>
-    <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" />
+    <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
     <div
       v-if="imgList.length > 0 && line != 'end'"
       class="load-more"
@@ -36,6 +36,16 @@
 </template>
 
 <script>
+function afterResponse(res) {
+  if (res.data.out == '1') {
+    this.imgList.push(...res.data.data)
+  }
+  this.line = res.data.line
+  setTimeout(() => {
+    this.isLoading = false
+  }, 500)
+}
+
 import apiFactory from '~/api/factory/apiFactory.js'
 import utilHelper from '~/utils/utils.js'
 import { mapGetters } from 'vuex'
@@ -126,9 +136,71 @@ export default {
     column3: ['社群', '微博', '公众号', '&nbsp;'],
     showSearch: true
   }),
-  created() {
-    this.fetchData()
-  },
+  // created() {
+  //   this.fetchData()
+  // },
+async asyncData() {
+      // if (this.isLoading || this.line == 'end') {
+      //   return
+      // }
+      const imgList = []
+      const line = ''
+      let isLoading = true
+      const data = { type: '6' }
+      const params = { line: line, limit: '40' }
+      
+
+      if (1 === 1) {
+        const res = await apiFactory.getMediaApi().randomRecommend(data, params)
+
+        if (res.data.out == '1') {
+          imgList.push(...res.data.data)
+        }
+        line = res.data.line
+        setTimeout(() => {
+          isLoading = false
+        }, 500)
+        return{
+          imgList: imgList,
+          line: line,
+          isLoading: isLoading
+        }
+      }
+
+      // if (this.currentItem === 2) {
+      //   data.product = '1'
+      //   const res = await apiFactory.getPaixinApi().recommendList(data, params)
+      //   if (res.data.out == '1') {
+      //     imgList.push(...res.data.data)
+      //   }
+      //   line = res.data.line
+      //   setTimeout(() => {
+      //     isLoading = false
+      //   }, 500)
+      //    return{
+      //     imgList: imgList,
+      //     line: line,
+      //     isLoading: isLoading
+      //   }
+      // }
+
+      // if (this.currentItem === 3) {
+      //   data.mode = 'desc'
+      //   const res = await apiFactory.getMediaApi().commonList(data, params)
+      //   if (res.data.out == '1') {
+      //     imgList.push(...res.data.data)
+      //   }
+      //   line = res.data.line
+      //   setTimeout(() => {
+      //     isLoading = false
+      //   }, 500)
+      //    return{
+      //     imgList: imgList,
+      //     line: line,
+      //     isLoading: isLoading
+      //   }
+      // }
+    },
 
   methods: {
     onClickHot() {
@@ -155,55 +227,59 @@ export default {
 
       this.reload()
     },
-    afterResponse(res) {
-      if (res.data.out == '1') {
-        this.imgList.push(...res.data.data)
-      }
-      this.line = res.data.line
-      setTimeout(() => {
-        this.isLoading = false
-      }, 500)
-    },
-    async fetchData() {
-      if (this.isLoading || this.line == 'end') {
-        return
-      }
-      const data = { type: '6' }
-      const params = { line: this.line, limit: '40' }
+    
+    // afterResponse(res) {
+    //   if (res.data.out == '1') {
+    //     this.imgList.push(...res.data.data)
+    //   }
+    //   this.line = res.data.line
+    //   setTimeout(() => {
+    //     this.isLoading = false
+    //   }, 500)
+    // },
 
-      if (this.currentItem === 1) {
-        const res = await apiFactory.getMediaApi().randomRecommend(data, params)
-        this.afterResponse(res)
-        return
-      }
+    // async fetchData() {
+    //   if (this.isLoading || this.line == 'end') {
+    //     return
+    //   }
+    //   const data = { type: '6' }
+    //   const params = { line: this.line, limit: '40' }
 
-      if (this.currentItem === 2) {
-        data.product = '1'
-        const res = await apiFactory.getPaixinApi().recommendList(data, params)
-        this.afterResponse(res)
-        return
-      }
+    //   if (this.currentItem === 1) {
+    //     const res = await apiFactory.getMediaApi().randomRecommend(data, params)
+    //     this.afterResponse(res)
+    //     return
+    //   }
 
-      if (this.currentItem === 3) {
-        data.mode = 'desc'
-        const res = await apiFactory.getMediaApi().commonList(data, params)
-        this.afterResponse(res)
-      }
-    },
+    //   if (this.currentItem === 2) {
+    //     data.product = '1'
+    //     const res = await apiFactory.getPaixinApi().recommendList(data, params)
+    //     this.afterResponse(res)
+    //     return
+    //   }
+
+    //   if (this.currentItem === 3) {
+    //     data.mode = 'desc'
+    //     const res = await apiFactory.getMediaApi().commonList(data, params)
+    //     this.afterResponse(res)
+    //   }
+    // },
+
+    
     reload() {
       if (this.isLoading) {
         return
       }
       this.imgList = []
       this.line = ''
-      this.fetchData()
+      // this.fetchData()
     },
     getMoreData() {
       if (!this.isLogin) {
         this.$store.commit('isShowLoginDialog', true)
         return
       }
-      this.fetchData()
+      // this.fetchData()
       this.isLoading = true
     },
     setStyle(height, pageYOffset) {

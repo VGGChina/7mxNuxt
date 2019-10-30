@@ -1,51 +1,55 @@
 import axios from 'axios'
 
-const _7mxBaseURL =  '//api.7mx.com'
-const paixinBaseURL =  '//api.paixin.com'
+const _7mxBaseURL = '//api.7mx.com'
+const paixinBaseURL = '//api.paixin.com'
 
-axios.interceptors.request.use(
-  config => {
-    let isNoCookie = (config.baseURL == _7mxBaseURL)
+// axios.interceptors.request.use(
+//   config => {
+//     // const isNoCookie = (config.baseURL === _7mxBaseURL)
 
-    if (isNoCookie) {
-      config.headers['no-cookie'] = '1'
-      const xToken = localStorage.getItem('x-token')
-      if (xToken) {
-        config.headers['x-token'] = xToken
-      }
-    }
+//     // if (isNoCookie) {
+//     //   config.headers['no-cookie'] = '1'
+//     //   const xToken = localStorage.getItem('x-token')
+//     //   if (xToken) {
+//     //     config.headers['x-token'] = xToken
+//     //   }
+//     // }
 
-    return config
-  },
-  err => {
-    return Promise.reject(err)
-  }
-)
+//     // if (!process.server) {
+//     //   config.headers['token'] = getCookie('token')
+//     // }
+//     // // 在发送请求之前做些什么
+//     return config
+//   },
+//   err => {
+//     return Promise.reject(err)
+//   }
+// )
 
 // http response 拦截器
-axios.interceptors.response.use(
-  response => {
-    const xToken = response.headers['x-token']
-    if (xToken || xToken == '') {
-      localStorage.setItem('x-token', xToken)
-    }
+// axios.interceptors.response.use(
+//   response => {
+//     const xToken = response.headers['x-token']
+//     if (xToken || xToken === '') {
+//       localStorage.setItem('x-token', xToken)
+//     }
 
-    return response
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
+//     return response
+//   },
+//   error => {
+//     return Promise.reject(error)
+//   }
+// )
 
 /**
  * 删除空的属性
  * @param {*} object 想要删除空属性的对象
  */
 function deleteEmptyProperty(object) {
-  let objCopy = JSON.parse(JSON.stringify(object))
+  const objCopy = JSON.parse(JSON.stringify(object))
 
-  for (let i in objCopy) {
-    let value = objCopy[i]
+  for (const i in objCopy) {
+    const value = objCopy[i]
     if (value === '' || value === null || value === undefined) {
       delete objCopy[i]
     }
@@ -61,10 +65,10 @@ function deleteEmptyProperty(object) {
  * @param {*} params 请求的参数，将数据放在URL之后，以?连接，参数之间以&进行拼接
  */
 export const axios7mx = (url, data = {}, params = {}) => {
-  let config = {
+  const config = {
     baseURL: _7mxBaseURL,
     method: 'POST',
-    headers: {'Content-Type': 'application/json; charset=utf-8'},
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
     withCredentials: true,
     responseType: 'text'
   }
@@ -74,7 +78,7 @@ export const axios7mx = (url, data = {}, params = {}) => {
   config.params = deleteEmptyProperty(params)
 
   return axios(config)
-};
+}
 
 /**
  * api.paixin.com下请求接口的封装
@@ -83,10 +87,10 @@ export const axios7mx = (url, data = {}, params = {}) => {
  * @param {*} params 请求的参数，将数据放在URL之后，以?连接，参数之间以&进行拼接
  */
 export const axiosPaixin = (url, data = {}, params = {}) => {
-  let config = {
+  const config = {
     baseURL: paixinBaseURL,
     method: 'POST',
-    headers: {'Content-Type': 'application/json; charset=utf-8'},
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
     withCredentials: true,
     responseType: 'text'
   }
@@ -104,14 +108,14 @@ export const axiosPaixin = (url, data = {}, params = {}) => {
  * @param {*} params 请求的参数，将数据放在URL之后，以?连接，参数之间以&进行拼接
  */
 export const axiosGet = (url, params = {}) => {
-  let config = {
+  const config = {
     method: 'GET',
-    headers: {'Content-Type': 'application/json; charset=utf-8'},
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
     responseType: 'text'
-  };
-  config.url = url;
-  config.params = deleteEmptyProperty(params);
-  return axios(config);
+  }
+  config.url = url
+  config.params = deleteEmptyProperty(params)
+  return axios(config)
 }
 
 /**
@@ -121,15 +125,15 @@ export const axiosGet = (url, params = {}) => {
  * @param {*} params 请求的参数，将数据放在URL之后，以?连接，参数之间以&进行拼接
  */
 export const axiosPost = (url, data = {}, params = {}) => {
-  let config = {
+  const config = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json; charset=utf-8'},
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
     responseType: 'text'
-  };
-  config.url = url;
-  config.data = deleteEmptyProperty(data);
-  config.params = deleteEmptyProperty(params);
-  return axios(config);
+  }
+  config.url = url
+  config.data = deleteEmptyProperty(data)
+  config.params = deleteEmptyProperty(params)
+  return axios(config)
 }
 
 /**

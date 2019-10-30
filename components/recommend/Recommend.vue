@@ -124,8 +124,10 @@ export default {
     },
     getScreen() {
       // 获取轮播图显示去的宽度
-      if (process.server) return 1200
-      this.screenWidthBanner = parseInt(this.$refs.screen.style.width)
+      // if (process.server) return 1200
+      // this.screenWidthBanner = parseInt(this.$refs.screen.style.width)
+
+      this.screenWidthBanner = 1200
     },
     async curentClick(index) {
       // 点击显示当前轮播图
