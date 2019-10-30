@@ -88,7 +88,7 @@ export const axios7mx = (url, data = {}, params = {}) => {
  */
 export const axiosPaixin = (url, data = {}, params = {}) => {
   const config = {
-    baseURL: paixinBaseURL,
+    // baseURL: paixinBaseURL,
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
     withCredentials: true,

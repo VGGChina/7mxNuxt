@@ -61,6 +61,14 @@ export default {
     Lunbo1,
     Lunbo2
   },
+  props: {
+    smallBannerList: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data: () => ({
     navList: [
       {
@@ -80,7 +88,7 @@ export default {
         text: '拍信创意商店'
       }
     ],
-    smallBannerList: [],
+    // smallBannerList: [],
     isShowBanner: 0,
     screenWidthBanner: 0,
     windowinnerWidth: '',
@@ -93,7 +101,6 @@ export default {
   //   this.getScreen() // 获取轮播图显示的宽度
   //   this.curentClick(this.isShowBanner)
   // },
-  watch: {},
   async created() {
     this.getImgList()
     this.getScreen() // 获取轮播图显示的宽度
@@ -161,6 +168,7 @@ export default {
       this.smallBannerList = res
       this.isshowArrow = true
     },
+
     async getLargeImageList(typeId) {
       const res = await apiFactory
         .getCommonApi()

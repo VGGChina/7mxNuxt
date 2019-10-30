@@ -49,7 +49,7 @@ export default class mediaService {
   }
 
   randomRecommend(data, params) {
-    const url = '/media/random_recommend_list'
+    const url = 'https://api.7mx.com/media/random_recommend_list'
     return axios7mx(url, data, params)
   }
 

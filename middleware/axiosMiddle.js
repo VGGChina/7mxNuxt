@@ -1,17 +1,10 @@
 import axios from 'axios'
 
-// import md5 from 'js-md5'
-
-// import cookies from 'js-cookie'
-
 export default function({ req, res }) {
   if (req.headers !== undefined) {
     const cookieArr = req.headers.cookie
 
     // 获取cookie然后拆成键值对
-
-    // const getUserName = getCookie('name', cookieArr)
-
     const getToken = getCookie('token', cookieArr)
 
     // 设置axios的全局变量.
@@ -33,7 +26,7 @@ export default function({ req, res }) {
 // 解析浏览器中的cookies
 
 function getCookie(name, strCookie) {
-  console.log('strCookie', strCookie)
+  // console.log('strCookie', strCookie)
 
   var arrCookie = strCookie.split(';')
 

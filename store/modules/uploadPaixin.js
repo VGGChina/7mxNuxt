@@ -18,7 +18,7 @@ const actions = {
 // mutations
 const mutations = {
   isShowUploadPaixinDialog(state, isShow) {
-    state.isShowUploadPaixinDialog = isShow;
+    state.isShowUploadPaixinDialog = isShow
   }
 }
 

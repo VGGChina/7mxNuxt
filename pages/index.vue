@@ -1,16 +1,16 @@
 <template>
   <div class="index-container">
     <!-- banner展示 -->
-    <recommend />
+    <recommend :smallBannerList='smallBannerList'/>
     <!-- 热门标签 -->
-    <hotBabel />
+    <hotBabel title="热门标签" :categoryList='categoryList'/>
     <!-- 推荐摄影师 -->
     <!-- <photography /> -->
     <!-- 热门图片 -->
     <div>
-      <h3 class="hot-img-title">热门图片</h3>
+      <!-- <h3 class="hot-img-title">热门图片</h3> -->
       <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
-      <div class="waterfallContainer">
+      <!-- <div class="waterfallContainer">
         <img-waterfall
           :img-list="imgList"
           :line="line"
@@ -19,52 +19,42 @@
           :is-to-paixin="isToPaixin"
           :if-index="'1'"
         />
-      </div>
+      </div>-->
     </div>
     <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
-    <div
+    <!-- <div
       v-if="imgList.length > 0 && line != 'end'"
       class="load-more"
       @click="getMoreData"
-    >{{ isLoading ? '正在加载...' : '更多图片' }}</div>
+    >{{ isLoading ? '正在加载...' : '更多图片' }}</div>-->
 
     <!--更多合作 -->
-    <cooperation-footer />
+    <!-- <cooperation-footer /> -->
     <!-- 页脚 -->
-    <index-footer />
+    <!-- <index-footer /> -->
   </div>
 </template>
 
 <script>
-function afterResponse(res) {
-  if (res.data.out == '1') {
-    this.imgList.push(...res.data.data)
-  }
-  this.line = res.data.line
-  setTimeout(() => {
-    this.isLoading = false
-  }, 500)
-}
-
-import apiFactory from '~/api/factory/apiFactory.js'
-import utilHelper from '~/utils/utils.js'
-import { mapGetters } from 'vuex'
-import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
-import slide from '~/components/slide/index'
-import IndexFooter from '~/components/footer/IndexFooter'
-import Category from '~/components/category/Category'
-import recommend from '~/components/recommend/recommend.vue'
+import apiFactory from "~/api/factory/apiFactory.js";
+import utilHelper from "~/utils/utils.js";
+import { mapGetters } from "vuex";
+import ImgWaterfall from "~/components/img-waterfall/ImgWaterfall";
+import slide from "~/components/slide/index";
+import IndexFooter from "~/components/footer/IndexFooter";
+import Category from "~/components/category/Category";
+import recommend from "~/components/recommend/recommend.vue";
 // import photography from '~/components/photography/photography.vue'
-import hotBabel from '~/components/hot-babel/hot-babel'
-import cooperationFooter from '~/components/cooperation/footer-cooperation'
-import { setTimeout } from 'timers'
+import hotBabel from "~/components/hot-babel/hot-babel";
+import cooperationFooter from "~/components/cooperation/footer-cooperation";
+import { setTimeout } from "timers";
 
 export default {
-  name: '',
+  name: "",
   head() {
     return {
-      title: '7MX - 中国领先的视觉创作社区'
-    }
+      title: "7MX - 中国领先的视觉创作社区"
+    };
   },
   data: () => ({
     show_picList: false,
@@ -72,162 +62,136 @@ export default {
       index: 0,
       transition: 800,
       speed: 8000, // 间隔时间
-      anime: '',
-      height: '390px',
+      anime: "",
+      height: "390px",
       animating: false // 正在进行切换
     },
     banners: [
       {
-
-        img: require('~/assets/img/2.jpg'),
-        url: '/activity/285266/3/1',
+        img: require("~/assets/img/2.jpg"),
+        url: "/activity/285266/3/1",
         bgOpacity: 1
       },
       {
-        img: require('~/assets/img/index-bg.jpg'),
-        url: 'https://v.paixin.com',
-        title: '拍信-中国领先的正版图片交易平台',
-        titleImg: require('~/assets/img/7MX.svg'),
+        img: require("~/assets/img/index-bg.jpg"),
+        url: "https://v.paixin.com",
+        title: "拍信-中国领先的正版图片交易平台",
+        titleImg: require("~/assets/img/7MX.svg"),
         titleImgHeight: 50,
-        content: '版权素材免费素材应有尽有',
-        button: '点此访问',
+        content: "版权素材免费素材应有尽有",
+        button: "点此访问",
         bgOpacity: 1
       },
       {
-        img: require('~/assets/img/8.jpg'),
-        url: '',
-        title: 'Eput品牌升级为7MX，震撼上线',
-        titleImg: require('~/assets/img/7MX.svg'),
+        img: require("~/assets/img/8.jpg"),
+        url: "",
+        title: "Eput品牌升级为7MX，震撼上线",
+        titleImg: require("~/assets/img/7MX.svg"),
         titleImgHeight: 50,
-        content: '编辑、分享、发现令人惊喜的照片并出售',
+        content: "编辑、分享、发现令人惊喜的照片并出售",
         bgOpacity: 1
-      }, {
-        img: require('~/assets/img/12.jpg'),
-        url: '',
-        title: '最好的照片，由你选择',
-        titleImg: require('~/assets/img/7MX.svg'),
+      },
+      {
+        img: require("~/assets/img/12.jpg"),
+        url: "",
+        title: "最好的照片，由你选择",
+        titleImg: require("~/assets/img/7MX.svg"),
         titleImgHeight: 50,
-        content: '获得灵感，分享你最好的照片，一起探寻创造难以置信的摄影艺术',
+        content: "获得灵感，分享你最好的照片，一起探寻创造难以置信的摄影艺术",
         bgOpacity: 1
-      }, {
-        img: require('~/assets/img/13.jpg'),
-        url: '',
-        title: '成为签约供稿人',
-        titleImg: require('~/assets/img/7MX.svg'),
+      },
+      {
+        img: require("~/assets/img/13.jpg"),
+        url: "",
+        title: "成为签约供稿人",
+        titleImg: require("~/assets/img/7MX.svg"),
         titleImgHeight: 50,
-        content: '自由创作，让您的创意迅速变现',
+        content: "自由创作，让您的创意迅速变现",
         bgOpacity: 1
-      }, {
-        img: require('~/assets/img/14.jpg'),
-        url: '',
-        title: '立即注册，开启摄影之旅',
-        titleImg: require('~/assets/img/7MX.svg'),
+      },
+      {
+        img: require("~/assets/img/14.jpg"),
+        url: "",
+        title: "立即注册，开启摄影之旅",
+        titleImg: require("~/assets/img/7MX.svg"),
         titleImgHeight: 50,
-        content: 'Edit, Share, And Discover Inspiring Photos',
+        content: "Edit, Share, And Discover Inspiring Photos",
         bgOpacity: 1
       }
     ],
     currentItem: 1,
     imgList: [],
-    line: '',
+    line: "",
     isLoading: false,
-    column1: ['摄影社区', '关于7MX', '加入我们', '意见反馈'],
-    column2: ['商业', '售卖图片', '市场合作', '&nbsp;'],
-    column3: ['社群', '微博', '公众号', '&nbsp;'],
+    column1: ["摄影社区", "关于7MX", "加入我们", "意见反馈"],
+    column2: ["商业", "售卖图片", "市场合作", "&nbsp;"],
+    column3: ["社群", "微博", "公众号", "&nbsp;"],
     showSearch: true
   }),
-  // created() {
-  //   this.fetchData()
-  // },
-async asyncData() {
-      // if (this.isLoading || this.line == 'end') {
-      //   return
-      // }
-      const imgList = []
-      const line = ''
-      let isLoading = true
-      const data = { type: '6' }
-      const params = { line: line, limit: '40' }
-      
+  async asyncData() {
 
-      if (1 === 1) {
-        const res = await apiFactory.getMediaApi().randomRecommend(data, params)
-
-        if (res.data.out == '1') {
-          imgList.push(...res.data.data)
+      const result = await apiFactory.getTagApi().getActivityList()
+      let res = result.data.data.filter(item => {
+        return item.id !== '285671'
+      })
+      const temp = []
+      res.forEach(item => {
+        if (item.close_time - new Date().getTime() / 1000 > 0) {
+          temp.push(item)
         }
-        line = res.data.line
-        setTimeout(() => {
-          isLoading = false
-        }, 500)
-        return{
-          imgList: imgList,
-          line: line,
-          isLoading: isLoading
-        }
+      })
+      res = temp.length >= 20 ? temp : res
+      if (res.length % 2 === 1) {
+        res.push(res.slice(0, 1)[0])
       }
+       const smallBannerList = res
 
-      // if (this.currentItem === 2) {
-      //   data.product = '1'
-      //   const res = await apiFactory.getPaixinApi().recommendList(data, params)
-      //   if (res.data.out == '1') {
-      //     imgList.push(...res.data.data)
-      //   }
-      //   line = res.data.line
-      //   setTimeout(() => {
-      //     isLoading = false
-      //   }, 500)
-      //    return{
-      //     imgList: imgList,
-      //     line: line,
-      //     isLoading: isLoading
-      //   }
-      // }
+    const res2 = await apiFactory.getCommonApi().categoryList({ type: '6', category_id: '1' })
+    const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
+    const obj = res2.data.data
+    const picList = []
+    ArrTemp.filter(item => {
+      obj.forEach(element => {
+        if (element['name'] === item) {
+          picList.push(element)
+        }
+      })
+      return true
+    })
 
-      // if (this.currentItem === 3) {
-      //   data.mode = 'desc'
-      //   const res = await apiFactory.getMediaApi().commonList(data, params)
-      //   if (res.data.out == '1') {
-      //     imgList.push(...res.data.data)
-      //   }
-      //   line = res.data.line
-      //   setTimeout(() => {
-      //     isLoading = false
-      //   }, 500)
-      //    return{
-      //     imgList: imgList,
-      //     line: line,
-      //     isLoading: isLoading
-      //   }
-      // }
-    },
+
+    return {
+        categoryList: picList,
+        smallBannerList: res
+      };
+  },
 
   methods: {
     onClickHot() {
       if (this.currentItem === 1 || this.isLoading) {
-        return
+        return;
       }
-      this.currentItem = 1
-      this.reload()
+      this.currentItem = 1;
+      this.reload();
     },
     onClickStore() {
       if (this.currentItem === 2 || this.isLoading) {
-        return
+        return;
       }
-      this.currentItem = 2
+      this.currentItem = 2;
 
-      this.reload()
+      this.reload();
     },
     onClickNew() {
       if (this.currentItem === 3 || this.isLoading) {
-        return
+        return;
       }
 
-      this.currentItem = 3
+      this.currentItem = 3;
 
-      this.reload()
+      this.reload();
     },
-    
+
     // afterResponse(res) {
     //   if (res.data.out == '1') {
     //     this.imgList.push(...res.data.data)
@@ -265,67 +229,62 @@ async asyncData() {
     //   }
     // },
 
-    
     reload() {
       if (this.isLoading) {
-        return
+        return;
       }
-      this.imgList = []
-      this.line = ''
+      this.imgList = [];
+      this.line = "";
       // this.fetchData()
     },
     getMoreData() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
-        return
+        this.$store.commit("isShowLoginDialog", true);
+        return;
       }
       // this.fetchData()
-      this.isLoading = true
+      this.isLoading = true;
     },
     setStyle(height, pageYOffset) {
-      const taopBar = document.getElementById('topbar')
+      const taopBar = document.getElementById("topbar");
       if (pageYOffset < 400) {
-        this.showSearch = false
-        taopBar.style.position = 'absolute'
-        taopBar.style.background = '#1a1a1a'
+        this.showSearch = false;
+        taopBar.style.position = "absolute";
+        taopBar.style.background = "#1a1a1a";
 
-        taopBar.style.opacity = '1'
+        taopBar.style.opacity = "1";
       } else if (pageYOffset > 400 && pageYOffset < height) {
-        taopBar.style.position = 'absolute'
-        this.showSearch = true
-        taopBar.style.opacity = '0'
+        taopBar.style.position = "absolute";
+        this.showSearch = true;
+        taopBar.style.opacity = "0";
       } else {
-        this.showSearch = true
-        taopBar.style.position = 'fixed'
-        let transparent = (pageYOffset - height) / 200
+        this.showSearch = true;
+        taopBar.style.position = "fixed";
+        let transparent = (pageYOffset - height) / 200;
         if (transparent > 1) {
-          transparent = 1
+          transparent = 1;
         }
 
-        taopBar.style.opacity = transparent
+        taopBar.style.opacity = transparent;
 
-        taopBar.style.background = 'rgba(26, 26, 26, ' + transparent + ')'
+        taopBar.style.background = "rgba(26, 26, 26, " + transparent + ")";
       }
     }
   },
   computed: {
-    ...mapGetters([
-      'isLogin',
-      'winPageYOffset',
-      'getMyLoading'
-    ]),
+    ...mapGetters(["isLogin", "winPageYOffset", "getMyLoading"]),
     isToPaixin() {
       if (this.currentItem == 2) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   },
   watch: {
-    'winPageYOffset': function(val) {
+    winPageYOffset: function(val) {
       // 当页面的滚动条滚动时,会执行这里的代码
-      this.setStyle(400, val)
+      this.setStyle(400, val);
     }
   },
   components: {
@@ -338,7 +297,7 @@ async asyncData() {
     hotBabel,
     cooperationFooter
   }
-}
+};
 </script>
 
 <style lang='scss' scoped>

@@ -9,7 +9,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
       // {lang: 'zh'}
     ],
     link: [
@@ -51,7 +51,7 @@ export default {
     // extend (config, ctx) {
     // }
 
-    extend (config, { isDev, isClient }) {
+    extend(config, { isDev, isClient }) {
       // if (isDev && isClient) {
       //   config.module.rules.push({
       //     enforce: 'pre',
@@ -64,7 +64,7 @@ export default {
   },
 
   router: {
-    middleware:'axiosMiddle'
-  },
+    middleware: 'axiosMiddle'
+  }
 
 }

@@ -7,16 +7,16 @@
       @click="showOptions"
     >
       <span class="selection-text">{{ text }}</span>
-      <span class="selection-red" v-if="isShowRed && this.$utilHelper.isEmptyObj(option)">有奖</span>
-      <div class="array" :class="{ 'array-rotate': isShowOptions }"></div>
+      <span v-if="isShowRed && this.$utilHelper.isEmptyObj(option)" class="selection-red">有奖</span>
+      <div class="array" :class="{ 'array-rotate': isShowOptions }" />
     </div>
 
     <transition name="options-fade">
-      <div class="options" v-if="isShowOptions" :style="optionsStyle">
+      <div v-if="isShowOptions" class="options" :style="optionsStyle">
         <div
           v-for="(item, index) in options"
-          @click="selected(item)"
           :key="index"
+          @click="selected(item)"
         >{{ item[optionKey] }}</div>
       </div>
     </transition>
@@ -25,12 +25,6 @@
 
 <script>
 export default {
-  data: () => ({
-    isShowOptions: false,
-    optionsStyle: {
-      width: '300px'
-    }
-  }),
   props: [
     'maxNum', // 下拉框装最多显示选项的数量
     'selectionWidth', // 选择器的宽度
@@ -42,9 +36,50 @@ export default {
     'isShowRed',
     'borderColor'
   ],
+  data: () => ({
+    isShowOptions: false,
+    optionsStyle: {
+      width: '300px'
+    }
+  }),
+  computed: {
+    text() {
+      if (!!this.options && !!this.option && Object.keys(this.option).length > 0) {
+        return this.option[this.optionKey]
+      }
+
+      if (this.placeText) {
+        return this.placeText
+      }
+
+      return '请选择'
+    },
+    selectionStyle() {
+      const style = {
+        width: '300px',
+        height: '45px',
+        'border-color': this.borderColor
+      }
+
+      if (this.selectionWidth) {
+        style.width = this.selectionWidth
+      }
+
+      if (this.selectionHeight) {
+        style.height = this.selectionHeight
+      }
+
+      return style
+    }
+  },
+  watch: {
+    'selectionWidth': function(val) {
+      this.optionsStyle.width = val + 'px'
+    }
+  },
   created() {
     if (this.selectionWidth) {
-      this.optionsStyle.width = this.selectionWidth + 'px';
+      this.optionsStyle.width = this.selectionWidth + 'px'
     }
   },
   methods: {
@@ -52,23 +87,23 @@ export default {
       this.isShowOptions = !this.isShowOptions
 
       if (!this.options) {
-        return;
+        return
       }
       if (this.options.length < 1) {
-        return;
+        return
       }
-      let length = this.options.length;
-      let h = 0;
-      let _maxNum = 7;
+      const length = this.options.length
+      let h = 0
+      let _maxNum = 7
       if (this.maxNum !== undefined) {
-        _maxNum = this.maxNum;
+        _maxNum = this.maxNum
       }
       if (length < _maxNum) {
-        h = 32 * length;
+        h = 32 * length
       } else {
-        h = 32 * _maxNum;
+        h = 32 * _maxNum
       }
-      this.optionsStyle.height = h + 'px';
+      this.optionsStyle.height = h + 'px'
     },
     selected(item) {
       if (item.id < 0) {
@@ -77,44 +112,9 @@ export default {
         return
       }
 
-      this.showOptions();
+      this.showOptions()
 
-      this.$emit('input', item);
-    }
-  },
-  computed: {
-    text() {
-      if (!!this.options && !!this.option && Object.keys(this.option).length > 0) {
-        return this.option[this.optionKey];
-      }
-
-      if (this.placeText) {
-        return this.placeText;
-      }
-
-      return '请选择';
-    },
-    selectionStyle() {
-      let style = {
-        width: '300px',
-        height: '45px',
-        'border-color': this.borderColor
-      }
-
-      if (this.selectionWidth) {
-        style.width = this.selectionWidth;
-      }
-
-      if (this.selectionHeight) {
-        style.height = this.selectionHeight;
-      }
-
-      return style;
-    }
-  },
-  watch: {
-    'selectionWidth': function (val) {
-      this.optionsStyle.width = val + 'px';
+      this.$emit('input', item)
     }
   }
 }

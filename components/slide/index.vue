@@ -1,77 +1,84 @@
 <template>
-    <div class="banner_wrap">
-      <div
-        :style="{
-          'transform' : `translate3d(${-100 / banners.length * bannerSlide.index}%, 0, 0)`,
-          'width' : `${100 * banners.length}%`,
-          'height' : bannerSlide.height,
-          'transition' : `transform ${bannerSlide.transition}ms ease`
-        }"
-        class='banner_slide'
-        :class="[bannerSlide.transition ? 'bannerTransition' : '']">
+  <div class="banner_wrap">
+    <div
+      :style="{
+        'transform' : `translate3d(${-100 / banners.length * bannerSlide.index}%, 0, 0)`,
+        'width' : `${100 * banners.length}%`,
+        'height' : bannerSlide.height,
+        'transition' : `transform ${bannerSlide.transition}ms ease`
+      }"
+      class="banner_slide"
+      :class="[bannerSlide.transition ? 'bannerTransition' : '']"
+    >
 
-        <div
-          @click="jump(item, 'banner')"
-          class="banner"
-          :style="{
-            'backgroundImage' : `url('${item.img}')`,
-            'width' : `${100 / banners.length}%`,
-            'cursor' : !!item.url&&!item.button ? 'pointer' : ''
-          }"
-          v-for='(item, index) in banners'
-          :key='index'>
-          <div class='mask' :style="{ 'opacity': (1 - item.bgOpacity) }"></div>
-          <div>
-            <div class="banner-title">
-              <img :src="item.titleImg"
-                :height="item.titleImgHeight ? item.titleImgHeight + 'px' : '70px'"
-                alt="">
-              <div class="banner-subtitle title-first">
-                {{item.title}}
-              </div>
-              <div class="banner-subtitle">
-                {{item.content}}
-              </div>
-              <div v-if='!!item.url&&!!item.button'
-                @click="jump(item, 'button')"
-                class="jump_button">
-                {{item.button}}
-              </div>
+      <div
+        v-for="(item, index) in banners"
+        :key="index"
+        class="banner"
+        :style="{
+          'backgroundImage' : `url('${item.img}')`,
+          'width' : `${100 / banners.length}%`,
+          'cursor' : !!item.url&&!item.button ? 'pointer' : ''
+        }"
+        @click="jump(item, 'banner')"
+      >
+        <div class="mask" :style="{ 'opacity': (1 - item.bgOpacity) }" />
+        <div>
+          <div class="banner-title">
+            <img
+              :src="item.titleImg"
+              :height="item.titleImgHeight ? item.titleImgHeight + 'px' : '70px'"
+              alt=""
+            >
+            <div class="banner-subtitle title-first">
+              {{ item.title }}
+            </div>
+            <div class="banner-subtitle">
+              {{ item.content }}
+            </div>
+            <div
+              v-if="!!item.url&&!!item.button"
+              class="jump_button"
+              @click="jump(item, 'button')"
+            >
+              {{ item.button }}
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="switch">
-        <div @click='switchLR(0)' class="switch_left">
-          <div></div>
-        </div>
-        <div @click='switchLR(1)' class="switch_right">
-          <div></div>
-        </div>
+    <div class="switch">
+      <div class="switch_left" @click="switchLR(0)">
+        <div />
       </div>
-
-      <div class="point_wrap">
-        <div
-          @click='switchBanner(i)'
-          v-for='(item, i) in banners'
-          :style="{ 'opacity' : i == bannerSlide.index ? '1' : '.4' }"
-          :key="i"
-          class="point">
-          {{item ? '' : ''}}
-        </div>
+      <div class="switch_right" @click="switchLR(1)">
+        <div />
       </div>
     </div>
+
+    <div class="point_wrap">
+      <div
+        v-for="(item, i) in banners"
+        :key="i"
+        :style="{ 'opacity' : i == bannerSlide.index ? '1' : '.4' }"
+        class="point"
+        @click="switchBanner(i)"
+      >
+        {{ item ? '' : '' }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
-  name: 'slide',
-  data: () => ({
+  name: 'Slide',
+  components: {
 
-  }),
+  },
   props: [
 
     /**
@@ -97,6 +104,21 @@ export default {
     // ]
     'banners'
   ],
+  data: () => ({
+
+  }),
+  computed: {
+
+  },
+  watch: {
+
+  },
+  created() {
+    this.bannerAnime()
+  },
+  mounted() {
+
+  },
   methods: {
     // 自动切换 & 重置自动切换动画
     bannerAnime() {
@@ -111,7 +133,7 @@ export default {
         this.bannerSlide.animating = true
         setTimeout(() => {
           this.bannerSlide.animating = false
-        }, this.bannerSlide.transition);
+        }, this.bannerSlide.transition)
       }, this.bannerSlide.speed)
     },
     // 按下面的点切换
@@ -136,7 +158,7 @@ export default {
       if (!item.url) return
       if (item.url == 'http://www.hotspringphoto.com') {
         try {
-          await apiFactory.getStatisticsApi().postBannerClickNum({id: '285671'})
+          await apiFactory.getStatisticsApi().postBannerClickNum({ id: '285671' })
         } catch (error) {
           console.log(error)
         }
@@ -144,21 +166,6 @@ export default {
       if (!!item.button && from == 'banner') return
       window.open(item.url, '_blank')
     }
-  },
-  created() {
-    this.bannerAnime()
-  },
-  mounted() {
-
-  },
-  watch: {
-
-  },
-  computed: {
-
-  },
-  components: {
-
   }
 }
 </script>
