@@ -102,7 +102,7 @@ export default {
   //   this.curentClick(this.isShowBanner)
   // },
   async created() {
-    this.getImgList()
+    // this.getImgList()
     this.getScreen() // 获取轮播图显示的宽度
     this.curentClick(this.isShowBanner)
   },
