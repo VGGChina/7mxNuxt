@@ -93,11 +93,11 @@ export default {
       }
     },
     go(index) {
-      if (index == 1) {
+      if (index === 1) {
         this.$router.push({ path: '/activity/286052/3/1' })
-      } else if (index == 2) {
+      } else if (index === 2) {
         this.$router.push({ path: '/activity/285880/3/1' })
-      } else if (index == 3) {
+      } else if (index === 3) {
         window.location.href = 'https://v.paixin.com/'
       }
     }

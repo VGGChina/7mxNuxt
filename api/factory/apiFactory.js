@@ -15,6 +15,7 @@ class ApiFactory {
     this.tagApi = null
     this.paixinApi = null
     this.statisticsApi = null
+    this.baseURL = 'https://api.7mx.com/'
   }
 
   getUserApi() {

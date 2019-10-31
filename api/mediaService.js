@@ -54,7 +54,7 @@ export default class mediaService {
   }
 
   randomCategory(data, params) {
-    const url = '/media/random_in_category_list'
+    const url = 'https://api.7mx.com/media/random_in_category_list'
     return axios7mx(url, data, params)
   }
 
@@ -64,7 +64,7 @@ export default class mediaService {
   }
 
   recommendCategory(data, params) {
-    const url = '/media/category_recommend_list'
+    const url = 'https://api.7mx.com/media/category_recommend_list'
     return axios7mx(url, data, params)
   }
 

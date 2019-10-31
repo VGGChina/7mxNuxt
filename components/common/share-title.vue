@@ -46,11 +46,11 @@ export default {
   methods: {
     chooseType(index) {
       this.activeIndex = index
-      if (this.identity == '1') {
+      if (this.identity === 1) {
         this.$bus.emit('choosephotography', index)
-      } else if (this.identity == '3') {
+      } else if (this.identity === 3) {
         this.$bus.emit('choosepicture', index)
-      } else if (this.identity == '2') {
+      } else if (this.identity === 2) {
         this.$bus.emit('choosebabel', index)
       }
     }

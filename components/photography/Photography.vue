@@ -1,69 +1,76 @@
 <template>
   <div class="photeography_container">
-    <sharetitle :title="title" :categoryList="categoryList" :identity="1"></sharetitle>
+    <sharetitle :title="title" :category-list="categoryList" :identity="1" />
     <div class="content">
       <div
-        class="content_left"
         v-for="item in firstAvatar"
         :key="item.id"
+        class="content_left"
         @click.stop="goAvatarDetai(item.name)"
         @mouseenter="contentMouseenter(1000000)"
         @mouseleave="contentMouseLeave"
       >
-        <img :src="item.avatar" alt />
-        <h3>{{item.nick}}</h3>
+        <img :src="item.avatar" alt>
+        <h3>{{ item.nick }}</h3>
         <p>
-          <span>{{item.fan_num}}</span>粉丝
-          <span>{{100 + item.fan_num * 100 + item.media_liked_num*10}}</span>人气值
+          <span>{{ item.fan_num }}</span>粉丝
+          <span>{{ 100 + item.fan_num * 100 + item.media_liked_num*10 }}</span>人气值
         </p>
-        <!-- v-if="isHoverUser && currentHoverUser == 1000000" -->
         <avatar-dialog
           v-if="isHoverUser && currentHoverUser == 1000000"
           class="imgWarterfall-imgItem-avatarDialog"
-          :userData="item"
-        ></avatar-dialog>
+          :user-data="item"
+        />
       </div>
       <div class="content_right">
         <div
-          class="photo_item"
           v-for="(item,index) in avatarList"
           :key="item.id"
+          class="photo_item"
           @click.stop="goAvatarDetai(item.name)"
           @mouseenter="contentMouseenter(index)"
           @mouseleave="contentMouseLeave(index)"
         >
-          <img :src="item.avatar" alt class="avatar" />
-          <h3>{{item.nick}}</h3>
+          <img :src="item.avatar" alt class="avatar">
+          <h3>{{ item.nick }}</h3>
           <p>
-            <span>{{item.fan_num}}</span>粉丝
-            <span>{{100 + (item.fan_num * 100)*1 + item.media_liked_num*10}}</span>人气值
+            <span>{{ item.fan_num }}</span>粉丝
+            <span>{{ 100 + (item.fan_num * 100)*1 + item.media_liked_num*10 }}</span>人气值
           </p>
           <avatar-dialog
             v-if="isHoverUser && index == currentHoverUser"
             class="imgWarterfall-imgItem-avatarDialog"
-            :userData="item"
-          ></avatar-dialog>
+            :user-data="item"
+          />
         </div>
       </div>
     </div>
-    <morecategory :moreInfo="moreInfo" :moreText="moreText"></morecategory>
+    <morecategory :more-info="moreInfo" :more-text="moreText" />
   </div>
 </template>
 
 <script>
-import sharetitle from '~/components/common/share-title.vue';
+import sharetitle from '~/components/common/share-title.vue'
 import morecategory from '~/components/common/category_more.vue'
-import getFollow from '~/pages/friends/index'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 import apiFactory from '~/api/factory/apiFactory.js'
-// import { clearTimeout } from 'timers';
 
 export default {
   name: '',
+  components: {
+    sharetitle,
+    morecategory,
+    AvatarDialog
+  },
+  props: {
+    categoryList: {
+      type: Array,
+      required: true
+    }
+  },
   data: () => ({
     title: '推荐摄影师',
     moreText: '更多摄影师',
-    categoryList: [],
     moreInfo: 'ranking',
     avatarList: [],
     firstAvatar: [],
@@ -74,6 +81,15 @@ export default {
     mouseLeaveTime: 0,
     intervalTime: null
   }),
+  computed: {},
+  watch: {},
+  created() {
+    this.getAvatarList(0)
+    this.$bus.on('choosephotography', index => {
+      this.getAvatarList(index)
+    })
+  },
+  mounted() { },
   methods: {
     // 鼠标进入这个item
     contentMouseenter(index) {
@@ -81,7 +97,7 @@ export default {
       this.mouseEnterTime = new Date().getTime()
       this.intervalTime = setTimeout(() => {
         this.isHoverUser = true
-      }, 200);
+      }, 200)
     },
     // 鼠标离开这个item
     contentMouseLeave(index) {
@@ -93,32 +109,17 @@ export default {
       this.currentHoverUser = 1000000
     },
     async getAvatarList(index) {
-      let rqBody = {}
-      if (index == 0) {
+      const rqBody = {}
+      if (index === 0) {
         rqBody.category_id = 190
       } else {
         rqBody.category_id = this.categoryList[index].id
       }
-      let result = await apiFactory.getUserApi().recommendUser(rqBody, { line: '1,0,0' })
-      let res = result.data.data
+      const result = await apiFactory.getUserApi().recommendUser(rqBody, { line: '1,0,0' })
+      const res = result.data.data
       if (res && res.length > 0) {
         this.firstAvatar = res.splice(0, 1)
         this.avatarList = res.splice(0, 6)
-      }
-    },
-    async fetchphotographyCategory() {
-      let res = await apiFactory
-        .getCommonApi()
-        .categoryList({ type: '16' })
-      let tempArr = [];
-      if (res.data.data.length > 0) {
-        for (let item of res.data.data) {
-          let temp = {};
-          temp.id = item.id;
-          temp.name = item.name;
-          tempArr.push(temp);
-        }
-        this.categoryList = tempArr
       }
     },
     goAvatarDetai(path) {
@@ -127,31 +128,8 @@ export default {
       }
       this.$router.push({ path: `/${path}` })
     }
-    // isHoverUserChange(index) {
-
-    // },
-    // isHoverUserChangeLeave(index) {
-    //   // this.currentHoverUser = 1000000
-    //   // this.isHoverUser = false
-    // }
-  },
-  created() {
-    this.fetchphotographyCategory();
-    this.getAvatarList(0);
-    this.$bus.on('choosephotography', index => {
-      this.getAvatarList(index);
-    });
-  },
-  mounted() { },
-  watch: {},
-  computed: {},
-  components: {
-    sharetitle,
-    morecategory,
-    getFollow,
-    AvatarDialog
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>

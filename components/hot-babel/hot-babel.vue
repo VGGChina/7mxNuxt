@@ -1,78 +1,56 @@
 <template>
   <div class="hot-babel-container">
     <sharetitle :title="title" :category-list="categoryList" :identity="2" />
-    <!-- <ul class="content">
-      <li v-for="item in babelList" :key="item.id">
+    <ul class="content">
+      <li v-for="item in hotBabels[babelIndex]" :key="item.id">
         <a :href="goDetai(item.id)">
           <img :src="item.image" alt="" class="imgItem">
         </a>
       </li>
-    </ul> -->
-    <!-- <caregeorymore :more-info="moreInfo" :more-text="moreText" :istype="&quot;ishotimg&quot;" /> -->
+    </ul>
+
+    <caregeorymore more-info="ranking" more-text="更多图片" istype="ishotimg" />
   </div>
 </template>
 
 <script>
-// import apiFactory from '~/api/factory/apiFactory.js'
 import sharetitle from '../common/share-title'
-// import caregeorymore from '../common/category_more'
-// import { setTimeout } from 'timers'
+import caregeorymore from '../common/category_more'
+
 export default {
   name: '',
   components: {
-    sharetitle
-    // caregeorymore
+    sharetitle,
+    caregeorymore
   },
-  props: ['title', 'categoryList'],
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    categoryList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    hotBabels: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data: () => ({
-    moreText: '更多图片',
-    moreInfo: 'ranking',
-    isLoading: false,
-    babelList: [
-      { id: 1 },
-      { id: 2 },
-      { id: 3 },
-      { id: 4 },
-      { id: 5 },
-      { id: 6 },
-      { id: 7 },
-      { id: 8 }
-    ]
+    babelIndex: 0
   }),
-  computed: {},
-  // watch: {
-  //   'categoryList': function(val) {
-  //     this.getHotTags(0)
-  //   }
-  // },
 
-  async created() {
-    // console.log('created')
-    // const res = await axios.get('https://api.myjson.com/bins/ucsrc')
-    // console.log(res)
-    // this.fetchpictureCategory()
-    // this.$bus.on('choosebabel', index => {
-    //   this.getHotTags(index)
-    // })
+  created() {
+    this.$bus.on('choosebabel', index => {
+      this.babelIndex = index
+    })
   },
   methods: {
-    // async getHotTags(index) {
-    //   this.babelList = []
-    //   this.isLoading = true
-    //   if (this.categoryList.length > 0) {
-    //     window.localStorage.setItem('crrentType', JSON.stringify(this.categoryList[index]))
-    //     let res = await apiFactory.getMediaApi().recommendCategory({ category_id: this.categoryList[index].id, type: 6 }, { line: '1,0,0' })
-    //     res = res.data.data
-    //     res.forEach(item => {
-    //       item.image += '?imageView2/2/w/632/h/389'
-    //     })
-    //     setTimeout(() => {
-    //       this.babelList = res.splice(0, 8)
-    //       this.isLoading = false
-    //     }, 200)
-    //   }
-    // },
-
     // 点击跳转
     goDetai(id) {
       return `/photo/${id}`

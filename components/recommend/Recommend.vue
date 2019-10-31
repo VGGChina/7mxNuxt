@@ -165,7 +165,7 @@ export default {
       if (res.length % 2 === 1) {
         res.push(res.slice(0, 1)[0])
       }
-      this.smallBannerList = res
+      // this.smallBannerList = res
       this.isshowArrow = true
     },
 

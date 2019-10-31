@@ -132,7 +132,8 @@ export default class userService {
   }
 
   recommendUser(data, params) {
-    const url = 'user/recommend_list'
+    // const url = `${axios7mx.baseURL}user/recommend_list`
+    const url = `https://api.7mx.com/user/recommend_list`
     return axios7mx(url, data, params)
   }
 

@@ -1,11 +1,11 @@
 <template>
   <div class="index-container">
     <!-- banner展示 -->
-    <recommend :small-banner-list="smallBannerList" />
+    <!-- <recommend :small-banner-list="smallBannerList" /> -->
     <!-- 热门标签 -->
-    <hotBabel title="热门标签" :category-list="categoryList" />
+    <hotBabel title="热门标签" :category-list="categoryList" :hot-babels="hotBabels" />
     <!-- 推荐摄影师 -->
-    <!-- <photography /> -->
+    <photography :category-list="photography_categoryList" />
     <!-- 热门图片 -->
     <div>
       <!-- <h3 class="hot-img-title">热门图片</h3> -->
@@ -29,9 +29,9 @@
     >{{ isLoading ? '正在加载...' : '更多图片' }}</div>-->
 
     <!--更多合作 -->
-    <!-- <cooperation-footer /> -->
+    <cooperation-footer />
     <!-- 页脚 -->
-    <!-- <index-footer /> -->
+    <index-footer />
   </div>
 </template>
 
@@ -44,7 +44,7 @@ import slide from '~/components/slide/index'
 import IndexFooter from '~/components/footer/IndexFooter'
 import Category from '~/components/category/Category'
 import recommend from '~/components/recommend/recommend.vue'
-// import photography from '~/components/photography/photography.vue'
+import photography from '~/components/photography/photography.vue'
 import hotBabel from '~/components/hot-babel/hot-babel'
 import cooperationFooter from '~/components/cooperation/footer-cooperation'
 import { setTimeout } from 'timers'
@@ -129,6 +129,7 @@ export default {
     showSearch: true
   }),
   async asyncData() {
+    // recommend
     const result = await apiFactory.getTagApi().getActivityList()
     let res = result.data.data.filter(item => {
       return item.id !== '285671'
@@ -158,9 +159,40 @@ export default {
       return true
     })
 
+    // hot babels
+    const hotBabels = []
+    for (const i in picList) {
+      let babelList = []
+      if (picList.length > 0) {
+      // window.localStorage.setItem('crrentType', JSON.stringify(this.categoryList[index]))
+        let res = await apiFactory.getMediaApi().recommendCategory({ category_id: picList[i].id, type: 6 }, { line: '1,0,0' })
+        res = res.data.data
+        res.forEach(item => {
+          item.image += '?imageView2/2/w/632/h/389'
+        })
+        babelList = res.splice(0, 8)
+      }
+
+      hotBabels.push(babelList)
+    }
+
+    // photography-categoryList
+    const res_pc = await apiFactory.getCommonApi().categoryList({ type: '16' })
+    const photography_categoryList = []
+    if (res_pc.data.data.length > 0) {
+      for (const item of res_pc.data.data) {
+        const temp = {}
+        temp.id = item.id
+        temp.name = item.name
+        photography_categoryList.push(temp)
+      }
+    }
+
     return {
       categoryList: picList,
-      smallBannerList: smallBannerList
+      smallBannerList: smallBannerList,
+      hotBabels: hotBabels,
+      photography_categoryList: photography_categoryList
     }
   },
 
@@ -291,7 +323,7 @@ export default {
     Category,
     IndexFooter,
     recommend,
-    // photography,
+    photography,
     hotBabel,
     cooperationFooter
   }

@@ -95,7 +95,7 @@ export const axiosPaixin = (url, data = {}, params = {}) => {
     responseType: 'text'
   }
 
-  config.url = url
+  config.url = _7mxBaseURL
   config.data = deleteEmptyProperty(data)
   config.params = deleteEmptyProperty(params)
 
