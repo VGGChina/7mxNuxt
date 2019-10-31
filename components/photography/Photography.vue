@@ -3,13 +3,13 @@
     <sharetitle :title="title" :category-list="categoryList" :identity="1" />
     <div class="content">
       <div
-        v-for="item in firstAvatar"
+        v-for="item in avatarList[avatarIndex].firstAvatar"
         :key="item.id"
         class="content_left"
-        @click.stop="goAvatarDetai(item.name)"
-        @mouseenter="contentMouseenter(1000000)"
-        @mouseleave="contentMouseLeave"
       >
+        <!-- @click.stop="goAvatarDetai(item.name)"
+        @mouseenter="contentMouseenter(1000000)"
+        @mouseleave="contentMouseLeave" -->
         <img :src="item.avatar" alt>
         <h3>{{ item.nick }}</h3>
         <p>
@@ -24,13 +24,13 @@
       </div>
       <div class="content_right">
         <div
-          v-for="(item,index) in avatarList"
+          v-for="(item,index) in avatarList[avatarIndex].avatarList"
           :key="item.id"
           class="photo_item"
-          @click.stop="goAvatarDetai(item.name)"
-          @mouseenter="contentMouseenter(index)"
-          @mouseleave="contentMouseLeave(index)"
         >
+          <!-- @click.stop="goAvatarDetai(item.name)"
+          @mouseenter="contentMouseenter(index)"
+          @mouseleave="contentMouseLeave(index)" -->
           <img :src="item.avatar" alt class="avatar">
           <h3>{{ item.nick }}</h3>
           <p>
@@ -66,27 +66,30 @@ export default {
     categoryList: {
       type: Array,
       required: true
+    },
+    avatarList: {
+      type: Array,
+      required: true
     }
   },
   data: () => ({
     title: '推荐摄影师',
     moreText: '更多摄影师',
     moreInfo: 'ranking',
-    avatarList: [],
     firstAvatar: [],
     line: '',
     isHoverUser: false,
     currentHoverUser: 1000000,
     mouseEnterTime: 0,
     mouseLeaveTime: 0,
-    intervalTime: null
+    intervalTime: null,
+    avatarIndex: 0
   }),
   computed: {},
   watch: {},
   created() {
-    this.getAvatarList(0)
     this.$bus.on('choosephotography', index => {
-      this.getAvatarList(index)
+      this.avatarIndex = index
     })
   },
   mounted() { },
@@ -107,20 +110,6 @@ export default {
       }
       this.isHoverUser = false
       this.currentHoverUser = 1000000
-    },
-    async getAvatarList(index) {
-      const rqBody = {}
-      if (index === 0) {
-        rqBody.category_id = 190
-      } else {
-        rqBody.category_id = this.categoryList[index].id
-      }
-      const result = await apiFactory.getUserApi().recommendUser(rqBody, { line: '1,0,0' })
-      const res = result.data.data
-      if (res && res.length > 0) {
-        this.firstAvatar = res.splice(0, 1)
-        this.avatarList = res.splice(0, 6)
-      }
     },
     goAvatarDetai(path) {
       if (!path) {

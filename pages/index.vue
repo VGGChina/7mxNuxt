@@ -5,7 +5,7 @@
     <!-- 热门标签 -->
     <hotBabel title="热门标签" :category-list="categoryList" :hot-babels="hotBabels" />
     <!-- 推荐摄影师 -->
-    <photography :category-list="photography_categoryList" />
+    <photography :category-list="photography_categoryList" :avatar-list="avatarList" />
     <!-- 热门图片 -->
     <div>
       <!-- <h3 class="hot-img-title">热门图片</h3> -->
@@ -188,11 +188,31 @@ export default {
       }
     }
 
+    // AvatarList
+    // 全部
+    const avatarList = []
+
+    for (const pcate of photography_categoryList) {
+      const rqBody = {
+        category_id: pcate.id
+      }
+      const adv0 = await apiFactory.getUserApi().recommendUser(rqBody, { line: '1,0,0' })
+      const tmpData = adv0.data.data
+      if (tmpData && tmpData.length > 0) {
+        const tmp = {
+          firstAvatar: tmpData.splice(0, 1),
+          avatarList: tmpData.splice(0, 6)
+        }
+        avatarList.push(tmp)
+      }
+    }
+
     return {
       categoryList: picList,
       smallBannerList: smallBannerList,
       hotBabels: hotBabels,
-      photography_categoryList: photography_categoryList
+      photography_categoryList: photography_categoryList,
+      avatarList: avatarList
     }
   },
 

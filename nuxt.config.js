@@ -30,6 +30,7 @@ export default {
   */
   plugins: [
     '~/plugins/bus'
+    // { src: '~/plugins/axios.js', ssr: true }
     // '~/plugins/axios'
   ],
   /*
@@ -40,25 +41,26 @@ export default {
   /*
   ** Nuxt.js modules
   */
-  modules: [
-    // '@nuxtjs/axios',
-    // '@nuxtjs/proxy'
-  ],
+  // modules: [
+  //   '@nuxtjs/axios',
+  //   '@nuxtjs/proxy'
+  // ],
 
   // axios: {
   //   proxy: true
+  //   // prefix: '/api', // baseURL
+  //   // credentials: true
   // },
-
-  // 接口代理配置项
-  // proxy: [
-  //   [
-  //     '/', {
-  //       target: 'https://api.7mx.com/',
-  //       secure: false, // 如果是https接口，需要配置这个参数
-  //       changeOrigin: true // 如果接口跨域，需要进行这个参数配置
+  // proxy: {
+  //   '/api': {
+  //     target: 'https://api.7mx.com/', // 代理地址
+  //     // changeOrigin: true,
+  //     pathRewrite: {
+  //       '^/api': '' // 将 /api 替换掉
   //     }
-  //   ]
-  // ],
+
+  //   }
+  // },
   /*
   ** Build configuration
   */
