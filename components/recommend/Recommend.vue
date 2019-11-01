@@ -103,8 +103,8 @@ export default {
   // },
   async created() {
     // this.getImgList()
-    this.getScreen() // 获取轮播图显示的宽度
-    this.curentClick(this.isShowBanner)
+    // this.getScreen() // 获取轮播图显示的宽度
+    // this.curentClick(this.isShowBanner)
   },
   methods: {
     slider(direction) {

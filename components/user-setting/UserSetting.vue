@@ -1,90 +1,90 @@
 <template>
   <div class="user-setting">
     <transition name="cover-fade">
-      <div class="setting-cover" @click="cancel" v-if="isShowSettingDialog"></div>
+      <div v-if="isShowSettingDialog" class="setting-cover" @click="cancel" />
     </transition>
 
     <transition name="container-fade">
-      <div class="setting-container" v-if="isShowSettingDialog">
+      <div v-if="isShowSettingDialog" class="setting-container">
         <div class="options">
           <span
             v-for="(item, index) in options"
             :key="item"
-            @click="selected(index)"
             :class="{ 'option-selected': selectedOptionIndex === index }"
+            @click="selected(index)"
           >{{ item }}</span>
         </div>
 
-        <div class="option" v-show="selectedOptionIndex === 0">
+        <div v-show="selectedOptionIndex === 0" class="option">
           <div
             id="pick-avatar-container"
             class="avatar"
             :style="{
               'background-image': loginUser.avatar
-              ? 'url(' + $utilHelper.getCompressionUrl(loginUser.avatar, 300, 300) + ')'
-              : 'url(' + require('~/assets/img/avatar-default.svg') + ')'
+                ? 'url(' + $utilHelper.getCompressionUrl(loginUser.avatar, 300, 300) + ')'
+                : 'url(' + require('~/assets/img/avatar-default.svg') + ')'
             }"
           >
-            <div class="avatar-cover" id="pick-avatar">
+            <div id="pick-avatar" class="avatar-cover">
               <div
                 class="camera"
                 :style="{
                   'background-image': 'url(' + require('./img/camera.svg') + ')'
                 }"
-              ></div>
+              />
             </div>
           </div>
 
           <input
+            v-model="nick"
             type="text"
             autocomplete="off"
-            v-model="nick"
             :placeholder="loginUser.nick == '' ? '昵称' : loginUser.nick"
           >
 
           <textarea
+            v-model="about"
             type="text"
             autocomplete="off"
-            v-model="about"
             :placeholder="loginUser.user_data.about == '' ? '简介' : loginUser.user_data.about"
-          ></textarea>
+          />
         </div>
 
-        <div class="option" v-show="selectedOptionIndex === 1">
+        <div v-show="selectedOptionIndex === 1" class="option">
           <div class="domain-name">7mx.com/{{ loginUser.name }}</div>
 
           <div class="phone-input-container">
             <input
+              v-model="phone"
               :placeholder="loginUser.phone ? loginUser.phone : '绑定手机号'"
               type="text"
-              v-model="phone"
             >
 
-            <span @click="getCode" v-if="!loginUser.phone || phone">{{ timeLeft }}</span>
+            <span v-if="!loginUser.phone || phone" @click="getCode">{{ timeLeft }}</span>
           </div>
 
-          <input v-if="!loginUser.phone || phone" class="mt14" placeholder="验证码" v-model="smcode">
+          <input v-if="!loginUser.phone || phone" v-model="smcode" class="mt14" placeholder="验证码">
         </div>
 
-        <div class="option" v-show="selectedOptionIndex === 2">
+        <div v-show="selectedOptionIndex === 2" class="option">
           <input
+            v-model="oldPassword"
             type="password"
             :class="{ 'border-red': oldPassword ==='' && commitCheak} "
-            v-model="oldPassword"
             placeholder="原密码"
           >
 
           <input
+            v-model="newPassword"
             type="password"
             :class="{ 'border-red': newPassword ==='' && commitCheak} "
-            v-model="newPassword"
             placeholder="新密码"
           >
 
           <input
+            v-model="passwordRepeat"
             type="password"
             :class="{ 'border-red': passwordRepeat ==='' && commitCheak} "
-            v-model="passwordRepeat"
             placeholder="重复新密码"
           >
         </div>
@@ -98,7 +98,7 @@
 <script>
 /* global QiniuJsSDK */
 import { mapGetters } from 'vuex'
-import getUptoken from '~/service/uptokenService';
+import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
 import apiFactory from '~/api/factory/apiFactory.js'
 
@@ -128,7 +128,18 @@ export default {
       },
       time: 0,
       isTimer: false
-    };
+    }
+  },
+  watch: {
+    'isShowSettingDialog': function(val, oldVal) {
+      if (val) {
+        this.initQiNiu()
+      }
+    }
+  },
+  mounted() {
+    this.nick = this.loginUser.nick
+    // this.about = this.loginUser.user_data.about
   },
   methods: {
     cancel() {
@@ -404,27 +415,16 @@ export default {
       });
     }
   },
-  mounted() {
-    this.nick = this.loginUser.nick
-    // this.about = this.loginUser.user_data.about
-  },
-  watch: {
-    'isShowSettingDialog': function (val, oldVal) {
-      if (val) {
-        this.initQiNiu();
-      }
-    }
-  },
   computed: {
     ...mapGetters([
       'isShowSettingDialog',
       'loginUser'
     ]),
     timeLeft() {
-      return this.time > 0 ? this.time + 's后重新获取' : '发送验证码';
+      return this.time > 0 ? this.time + 's后重新获取' : '发送验证码'
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

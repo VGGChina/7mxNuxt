@@ -28,13 +28,13 @@ const actions = {
 // mutations
 const mutations = {
   winPageYOffset(state, y) {
-    state.winPageYOffset = y;
+    state.winPageYOffset = y
   },
   topBarOpacity(state, opacity) {
-    state.topBarOpacity = opacity;
+    state.topBarOpacity = opacity
   },
   onresizeFlag(state, date) {
-    state.onresizeFlag = date;
+    state.onresizeFlag = date
   }
 }
 

@@ -1,8 +1,52 @@
 <template>
   <div>
+    <!-- <login-register />
+    <upload />
+    <upload-paixin />
+    <user-setting />
+    <improve-info />
+    <needed /> -->
+    <!-- <topbar /> -->
+    <!-- <help /> -->
+    <!-- <popup-album /> -->
+    <back-top />
+    <contact />
+    <confirmation-dialog />
     <nuxt />
   </div>
 </template>
+<script>
+// import { mapGetters } from 'vuex'
+import Topbar from '~/components/topbar/Topbar'
+import LoginRegister from '~/components/login-register/LoginRegister'
+import Upload from '~/components/upload/Upload'
+import UploadPaixin from '~/components/upload-paixin/UploadPaixin'
+import UserSetting from '~/components/user-setting/UserSetting'
+import ImproveInfo from '~/components/improve-info/ImproveInfo'
+// import PopupAlbum from '~/components/popup-album/index'
+// import Help from '~/components/help/index'
+import Needed from '~/components/needed/Needed'
+import BackTop from '~/components/back-top/BackTop'
+import Contact from '~/components/contact/Contact'
+import ConfirmationDialog from '~/components/confirmation-dialog/index'
+
+export default {
+  components: {
+    Topbar,
+    LoginRegister,
+    Upload,
+    UploadPaixin,
+    UserSetting,
+    ImproveInfo,
+    // PopupAlbum,
+    // Help,
+    Needed,
+    BackTop,
+    Contact,
+    ConfirmationDialog
+  }
+}
+</script>
 
 <style>
 html {

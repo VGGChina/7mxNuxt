@@ -69,7 +69,7 @@ export default class mediaService {
   }
 
   originList(data, params) {
-    const url = '/media/origin_list'
+    const url = 'https://api.7mx.com/media/origin_list'
     return axios7mx(url, data, params)
   }
 

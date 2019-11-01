@@ -1,47 +1,78 @@
 <template>
-  <div @click.stop='noUse'
+  <div
     class="qq_contact"
-    :class='{up: ifmove}'>
+    :class="{up: ifmove}"
+    @click.stop="noUse"
+  >
     <div class="face" @click="contact_menu()" @mouseenter="anime_smile(true)" @mouseleave="anime_smile(false)">
       <!-- 绿色背景 -->
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 353.7 353.9"
-        style="enable-background:new 0 0 353.7 353.9;" xml:space="preserve">
-        <path class="st10" d="M176.9,0C79.2,0,0.1,79.1,0,176.8s79,177,176.6,177.1c97.9,0.1,177.1-79.1,177.1-177C353.7,79.2,274.5,0,176.9,0z"/>
+      <svg
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 353.7 353.9"
+        style="enable-background:new 0 0 353.7 353.9;"
+        xml:space="preserve"
+      >
+        <path class="st10" d="M176.9,0C79.2,0,0.1,79.1,0,176.8s79,177,176.6,177.1c97.9,0.1,177.1-79.1,177.1-177C353.7,79.2,274.5,0,176.9,0z" />
       </svg>
       <!-- 笑脸 -->
-      <div class="face_wrap" v-bind:class="{face_wrap_left:showTextTip,st11_show:!show_contact_menu,st11_hide:show_contact_menu}" ref="st11">
-        <svg version="1.1" id="st11" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-          viewBox="0 0 353.7 355.3" xml:space="preserve">
-          <path class="st11" d="M89.1,244.8c4.1,11.3,13.7,18,25.9,18c36.7,0,73.3,0,110.1,0c2.5,0,4.5,0.6,6.3,2.4c6.3,6.1,12.8,12.1,19.3,18.1
+      <div ref="st11" class="face_wrap" :class="{face_wrap_left:showTextTip,st11_show:!show_contact_menu,st11_hide:show_contact_menu}">
+        <svg
+          id="st11"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px"
+          y="0px"
+          viewBox="0 0 353.7 355.3"
+          xml:space="preserve"
+        >
+          <path
+            class="st11"
+            d="M89.1,244.8c4.1,11.3,13.7,18,25.9,18c36.7,0,73.3,0,110.1,0c2.5,0,4.5,0.6,6.3,2.4c6.3,6.1,12.8,12.1,19.3,18.1
             c1.5,1.4,3.1,2.7,5.3,3c6.1,0.8,10.4-3,10.4-9.6c0-28.2,0-56.1,0-84.1c0-27.1,0-54.1,0-81.1c0-16.5-11.1-27.6-27.5-27.6
             c-41.1,0-82.2,0-123.5,0c-16.4,0-27.6,11.2-27.6,27.6c-0.1,41.1,0,82.2,0,123.5C87.7,238.3,88,241.6,89.1,244.8z M123.6,194.6
             c0.8-2.7,2.6-4.6,5.4-5.2c3.1-0.7,5.6,0.4,7.5,2.9c6.8,8.4,15.3,14.5,25.8,17.3c21.3,5.6,39.3,0,53.9-16.5c1.5-1.7,2.9-3.6,5.3-4
             c3.2-0.5,6,0.2,7.7,3.2c1.8,3,1.6,6-0.6,8.7c-6.8,8.7-15.3,15.4-25.4,19.9c-8.3,3.7-17.1,5.7-26.5,5.5c-20.6-0.3-37.4-8.2-50.7-23.9
-            C124.1,200.2,122.7,197.8,123.6,194.6z" />
-          <path v-show="!blink" class="eye" d="M198.9,141.4c0.2-6,4.8-10.6,10.7-10.7c6-0.1,10.9,4.5,11.3,10.6c0.1,2.6,0,5.2,0,8.6c-0.3,2.8,0.6,6.4-0.7,9.9
+            C124.1,200.2,122.7,197.8,123.6,194.6z"
+          />
+          <path
+            v-show="!blink"
+            class="eye"
+            d="M198.9,141.4c0.2-6,4.8-10.6,10.7-10.7c6-0.1,10.9,4.5,11.3,10.6c0.1,2.6,0,5.2,0,8.6c-0.3,2.8,0.6,6.4-0.7,9.9
             c-1.9,5.2-6.6,8.2-12,7.4c-5.1-0.7-9.1-5-9.3-10.3C198.7,151.8,198.7,146.5,198.9,141.4z M133,140.9c0.3-6,5.4-10.3,11.4-10
             c5.8,0.3,10.2,4.7,10.4,10.7c0.1,2.5,0,5.1,0,7.8c0,2.4,0.1,4.8,0,7.3c-0.2,6-4.7,10.5-10.3,10.8c-6,0.3-11.1-4-11.4-10
-            C132.7,151.8,132.7,146.4,133,140.9z" />
-          <path v-show="blink" class="eye" d="M217.5,146c6,0.2,10.6,3.9,10.7,8.8c0.1,4.9-4.5,9-10.6,9.3c-2.6,0.1-5.2,0-8.6,0c-2.8-0.2-6.4,0.5-9.9-0.6
+            C132.7,151.8,132.7,146.4,133,140.9z"
+          />
+          <path
+            v-show="blink"
+            class="eye"
+            d="M217.5,146c6,0.2,10.6,3.9,10.7,8.8c0.1,4.9-4.5,9-10.6,9.3c-2.6,0.1-5.2,0-8.6,0c-2.8-0.2-6.4,0.5-9.9-0.6
             c-5.2-1.6-8.2-5.4-7.4-9.9c0.7-4.2,5-7.5,10.3-7.6C207.1,145.8,212.4,145.8,217.5,146z M152.1,146.3c6,0.2,10.3,4.4,10,9.4
             c-0.3,4.8-4.7,8.4-10.7,8.5c-2.5,0.1-5.1,0-7.8,0c-2.4,0-4.8,0.1-7.3,0c-6-0.2-10.5-3.9-10.8-8.5c-0.3-4.9,4-9.1,10-9.4
-            C141.2,146,146.6,146,152.1,146.3z" />
+            C141.2,146,146.6,146,152.1,146.3z"
+          />
         </svg>
       </div>
-      <div class="mawenxue"
-        :class="[showTextTip? 'mawenxue_left':'']">
+      <div
+        class="mawenxue"
+        :class="[showTextTip? 'mawenxue_left':'']"
+      >
         <span>咨询</span>
         <span>客服</span>
       </div>
 
-      <div class='fork_wrap' v-bind:class="{st12_show:show_contact_menu,st12_hide:!show_contact_menu}">
-        <img src='./img/fork_white.png' width="34px" height="34px"/>
+      <div class="fork_wrap" :class="{st12_show:show_contact_menu,st12_hide:!show_contact_menu}">
+        <img src="./img/fork_white.png" width="34px" height="34px">
       </div>
     </div>
 
     <transition name="fade_contact">
-      <div id="contact_menu" v-show="show_contact_menu">
-        <div @click='toQQ' class="qq">
+      <div v-show="show_contact_menu" id="contact_menu">
+        <div class="qq" @click="toQQ">
           <img src="./img/qq2.svg" alt="">
           <div class="contact_type">点此QQ交谈</div>
           <div class="contact_time">通过QQ咨询客服</div>
@@ -51,14 +82,14 @@
           <div class="contact_type">400-9613-900</div>
           <div class="contact_time">AM8:00 - PM10:00</div>
         </div>
-        <div @click='popupHelpCenter' class='help_center'>
+        <div class="help_center" @click="popupHelpCenter">
           <img src="./img/helpCenter2.svg" alt="">
           <div class="contact_type">帮助 & 支持</div>
           <div class="contact_time">哪里不懂点这里~</div>
         </div>
       </div>
     </transition>
-    <a ref='toQQ' href="http://q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank" style="position:absolute;opacity:0"/>
+    <a ref="toQQ" href="http://q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank" style="position:absolute;opacity:0" />
   </div>
 </template>
 
@@ -67,7 +98,7 @@ import { mapGetters } from 'vuex'
 /* global anime */
 
 export default {
-  name: 'contact',
+  name: 'Contact',
   data() {
     return {
       show_contact_menu: false, // 显示列表
@@ -77,6 +108,24 @@ export default {
       faceHover: false, // 是否正用鼠标指在笑脸上
       value: false // hoverface之后设置一个时间阀,以避免有可能hover完之后立即切换成‘咨询客服’提示
     }
+  },
+  watch: {
+    winPageYOffset(val, oldVal) {
+      if (val > 2000) {
+        this.ifmove = true
+      } else {
+        this.ifmove = false
+      }
+    }
+  },
+  mounted() {
+    this.anime_blink()
+
+    this.ifShowText()
+
+    this.$bus.on('cancel', () => {
+      this.cancel()
+    })
   },
   methods: {
     noUse() {
@@ -90,9 +139,9 @@ export default {
     },
     // 笑
     anime_smile(smile) {
-      let timeLine = anime.timeline({ autoplay: true, direction: 'alternate', loop: false })
+      const timeLine = anime.timeline({ autoplay: true, direction: 'alternate', loop: false })
       // 笑的关键帧数据
-      let value = [
+      const value = [
         `M89.1,244.8c4.1,11.3,13.7,18,25.9,18c36.7,0,73.3,0,110.1,0c2.5,0,4.5,0.6,6.3,2.4c6.3,6.1,12.8,12.1,19.3,18.1
         c1.5,1.4,3.1,2.7,5.3,3c6.1,0.8,10.4-3,10.4-9.6c0-28.2,0-56.1,0-84.1c0-27.1,0-54.1,0-81.1c0-16.5-11.1-27.6-27.5-27.6
         c-41.1,0-82.2,0-123.5,0c-16.4,0-27.6,11.2-27.6,27.6c-0.1,41.1,0,82.2,0,123.5C87.7,238.3,88,241.6,89.1,244.8z M123.6,194.6
@@ -134,7 +183,7 @@ export default {
     },
     anime_blink() {
       // 眨眼
-      let blink = () => {
+      const blink = () => {
         this.blink = true
         setTimeout(() => {
           this.blink = false
@@ -165,24 +214,6 @@ export default {
     cancel() {
       this.show_contact_menu = false
     }
-  },
-  watch: {
-    winPageYOffset(val, oldVal) {
-      if (val > 2000) {
-        this.ifmove = true
-      } else {
-        this.ifmove = false
-      }
-    }
-  },
-  mounted() {
-    this.anime_blink()
-
-    this.ifShowText()
-
-    this.$bus.on('cancel', () => {
-      this.cancel()
-    })
   },
   computed: {
     ...mapGetters([

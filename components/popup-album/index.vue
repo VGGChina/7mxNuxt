@@ -30,7 +30,7 @@ import { mapGetters } from 'vuex'
 import noContent from '~/components/no-content/NoContent_2'
 
 export default {
-  name: 'popup-album',
+  name: 'PopupAlbum',
   data: () => ({
     show: false,
     switchMode: 0,
@@ -41,6 +41,19 @@ export default {
     submitName: '',
     media_id: ''
   }),
+  watch: {
+    show(n, o) {
+      if (n) {
+        this.getAlbumList()
+      }
+    }
+  },
+  created() {
+    this.ifShow()
+  },
+  mounted() {
+
+  },
   methods: {
     ifShow() {
       this.$bus.on('popup-album', e => {
@@ -63,13 +76,11 @@ export default {
         return this.$toast.warn('已经添加过了')
       }
 
-      let res = await apiFactory
-        .getMediaApi()
-        .addToAlbum({album_id: albumId, media_id: this.media_id})
+      const res = await apiFactory.getMediaApi().addToAlbum({ album_id: albumId, media_id: this.media_id })
 
       if (res.data.out > 0) {
         this.$toast.notice(res.data.msg)
-        this.$bus.emit('popup-album', {show: false, media_id: ''})
+        this.$bus.emit('popup-album', { show: false, media_id: '' })
       } else {
         this.$toast.warn(res.data.msg)
       }
@@ -82,7 +93,7 @@ export default {
         this.$toast.warn('您尚未输入任何名称')
         return
       }
-      let res = await apiFactory.getAlbumApi().createAlbum({ name: this.submitName })
+      const res = await apiFactory.getAlbumApi().createAlbum({ name: this.submitName })
       if (res.data.out > 0) {
         this.$toast.notice(res.data.msg)
         setTimeout(() => {
@@ -96,26 +107,13 @@ export default {
     // 获取灵感集列表
     async getAlbumList() {
       this.switchMode = 0
-      let res = await apiFactory.getAlbumApi().albumList({media_id: this.media_id})
+      const res = await apiFactory.getAlbumApi().albumList({ media_id: this.media_id })
       if (res.data.out > 0) {
         this.list = res.data.data
       }
       setTimeout(() => {
         this.isLoading = false
       }, 500)
-    }
-  },
-  created() {
-    this.ifShow()
-  },
-  mounted() {
-
-  },
-  watch: {
-    show(n, o) {
-      if (n) {
-        this.getAlbumList()
-      }
     }
   },
   computed: {

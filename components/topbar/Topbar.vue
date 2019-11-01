@@ -1,35 +1,35 @@
 <template>
-  <div :class='["topbar-contanier",!isIndex ? "is_index" : null]'>
-    <div class='topbar' id='topbar' :style='topbarStyle'>
-      <div style='width: calc(100% / 3); min-width: 500px;'>
-        <search :ifshow='isIndex || isShowSearch'></search>
+  <div :class="[&quot;topbar-contanier&quot;,!isIndex ? &quot;is_index&quot; : null]">
+    <div id="topbar" class="topbar" :style="topbarStyle">
+      <div style="width: calc(100% / 3); min-width: 500px;">
+        <search :ifshow="isIndex || isShowSearch" />
       </div>
-      <div class='center' style='width: calc(100% / 3)'>
-        <a href='/' style='margin-left: 0px' :class='{"cl-white": $route.name == "index"}'>首页</a>
-        <a @click='toFollow()' :class='{"cl-white": $route.name == "user-follow"}'>动态</a>
-        <div @mouseenter='showCategory = true' @mouseleave='showCategory = false'>
-          <router-link to='/category/全部/0/0/1' :class="{'cl-white': $route.name == 'category'}">探索</router-link>
+      <div class="center" style="width: calc(100% / 3)">
+        <a href="/" style="margin-left: 0px" :class="{&quot;cl-white&quot;: $route.name == &quot;index&quot;}">首页</a>
+        <a :class="{'cl-white': $route.name == 'user-follow'}" @click="toFollow()">动态</a>
+        <div @mouseenter="showCategory = true" @mouseleave="showCategory = false">
+          <router-link to="/category/全部/0/0/1" :class="{'cl-white': $route.name == 'category'}">探索</router-link>
           <!-- <transition name='category-fade'> -->
-          <category :isTopbar='true' class='category' v-if='showCategory'></category>
+          <category v-if="showCategory" :is-topbar="true" class="category" />
           <!-- </transition> -->
         </div>
-        <router-link to='/activity/0' :class='{"cl-white": $route.name == "activity"}'>活动</router-link>
-        <router-link to='/ranking/0/1' :class='{"cl-white": $route.name == "ranking"}'>榜单</router-link>
-        <a href='https://v.paixin.com/' target='_blank'>商店</a>
-        <router-link to='/about' :class='{"cl-white": $route.name == "about"}'>关于</router-link>
+        <router-link to="/activity/0" :class="{'cl-white': $route.name == 'activity'}">活动</router-link>
+        <router-link to="/ranking/0/1" :class="{'cl-white': $route.name == 'ranking'}">榜单</router-link>
+        <a href="https://v.paixin.com/" target="_blank">商店</a>
+        <router-link to="/about" :class="{'cl-white': $route.name == 'about'}">关于</router-link>
       </div>
-      <user-action></user-action>
+      <user-action />
     </div>
-    <Content v-if="$route && '/' == $route.path"/>
+    <Content v-if="$route && '/' == $route.path" />
   </div>
 </template>
 
 <script>
-import Search from './Search.vue';
-import Content from './Content.vue';
-import UserAction from './UserAction.vue';
-import Category from '~/components/category/Category';
-import { mapGetters } from 'vuex';
+import Search from './Search.vue'
+import Content from './Content.vue'
+import UserAction from './UserAction.vue'
+import Category from '~/components/category/Category'
+import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
@@ -41,23 +41,22 @@ export default {
   }),
   methods: {
     noUse() {
-      this.$toast.warn('暂功能暂未上线，敬请期待');
+      this.$toast.warn('暂功能暂未上线，敬请期待')
     },
     toFollow() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true);
+        this.$store.commit('isShowLoginDialog', true)
       } else {
         this.$router.push({
           name: 'follow'
-        });
+        })
       }
     },
     getRoute() {
-      let { path } = this.$route,
-        pageY = window.localStorage.getItem('pageY') || 0
+      const { path } = this.$route
       if (path === '/') {
         this.currentIndex = true
-        let flag = pageY < 300
+        const flag = this.pageY < 300
         flag ? this.isIndex = false : this.isIndex = true
       } else {
         this.isIndex = true
@@ -67,24 +66,24 @@ export default {
   computed: {
     ...mapGetters(['getShowSearch', 'winPageYOffset']),
     topbarStyle() {
-      let name = this.$route.name;
+      const name = this.$route.name
       if (name == null) {
         return {
           background: 'transparent',
           position: 'absolute'
-        };
+        }
       } else {
-        if (document.getElementById('topbar-search-container')) {
+        if (process.browser && document.getElementById('topbar-search-container')) {
           document.getElementById('topbar-search-container').style.backgroundColor = 'rgba(190, 190, 190, .15)'
         }
       }
 
       if (
-        name == 'contributor' ||
-        name == 'user-home' ||
-        name == 'paixin-login' ||
-        name == 'about' ||
-        name == 'user-id'
+        name === 'contributor' ||
+        name === 'user-home' ||
+        name === 'paixin-login' ||
+        name === 'about' ||
+        name === 'user-id'
       ) {
         return {
           background: 'transparent',
@@ -94,7 +93,7 @@ export default {
       return {
         opacity: '1',
         background: '#1a1a1a'
-      };
+      }
     },
     ...mapGetters(['isLogin', 'loginUser'])
   },
@@ -104,30 +103,29 @@ export default {
     Category,
     Content
   },
-  created() {
-    this.getRoute();
-  },
   watch: {
     '$route.path': function(newval, oldval) {
       this.getRoute()
     },
-    'getShowSearch': function(val) {
+    getShowSearch(val) {
       this.isIndex = val
     },
-    'winPageYOffset': function(val) {
-      window.localStorage.setItem('pageY', val)
-      let { path } = this.$route
-      if (this.winPageYOffset < 400 && path == '/') {
+    winPageYOffset(newval, oldval) {
+      this.pageY = newval
+      if (this.winPageYOffset < 400 && this.$route.path === '/') {
         this.isIndex = false
       }
-      if (val >= 500) {
+      if (newval >= 500) {
         this.isShowSearch = true
       } else {
         this.isShowSearch = false
       }
     }
+  },
+  created() {
+    this.getRoute()
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>

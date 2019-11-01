@@ -1,21 +1,21 @@
 <template>
-  <div class='container_content'>
-    <div class='content'>
-      <img :src='require("~/assets/img/m.svg")' class='logo'>
-      <h3 class='title'>7MX——Home Business Advertising Ideas</h3>
-      <div class='search is_index'>
+  <div class="container_content">
+    <div class="content">
+      <img :src="require(&quot;~/assets/img/m.svg&quot;)" class="logo">
+      <h3 class="title">7MX——Home Business Advertising Ideas</h3>
+      <div class="search is_index">
 
         <div @mouseleave="mleave()">
 
-          <div class="searchTT" @mouseenter="menter()" >
-            <span class="searchType">{{searchValue}}</span>
-            <i class="search__dropDown_icon"></i>
-            <div class="vertical_line"></div>
+          <div class="searchTT" @mouseenter="menter()">
+            <span class="searchType">{{ searchValue }}</span>
+            <i class="search__dropDown_icon" />
+            <div class="vertical_line" />
           </div>
 
-          <div class="searchTypeChoose" v-show="isTypeShow" @mouseleave="mleave()">
-            <div class="blankB"></div>
-            <div class="triangle"></div>
+          <div v-show="isTypeShow" class="searchTypeChoose" @mouseleave="mleave()">
+            <div class="blankB" />
+            <div class="triangle" />
             <div class="chooses">
               <div class="onshow" @click="searchValue = '图  片'; isTypeShow=false; searchType=0">图 片</div>
               <div class="onshow" @click="searchValue = '商  店';isTypeShow=false; searchType=1">商 店</div>
@@ -24,15 +24,15 @@
           </div>
         </div>
 
-        <input type='text' placeholder='搜索' @keyup.enter='search'  v-model='searchInput'>
-        <img class='searchIcon' src='./img/searchIcon.svg' alt @click='search' />
+        <input v-model="searchInput" type="text" placeholder="搜索" @keyup.enter="search">
+        <img class="searchIcon" src="./img/searchIcon.svg" alt @click="search">
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: '',
   data: () => ({
@@ -55,16 +55,16 @@ export default {
       })
     },
     menter() {
-      this.isTypeShow = true;
+      this.isTypeShow = true
     },
     mleave() {
-      this.isTypeShow = false;
+      this.isTypeShow = false
     }
   },
+  computed: {},
+  watch: {},
   created() {},
   mounted() {},
-  watch: {},
-  computed: {},
   components: {}
 }
 </script>
@@ -164,10 +164,7 @@ export default {
   display: inline-block !important;
 }
 
-
 /*  */
-
-
 
 .constiner_content {
   position: relative;

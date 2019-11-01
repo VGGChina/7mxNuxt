@@ -1,36 +1,40 @@
 <template>
   <div>
     <transition name="mask-fade">
-      <div class="mask" v-if="isShowImproveInfo" @click="cancel"></div>
+      <div v-if="isShowImproveInfo" class="mask" @click="cancel" />
     </transition>
 
     <transition name="dialog-fade">
-      <div class="dialog" v-if="isShowImproveInfo">
+      <div v-if="isShowImproveInfo" class="dialog">
         <h2>完善您的信息</h2>
 
         <div
-          class="avatar"
           id="improve-info-avatar-container"
+          class="avatar"
           :style="{
             'background-image': loginUser.avatar == ''
-            ? 'url(' + require('~/assets/img/avatar-default.svg') + ')'
-            : 'url(' + $utilHelper.getCompressionUrl(loginUser.avatar, 300, 300) + ')' 
-          }">
-          <div class="avatar-cover"
-            id="improve-info-avatar">
+              ? 'url(' + require('~/assets/img/avatar-default.svg') + ')'
+              : 'url(' + $utilHelper.getCompressionUrl(loginUser.avatar, 300, 300) + ')'
+          }"
+        >
+          <div
+            id="improve-info-avatar"
+            class="avatar-cover"
+          >
             <div
               class="camera"
               :style="{
                 'background-image': 'url(' + require('./img/camera.svg') + ')'
-              }">
-            </div>
+              }"
+            />
           </div>
         </div>
 
         <input
           v-model="nick"
           type="text"
-          :placeholder="!loginUser.nick ? '昵称' : loginUser.nick">
+          :placeholder="!loginUser.nick ? '昵称' : loginUser.nick"
+        >
 
         <div class="improveInfo-domainName">
           <span>7mx.com/</span>
@@ -42,7 +46,8 @@
               cursor: loginUser.name == '' ? 'text' : 'not-allowed'
             }"
             type="text"
-            :placeholder="!loginUser.name ? '个性域名(四位以上的字母或数字组合)' : loginUser.name">
+            :placeholder="!loginUser.name ? '个性域名(四位以上的字母或数字组合)' : loginUser.name"
+          >
         </div>
 
         <button @click="commit">确定</button>
@@ -54,8 +59,8 @@
 <script>
 /* global QiniuJsSDK */
 import { mapGetters } from 'vuex'
-import uploadUtil from '~/utils/uploadUtil';
-import getUptoken from '~/service/uptokenService';
+import uploadUtil from '~/utils/uploadUtil'
+import getUptoken from '~/api/uptokenService'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
@@ -68,34 +73,34 @@ export default {
   },
   methods: {
     cancel() {
-      this.$store.commit('isShowImproveInfo', false);
+      this.$store.commit('isShowImproveInfo', false)
     },
     initQiNiu() {
       this.$nextTick(() => {
-        let qiniu = new QiniuJsSDK()
+        const qiniu = new QiniuJsSDK()
         this.uploader = qiniu.uploader({
           runtimes: 'html5,flash,html4',
           multi_selection: false,
           browse_button: 'improve-info-avatar',
           uptoken_func: file => {
-            let extension = file.type.split('/')[1] || 'jpeg'
-            let data = uploadUtil.getUploadData('images', 'photos/', extension)
+            const extension = file.type.split('/')[1] || 'jpeg'
+            const data = uploadUtil.getUploadData('images', 'photos/', extension)
 
             getUptoken(data, request => {
               if (request.status === 200) {
-                let res = JSON.parse(request.responseText);
+                const res = JSON.parse(request.responseText)
                 if (res.out === '1') {
-                  this.uploadData = res.data;
+                  this.uploadData = res.data
                 } else {
-                  this.$toast.warn(res.msg);
-                  this.uploadData = {};
+                  this.$toast.warn(res.msg)
+                  this.uploadData = {}
                 }
               } else {
-                this.$toast.warn('上传失败，请刷新页面后重试');
-                return {};
+                this.$toast.warn('上传失败，请刷新页面后重试')
+                return {}
               }
             })
-            return this.uploadData.uptoken;
+            return this.uploadData.uptoken
           },
           get_new_uptoken: true,
           domain: 'images.gaga.com',
@@ -117,21 +122,21 @@ export default {
           init: {
             // 上传过程中
             'UploadProgress': () => {
-              this.isUploading = true;
+              this.isUploading = true
             },
             // 上传完成以后
             'FileUploaded': (up, file, info) => {
-              let infoJson = JSON.parse(info),
-                key = infoJson.key,
-                url = 'http://images.gaga.me/' + key;
+              const infoJson = JSON.parse(info)
+                let key = infoJson.key
+                let url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
               apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
-                    this.$store.commit('loginUser', res.data.data);
-                    this.$toast.notice('头像修改成功');
+                    this.$store.commit('loginUser', res.data.data)
+                    this.$toast.notice('头像修改成功')
                   }
-                });
+                })
             },
             'Error': (up, err, errTip) => {
               if (err.code == -600) {
@@ -139,7 +144,7 @@ export default {
               }
             },
             'UploadComplete': () => {
-              this.isUploading = false;
+              this.isUploading = false
             },
             'Key': (up, file) => {
               // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
@@ -147,86 +152,86 @@ export default {
               return this.uploadData.key
             }
           }
-        });
-      });
+        })
+      })
     },
     setNick() {
       if (this.nick == '') {
         return
       }
 
-      let reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/;
+      const reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/
       if (!reg1.test(this.nick)) {
-        this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!');
-        return;
+        this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!')
+        return
       }
 
-      let data = {
+      const data = {
         nick: this.nick
-      };
+      }
       apiFactory.getUserApi().setNick(data)
         .then(res => {
           if (res.data.out === '1') {
-            this.$toast.notice(res.data.msg);
-            this.$store.commit('loginUser', res.data.data);
-            this.cancel();
+            this.$toast.notice(res.data.msg)
+            this.$store.commit('loginUser', res.data.data)
+            this.cancel()
           }
-        });
+        })
     },
     async setName() {
       if (this.name == '') {
         return
       }
 
-      let reg1 = /^[a-zA-Z]\w{3,23}$/;
+      const reg1 = /^[a-zA-Z]\w{3,23}$/
       if (!reg1.test(this.name)) {
-        this.$toast.warn('个性域名应为4~24位字母数字组合,且不能以数字开头!');
-        return;
+        this.$toast.warn('个性域名应为4~24位字母数字组合,且不能以数字开头!')
+        return
       }
 
       // 检验个性域名是否和路由冲突
-      let isRepeat = false;
+      let isRepeat = false
       this.$router.options.routes.forEach(element => {
-        let array = element.path.split('/')
+        const array = element.path.split('/')
         if (array[1] == this.name) {
-          isRepeat = true;
+          isRepeat = true
         }
-      });
+      })
 
       if (isRepeat) {
-        this.$toast.warn('该个性域名已被占用');
-        return;
+        this.$toast.warn('该个性域名已被占用')
+        return
       }
 
-      let data = {
+      const data = {
         name: this.name
-      };
-      let res = await apiFactory.getUserApi().userDetail({ name: this.name })
+      }
+      const res = await apiFactory.getUserApi().userDetail({ name: this.name })
       if (res.data.out == '1') {
-        this.$toast.warn('该个性域名已被占用');
+        this.$toast.warn('该个性域名已被占用')
       } else {
         apiFactory.getUserApi().setName(data)
           .then(res1 => {
             if (res1.data.out === '1') {
-              this.$toast.notice(res1.data.msg);
-              this.$store.commit('loginUser', res1.data.data);
-              this.cancel();
+              this.$toast.notice(res1.data.msg)
+              this.$store.commit('loginUser', res1.data.data)
+              this.cancel()
             }
-          });
+          })
       }
     },
     async commit() {
       if (this.name == '' && this.nick == '') {
-        this.$toast.warn('您还没有填写任何信息');
-        return;
+        this.$toast.warn('您还没有填写任何信息')
+        return
       }
 
       if (this.nick != '') {
-        this.setNick();
+        this.setNick()
       }
 
       if (this.name != '') {
-        this.setName();
+        this.setName()
       }
     }
   },
@@ -239,7 +244,7 @@ export default {
   watch: {
     'isShowImproveInfo': function(val, oldVal) {
       if (val) {
-        this.initQiNiu();
+        this.initQiNiu()
       }
     }
   }
@@ -307,7 +312,7 @@ h2 {
   height: 100px;
   border-radius: 50%;
   background-size: cover;
-  background-position: center; 
+  background-position: center;
   margin-top: 20px;
   margin-bottom: 30px;
 }
@@ -327,7 +332,7 @@ h2 {
   width: 30px;
   height: 26px;
   background-size: cover;
-  background-position: center; 
+  background-position: center;
  }
 
 .border-red {
@@ -368,8 +373,8 @@ input:hover {
   align-items: center;
   background-color: #ffffff;
   border: solid 1px #e4e4e4;
-  padding: 0 0 0 8px;  
-  border-radius: 8px;  
+  padding: 0 0 0 8px;
+  border-radius: 8px;
 }
 
 .improveInfo-domainName span {

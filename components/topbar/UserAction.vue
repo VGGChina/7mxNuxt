@@ -1,55 +1,62 @@
 <template>
   <div class="userAction">
     <span
-      class="mr"
       v-if="true||isLogin"
-      @click="toContributor">
+      class="mr"
+      @click="toContributor"
+    >
       签约
     </span>
     <span
-      class="mr"
       v-if="!isLogin"
-      @click="$store.commit('isShowRegisterDialog', true)">
+      class="mr"
+      @click="$store.commit('isShowRegisterDialog', true)"
+    >
       注册
     </span>
     <span
-      class="mr"
       v-if="!isLogin"
-      @click="$store.commit('isShowLoginDialog', true)">
+      class="mr"
+      @click="$store.commit('isShowLoginDialog', true)"
+    >
       登录
     </span>
     <span
+      v-if="isLogin"
       class="mr"
       @click="goUpload"
-      v-if="isLogin">
+    >
       上传
     </span>
-    <div class="ring" v-if="isLogin">
+    <div v-if="isLogin" class="ring">
       <img
-        @click.stop='showNoti'
         class="actionIcon"
         src="./img/message.svg"
-        width="18" alt="通知">
-      <div v-if='isLogin&&newMessages' @click.stop='showNoti' class="newMessage">1</div>
+        width="18"
+        alt="通知"
+        @click.stop="showNoti"
+      >
+      <div v-if="isLogin&&newMessages" class="newMessage" @click.stop="showNoti">1</div>
     </div>
-    <div class='avatar_wrap' @mouseenter="isShowList = true" @mouseleave="isShowList = false">
+    <div class="avatar_wrap" @mouseenter="isShowList = true" @mouseleave="isShowList = false">
       <router-link :to="userRef">
-        <div 
-          v-if="isLogin" class="avatar"
+        <div
+          v-if="isLogin"
+          class="avatar"
           :style=" {
             'backgroundImage': 'url(' +
-            ($utilHelper.getCompressionUrl(loginUser.avatar, 200, 200) ||
-            require('~/assets/img/avatar-default.svg')) + ')'
-          }">
-        </div>
+              ($utilHelper.getCompressionUrl(loginUser.avatar, 200, 200) ||
+                require('~/assets/img/avatar-default.svg')) + ')'
+          }"
+        />
       </router-link>
-      <avatar-list :isShowList="isShowList && isLogin"></avatar-list>
+      <avatar-list :is-show-list="isShowList && isLogin" />
     </div>
-    <transition name='opacity_transform_bottom'>
-      <PushNotifi v-if='showPushNotifi'></PushNotifi>
+    <transition name="opacity_transform_bottom">
+      <PushNotifi v-if="showPushNotifi" />
     </transition>
   </div>
-  
+
 </template>
 
 <script>
@@ -99,29 +106,29 @@ export default {
         return false
       }
     },
-    cardStatus: function () {
+    cardStatus: function() {
       try {
         return this.loginUser.user_data.card_status
       } catch (e) {
         return '0'
       }
     },
-    companyStatus: function () {
+    companyStatus: function() {
       try {
         return this.loginUser.user_data.company_status
       } catch (e) {
         return '0'
       }
     },
-    status: function () {
+    status: function() {
       if (this.cardStatus == '0') {
         if (this.companyStatus == '0') {
-          return '0';
+          return '0'
         } else {
-          return this.companyStatus;
+          return this.companyStatus
         }
       } else {
-        return this.cardStatus;
+        return this.cardStatus
       }
     },
     userRef() {
@@ -135,7 +142,7 @@ export default {
     AvatarList,
     PushNotifi
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>

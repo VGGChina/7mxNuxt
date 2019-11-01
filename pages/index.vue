@@ -8,25 +8,25 @@
     <photography :category-list="photography_categoryList" :avatar-list="avatarList" />
     <!-- 热门图片 -->
     <div>
-      <!-- <h3 class="hot-img-title">热门图片</h3> -->
+      <h3 class="hot-img-title">热门图片</h3>
       <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
-      <!-- <div class="waterfallContainer">
+      <div class="waterfallContainer">
         <img-waterfall
           :img-list="imgList"
           :line="line"
-          :is-loading="isLoading"
+          :is-loading="false"
           :is-show-loading="false"
           :is-to-paixin="isToPaixin"
           :if-index="'1'"
         />
-      </div>-->
+      </div>
     </div>
     <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
-    <!-- <div
+    <div
       v-if="imgList.length > 0 && line != 'end'"
       class="load-more"
       @click="getMoreData"
-    >{{ isLoading ? '正在加载...' : '更多图片' }}</div>-->
+    >{{ isLoading ? '正在加载...' : '更多图片' }}</div>
 
     <!--更多合作 -->
     <cooperation-footer />
@@ -47,7 +47,7 @@ import recommend from '~/components/recommend/recommend.vue'
 import photography from '~/components/photography/photography.vue'
 import hotBabel from '~/components/hot-babel/hot-babel'
 import cooperationFooter from '~/components/cooperation/footer-cooperation'
-import { setTimeout } from 'timers'
+// import { setTimeout } from 'timers'
 
 export default {
   name: '',
@@ -128,23 +128,24 @@ export default {
     column3: ['社群', '微博', '公众号', '&nbsp;'],
     showSearch: true
   }),
+
   async asyncData() {
     // recommend
-    const result = await apiFactory.getTagApi().getActivityList()
-    let res = result.data.data.filter(item => {
-      return item.id !== '285671'
-    })
-    const temp = []
-    res.forEach(item => {
-      if (item.close_time - new Date().getTime() / 1000 > 0) {
-        temp.push(item)
-      }
-    })
-    res = temp.length >= 20 ? temp : res
-    if (res.length % 2 === 1) {
-      res.push(res.slice(0, 1)[0])
-    }
-    const smallBannerList = res
+    // const result = await apiFactory.getTagApi().getActivityList()
+    // let res = result.data.data.filter(item => {
+    //   return item.id !== '285671'
+    // })
+    // const temp = []
+    // res.forEach(item => {
+    //   if (item.close_time - new Date().getTime() / 1000 > 0) {
+    //     temp.push(item)
+    //   }
+    // })
+    // res = temp.length >= 20 ? temp : res
+    // if (res.length % 2 === 1) {
+    //   res.push(res.slice(0, 1)[0])
+    // }
+    // const smallBannerList = res
 
     const res2 = await apiFactory.getCommonApi().categoryList({ type: '6', category_id: '1' })
     const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
@@ -189,9 +190,7 @@ export default {
     }
 
     // AvatarList
-    // 全部
     const avatarList = []
-
     for (const pcate of photography_categoryList) {
       const rqBody = {
         category_id: pcate.id
@@ -207,41 +206,24 @@ export default {
       }
     }
 
+    // 热门图片
+    const imgList = []
+    const data = { type: '6' }
+    const params = { line: '1,0,0', limit: '40' }
+    const res_hotpics = await apiFactory.getMediaApi().randomRecommend(data, params)
+    imgList.push(...res_hotpics.data.data)
+
     return {
       categoryList: picList,
-      smallBannerList: smallBannerList,
+      // smallBannerList: smallBannerList,
       hotBabels: hotBabels,
       photography_categoryList: photography_categoryList,
-      avatarList: avatarList
+      avatarList: avatarList,
+      imgList: imgList
     }
   },
 
   methods: {
-    onClickHot() {
-      if (this.currentItem === 1 || this.isLoading) {
-        return
-      }
-      this.currentItem = 1
-      this.reload()
-    },
-    onClickStore() {
-      if (this.currentItem === 2 || this.isLoading) {
-        return
-      }
-      this.currentItem = 2
-
-      this.reload()
-    },
-    onClickNew() {
-      if (this.currentItem === 3 || this.isLoading) {
-        return
-      }
-
-      this.currentItem = 3
-
-      this.reload()
-    },
-
     // afterResponse(res) {
     //   if (res.data.out == '1') {
     //     this.imgList.push(...res.data.data)
@@ -279,14 +261,6 @@ export default {
     //   }
     // },
 
-    reload() {
-      if (this.isLoading) {
-        return
-      }
-      this.imgList = []
-      this.line = ''
-      // this.fetchData()
-    },
     getMoreData() {
       if (!this.isLogin) {
         this.$store.commit('isShowLoginDialog', true)

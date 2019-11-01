@@ -1,114 +1,132 @@
 <template>
-<transition name="avatar-dialog-fade">
-  <div class="avatar-dialog-container"
-    @click.stop
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave">
+  <transition name="avatar-dialog-fade">
+    <div
+      class="avatar-dialog-container"
+      @click.stop
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
+    >
 
-    <div class="author">
-      <a :href="userRef" target="_blank">
-        <div
-          class="avatar"
-          :style="{
-            background: 'url(' + ($utilHelper.getCompressionUrl(userData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
-          }">
-        </div>
-      </a>
-
-      <div class="name">
-        <a :href="userRef" target="_blank" @click.stop>
-          {{ userData.nick || userData.name }}
+      <div class="author">
+        <a :href="userRef" target="_blank">
+          <div
+            class="avatar"
+            :style="{
+              background: 'url(' + (dataUtilHelper.getCompressionUrl(userData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
+            }"
+          />
         </a>
-        <div>{{ userData.fan_num || '0' }}名追随者</div>
-      </div>
 
-      <div
-        class="follow"
-        @click.stop.prevent="follow(userData)"
-        :class="{
-          'followed': userData.is_follow == '1',
-          'not-follow': userData.is_follow == '0'
-        }">
-        {{ userData.is_follow == '0' ? '关注' : '已关注' }}
-      </div>
-    </div>
-
-    <div class="images">
-      <loading style="padding: 0px; margin-top: 30px"
-      :isLoading="isFetching"
-      :loadingColor="'#000'"
-      v-if="isFetching">
-      </loading>
-
-      <div v-if="!isFetching && this.imgList.length < 1"
-        class="no-works">
-        这个人很懒，还没上传过作品 ~
-      </div>
-
-      <a v-for="(img, index) in imgList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
-        <div
-          :style="{
-            background: 'url(' + img.image + ') no-repeat'
-          }">
+        <div class="name">
+          <a :href="userRef" target="_blank" @click.stop>
+            {{ userData.nick || userData.name }}
+          </a>
+          <div>{{ userData.fan_num || '0' }}名追随者</div>
         </div>
-      </a>
+
+        <div
+          class="follow"
+          :class="{
+            'followed': userData.is_follow == '1',
+            'not-follow': userData.is_follow == '0'
+          }"
+          @click.stop.prevent="follow(userData)"
+        >
+          {{ userData.is_follow == '0' ? '关注' : '已关注' }}
+        </div>
+      </div>
+
+      <div class="images">
+        <loading
+          v-if="isFetching"
+          style="padding: 0px; margin-top: 30px"
+          :is-loading="isFetching"
+          :loading-color="'#000'"
+        />
+
+        <div
+          v-if="!isFetching && imgList.length < 1"
+          class="no-works"
+        >
+          这个人很懒，还没上传过作品 ~
+        </div>
+
+        <a v-for="(img, index) in imgList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
+          <div
+            :style="{
+              background: 'url(' + img.image + ') no-repeat'
+            }"
+          />
+        </a>
+      </div>
     </div>
-  </div>
-</transition>
+  </transition>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
+import utilHelper from '~/utils/utils.js'
+import loading from '~/components/loading/Loading'
 
 export default {
-  data() {
-    return {
-      imgList: [],
-      isFetching: false
-    }
+  components: {
+    loading
   },
   props: [
     'userData',
     'enter',
     'leave'
   ],
+  data() {
+    return {
+      imgList: [],
+      isFetching: false,
+      dataUtilHelper: utilHelper
+    }
+  },
   created() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
     async fetchData() {
-      let rqBody = { type: '6', user_id: this.eputUserId },
-        params = { line: '', limit: 3 };
+      const rqBody = { type: '6', user_id: this.eputUserId }
+      const params = { line: '', limit: 3 }
 
-      this.isFetching = true;
-      let res = await apiFactory.getMediaApi().originList(rqBody, params);
-      if (res.data.out == '1') {
-        this.imgList.push(...res.data.data);
+      this.isFetching = true
+      // const res = await apiFactory.getMediaApi().originList(rqBody, params)
+      const data = {
+        url: '/api/media/origin_list',
+        data: rqBody,
+        params: params
       }
-      this.isFetching = false;
+      const res = await this.$axios(data)
+      if (res.data.out == '1') {
+        this.imgList.push(...res.data.data)
+      }
+      this.isFetching = false
     },
     follow(user) {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
         this.$store.commit('isShowLoginDialog', true)
-        return;
+        return
       }
       var rqBody = {
         user_id: this.eputUserId
-      };
+      }
       if (user.is_follow === '1') {
         apiFactory.getUserApi().unfollow(rqBody).then(res => {
           if (res.data.out == '1') {
-            user.is_follow = '0';
+            user.is_follow = '0'
           }
-        });
+        })
       } else {
         apiFactory.getUserApi().follow(rqBody).then(res => {
           if (res.data.out == '1') {
-            user.is_follow = '1';
+            user.is_follow = '1'
           }
-        });
+        })
       }
     },
     onMouseEnter() {
@@ -129,11 +147,11 @@ export default {
     eputUserId() {
       let eputUserId = ''
 
-      if (typeof this.userData.gaga_id != 'undefined' && this.userData.gaga_id != null && this.userData.gaga_id.length > 0) {
+      if (typeof this.userData.gaga_id !== 'undefined' && this.userData.gaga_id != null && this.userData.gaga_id.length > 0) {
         eputUserId = this.userData.id
       }
 
-      if (typeof this.userData.eput_id != 'undefined' && this.userData.eput_id != null && this.userData.eput_id.length > 0) {
+      if (typeof this.userData.eput_id !== 'undefined' && this.userData.eput_id != null && this.userData.eput_id.length > 0) {
         eputUserId = this.userData.eput_id
       } else {
         eputUserId = this.userData.id
@@ -142,13 +160,13 @@ export default {
       return eputUserId
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.userData)
+      return utilHelper.toUserPage(this.userData)
     }
   },
   watch: {
-    'userData': function (val) {
-      this.imgList = [];
-      this.fetchData();
+    'userData': function(val) {
+      this.imgList = []
+      this.fetchData()
     }
   }
 }
@@ -197,7 +215,7 @@ export default {
   height: 56px;
   border-radius: 50%;
   background-size: cover !important;
-  background-position: center !important; 
+  background-position: center !important;
   display: inline-block;
   cursor: pointer;
 }
@@ -286,5 +304,4 @@ export default {
   width: 210px !important;
 }
 </style>
-
 

@@ -1,116 +1,145 @@
 <template>
-  <div class="imgWarterfall-imgItem"
+  <div
+    class="imgWarterfall-imgItem"
     @mouseenter="isHover = true"
-    @mouseleave="isHover = false">
+    @mouseleave="isHover = false"
+  >
     <!-- 图片 -->
-    <img :src="$utilHelper.getCompressionUrl(img.image, 600, 1000)"
-      :alt="imageAlt">
+    <img
+      :src="dataUtilHelper.getCompressionUrl(img.image, 600, 1000)"
+      :alt="imageAlt"
+    >
 
     <!-- 图片遮罩 -->
     <div class="imgWarterfall-imgItem-mask">
-      <a :href="getImageDetailPage()" target="_blank"></a>
+      <a :href="getImageDetailPage()" target="_blank" />
     </div>
 
     <!-- 按钮 -->
     <transition name="buttons-fade">
-      <div class="imgWarterfall-imgItem-buttons"
-        v-if="isHover">
+      <div
+        v-if="isHover"
+        class="imgWarterfall-imgItem-buttons"
+      >
 
         <!-- 喜欢按钮 -->
-        <div class="imgWarterfall-imgItem-like"
+        <div
           v-if="!isImgAuthor"
-          @click.stop="likeImg()">
-          <div :style="{
+          class="imgWarterfall-imgItem-like"
+          @click.stop="likeImg()"
+        >
+          <div
+            :style="{
               backgroundImage: 'url(' + (img.is_like == '1' ?
                 require('./img/likeRed.svg') :
                 require('./img/like.svg')) + ')'
-            }">
-          </div>
+            }"
+          />
 
           <div>{{ img.like_num }}</div>
         </div>
 
         <!-- 购买按钮 -->
-        <div class="imgWarterfall-imgItem-buy"
+        <div
           v-if="!isImgAuthor"
-          @click.stop="buyImg()">
-          <div :style="{
+          class="imgWarterfall-imgItem-buy"
+          @click.stop="buyImg()"
+        >
+          <div
+            :style="{
               backgroundImage: 'url(' + require('./img/shoppingCart.svg') + ')'
-            }">
-          </div>
+            }"
+          />
         </div>
 
         <!-- 编辑按钮 -->
-        <div class="imgWarterfall-imgItem-buy"
+        <div
           v-if="isImgAuthor"
-          @click.stop="editImg()">
-          <div :style="{
+          class="imgWarterfall-imgItem-buy"
+          @click.stop="editImg()"
+        >
+          <div
+            :style="{
               backgroundImage: 'url(' + require('./img/edit.svg') + ')'
-            }">
-          </div>
+            }"
+          />
         </div>
 
         <!-- 删除按钮 -->
-        <div class="imgWarterfall-imgItem-buy"
+        <div
           v-if="!isShowRemark && (isImgAuthor || isAlbumAuthor)"
-          @click.stop.prevent="showDeleteImgDialog(img)">
-          <div :style="{
+          class="imgWarterfall-imgItem-buy"
+          @click.stop.prevent="showDeleteImgDialog(img)"
+        >
+          <div
+            :style="{
               backgroundImage: 'url(' + require('./img/delete.svg') + ')'
-            }">
-          </div>
+            }"
+          />
         </div>
       </div>
     </transition>
 
     <!-- 分数 -->
     <transition name="score-fade">
-      <div class="imgWarterfall-imgItem-score"
-        v-if="isHover">
-        {{ $utilHelper.score(img) }}
+      <div
+        v-if="isHover"
+        class="imgWarterfall-imgItem-score"
+      >
+        {{ dataUtilHelper.score(img) }}
       </div>
     </transition>
 
     <!-- 作者信息 -->
     <transition name="score-fade">
-      <div class="imgWarterfall-imgItem-userInfo"
+      <div
         v-if="$route.name != 'user-home' && img.hasOwnProperty('user_data') && isHover"
+        class="imgWarterfall-imgItem-userInfo"
         @mouseenter="contentMouseenter"
-        @mouseleave="contentMouseLeave">
-        <div class="imgWarterfall-imgItem-avatar"
+        @mouseleave="contentMouseLeave"
+      >
+        <div
+          class="imgWarterfall-imgItem-avatar"
           :style="{
             backgroundImage: 'url(' + (!img.user_data.avatar ?
               require('~/assets/img/avatar-default.svg') :
-              $utilHelper.getCompressionUrl(img.user_data.avatar, 200, 200)) + ')'
+              dataUtilHelper.getCompressionUrl(img.user_data.avatar, 200, 200)) + ')'
           }"
-          @click.stop="toUserHomePage()">
-        </div>
+          @click.stop="toUserHomePage()"
+        />
 
-        <a :href="userRef"
+        <a
+          :href="userRef"
           target="_blank"
-          @click.stop="noUse">
+          @click.stop="noUse"
+        >
           {{ img.user_data.nick || img.user_data.name || '7mx摄影师' }}
         </a>
 
         <avatar-dialog
           v-if="isHoverUser"
           class="imgWarterfall-imgItem-avatarDialog"
-          :userData="img.user_data">
-        </avatar-dialog>
+          :user-data="img.user_data"
+        />
       </div>
     </transition>
 
     <!-- 审核状态 -->
-    <div class="imgWarterfall-imgItem-remark"
+    <div
       v-if="isShowRemark"
+      class="imgWarterfall-imgItem-remark"
       :style="{
         backgroundColor: img.check == '2' ? '#FF5722' : '#FFC107'
-      }">
+      }"
+    >
       {{ getRemark(img) }}
     </div>
 
     <!-- 独家和类别 -->
-    <div class="imgWarterfall-imgItem-exclusive"
-      v-if="isShowExclusive && img.check =='1'">
+    <div
+      v-if="isShowExclusive && img.check =='1'"
+      class="imgWarterfall-imgItem-exclusive"
+    >
       {{ (img.is_editorial == '1' ? '商业' : '传媒') + '·' + (img.is_exclusive == '1' ? '独家' : '非独家') }}
     </div>
   </div>
@@ -120,6 +149,7 @@
 import { mapGetters } from 'vuex'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 import apiFactory from '~/api/factory/apiFactory.js'
+import utilHelper from '~/utils/utils.js'
 
 export default {
   props: [
@@ -138,7 +168,8 @@ export default {
       isHoverUser: false,
       mouseEnterTime: 0,
       mouseLeaveTime: 0,
-      intervalTime: null
+      intervalTime: null,
+      dataUtilHelper: utilHelper
     }
   },
   created() {
@@ -151,7 +182,7 @@ export default {
       this.mouseEnterTime = new Date().getTime()
       this.intervalTime = setTimeout(() => {
         this.isHoverUser = true
-      }, 200);
+      }, 200)
     },
     // 鼠标离开这个item
     contentMouseLeave(index) {
@@ -170,7 +201,7 @@ export default {
       }
 
       if (this.img.hasOwnProperty('user_id')) {
-        let res = await apiFactory
+        const res = await apiFactory
           .getUserApi()
           .userDetail({ user_id: this.img.user_id })
 
@@ -182,7 +213,7 @@ export default {
       }
 
       if (this.img.hasOwnProperty('id')) {
-        let res = await apiFactory
+        const res = await apiFactory
           .getMediaApi()
           .mediaDetail({ media_id: this.eputId })
 
@@ -209,7 +240,7 @@ export default {
       }
 
       if (this.img.is_like == '1') {
-        let res = await apiFactory
+        const res = await apiFactory
           .getMediaApi()
           .dislike({ media_id: this.eputId })
 
@@ -219,7 +250,7 @@ export default {
           this.img.is_like = res.data.data.is_like
         }
       } else {
-        let res = await apiFactory
+        const res = await apiFactory
           .getMediaApi()
           .like({ media_id: this.eputId })
 
@@ -244,14 +275,14 @@ export default {
       }
 
       let neededUserList = []
-      let storage = localStorage.getItem('neededUserList')
+      const storage = localStorage.getItem('neededUserList')
 
       if (storage != null) {
         neededUserList = JSON.parse(storage)
       }
 
-      let flag = false,
-        index = 0
+      let flag = false
+      let index = 0
 
       neededUserList.forEach((element, i) => {
         if (element.userId == this.loginUser.id) {
@@ -259,7 +290,7 @@ export default {
 
           index = i
         }
-      });
+      })
 
       if (!flag) {
         this.$store.commit('neededData', {
@@ -267,14 +298,14 @@ export default {
           mediaId: this.eputId
         })
       } else {
-        let obj = neededUserList[index]
-        let rqBody = {
+        const obj = neededUserList[index]
+        const rqBody = {
           media_id: this.eputId,
           name: obj.name,
           phone: obj.phone,
           qq: obj.qq
         }
-        let res = await apiFactory.getMediaApi().needed(rqBody)
+        const res = await apiFactory.getMediaApi().needed(rqBody)
 
         if (res.data.out == '1') {
           this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
@@ -286,21 +317,10 @@ export default {
     editImg(img, index) {
       this.$emit('imgWarterfallImgItemEditImg')
     },
-    // singleClick() {
-    //   if (!this.isLogin) {
-    //     this.$store.commit('isShowLoginDialog', true);
-    //     return;
-    //   }
-
-    //   clearTimeout(this.singleTimer);
-    //   this.singleTimer = setTimeout(() => {
-    //     this.$toast.warn('为防止误操作，请双击删除');
-    //   }, 600);
-    // },
     showDeleteImgDialog(img) {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true);
-        return;
+        this.$store.commit('isShowLoginDialog', true)
+        return
       }
 
       // 灵感集的创建者把某张图片从灵感集中删除，必须放在图片的上传者把图片删除之前
@@ -359,7 +379,7 @@ export default {
       }
 
       // 删除图片
-      let res = await apiFactory
+      const res = await apiFactory
         .getMediaApi()
         .mediaDrop({ media_id: this.eputId })
 
@@ -381,7 +401,7 @@ export default {
     // 从灵感集中删除采集的图片
     async deleteImgFromAlbum(img) {
       // 删除图片
-      let res = await apiFactory
+      const res = await apiFactory
         .getMediaApi()
         .dropFromAlbum({ media_id: this.eputId, album_id: this.albumId })
 
@@ -469,11 +489,11 @@ export default {
     gagaId() {
       let gagaId = ''
 
-      if (typeof this.img.eput_id == 'undefined' || this.img.eput_id == null || this.img.eput_id.length < 1) {
+      if (typeof this.img.eput_id === 'undefined' || this.img.eput_id == null || this.img.eput_id.length < 1) {
         gagaId = this.img.id
       }
 
-      if (typeof this.img.gaga_id != 'undefined' && this.img.gaga_id != null && this.img.gaga_id.length > 0) {
+      if (typeof this.img.gaga_id !== 'undefined' && this.img.gaga_id != null && this.img.gaga_id.length > 0) {
         gagaId = this.img.gaga_id
       } else {
         gagaId = this.img.id
@@ -484,11 +504,11 @@ export default {
     eputId() {
       let eputId = ''
 
-      if (typeof this.img.gaga_id == 'undefined' || this.img.gaga_id == null || this.img.gaga_id.length < 1) {
+      if (typeof this.img.gaga_id === 'undefined' || this.img.gaga_id == null || this.img.gaga_id.length < 1) {
         eputId = this.img.id
       }
 
-      if (typeof this.img.eput_id != 'undefined' && this.img.eput_id != null && this.img.eput_id.length > 0) {
+      if (typeof this.img.eput_id !== 'undefined' && this.img.eput_id != null && this.img.eput_id.length > 0) {
         eputId = this.img.eput_id
       } else {
         eputId = this.img.id
@@ -497,7 +517,7 @@ export default {
       return eputId
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.img.user_data)
+      return utilHelper.toUserPage(this.img.user_data)
     }
   },
   components: {
@@ -686,7 +706,7 @@ export default {
   color: rgba(255, 255, 255, .9);
   padding: 4px 8px;
   opacity: 1;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   word-break: break-all;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
@@ -700,7 +720,7 @@ export default {
   color: rgba(255, 255, 255, .9);
   padding: 4px 8px;
   opacity: 1;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   word-break: break-all;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;

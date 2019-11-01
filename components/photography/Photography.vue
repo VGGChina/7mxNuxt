@@ -6,10 +6,11 @@
         v-for="item in avatarList[avatarIndex].firstAvatar"
         :key="item.id"
         class="content_left"
-      >
-        <!-- @click.stop="goAvatarDetai(item.name)"
+        @click.stop="goAvatarDetai(item.name)"
         @mouseenter="contentMouseenter(1000000)"
-        @mouseleave="contentMouseLeave" -->
+        @mouseleave="contentMouseLeave"
+      >
+
         <img :src="item.avatar" alt>
         <h3>{{ item.nick }}</h3>
         <p>
@@ -27,10 +28,11 @@
           v-for="(item,index) in avatarList[avatarIndex].avatarList"
           :key="item.id"
           class="photo_item"
-        >
-          <!-- @click.stop="goAvatarDetai(item.name)"
+          @click.stop="goAvatarDetai(item.name)"
           @mouseenter="contentMouseenter(index)"
-          @mouseleave="contentMouseLeave(index)" -->
+          @mouseleave="contentMouseLeave(index)"
+        >
+
           <img :src="item.avatar" alt class="avatar">
           <h3>{{ item.nick }}</h3>
           <p>

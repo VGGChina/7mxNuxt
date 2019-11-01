@@ -25,6 +25,10 @@ export default {
   */
   css: [
   ],
+
+  script: [
+    { src: '~/static/js/anime.min.js' }
+  ],
   /*
   ** Plugins to load before mounting the App
   */
@@ -41,23 +45,22 @@ export default {
   /*
   ** Nuxt.js modules
   */
-  // modules: [
-  //   '@nuxtjs/axios',
-  //   '@nuxtjs/proxy'
-  // ],
 
-  // axios: {
-  //   proxy: true
-  //   // prefix: '/api', // baseURL
-  //   // credentials: true
-  // },
-  // proxy: {
-  //   '/api': {
-  //     target: 'https://api.7mx.com/', // 代理地址
-  //     // changeOrigin: true,
-  //     pathRewrite: {
-  //       '^/api': '' // 将 /api 替换掉
-  //     }
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
+  ],
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    '/api': {
+      target: 'https://api.7mx.com',
+      pathRewrite: {
+        '^/api': '/'
+      }
+    }
+  },
 
   //   }
   // },
