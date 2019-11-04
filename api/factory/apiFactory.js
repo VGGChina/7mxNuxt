@@ -1,79 +1,19 @@
-import UserService from '~/api/userService'
-import MediaService from '~/api/mediaService'
-import CommonService from '~/api/commonService'
-import AlbumService from '~/api/albumService'
-import TagService from '~/api/tagService'
-import PaixinService from '~/api/paixinService'
-import StatisticsService from '~/api/statisticsService'
+import userService from '~/api/userService'
+import mediaService from '~/api/mediaService'
+import commonService from '~/api/commonService'
+import albumService from '~/api/albumService'
+import tagService from '~/api/tagService'
+import paixinService from '~/api/paixinService'
+import statisticsService from '~/api/statisticsService'
 
-class ApiFactory {
-  constructor() {
-    this.userApi = null
-    this.mediaApi = null
-    this.commonApi = null
-    this.albumApi = null
-    this.tagApi = null
-    this.paixinApi = null
-    this.statisticsApi = null
-    this.baseURL = 'https://api.7mx.com/'
-  }
-
-  getUserApi() {
-    if (this.userApi === null) {
-      this.userApi = new UserService()
-    }
-
-    return this.userApi
-  }
-
-  getMediaApi() {
-    if (this.mediaApi === null) {
-      this.mediaApi = new MediaService()
-    }
-
-    return this.mediaApi
-  }
-
-  getCommonApi() {
-    if (this.commonApi === null) {
-      this.commonApi = new CommonService()
-    }
-
-    return this.commonApi
-  }
-
-  getAlbumApi() {
-    if (this.albumApi === null) {
-      this.albumApi = new AlbumService()
-    }
-
-    return this.albumApi
-  }
-
-  getTagApi() {
-    if (this.tagApi === null) {
-      this.tagApi = new TagService()
-    }
-
-    return this.tagApi
-  }
-
-  getPaixinApi() {
-    if (this.paixinApi === null) {
-      this.paixinApi = new PaixinService()
-    }
-
-    return this.paixinApi
-  }
-
-  getStatisticsApi() {
-    if (this.statisticsApi === null) {
-      this.statisticsApi = new StatisticsService()
-    }
-
-    return this.statisticsApi
-  }
+const apiFactory = {
+  userService,
+  mediaService,
+  commonService,
+  albumService,
+  tagService,
+  paixinService,
+  statisticsService
 }
-const apiFactory = new ApiFactory()
 
 export default apiFactory

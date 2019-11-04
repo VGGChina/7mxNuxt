@@ -45,7 +45,7 @@
           class="avatar"
           :style=" {
             'backgroundImage': 'url(' +
-              ($utilHelper.getCompressionUrl(loginUser.avatar, 200, 200) ||
+              (dataUtilHelper.getCompressionUrl(loginUser.avatar, 200, 200) ||
                 require('~/assets/img/avatar-default.svg')) + ')'
           }"
         />
@@ -63,6 +63,7 @@
 import PushNotifi from '~/components/push-notifi/index'
 import { mapGetters } from 'vuex'
 import AvatarList from './AvatarList'
+import utilHelper from '~/utils/utils.js'
 
 export default {
   data: () => ({
@@ -70,7 +71,8 @@ export default {
     imageNum: 0,
     showPushNotifi: false,
     // 点击后红点临时消除
-    readedMessages: false
+    readedMessages: false,
+    dataUtilHelper: utilHelper
   }),
   methods: {
     goUpload() {
@@ -106,7 +108,7 @@ export default {
         return false
       }
     },
-    cardStatus: function() {
+    cardStatus() {
       try {
         return this.loginUser.user_data.card_status
       } catch (e) {
@@ -132,7 +134,7 @@ export default {
       }
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.loginUser)
+      return utilHelper.toUserPage(this.loginUser)
     }
   },
   created() {

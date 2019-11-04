@@ -1,9 +1,11 @@
 import { axios7mx } from './factory/axiosFactory'
 
-export default class StatisticsService {
+const statisticsService = {
   // 统计
   postBannerClickNum(data) {
-    let url = 'tag/click'
+    const url = 'tag/click'
     return axios7mx(url, data, {})
   }
 }
+
+export default statisticsService

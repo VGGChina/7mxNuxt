@@ -24,11 +24,9 @@ export default {
   ** Global CSS
   */
   css: [
+    '~/assets/css/main.scss'
   ],
 
-  script: [
-    { src: '~/static/js/anime.min.js' }
-  ],
   /*
   ** Plugins to load before mounting the App
   */

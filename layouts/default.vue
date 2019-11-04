@@ -1,12 +1,12 @@
 <template>
   <div>
-    <!-- <login-register />
-    <upload />
+    <!-- <login-register /> -->
+    <!-- <upload /> -->
     <upload-paixin />
     <user-setting />
     <improve-info />
-    <needed /> -->
-    <!-- <topbar /> -->
+    <needed />
+    <topbar />
     <!-- <help /> -->
     <!-- <popup-album /> -->
     <back-top />

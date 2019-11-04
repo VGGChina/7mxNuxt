@@ -95,6 +95,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import anime from 'animejs'
+
 /* global anime */
 
 export default {

@@ -1,36 +1,38 @@
 <template>
-  <transition name='show-list'>
-    <div id='perslist' v-show='isShowList && isLogin'>
-      <div class='array_wrap'>
-        <div class='array'></div>
+  <transition name="show-list">
+    <div v-show="isShowList && isLogin" id="perslist">
+      <div class="array_wrap">
+        <div class="array" />
       </div>
 
       <ul>
         <li>
-          <router-link :to='userRef' class='link'>我的主页</router-link>
+          <router-link :to="userRef" class="link">我的主页</router-link>
         </li>
         <li>
-          <router-link to='/income' class='link'>收益中心</router-link>
+          <router-link to="/income" class="link">收益中心</router-link>
         </li>
-        <li @click='uploadToPaixin'>上架商品</li>
+        <li @click="uploadToPaixin">上架商品</li>
         <li>
-          <router-link to='/ulike' class='link'>喜欢</router-link>
+          <router-link to="/ulike" class="link">喜欢</router-link>
         </li>
-        <li @click='toFirends'>
-          <router-link :to='"/friends/" + loginUser.id + "/0"' class='link'>好友</router-link>
+        <li @click="toFirends">
+          <router-link :to="'/friends/' + loginUser.id + '/0'" class="link">好友</router-link>
         </li>
-        <li @click='$store.commit("isShowSettingDialog", true)'>设置</li>
-        <div class='loginout' @click='logout'>退出</div>
+        <li @click="$store.commit('isShowSettingDialog', true)">设置</li>
+        <div class="loginout" @click="logout">退出</div>
       </ul>
     </div>
   </transition>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
+import utilHelper from '~/utils/utils.js'
 
 export default {
+  props: ['isShowList'],
   methods: {
     toUser() {
       this.$router.push({
@@ -38,7 +40,7 @@ export default {
         params: {
           name: this.loginUser.name
         }
-      });
+      })
     },
     toFirends() {
       this.$router.push({
@@ -46,17 +48,17 @@ export default {
         params: {
           id: this.loginUser.id
         }
-      });
+      })
     },
     toUserLike() {
       this.$router.push({
         name: 'ulike'
-      });
+      })
     },
     toContributor() {
       this.$router.push({
         name: 'contributor'
-      });
+      })
     },
     logout() {
       apiFactory
@@ -64,81 +66,80 @@ export default {
         .logout()
         .then(res => {
           if (res.data.out === '1') {
-            this.$store.commit('loginUser', {});
+            this.$store.commit('loginUser', {})
             this.$router.push({
               name: 'index'
-            });
+            })
           } else {
-            this.$toast.warn(res.data.msg);
+            this.$toast.warn(res.data.msg)
           }
-        });
+        })
     },
     async uploadToPaixin() {
-      let res = await apiFactory.getUserApi().currentUser();
+      const res = await apiFactory.getUserApi().currentUser()
 
       if (res.data.out != '1') {
-        this.$store.commit('isShowLoginDialog', true);
+        this.$store.commit('isShowLoginDialog', true)
 
-        return;
+        return
       }
 
-      this.$store.commit('loginUser', res.data.data);
+      this.$store.commit('loginUser', res.data.data)
 
       setTimeout(() => {
         if (this.status == '3') {
-          this.intoOther();
+          this.intoOther()
         } else {
-          this.$router.push({ name: 'contributor' });
+          this.$router.push({ name: 'contributor' })
         }
-      }, 30);
+      }, 30)
     },
     async intoOther() {
-      let otherRes = await apiFactory.getUserApi().intoOther();
+      const otherRes = await apiFactory.getUserApi().intoOther()
 
       if (otherRes.data.out == '1') {
-        this.loginUser.gaga_id = otherRes.data.data.gaga_id;
+        this.loginUser.gaga_id = otherRes.data.data.gaga_id
 
-        this.$store.commit('loginUser', this.loginUser);
+        this.$store.commit('loginUser', this.loginUser)
 
-        this.$store.commit('isShowUploadPaixinDialog', true);
+        this.$store.commit('isShowUploadPaixinDialog', true)
       } else {
-        this.$toast.warn('您的账号信息有问题，请联系客服');
+        this.$toast.warn('您的账号信息有问题，请联系客服')
       }
     }
   },
-  props: ['isShowList'],
   computed: {
     ...mapGetters(['isLogin', 'loginUser']),
     cardStatus: function() {
       try {
-        return this.loginUser.user_data.card_status;
+        return this.loginUser.user_data.card_status
       } catch (e) {
-        return '0';
+        return '0'
       }
     },
     companyStatus: function() {
       try {
-        return this.loginUser.user_data.company_status;
+        return this.loginUser.user_data.company_status
       } catch (e) {
-        return '0';
+        return '0'
       }
     },
     status: function() {
       if (this.cardStatus == '0') {
         if (this.companyStatus == '0') {
-          return '0';
+          return '0'
         } else {
-          return this.companyStatus;
+          return this.companyStatus
         }
       } else {
-        return this.cardStatus;
+        return this.cardStatus
       }
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.loginUser);
+      return utilHelper.toUserPage(this.loginUser)
     }
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>

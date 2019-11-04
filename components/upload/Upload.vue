@@ -1,8 +1,8 @@
 <template>
   <div>
     <transition name="cover-fade">
-      <div class="upload-cover" v-if="isShowUploadDialog" @click="cancelDialog">
-        <div class="cancle-button"/>
+      <div v-if="isShowUploadDialog" class="upload-cover" @click="cancelDialog">
+        <div class="cancle-button" />
       </div>
     </transition>
 
@@ -15,9 +15,9 @@
             <div
               class="detail-black"
             >* 每次最多上传{{ maxUploadNum }}张图片；每张图片最长边必须大于2000像素，最短边必须大于1000像素；每张图片大小不能超过50MB</div>
-            <br >
+            <br>
             <div class="detail-black">* 若上传的多张图片属于一个系列，只需要编辑第一张图片，其余图片将默认使用第一张图片的所有信息；否则，请单独编辑每张图片</div>
-            <br >
+            <br>
             <div class="detail-red">
               * 声明：上传者需保证上传作品系原创，且拥有作品的独立版权，不会侵犯任何版权、商标或其他
               知识产权，亦不会违反任何第三方隐私权或肖像权，否则上传者承担全部法律责任
@@ -33,8 +33,8 @@
             <!-- 选择图片区 -->
             <div id="upload-img-pick-container">
               <div id="upload-add-img">
-                <div class="horizontal"/>
-                <div class="vertical"/>
+                <div class="horizontal" />
+                <div class="vertical" />
               </div>
 
               <img-pre
@@ -57,11 +57,11 @@
             <div class="upload-img-edit-container">
               <button @click.stop="release">发布</button>
 
-              <input v-model="title" class="works-name" type="text" placeholder="作品名称" >
+              <input v-model="title" class="works-name" type="text" placeholder="作品名称">
 
               <textarea
-                class="works-description"
                 v-model="text"
+                class="works-description"
                 type="text"
                 placeholder="描述一下图片的故事，有利推荐！"
               />
@@ -79,11 +79,9 @@
 
               <div class="tag" style="margin: 25px 0 0 22px">参加活动</div>
 
-              <!-- v-if="$route.name == 'activityDetail'" -->
-
               <selection
-                disabled="disabled"
                 v-model="activity"
+                disabled="disabled"
                 class="category"
                 :place-text="'参加活动'"
                 :options="activities"
@@ -101,7 +99,7 @@
 
               <div class="upload-waterMark">
                 <div class="check-box-min" @click="addWaterMark">
-                  <div v-if="isWaterMark"/>
+                  <div v-if="isWaterMark" />
                 </div>
                 <span>给本图添加水印</span>
               </div>
@@ -127,16 +125,16 @@
                 class="tag-input"
                 type="text"
                 placeholder="至少添加5个关键词"
-                @keyup.enter="pushTag"
                 :style="{
                   'border-color': isReleaseClicked && isNoKewords ? 'red' : '#e3e3e3'
                 }"
+                @keyup.enter="pushTag"
               >
 
               <div id="tag-list" class="tag-list">
-                <div v-for="(item, index) in tagList" class="tag-item" :key="index">
+                <div v-for="(item, index) in tagList" :key="index" class="tag-item">
                   <span>{{ item.label }}</span>
-                  <div class="delete" @click="deleteTag(item, index)"/>
+                  <div class="delete" @click="deleteTag(item, index)" />
                 </div>
               </div>
 
@@ -157,9 +155,9 @@
             <transition name="release-fade">
               <div v-if="isReleasing" class="release">
                 <div class="spinner">
-                  <div class="bounce1"/>
-                  <div class="bounce2"/>
-                  <div class="bounce3"/>
+                  <div class="bounce1" />
+                  <div class="bounce2" />
+                  <div class="bounce3" />
                 </div>
                 <div class="loading-font">正在发布...</div>
               </div>
@@ -209,7 +207,7 @@ export default {
     agreeRules() {
       if (!this.isLogin) {
         this.$store.commit('isShowLoginDialog', true)
-        return;
+        return
       }
 
       this.isAgreeRules = true
@@ -256,9 +254,9 @@ export default {
       this.isWaterMark = false
     },
     put64(file) {
-      let extension = file.type.split('/')[1] || 'jpeg';
-        let data = uploadUtil.getUploadData('images', 'photos2/', extension);
-        let upTokenData = null
+      const extension = file.type.split('/')[1] || 'jpeg'
+      const data = uploadUtil.getUploadData('images', 'photos2/', extension)
+      let upTokenData = null
 
       getUptoken(data, request => {
         if (request.status === 200) {
@@ -321,7 +319,7 @@ export default {
     },
     initQiNiu() {
       const vm = this
-      let qiniu = new QiniuJsSDK()
+      const qiniu = new QiniuJsSDK()
       this.uploader = qiniu.uploader({
         runtimes: 'html5,flash,html4',
         multi_selection: true,
@@ -418,10 +416,10 @@ export default {
 
               file.isSizeMatch = true
 
-              const fileNative = file.getNative();
-                let url = window.URL || window.webkitURL || window.mozURL;
-                let src = url.createObjectURL(fileNative);
-                let image = new Image()
+              const fileNative = file.getNative()
+              const url = window.URL || window.webkitURL || window.mozURL
+              const src = url.createObjectURL(fileNative)
+              const image = new Image()
 
               image.onload = function() {
                 if (vm.maxNum(image.width, image.height) < 2000 || vm.minNum(image.width, image.height) < 1000) {
@@ -430,9 +428,9 @@ export default {
                   file.isSizeMatch = false
                 }
 
-                let canvas = document.createElement('canvas');
-                  let context = canvas.getContext('2d');
-                  let maxWidth = 400
+                const canvas = document.createElement('canvas')
+                const context = canvas.getContext('2d')
+                let maxWidth = 400
 
                 if (image.height > image.width) {
                   maxWidth = image.width / image.height * maxWidth
@@ -537,7 +535,7 @@ export default {
       })
     },
     async fetchActivities() {
-      let res = await apiFactory.getTagApi().getActivityList({ type: '1' })
+      let res = await apiFactory.tagService.getActivityList({ type: '1' })
 
       if (res.data.out == '1') {
         this.activities.push({ id: 0, name: '暂不参加' })
@@ -545,13 +543,6 @@ export default {
           return item.name !== '2019年中海汤泉——全国摄影邀请赛'
         })
         this.activities.push(...res)
-
-        // 所有作品默认参加这个活动，id 280436
-        // let filters = this.activities.filter(e => e.id == '280436')
-
-        // if (filters.length > 0) {
-        //   this.$store.commit('uploadActivity', filters[0])
-        // }
       } else {
         this.activities.push({ id: -1, name: '暂无活动' })
       }
@@ -753,7 +744,7 @@ export default {
 
         this.isReleasing = false
 
-        return;
+        return
       }
 
       // 筛选出还未提交过的图片
@@ -863,8 +854,8 @@ export default {
       document.body.removeChild(input, false, null)
     },
     async feedbackToMaLong(file) {
-      const addTags = [];
-        let removeTags = []
+      const addTags = []
+      const removeTags = []
 
       file.tagList.forEach(e => {
         if (!e.hasOwnProperty('puid')) {

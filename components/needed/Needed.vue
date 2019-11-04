@@ -1,30 +1,33 @@
 <template>
   <div>
     <transition name="mask-fade">
-      <div class="mask" v-if="neededIsShow" @click="cancel"></div>
+      <div v-if="neededIsShow" class="mask" @click="cancel" />
     </transition>
 
     <transition name="dialog-fade">
-      <div class="dialog" v-if="neededIsShow">
+      <div v-if="neededIsShow" class="dialog">
         <h2>填写联系方式</h2>
         <h4>
-            购买热线：400-9613-900，或<a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank">在线咨询</a><br>
-            留下真实信息，以便上架后尽快完成授权
+          购买热线：400-9613-900，或<a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank">在线咨询</a><br>
+          留下真实信息，以便上架后尽快完成授权
         </h4>
         <input
           v-model="name"
           type="text"
-          placeholder="公司或者个人称呼">
+          placeholder="公司或者个人称呼"
+        >
 
         <input
           v-model="phone"
           type="text"
-          placeholder="手机号">
+          placeholder="手机号"
+        >
 
         <input
           v-model="qq"
           type="text"
-          placeholder="QQ号">
+          placeholder="QQ号"
+        >
 
         <button @click="commit">确定</button>
       </div>
@@ -35,7 +38,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
-
 
 export default {
   data() {
@@ -51,26 +53,26 @@ export default {
       this.$store.commit('neededData', {
         isShow: false,
         mediaId: ''
-      });
+      })
     },
     async commit() {
       if (this.name == '' || this.phone == '') {
-        this.$toast.warn('公司或者个人称呼、手机号为必填项');
-        return;
+        this.$toast.warn('公司或者个人称呼、手机号为必填项')
+        return
       }
 
-      let rqBody = {
+      const rqBody = {
         media_id: this.neededMediaId,
         name: this.name,
         phone: this.phone,
         qq: this.qq
       }
 
-      let res = await apiFactory.getMediaApi().needed(rqBody);
+      const res = await apiFactory.getMediaApi().needed(rqBody)
 
       if (res.data.out == '1') {
         let neededUserList = []
-        let storage = localStorage.getItem('neededUserList');
+        const storage = localStorage.getItem('neededUserList')
         if (storage != null) {
           neededUserList = JSON.parse(storage)
         }
@@ -79,15 +81,15 @@ export default {
           name: rqBody.name,
           phone: rqBody.phone,
           qq: rqBody.qq
-        });
-        localStorage.setItem('neededUserList', JSON.stringify(neededUserList));
-        this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者');
+        })
+        localStorage.setItem('neededUserList', JSON.stringify(neededUserList))
+        this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
         this.$store.commit('neededData', {
           isShow: false,
           mediaId: ''
-        });
+        })
       } else {
-        this.$toast.warn(res.data.msg);
+        this.$toast.warn(res.data.msg)
       }
     }
   },

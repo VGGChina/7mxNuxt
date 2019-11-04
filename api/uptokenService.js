@@ -2,7 +2,7 @@ export default function getUptoken(data, callback) {
   const url = '//api.7mx.com/thirdpart/qiniu'
   const xToken = localStorage.getItem('x-token')
 
-  let request = new XMLHttpRequest()
+  const request = new XMLHttpRequest()
 
   request.open('POST', url, false)
 
