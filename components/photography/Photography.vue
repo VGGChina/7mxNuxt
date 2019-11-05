@@ -55,7 +55,6 @@
 import sharetitle from '~/components/common/share-title.vue'
 import morecategory from '~/components/common/category_more.vue'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: '',
@@ -174,7 +173,8 @@ p {
   line-height: 28px;
 }
 .content .content_left p {
-  padding-top: 4px;
+  // padding-top: 4px;
+  padding-top: 16px;
   height: 20px;
   font-size: 14px;
   font-family: PingFangHK-Regular;

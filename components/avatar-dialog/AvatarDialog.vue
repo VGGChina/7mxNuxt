@@ -64,7 +64,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 import utilHelper from '~/utils/utils.js'
 import loading from '~/components/loading/Loading'
@@ -83,6 +82,29 @@ export default {
       imgList: [],
       isFetching: false,
       dataUtilHelper: utilHelper
+    }
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    eputUserId() {
+      let eputUserId = ''
+
+      if (typeof this.userData.gaga_id !== 'undefined' && this.userData.gaga_id != null && this.userData.gaga_id.length > 0) {
+        eputUserId = this.userData.id
+      }
+
+      if (typeof this.userData.eput_id !== 'undefined' && this.userData.eput_id != null && this.userData.eput_id.length > 0) {
+        eputUserId = this.userData.eput_id
+      } else {
+        eputUserId = this.userData.id
+      }
+
+      return eputUserId
+    },
+    userRef() {
+      return utilHelper.toUserPage(this.userData)
     }
   },
   created() {
@@ -138,29 +160,6 @@ export default {
       if (this.leave) {
         this.leave()
       }
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin'
-    ]),
-    eputUserId() {
-      let eputUserId = ''
-
-      if (typeof this.userData.gaga_id !== 'undefined' && this.userData.gaga_id != null && this.userData.gaga_id.length > 0) {
-        eputUserId = this.userData.id
-      }
-
-      if (typeof this.userData.eput_id !== 'undefined' && this.userData.eput_id != null && this.userData.eput_id.length > 0) {
-        eputUserId = this.userData.eput_id
-      } else {
-        eputUserId = this.userData.id
-      }
-
-      return eputUserId
-    },
-    userRef() {
-      return utilHelper.toUserPage(this.userData)
     }
   },
   watch: {

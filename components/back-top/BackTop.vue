@@ -1,39 +1,39 @@
 <template>
-  <div class="back-top_container"
+  <div
+    class="back-top_container"
+    :class="{opacityShow: ifshow}"
     @click="backToTop()"
-    :class='{opacityShow: ifshow}'>
-    <div class="arrow arrow-left"></div>
-    <div class="arrow arrow-right"></div>
+  >
+    <div class="arrow arrow-left" />
+    <div class="arrow arrow-right" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data() {
     return {
       ifshow: false
     }
   },
-  methods: {
-    backToTop() {
-      window.scrollTo(0, 0)
+  computed: {
+    winPageYOffset() {
+      return this.$store.state.window.winPageYOffset
     }
   },
   watch: {
     winPageYOffset(n, o) {
       if (n > 2000) {
-        this.ifshow = true;
+        this.ifshow = true
       } else {
-        this.ifshow = false;
+        this.ifshow = false
       }
     }
   },
-  computed: {
-    ...mapGetters([
-      'winPageYOffset'
-    ])
+  methods: {
+    backToTop() {
+      window.scrollTo(0, 0)
+    }
   }
 }
 </script>

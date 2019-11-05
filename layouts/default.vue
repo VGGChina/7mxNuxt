@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <login-register /> -->
-    <!-- <upload /> -->
+    <upload />
     <upload-paixin />
     <user-setting />
     <improve-info />

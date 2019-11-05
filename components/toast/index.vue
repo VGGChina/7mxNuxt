@@ -1,8 +1,10 @@
 <template>
   <transition name="toast-fade">
-    <div class="toast-content"
+    <div
       v-if="isShow"
-      :class="{'toast-notice': type === 'notice', 'toast-warn': type === 'warn'}">
+      class="toast-content"
+      :class="{'toast-notice': type === 'notice', 'toast-warn': type === 'warn'}"
+    >
       <img class="toast-icon" :src="icon" width="36px" height="36px" alt="">
       <span>{{ tips }}</span>
     </div>
@@ -19,11 +21,11 @@ export default {
     }
   },
   computed: {
-    icon: function () {
-      return this.type === 'warn' ? require('./img/warn.svg') : require('./img/notice.svg');
+    icon: function() {
+      return this.type === 'warn' ? require('./img/warn.svg') : require('./img/notice.svg')
     }
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>
@@ -45,7 +47,7 @@ export default {
   right: 30px;
   width: 355px;
   height: 75px;
-  padding-right: 16px; 
+  padding-right: 16px;
   display: flex;
   align-items: center;
   font-size: 15px;

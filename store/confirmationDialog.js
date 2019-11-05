@@ -1,14 +1,12 @@
-// initial state
-const state = {
+const state = () => ({
   confirmationDialogData: {
     isShowConfirmationDialog: false,
     confirmationDialogTitle: '是否确定删除？',
     confirmFunction: null,
     confirmFunctionParams: null
   }
-}
+})
 
-// getters
 const getters = {
   isShowConfirmationDialog: state => state.confirmationDialogData.isShowConfirmationDialog,
   confirmationDialogTitle: state => state.confirmationDialogData.confirmationDialogTitle,
@@ -16,17 +14,15 @@ const getters = {
   confirmFunctionParams: state => state.confirmationDialogData.confirmFunctionParams
 }
 
-// actions
 const actions = {
   confirmationDialogData({ commit, state }, data) {
     commit('confirmationDialogData', data)
   }
 }
 
-// mutations
 const mutations = {
   confirmationDialogData(state, data) {
-    state.confirmationDialogData = data;
+    state.confirmationDialogData = data
   }
 }
 

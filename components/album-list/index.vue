@@ -1,46 +1,56 @@
 <template>
-  <div class='album_wrap'>
-    <div class="clear"></div>
+  <div class="album_wrap">
+    <div class="clear" />
     <div class="album_list">
-      <div class="album_item" v-for='(item, i) in albumList' :key="i">
-        <div v-if="loginUser.id == item.user_data.id"
+      <div v-for="(item, i) in albumList" :key="i" class="album_item">
+        <div
+          v-if="loginUser.id == item.user_data.id"
+          class="delete-album"
           @click="showDeleteAlbum(item.id, i)"
-          class="delete-album">
-          <div></div>
-          <div></div>
-          <div></div>
+        >
+          <div />
+          <div />
+          <div />
         </div>
 
-        <div @click='toAlbumDetail(item.id)'
+        <div
           class="pic_wrap"
           :style="{
             'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.image) + ')'
-          }">
-        </div>
+          }"
+          @click="toAlbumDetail(item.id)"
+        />
 
         <div class="desc_wrap">
-          <div @click='toAlbumDetail(item.id)' class="name">{{item.name}}</div>
-          <div class="belong">作者 {{item.user_data.nick || item.user_data.name}}</div>
+          <div class="name" @click="toAlbumDetail(item.id)">{{ item.name }}</div>
+          <div class="belong">作者 {{ item.user_data.nick || item.user_data.name }}</div>
         </div>
-      
+
       </div>
-      <div class="clear"></div>
+      <div class="clear" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
-  name: 'album-list',
+  name: 'AlbumList',
   props: [
     'albumList'
   ],
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
   methods: {
     toAlbumDetail(id) {
-      this.$router.push({name: 'album', params: {album_id: id}})
+      this.$router.push({ name: 'album', params: { album_id: id }})
     },
     showDeleteAlbum(id, index) {
       if (!this.isLogin) {
@@ -57,7 +67,7 @@ export default {
       })
     },
     async deleteAlbum(data) {
-      let res = await apiFactory
+      const res = await apiFactory
         .getAlbumApi()
         .deleteAlbum({ album_id: data.album_id })
 
@@ -76,12 +86,6 @@ export default {
         this.$toast.warn(res.data.msg)
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser'
-    ])
   }
 }
 </script>
@@ -104,7 +108,7 @@ export default {
 
     &:hover {
       background: rgba(0, 0, 0, 0.05);
-      
+
       .delete-album {
         opacity: 1;
         transition: opacity .2s;

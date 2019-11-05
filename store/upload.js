@@ -1,16 +1,13 @@
-// initial state
-const state = {
+const state = () => ({
   isShowUploadDialog: false,
   uploadActivity: {}
-}
+})
 
-// getters
 const getters = {
   isShowUploadDialog: state => state.isShowUploadDialog,
   uploadActivity: state => state.uploadActivity
 }
 
-// actions
 const actions = {
   isShowUploadDialog({ commit, state }, isShow) {
     commit('isShowUploadDialog', isShow)
@@ -20,13 +17,12 @@ const actions = {
   }
 }
 
-// mutations
 const mutations = {
   isShowUploadDialog(state, isShow) {
-    state.isShowUploadDialog = isShow;
+    state.isShowUploadDialog = isShow
   },
   uploadActivity(state, activity) {
-    state.uploadActivity = activity;
+    state.uploadActivity = activity
   }
 }
 

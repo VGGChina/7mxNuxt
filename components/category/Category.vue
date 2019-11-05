@@ -1,68 +1,75 @@
 <template>
-<div>
-  <div class="list-wrap">
-    <div class="array_wrap">
-      <div class="array"></div>
+  <div>
+    <div class="list-wrap">
+      <div class="array_wrap">
+        <div class="array" />
+      </div>
+
+      <ul class="wrap">
+        <li>
+          <router-link to="/category/0/0/1">热门图片</router-link>
+        </li>
+        <li>
+          <router-link :to="'/tag'">热门标签</router-link>
+        </li>
+      </ul>
+
+      <div class="list-division" />
+
+      <ul class="wrap">
+        <li
+          v-for="(item,index) in categoryListAll"
+          v-if="index <= 4"
+          :key="item.id"
+        >
+          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }}</router-link>
+        </li>
+      </ul>
+
+      <ul class="wrap">
+        <li
+          v-for="(item,index) in categoryListAll"
+          v-if="4 < index && index <=9"
+          :key="item.id"
+        >
+          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
+        </li>
+      </ul>
+
+      <ul class="wrap">
+        <li
+          v-for="(item,index) in categoryListAll"
+          v-if="9 < index && index <= 14"
+          :key="item.id"
+        >
+          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
+        </li>
+      </ul>
+
+      <ul class="wrap">
+        <li
+          v-for="(item,index) in categoryListAll"
+          v-if="14 < index"
+          :key="item.id"
+        >
+          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
+        </li>
+      </ul>
     </div>
-
-    <ul class="wrap">
-      <li>
-        <router-link to="/category/0/0/1" >热门图片</router-link>
-      </li>
-      <li>
-        <router-link :to="'/tag'">热门标签</router-link>
-      </li>
-    </ul>
-
-    <div class="list-division"></div>
-
-    <ul class="wrap">
-      <li
-        v-for="(item,index) in categoryListAll"
-        :key="item.id" v-if="index <= 4">
-        <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{item.name}}</router-link>
-      </li>
-    </ul>
-
-    <ul class="wrap">
-      <li
-        v-for="(item,index) in categoryListAll"
-        :key="item.id" v-if="4 < index && index <=9">
-        <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{item.name}} </router-link>
-      </li>
-    </ul>
-
-    <ul class="wrap">
-      <li
-        v-for="(item,index) in categoryListAll"
-        :key="item.id" v-if="9 < index && index <= 14">
-        <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{item.name}} </router-link>
-      </li>
-    </ul>
-
-    <ul class="wrap">
-      <li
-        v-for="(item,index) in categoryListAll"
-        :key="item.id" v-if="14 < index">
-        <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{item.name}} </router-link>
-      </li>
-    </ul>
   </div>
-</div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
-  computed: {
-    ...mapGetters([
-      'categoryListAll'
-    ])
-  },
   props: [
     'isTopbar'
-  ]
-};
+  ],
+  computed: {
+    categoryListAll() {
+      return this.$store.state.category.categoryListAll
+    }
+  }
+}
 </script>
 
 <style lang='scss' scoped>

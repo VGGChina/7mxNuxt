@@ -172,7 +172,6 @@
 <script>
 /* global QiniuJsSDK */
 /* global EXIF */
-import { mapGetters } from 'vuex'
 import ImgPre from './img-pre/ImgPre'
 import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
@@ -181,6 +180,10 @@ import Selection from '~/components/selection/Selection'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
+  components: {
+    ImgPre,
+    Selection
+  },
   data: () => ({
     isAgreeRules: false,
     uploader: {},
@@ -213,7 +216,7 @@ export default {
       this.isAgreeRules = true
     },
     cancelDialog() {
-      this.$store.commit('isShowUploadDialog', false)
+      this.$store.commit('upload/isShowUploadDialog', false)
 
       // 重置所有变量，除了activities
       this.isAgreeRules = false
@@ -535,9 +538,14 @@ export default {
       })
     },
     async fetchActivities() {
-      let res = await apiFactory.tagService.getActivityList({ type: '1' })
+      // let res = await apiFactory.tagService.getActivityList({ type: '1' })
+      const config = {
+        url: '/api/tag/activity_list',
+        data: { type: '1' }
+      }
+      let res = await this.$axios(config)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.activities.push({ id: 0, name: '暂不参加' })
         res = res.data.data.filter(item => {
           return item.name !== '2019年中海汤泉——全国摄影邀请赛'
@@ -737,7 +745,7 @@ export default {
       if (this.uploader.files.length < 1) {
         this.$toast.notice('发布成功')
 
-        this.$store.commit('isShowUploadDialog', false)
+        this.$store.commit('upload/isShowUploadDialog', false)
 
         // 跳转到用户主页
         window.location.replace(this.userRef)
@@ -886,13 +894,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'isShowUploadDialog',
-      'loginUser',
-      'isLogin',
-      'categoryList',
-      'uploadActivity'
-    ]),
+    isShowUploadDialog() {
+      return this.$store.state.upload.isShowUploadDialog
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    categoryList() {
+      return this.$store.state.category.categoryList
+    },
+    uploadActivity() {
+      return this.$store.state.upload.uploadActivity
+    },
     hasFiles() {
       try {
         return this.uploader.files.length > 0
@@ -1034,10 +1050,6 @@ export default {
         window.onerror = null
       }
     }
-  },
-  components: {
-    ImgPre,
-    Selection
   }
 }
 </script>

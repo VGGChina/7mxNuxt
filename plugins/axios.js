@@ -1,7 +1,9 @@
 export default function({ $axios, redirect }) {
-//   $axios.onError(error => {
-//     if (error.code === 500) {
-//       redirect('/sorry')
-//     }
-//   })
+  $axios.onRequest((config) => {
+    config.method = 'POST'
+    config.headers = { 'Content-Type': 'application/json; charset=utf-8' }
+    config.withCredentials = true
+    config.responseType = 'text'
+    return config
+  })
 }

@@ -2,28 +2,32 @@
   <div class="upload-paixin">
     <transition name="cover-fade">
       <div
+        v-if="isShowUploadPaixinDialog"
         class="upload-cover"
         @click="cancleDialog"
-        v-if="isShowUploadPaixinDialog">
-        <div class="cancle-button"></div>
+      >
+        <div class="cancle-button" />
       </div>
     </transition>
 
     <transition name="upload-fade">
-      <div class="upload-container" v-if="isShowUploadPaixinDialog">
-        <choose-works @nextStep="handle" v-if="!isChoosed"></choose-works>
-        <edit-works @nextStep="handle" v-if="isChoosed" :choosedList="choosedList"></edit-works>
+      <div v-if="isShowUploadPaixinDialog" class="upload-container">
+        <choose-works v-if="!isChoosed" @nextStep="handle" />
+        <edit-works v-if="isChoosed" :choosed-list="choosedList" @nextStep="handle" />
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import ChooseWorks from './ChooseWorks'
 import EditWorks from './EditWorks'
 
 export default {
+  components: {
+    ChooseWorks,
+    EditWorks
+  },
   data() {
     return {
       isChoosed: false,
@@ -31,23 +35,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'isShowUploadPaixinDialog'
-    ])
+    isShowUploadPaixinDialog() {
+      return this.$store.state.uploadPaixin.isShowUploadPaixinDialog
+    }
   },
   methods: {
     handle(data) {
-      this.isChoosed = data.isChoosed;
-      this.choosedList = data.choosedList;
+      this.isChoosed = data.isChoosed
+      this.choosedList = data.choosedList
     },
     cancleDialog() {
-      this.$store.commit('isShowUploadPaixinDialog', false);
-      this.isChoosed = false;
+      this.$store.commit('isShowUploadPaixinDialog', false)
+      this.isChoosed = false
     }
-  },
-  components: {
-    ChooseWorks,
-    EditWorks
   }
 }
 </script>

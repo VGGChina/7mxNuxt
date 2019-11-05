@@ -143,46 +143,46 @@ export default {
   },
   methods: {
     cancel() {
-      this.$store.commit('isShowSettingDialog', false);
-      this.selectedOptionIndex = 0;
-      this.reSet();
+      this.$store.commit('isShowSettingDialog', false)
+      this.selectedOptionIndex = 0
+      this.reSet()
     },
     selected(index) {
-      this.selectedOptionIndex = index;
-      this.commitCheak = false;
+      this.selectedOptionIndex = index
+      this.commitCheak = false
     },
     setInfo() {
       if (this.about === '') {
-        return;
+        return
       }
-      let data = {
+      const data = {
         about: this.about
-      };
+      }
       apiFactory.getUserApi().setUserInfo(data)
         .then(res => {
           if (res.data.out === '1') {
-            this.$toast.notice('个人简介设置成功');
-            this.$store.commit('loginUser', res.data.data);
+            this.$toast.notice('个人简介设置成功')
+            this.$store.commit('loginUser', res.data.data)
           }
-        });
+        })
     },
     async setNick() {
       if (this.nick) {
-        let reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/;
+        const reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/
         if (!reg1.test(this.nick)) {
-          this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!');
+          this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!')
           return;
         }
 
-        let data = {
+        const data = {
           nick: this.nick || this.loginUser.nick
         }
 
-        let res = await apiFactory.getUserApi().setNick(data)
+        const res = await apiFactory.getUserApi().setNick(data)
         if (res.data.out === '1') {
-          this.$toast.notice('昵称设置成功');
-          this.$store.commit('loginUser', res.data.data);
-          this.cancel();
+          this.$toast.notice('昵称设置成功')
+          this.$store.commit('loginUser', res.data.data)
+          this.cancel()
         }
       }
       if (this.about) {
@@ -192,7 +192,7 @@ export default {
         }
         setTimeout(() => {
           this.setInfo()
-        }, 1000);
+        }, 1000)
       }
     },
     // 重新绑定手机号
@@ -214,22 +214,22 @@ export default {
       }
 
       // 获取服务器时间
-      let timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
       if (timeRes.data.out == '1') {
-        time = timeRes.data.data.time;
+        time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
       }
 
-      let rqBody = {
+      const rqBody = {
         phone: '0086' + this.phone,
         smcode: 'test:' + this.$utilHelper.rsa_encrypt(this.smcode + '@' + time)
       }
 
-      let res = await apiFactory.getUserApi().bindPhone(rqBody)
+      const res = await apiFactory.getUserApi().bindPhone(rqBody)
 
       if (res.data.out == '1') {
         this.loginUser.phone = this.phone
@@ -241,37 +241,37 @@ export default {
     },
     timer() {
       if (this.time > 0) {
-        this.time--;
-        setTimeout(this.timer, 1000);
+        this.time--
+        setTimeout(this.timer, 1000)
       } else {
-        this.isTimer = false;
+        this.isTimer = false
       }
     },
     async getCode() {
       if (this.isTimer) {
-        return;
+        return
       }
 
       if (!(/^[0-9]{11}$/.test(this.phone))) {
-        this.$toast.warn('请输入正确的手机号码');
+        this.$toast.warn('请输入正确的手机号码')
         return;
       }
 
       // 获取服务器时间
-      let timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
       if (timeRes.data.out == '1') {
-        time = timeRes.data.data.time;
+        time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
       }
 
-      let rqBody = {
+      const rqBody = {
         scene: 'regist',
         phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.phone + '@' + time)
-      };
+      }
 
       let res = await apiFactory.getCommonApi().smcode(rqBody)
 
@@ -282,83 +282,83 @@ export default {
 
         this.timer()
       } else {
-        this.$toast.warn(res.data.msg);
+        this.$toast.warn(res.data.msg)
       }
     },
     setPassword() {
       if (this.oldPassword === '') {
-        return;
+        return
       }
       if (this.newPassword === '') {
-        return;
+        return
       }
       if (this.passwordRepeat === '') {
-        return;
+        return
       }
       if (this.newPassword !== this.passwordRepeat) {
-        this.$toast.warn('两次输入的密码不同');
+        this.$toast.warn('两次输入的密码不同')
         return;
       }
 
-      let data = {
+      const data = {
         oldpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.oldPassword),
         newpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.newPassword)
-      };
+      }
       apiFactory.getUserApi().setPassword(data)
         .then(res => {
           if (res.data.out === '1') {
-            this.$toast.notice(res.data.msg);
-            this.cancel();
+            this.$toast.notice(res.data.msg)
+            this.cancel()
           } else {
-            this.$toast.warn(res.data.msg);
+            this.$toast.warn(res.data.msg)
           }
-        });
+        })
     },
     sureClicked() {
-      this.commitCheak = true;
+      this.commitCheak = true
 
       if (this.selectedOptionIndex === 0) {
-        this.setNick();
+        this.setNick()
       } else if (this.selectedOptionIndex === 1) {
-        this.setPhone();
+        this.setPhone()
       } else if (this.selectedOptionIndex === 2) {
-        this.setPassword();
+        this.setPassword()
       }
     },
     reSet() {
       // this.company = '';
-      this.phone = '';
-      this.oldPassword = '';
-      this.newPassword = '';
-      this.passwordRepeat = '';
-      this.commitCheak = false;
+      this.phone = ''
+      this.oldPassword = ''
+      this.newPassword = ''
+      this.passwordRepeat = ''
+      this.commitCheak = false
     },
     initQiNiu() {
       this.$nextTick(() => {
-        let qiniu = new QiniuJsSDK();
+        const qiniu = new QiniuJsSDK()
         this.uploader = qiniu.uploader({
           runtimes: 'html5,flash,html4',
           multi_selection: false,
           browse_button: 'pick-avatar',
           uptoken_func: file => {
-            let extension = file.type.split('/')[1] || 'jpeg'
-            let data = uploadUtil.getUploadData('images', 'photos/', extension)
+            const extension = file.type.split('/')[1] || 'jpeg'
+            const data = uploadUtil.getUploadData('images', 'photos/', extension)
 
             getUptoken(data, request => {
               if (request.status === 200) {
-                let res = JSON.parse(request.responseText);
+                const res = JSON.parse(request.responseText)
                 if (res.out === '1') {
-                  this.uploadData = res.data;
+                  this.uploadData = res.data
                 } else {
-                  this.$toast.warn(res.msg);
-                  this.uploadData = {};
+                  this.$toast.warn(res.msg)
+                  this.uploadData = {}
                 }
               } else {
-                this.$toast.warn('上传失败，请刷新页面后重试');
-                return {};
+                this.$toast.warn('上传失败，请刷新页面后重试')
+                return {}
               }
             })
-            return this.uploadData.uptoken;
+            return this.uploadData.uptoken
           },
           get_new_uptoken: true,
           domain: 'images.gaga.com',
@@ -380,21 +380,21 @@ export default {
           init: {
             // 上传过程中
             'UploadProgress': () => {
-              this.isUploading = true;
+              this.isUploading = true
             },
             // 上传完成以后
             'FileUploaded': (up, file, info) => {
-              let infoJson = JSON.parse(info),
-                key = infoJson.key,
-                url = 'http://images.gaga.me/' + key;
+              const infoJson = JSON.parse(info);
+                let key = infoJson.key;
+                let url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
               apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
-                    this.$store.commit('loginUser', res.data.data);
-                    this.$toast.notice('头像修改成功');
+                    this.$store.commit('loginUser', res.data.data)
+                    this.$toast.notice('头像修改成功')
                   }
-                });
+                })
             },
             'Error': (up, err, errTip) => {
               if (err.code == -600) {
@@ -403,7 +403,7 @@ export default {
               console.log(err)
             },
             'UploadComplete': () => {
-              this.isUploading = false;
+              this.isUploading = false
             },
             'Key': (up, file) => {
               // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
@@ -411,15 +411,17 @@ export default {
               return this.uploadData.key
             }
           }
-        });
-      });
+        })
+      })
     }
   },
   computed: {
     ...mapGetters([
-      'isShowSettingDialog',
-      'loginUser'
+      'isShowSettingDialog'
     ]),
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
     timeLeft() {
       return this.time > 0 ? this.time + 's后重新获取' : '发送验证码'
     }

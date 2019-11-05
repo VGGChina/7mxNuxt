@@ -1,3 +1,4 @@
+
 <template>
   <transition name="show-list">
     <div v-show="isShowList && isLogin" id="perslist">
@@ -17,7 +18,7 @@
           <router-link to="/ulike" class="link">喜欢</router-link>
         </li>
         <li @click="toFirends">
-          <router-link :to="'/friends/' + loginUser.id + '/0'" class="link">好友</router-link>
+          <router-link :to="'/friends/' + (loginUser&&loginUser.id || '') + '/0'" class="link">好友</router-link>
         </li>
         <li @click="$store.commit('isShowSettingDialog', true)">设置</li>
         <div class="loginout" @click="logout">退出</div>
@@ -27,12 +28,47 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 import utilHelper from '~/utils/utils.js'
 
 export default {
   props: ['isShowList'],
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    cardStatus: function() {
+      try {
+        return this.loginUser.user_data.card_status
+      } catch (e) {
+        return '0'
+      }
+    },
+    companyStatus: function() {
+      try {
+        return this.loginUser.user_data.company_status
+      } catch (e) {
+        return '0'
+      }
+    },
+    status: function() {
+      if (this.cardStatus == '0') {
+        if (this.companyStatus == '0') {
+          return '0'
+        } else {
+          return this.companyStatus
+        }
+      } else {
+        return this.cardStatus
+      }
+    },
+    userRef() {
+      return utilHelper.toUserPage(this.loginUser)
+    }
+  },
   methods: {
     toUser() {
       this.$router.push({
@@ -46,7 +82,7 @@ export default {
       this.$router.push({
         name: 'friends',
         params: {
-          id: this.loginUser.id
+          id: this.loginUser && this.loginUser.id
         }
       })
     },
@@ -61,19 +97,16 @@ export default {
       })
     },
     logout() {
-      apiFactory
-        .getUserApi()
-        .logout()
-        .then(res => {
-          if (res.data.out === '1') {
-            this.$store.commit('loginUser', {})
-            this.$router.push({
-              name: 'index'
-            })
-          } else {
-            this.$toast.warn(res.data.msg)
-          }
-        })
+      apiFactory.getUserApi().logout().then(res => {
+        if (res.data.out === '1') {
+          this.$store.commit('loginUser', {})
+          this.$router.push({
+            name: 'index'
+          })
+        } else {
+          // this.$toast.warn(res.data.msg)
+        }
+      })
     },
     async uploadToPaixin() {
       const res = await apiFactory.getUserApi().currentUser()
@@ -106,37 +139,6 @@ export default {
       } else {
         this.$toast.warn('您的账号信息有问题，请联系客服')
       }
-    }
-  },
-  computed: {
-    ...mapGetters(['isLogin', 'loginUser']),
-    cardStatus: function() {
-      try {
-        return this.loginUser.user_data.card_status
-      } catch (e) {
-        return '0'
-      }
-    },
-    companyStatus: function() {
-      try {
-        return this.loginUser.user_data.company_status
-      } catch (e) {
-        return '0'
-      }
-    },
-    status: function() {
-      if (this.cardStatus == '0') {
-        if (this.companyStatus == '0') {
-          return '0'
-        } else {
-          return this.companyStatus
-        }
-      } else {
-        return this.cardStatus
-      }
-    },
-    userRef() {
-      return utilHelper.toUserPage(this.loginUser)
     }
   }
 }

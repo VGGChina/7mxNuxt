@@ -76,7 +76,7 @@ export default {
   }),
   methods: {
     goUpload() {
-      this.$store.commit('isShowUploadDialog', true)
+      this.$store.commit('upload/isShowUploadDialog', true)
     },
     showNoti() {
       this.readedMessages = true

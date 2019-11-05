@@ -127,8 +127,8 @@ export default {
             // 上传完成以后
             'FileUploaded': (up, file, info) => {
               const infoJson = JSON.parse(info)
-                let key = infoJson.key
-                let url = 'http://images.gaga.me/' + key
+              const key = infoJson.key
+              const url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
               apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
@@ -237,9 +237,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'loginUser',
       'isShowImproveInfo'
-    ])
+    ]),
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
   },
   watch: {
     'isShowImproveInfo': function(val, oldVal) {

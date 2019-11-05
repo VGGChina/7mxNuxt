@@ -1,18 +1,15 @@
-// initial state
-const state = {
+const state = () => ({
   winPageYOffset: 0,
   topBarOpacity: 0,
   onresizeFlag: 0
-}
+})
 
-// getters
 const getters = {
   winPageYOffset: state => state.winPageYOffset,
   topBarOpacity: state => state.topBarOpacity,
   onresizeFlag: state => state.onresizeFlag
 }
 
-// actions
 const actions = {
   winPageYOffset({ commit, state }, y) {
     commit('winPageYOffset', y)
@@ -25,7 +22,6 @@ const actions = {
   }
 }
 
-// mutations
 const mutations = {
   winPageYOffset(state, y) {
     state.winPageYOffset = y
