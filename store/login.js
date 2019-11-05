@@ -18,7 +18,7 @@ const getters = {
 
 const actions = {
   isShowLoginDialog({ commit, state }, isShow) {
-    commit('isShowLoginDialog', isShow)
+    commit('login/isShowLoginDialog', isShow)
   },
   loginUser({ commit, state }, user) {
     commit('loginUser', user)

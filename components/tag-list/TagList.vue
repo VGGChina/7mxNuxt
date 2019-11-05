@@ -83,7 +83,7 @@ export default {
     },
     async follow(item) {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       const res = await apiFactory.getTagApi().followTag({ 'tag_id': item.id })
@@ -94,7 +94,7 @@ export default {
     },
     async unfollow(item) {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       const res = await apiFactory.getTagApi().unfollowTag({ 'tag_id': item.id })

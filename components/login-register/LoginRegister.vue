@@ -28,7 +28,7 @@ export default {
   }),
   methods: {
     cancelDialog() {
-      this.$store.commit('isShowLoginDialog', false)
+      this.$store.commit('login/isShowLoginDialog', false)
       this.$store.commit('isShowRegisterDialog', false)
     }
   },

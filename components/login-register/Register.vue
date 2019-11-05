@@ -78,7 +78,7 @@ export default {
       this.isAgree = !this.isAgree;
     },
     toLogin() {
-      this.$store.commit('isShowLoginDialog', true)
+      this.$store.commit('login/isShowLoginDialog', true)
       this.$store.commit('isShowRegisterDialog', false)
     },
     timer () {

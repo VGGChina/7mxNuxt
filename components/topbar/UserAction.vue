@@ -10,14 +10,14 @@
     <span
       v-if="!isLogin"
       class="mr"
-      @click="$store.commit('isShowRegisterDialog', true)"
+      @click="$store.commit('register/isShowRegisterDialog', true)"
     >
       注册
     </span>
     <span
       v-if="!isLogin"
       class="mr"
-      @click="$store.commit('isShowLoginDialog', true)"
+      @click="$store.commit('login/isShowLoginDialog', true)"
     >
       登录
     </span>

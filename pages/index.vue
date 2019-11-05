@@ -224,46 +224,10 @@ export default {
   },
 
   methods: {
-    // afterResponse(res) {
-    //   if (res.data.out == '1') {
-    //     this.imgList.push(...res.data.data)
-    //   }
-    //   this.line = res.data.line
-    //   setTimeout(() => {
-    //     this.isLoading = false
-    //   }, 500)
-    // },
-
-    // async fetchData() {
-    //   if (this.isLoading || this.line == 'end') {
-    //     return
-    //   }
-    //   const data = { type: '6' }
-    //   const params = { line: this.line, limit: '40' }
-
-    //   if (this.currentItem === 1) {
-    //     const res = await apiFactory.getMediaApi().randomRecommend(data, params)
-    //     this.afterResponse(res)
-    //     return
-    //   }
-
-    //   if (this.currentItem === 2) {
-    //     data.product = '1'
-    //     const res = await apiFactory.getPaixinApi().recommendList(data, params)
-    //     this.afterResponse(res)
-    //     return
-    //   }
-
-    //   if (this.currentItem === 3) {
-    //     data.mode = 'desc'
-    //     const res = await apiFactory.getMediaApi().commonList(data, params)
-    //     this.afterResponse(res)
-    //   }
-    // },
 
     getMoreData() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       // this.fetchData()
@@ -296,7 +260,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogin', 'winPageYOffset', 'getMyLoading']),
+    ...mapGetters(['winPageYOffset', 'getMyLoading']),
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
     isToPaixin() {
       if (this.currentItem == 2) {
         return true

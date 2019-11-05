@@ -104,7 +104,7 @@ export default {
             name: 'index'
           })
         } else {
-          // this.$toast.warn(res.data.msg)
+          this.$toast.warn(res.data.msg)
         }
       })
     },
@@ -112,7 +112,7 @@ export default {
       const res = await apiFactory.getUserApi().currentUser()
 
       if (res.data.out != '1') {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
 
         return
       }

@@ -234,7 +234,7 @@ export default {
     },
     async likeImg() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
 
         return
       }
@@ -263,7 +263,7 @@ export default {
     },
     async buyImg() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
 
         return
       }
@@ -319,7 +319,7 @@ export default {
     },
     showDeleteImgDialog(img) {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 

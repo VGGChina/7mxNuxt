@@ -70,7 +70,7 @@ export default {
     follow(user) {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return;
       }
       var rqBody = {

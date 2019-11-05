@@ -4,11 +4,11 @@
  */
 <template>
   <div class="banner-container">
-    <div v-if="isShowBanner == 2 || isShowBanner == 3 || isShowBanner == 1" ref="bannerBox" class="banner-template-box" :style="{width: largerBannerWidthBox + &quot;px&quot;,left: left + &quot;px&quot;,transition: transition}">
+    <div v-if="isShowBanner == 2 || isShowBanner == 3 || isShowBanner == 1" ref="bannerBox" class="banner-template-box" :style="{width: largerBannerWidthBox + 'px',left: left + 'px',transition: transition}">
       <!-- <a href='javascript:void(0)' :style='{width: largerBannerWidth + "px"}' >
                 <div class='imgItem' :style='{"backgroundImage": "url(" + lastUrl + ")"}'></div>
             </a> -->
-      <a v-for="item in largerBannerList" :key="item.url" ref="lagerBanner" href="javascript:void(0)" :style="{width: largerBannerWidth + &quot;px&quot;}">
+      <a v-for="item in largerBannerList" :key="item.url" ref="lagerBanner" href="javascript:void(0)" :style="{width: largerBannerWidth + 'px'}">
         <!-- <div class='imgItem' :style='{"backgroundImage": "url(" + item.url + ")"}'></div> -->
         <!-- <div v-if="isShowBanner == 1" class='imgItem' :style='{"backgroundImage": "url(/components/images/banner1.jpg)"}'></div> -->
         <img v-if="isShowBanner == 1" class="imgItem" src="./images/banner1.jpg" alt="" @click="go(1)">

@@ -1,32 +1,34 @@
 <template>
   <div class="login">
-    <carousel></carousel>
+    <carousel />
 
     <div class="login-form">
       <input
+        v-model="user"
         type="text"
         name="text"
         class="mt120"
         placeholder="手机号/邮箱"
-        v-model="user"
         :class="{
           'border-red': user === '' && commitCheck
-        }">
+        }"
+      >
 
       <input
+        v-model="password"
         class="mt14"
         placeholder="密码"
         type="password"
         name="password"
-        v-model="password"
-        v-on:keyup.enter="commit"
         :class="{
           'border-red': password === '' && commitCheck
-        }">
-      
+        }"
+        @keyup.enter="commit"
+      >
+
       <div class="remember">
         <div class="check-box" @click="remember">
-          <div v-if="isRemember"></div>
+          <div v-if="isRemember" />
         </div>
         <span>记住我</span>
         <a @click="toForgetPassword">忘记密码</a>
@@ -56,6 +58,9 @@ import Carousel from '~/components/carousel/Carousel'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
+  components: {
+    Carousel
+  },
   data: () => ({
     isRemember: false,
     isAgree: true,
@@ -65,48 +70,48 @@ export default {
   }),
   methods: {
     remember() {
-      this.isRemember = !this.isRemember;
+      this.isRemember = !this.isRemember
     },
     agree() {
-      this.isAgree = !this.isAgree;
+      this.isAgree = !this.isAgree
     },
     async commit() {
-      this.commitCheck = true;
+      this.commitCheck = true
       if (this.user === '' || this.password === '') {
-        return;
+        return
       }
 
       if (!this.isAgree) {
         if (!this.isAgree) {
-          this.$toast.warn('您还没有同意《平台服务条款》');
+          this.$toast.warn('您还没有同意《平台服务条款》')
         }
-        return;
+        return
       }
 
       // 获取服务器时间
-      let timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
       if (timeRes.data.out == '1') {
-        time = timeRes.data.data.time;
+        time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
       }
 
-      let rqBody = {
+      const rqBody = {
         user: /^[0-9]{11}$/.test(this.user) ? '0086' + this.user : this.user,
         pass: 'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + time),
         reme: this.isRemember ? '1' : '0'
       }
 
-      let loginRes = await apiFactory.getUserApi().login(rqBody)
+      const loginRes = await apiFactory.getUserApi().login(rqBody)
       if (loginRes.data.out == '1') {
-        let data = loginRes.data.data
+        const data = loginRes.data.data
 
         this.$store.commit('loginUser', data)
 
-        this.$store.commit('isShowLoginDialog', false)
+        this.$store.commit('login/isShowLoginDialog', false)
 
         if (data.name == '' || data.nick == '' || data.avatar == '') {
           this.$store.commit('isShowImproveInfo', true)
@@ -114,35 +119,32 @@ export default {
 
         // 如果关联过拍信账号，那么校验一遍，后端要求这样做
         if (data.gaga_id) {
-          let otherRes = await apiFactory.getUserApi().intoOther();
+          const otherRes = await apiFactory.getUserApi().intoOther()
           if (otherRes.data.out == '1') {
-            data.gaga_id = otherRes.data.data.gaga_id;
-            this.$store.commit('loginUser', data);
+            data.gaga_id = otherRes.data.data.gaga_id
+            this.$store.commit('loginUser', data)
           }
         }
       } else {
-        this.$toast.warn(loginRes.data.msg);
+        this.$toast.warn(loginRes.data.msg)
       }
     },
     toPxLogin() {
       this.$router.push({
         name: 'paixin-login'
-      });
-      this.$store.commit('isShowLoginDialog', false);
+      })
+      this.$store.commit('login/isShowLoginDialog', false)
     },
     toRegister() {
-      this.$store.commit('isShowLoginDialog', false);
-      this.$store.commit('isShowRegisterDialog', true);
+      this.$store.commit('login/isShowLoginDialog', false)
+      this.$store.commit('register/isShowRegisterDialog', true)
     },
     toForgetPassword() {
       this.$router.push({
         name: 'forget-pass'
-      });
-      this.$store.commit('isShowLoginDialog', false);
+      })
+      this.$store.commit('login/isShowLoginDialog', false)
     }
-  },
-  components: {
-    Carousel
   }
 }
 </script>

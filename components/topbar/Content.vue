@@ -1,7 +1,7 @@
 <template>
   <div class="container_content">
     <div class="content">
-      <img :src="require(&quot;~/assets/img/m.svg&quot;)" class="logo">
+      <img :src="require('~/assets/img/m.svg')" class="logo">
       <h3 class="title">7MX——Home Business Advertising Ideas</h3>
       <div class="search is_index">
 

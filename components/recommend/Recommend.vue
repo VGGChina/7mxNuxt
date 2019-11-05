@@ -39,7 +39,7 @@
           v-for="(item,index) in navList"
           :key="item.id"
           href="javascript:void(0)"
-          :class="[&quot;nav-item&quot;,index == isShowBanner ? &quot;active&quot;: null]"
+          :class="['nav-item',index == isShowBanner ? 'active': null]"
           @click="curentClick(index)"
         >{{ item.text }}</a>
         <router-link tag="a" class="action" to="/activity/2">申请活动</router-link>

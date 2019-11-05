@@ -54,7 +54,7 @@ export default {
     },
     showDeleteAlbum(id, index) {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
 
         return
       }

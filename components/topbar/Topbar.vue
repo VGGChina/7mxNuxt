@@ -1,11 +1,11 @@
 <template>
-  <div :class="[&quot;topbar-contanier&quot;,!isIndex ? &quot;is_index&quot; : null]">
+  <div :class="['topbar-contanier',!isIndex ? 'is_index' : null]">
     <div id="topbar" class="topbar" :style="topbarStyle">
       <div style="width: calc(100% / 3); min-width: 500px;">
         <search :ifshow="isIndex || isShowSearch" />
       </div>
       <div class="center" style="width: calc(100% / 3)">
-        <a href="/" style="margin-left: 0px" :class="{&quot;cl-white&quot;: $route.name == &quot;index&quot;}">首页</a>
+        <a href="/" style="margin-left: 0px" :class="{'cl-white': $route.name == 'index'}">首页</a>
         <a :class="{'cl-white': $route.name == 'user-follow'}" @click="toFollow()">动态</a>
         <div @mouseenter="showCategory = true" @mouseleave="showCategory = false">
           <router-link to="/category/全部/0/0/1" :class="{'cl-white': $route.name == 'category'}">探索</router-link>
@@ -45,7 +45,7 @@ export default {
     },
     toFollow() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
       } else {
         this.$router.push({
           name: 'follow'
