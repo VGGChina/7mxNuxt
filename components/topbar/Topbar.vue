@@ -29,9 +29,14 @@ import Search from './Search.vue'
 import Content from './Content.vue'
 import UserAction from './UserAction.vue'
 import Category from '~/components/category/Category'
-import { mapGetters } from 'vuex'
 
 export default {
+  components: {
+    Search,
+    UserAction,
+    Category,
+    Content
+  },
   data: () => ({
     showCategory: false,
     pageY: 0,
@@ -39,32 +44,13 @@ export default {
     isIndex: false,
     isShowSearch: false
   }),
-  methods: {
-    noUse() {
-      this.$toast.warn('暂功能暂未上线，敬请期待')
-    },
-    toFollow() {
-      if (!this.isLogin) {
-        this.$store.commit('login/isShowLoginDialog', true)
-      } else {
-        this.$router.push({
-          name: 'follow'
-        })
-      }
-    },
-    getRoute() {
-      const { path } = this.$route
-      if (path === '/') {
-        this.currentIndex = true
-        const flag = this.pageY < 300
-        flag ? this.isIndex = false : this.isIndex = true
-      } else {
-        this.isIndex = true
-      }
-    }
-  },
   computed: {
-    ...mapGetters(['getShowSearch', 'winPageYOffset']),
+    winPageYOffset() {
+      return this.$store.state.window.winPageYOffset
+    },
+    getShowSearch() {
+      return this.$store.state.showSearch.getShowSearch
+    },
     topbarStyle() {
       const name = this.$route.name
       if (name == null) {
@@ -95,13 +81,33 @@ export default {
         background: '#1a1a1a'
       }
     },
-    ...mapGetters(['isLogin', 'loginUser'])
+    isLogin() {
+      return this.$store.state.login.isLogin
+    }
   },
-  components: {
-    Search,
-    UserAction,
-    Category,
-    Content
+  methods: {
+    noUse() {
+      this.$toast.warn('暂功能暂未上线，敬请期待')
+    },
+    toFollow() {
+      if (!this.isLogin) {
+        this.$store.commit('login/isShowLoginDialog', true)
+      } else {
+        this.$router.push({
+          name: 'follow'
+        })
+      }
+    },
+    getRoute() {
+      const { path } = this.$route
+      if (path === '/') {
+        this.currentIndex = true
+        const flag = this.pageY < 300
+        flag ? this.isIndex = false : this.isIndex = true
+      } else {
+        this.isIndex = true
+      }
+    }
   },
   watch: {
     '$route.path': function(newval, oldval) {

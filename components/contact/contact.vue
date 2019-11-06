@@ -94,10 +94,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import anime from 'animejs'
-
-/* global anime */
 
 export default {
   name: 'Contact',
@@ -109,6 +106,11 @@ export default {
       showTextTip: false, // 是否显示‘咨询客服’并隐藏笑脸
       faceHover: false, // 是否正用鼠标指在笑脸上
       value: false // hoverface之后设置一个时间阀,以避免有可能hover完之后立即切换成‘咨询客服’提示
+    }
+  },
+  computed: {
+    winPageYOffset() {
+      return this.$store.state.window.winPageYOffset
     }
   },
   watch: {
@@ -216,11 +218,6 @@ export default {
     cancel() {
       this.show_contact_menu = false
     }
-  },
-  computed: {
-    ...mapGetters([
-      'winPageYOffset'
-    ])
   }
 }
 </script>

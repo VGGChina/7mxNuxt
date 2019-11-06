@@ -114,7 +114,7 @@ export default {
         this.$store.commit('login/isShowLoginDialog', false)
 
         if (data.name == '' || data.nick == '' || data.avatar == '') {
-          this.$store.commit('isShowImproveInfo', true)
+          this.$store.commit('improveInfo/isShowImproveInfo', true)
         }
 
         // 如果关联过拍信账号，那么校验一遍，后端要求这样做

@@ -2,46 +2,49 @@
   <div>
     <transition name="cover-fade">
       <div
+        v-if="isShowLoginDialog || isShowRegisterDialog"
         class="login-cover"
         @click="cancelDialog"
-        v-if="isShowLoginDialog || isShowRegisterDialog">
-      </div>
+      />
     </transition>
 
     <transition name="login-fade">
-      <login v-if="isShowLoginDialog"></login>
+      <login v-if="isShowLoginDialog" />
     </transition>
 
     <transition name="login-fade">
-      <register v-if="isShowRegisterDialog"></register>
+      <register v-if="isShowRegisterDialog" />
     </transition>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Login from './Login'
 import Register from './Register'
 
 export default {
+  components: {
+    Login,
+    Register
+  },
   data: () => ({
   }),
+  computed: {
+    isShowLoginDialog() {
+      return this.$store.state.login.isShowLoginDialog
+    },
+    isShowRegister() {
+      return this.$store.state.login.isShowRegister
+    },
+    isShowRegisterDialog() {
+      return this.$store.state.login.isShowRegisterDialog
+    }
+  },
   methods: {
     cancelDialog() {
       this.$store.commit('login/isShowLoginDialog', false)
       this.$store.commit('isShowRegisterDialog', false)
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isShowLoginDialog',
-      'isShowRegister',
-      'isShowRegisterDialog'
-    ])
-  },
-  components: {
-    Login,
-    Register
   }
 }
 </script>

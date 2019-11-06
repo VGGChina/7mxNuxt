@@ -43,11 +43,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Selection from '~/components/selection/Selection'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
+  components: {
+    Selection
+  },
   props: [
     'imgDetail'
   ],
@@ -62,6 +64,22 @@ export default {
     originKeywordList: [],
     isReleasing: false
   }),
+  computed: {
+
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    categoryList() {
+      return this.$store.state.category.categoryList
+    }
+  },
+  watch: {
+    'keyword': function(val) {
+      if (val.charAt(val.length - 1) === ' ') {
+        this.pushKeyword()
+      }
+    }
+  },
   created() {
     this.worksName = this.imgDetail.title
     this.worksDescription = this.imgDetail.text
@@ -247,22 +265,6 @@ export default {
       })
       return array
     }
-  },
-  computed: {
-    ...mapGetters([
-      'loginUser',
-      'categoryList'
-    ])
-  },
-  watch: {
-    'keyword': function(val) {
-      if (val.charAt(val.length - 1) === ' ') {
-        this.pushKeyword()
-      }
-    }
-  },
-  components: {
-    Selection
   }
 }
 </script>

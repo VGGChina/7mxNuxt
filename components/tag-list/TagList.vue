@@ -59,18 +59,25 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import noContent from '~/components/no-content/NoContent'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: 'TagList',
+  components: {
+    noContent
+  },
   props: [
     'tags',
     'end'
   ],
   data: () => ({
   }),
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    }
+  },
   watch: {
   },
   created() {
@@ -103,14 +110,6 @@ export default {
         this.tags.splice(this.tags.length)
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin'
-    ])
-  },
-  components: {
-    noContent
   }
 }
 </script>

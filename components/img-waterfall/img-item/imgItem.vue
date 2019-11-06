@@ -146,12 +146,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 import apiFactory from '~/api/factory/apiFactory.js'
 import utilHelper from '~/utils/utils.js'
 
 export default {
+  components: {
+    AvatarDialog
+  },
   props: [
     'imgList',
     'index',
@@ -170,6 +172,80 @@ export default {
       mouseLeaveTime: 0,
       intervalTime: null,
       dataUtilHelper: utilHelper
+    }
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    isImgAuthor() {
+      try {
+        if (!this.isLogin || this.loginUser.id != this.img.user_data.id) {
+          return false
+        }
+
+        if (this.loginUser.id == this.img.user_data.id) {
+          return true
+        }
+      } catch (e) {
+        console.log(e)
+        return false
+      }
+    },
+    imageAlt() {
+      try {
+        let alt = ''
+
+        alt += this.img.title + ' '
+
+        this.img.category_list.forEach(item => {
+          alt += item.name + ' '
+        })
+
+        this.img.tag_list.forEach(item => {
+          alt += item.name + ' '
+        })
+
+        return alt.substring(0, alt.length - 1)
+      } catch (e) {
+        return ''
+      }
+    },
+    gagaId() {
+      let gagaId = ''
+
+      if (typeof this.img.eput_id === 'undefined' || this.img.eput_id == null || this.img.eput_id.length < 1) {
+        gagaId = this.img.id
+      }
+
+      if (typeof this.img.gaga_id !== 'undefined' && this.img.gaga_id != null && this.img.gaga_id.length > 0) {
+        gagaId = this.img.gaga_id
+      } else {
+        gagaId = this.img.id
+      }
+
+      return gagaId
+    },
+    eputId() {
+      let eputId = ''
+
+      if (typeof this.img.gaga_id === 'undefined' || this.img.gaga_id == null || this.img.gaga_id.length < 1) {
+        eputId = this.img.id
+      }
+
+      if (typeof this.img.eput_id !== 'undefined' && this.img.eput_id != null && this.img.eput_id.length > 0) {
+        eputId = this.img.eput_id
+      } else {
+        eputId = this.img.id
+      }
+
+      return eputId
+    },
+    userRef() {
+      return utilHelper.toUserPage(this.img.user_data)
     }
   },
   created() {
@@ -330,7 +406,7 @@ export default {
 
       if (this.isAlbumAuthor) {
         // 灵感集的创建者把某张图片从灵感集中删除
-        this.$store.commit('confirmationDialogData', {
+        this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: true,
           confirmationDialogTitle: '是否从灵感集中删除此图？',
           confirmFunction: this.deleteImgFromAlbum,
@@ -342,7 +418,7 @@ export default {
 
       if (this.isImgAuthor) {
         // 图片的上传者把图片删除
-        this.$store.commit('confirmationDialogData', {
+        this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: true,
           confirmationDialogTitle: '是否删除此作品？',
           confirmFunction: this.deleteImg,
@@ -355,7 +431,7 @@ export default {
       if (img.product == '1' || img.check == '1') {
         this.$toast.warn('此图片已经上架，不能删除，如有疑问，请联系客服')
 
-        this.$store.commit('confirmationDialogData', {
+        this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',
           confirmFunction: null,
@@ -366,7 +442,7 @@ export default {
       }
 
       if (img.check == '3') {
-        this.$store.commit('confirmationDialogData', {
+        this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',
           confirmFunction: null,
@@ -384,7 +460,7 @@ export default {
         .mediaDrop({ media_id: this.eputId })
 
       if (res.data.out == '1') {
-        this.$store.commit('confirmationDialogData', {
+        this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',
           confirmFunction: null,
@@ -406,7 +482,7 @@ export default {
         .dropFromAlbum({ media_id: this.eputId, album_id: this.albumId })
 
       if (res.data.out == '1') {
-        this.$store.commit('confirmationDialogData', {
+        this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',
           confirmFunction: null,
@@ -447,81 +523,6 @@ export default {
 
       return ''
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser'
-    ]),
-    isImgAuthor() {
-      try {
-        if (!this.isLogin || this.loginUser.id != this.img.user_data.id) {
-          return false
-        }
-
-        if (this.loginUser.id == this.img.user_data.id) {
-          return true
-        }
-      } catch (e) {
-        console.log(e)
-        return false
-      }
-    },
-    imageAlt() {
-      try {
-        let alt = ''
-
-        alt += this.img.title + ' '
-
-        this.img.category_list.forEach(item => {
-          alt += item.name + ' '
-        })
-
-        this.img.tag_list.forEach(item => {
-          alt += item.name + ' '
-        })
-
-        return alt.substring(0, alt.length - 1)
-      } catch (e) {
-        return ''
-      }
-    },
-    gagaId() {
-      let gagaId = ''
-
-      if (typeof this.img.eput_id === 'undefined' || this.img.eput_id == null || this.img.eput_id.length < 1) {
-        gagaId = this.img.id
-      }
-
-      if (typeof this.img.gaga_id !== 'undefined' && this.img.gaga_id != null && this.img.gaga_id.length > 0) {
-        gagaId = this.img.gaga_id
-      } else {
-        gagaId = this.img.id
-      }
-
-      return gagaId
-    },
-    eputId() {
-      let eputId = ''
-
-      if (typeof this.img.gaga_id === 'undefined' || this.img.gaga_id == null || this.img.gaga_id.length < 1) {
-        eputId = this.img.id
-      }
-
-      if (typeof this.img.eput_id !== 'undefined' && this.img.eput_id != null && this.img.eput_id.length > 0) {
-        eputId = this.img.eput_id
-      } else {
-        eputId = this.img.id
-      }
-
-      return eputId
-    },
-    userRef() {
-      return utilHelper.toUserPage(this.img.user_data)
-    }
-  },
-  components: {
-    AvatarDialog
   }
 }
 </script>

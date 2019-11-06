@@ -1,44 +1,44 @@
 <template>
-  <div @click.stop='noUse' class='push-notifi'>
-      <div class="array_wrap">
-         <div class="array"></div>
+  <div class="push-notifi" @click.stop="noUse">
+    <div class="array_wrap">
+      <div class="array" />
+    </div>
+    <div class="tabs">
+      <div :style="{ 'color' : selectedIndex==0 ? '#000' : '' }" class="normal" @click="select(0)">
+        动态
+        <div v-if="loginUser.un_comment_num * 1 + loginUser.un_fan_num * 1 + loginUser.un_like_num * 1" class="tip" />
       </div>
-      <div class="tabs">
-         <div @click='select(0)' :style="{ 'color' : selectedIndex==0 ? '#000' : '' }" class="normal">
-           动态
-           <div v-if='loginUser.un_comment_num * 1 + loginUser.un_fan_num * 1 + loginUser.un_like_num * 1' class="tip"></div>
-         </div>
-         <div @click='select(1)' :style="{ 'color' : selectedIndex==1 ? '#000' : '' }" class="normal">
-           心愿单
-           <!-- <div v-if='loginUser.un_needed_num * 1' class="tip"></div> -->
-         </div>
-         <div @click='select(2)' :style="{ 'color' : selectedIndex==2 ? '#000' : '' }" class="normal">
-           通知
-           <div v-if='loginUser.un_notice_num * 1' class="tip"></div>
-         </div>
+      <div :style="{ 'color' : selectedIndex==1 ? '#000' : '' }" class="normal" @click="select(1)">
+        心愿单
+        <!-- <div v-if='loginUser.un_needed_num * 1' class="tip"></div> -->
       </div>
-      <div class="content_wrap">
+      <div :style="{ 'color' : selectedIndex==2 ? '#000' : '' }" class="normal" @click="select(2)">
+        通知
+        <div v-if="loginUser.un_notice_num * 1" class="tip" />
+      </div>
+    </div>
+    <div class="content_wrap">
 
-        <!--         没内容          -->
-        <div v-if='isNoContent' class="no_content_wrap">
-          <noContent :isNoContentShow="true" :content='nothingTip'></noContent>
-        </div>
-
-        <!--          内容            -->
-        <!-- 动态 -->
-        <activityList v-if='selectedIndex==0' :list='list'></activityList>
-        <!-- 心愿单 -->
-        <needed-list v-if='selectedIndex==1' :list='list'></needed-list>
-        <!-- 通知 -->
-        <notice-list v-if='selectedIndex==2' :list='list'></notice-list>
-
-        <div @click='more' v-if='line!="end"&&list.length > 0' class="more">查看更多</div>
-        <!-- 已加载全部 -->
-        <div v-if='line=="end"&&list.length > 0' class="end">- 7mx -</div>
+      <!--         没内容          -->
+      <div v-if="isNoContent" class="no_content_wrap">
+        <noContent :is-no-content-show="true" :content="nothingTip" />
       </div>
-      <div class="to_all">
-        <span @click='toAll'>查看全部</span>
-      </div>
+
+      <!--          内容            -->
+      <!-- 动态 -->
+      <activityList v-if="selectedIndex==0" :list="list" />
+      <!-- 心愿单 -->
+      <needed-list v-if="selectedIndex==1" :list="list" />
+      <!-- 通知 -->
+      <notice-list v-if="selectedIndex==2" :list="list" />
+
+      <div v-if="line!=&quot;end&quot;&&list.length > 0" class="more" @click="more">查看更多</div>
+      <!-- 已加载全部 -->
+      <div v-if="line==&quot;end&quot;&&list.length > 0" class="end">- 7mx -</div>
+    </div>
+    <div class="to_all">
+      <span @click="toAll">查看全部</span>
+    </div>
   </div>
 </template>
 
@@ -47,17 +47,45 @@ import noContent from '~/components/no-content/NoContent_2'
 import activityList from './activityList/index'
 import neededList from './neededList/index'
 import noticeList from './noticeList'
-import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
-  name: 'push-notifi',
+  name: 'PushNotifi',
+  components: {
+    noContent,
+    activityList,
+    neededList,
+    noticeList
+  },
   data: () => ({
     selectedIndex: 0,
     isNoContent: false,
     line: '',
     list: []
   }),
+  computed: {
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    nothingTip() {
+      const i = this.selectedIndex
+      if (i == 0) {
+        return '没有新的动态'
+      } else if (i == 1) {
+        return '没有新的购买意向信息'
+      } else if (i == 2) {
+        return '暂未收到通知'
+      }
+      return '暂无消息'
+    }
+  },
+  watch: {},
+  created() {
+    this.select(0)
+  },
+  mounted() {
+
+  },
   methods: {
     noUse() {
     },
@@ -103,7 +131,7 @@ export default {
     },
     // 动态列表
     async activityList() {
-      let res = await apiFactory.getUserApi().getactivityList({}, { line: this.line })
+      const res = await apiFactory.getUserApi().getactivityList({}, { line: this.line })
       // 标识为已读
       apiFactory.getCommonApi().markActivityAsRead()
       apiFactory.getCommonApi().markNeededAsRead()
@@ -112,14 +140,14 @@ export default {
     },
     // 心愿单列表
     async wantToShopList() {
-      let res = await apiFactory.getUserApi().getactivityList({ type: 4, unread: 0 }, { line: this.line })
+      const res = await apiFactory.getUserApi().getactivityList({ type: 4, unread: 0 }, { line: this.line })
       apiFactory.getCommonApi().markNeededAsRead()
       this.afterPull(res)
       this.nothing()
     },
     // 通知列表
     async noticeList() {
-      let res = await apiFactory.getCommonApi().getNoticeList({}, { line: this.line })
+      const res = await apiFactory.getCommonApi().getNoticeList({}, { line: this.line })
       // 标识为已读
       apiFactory.getCommonApi().markNoticeAsRead()
       this.afterPull(res)
@@ -136,37 +164,8 @@ export default {
         this.list = []
       }
     }
-  },
-  created() {
-    this.select(0)
-  },
-  mounted() {
-
-  },
-  watch: {},
-  computed: {
-    ...mapGetters([
-      'loginUser'
-    ]),
-    nothingTip() {
-      let i = this.selectedIndex
-      if (i == 0) {
-        return '没有新的动态'
-      } else if (i == 1) {
-        return '没有新的购买意向信息'
-      } else if (i == 2) {
-        return '暂未收到通知'
-      }
-      return '暂无消息'
-    }
-  },
-  components: {
-    noContent,
-    activityList,
-    neededList,
-    noticeList
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>

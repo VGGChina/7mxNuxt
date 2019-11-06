@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
@@ -46,6 +45,17 @@ export default {
       phone: '',
       qq: '',
       commitCheak: false
+    }
+  },
+  computed: {
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    neededIsShow() {
+      return this.$store.state.needed.neededIsShow
+    },
+    neededMediaId() {
+      return this.$store.state.needed.neededMediaId
     }
   },
   methods: {
@@ -92,13 +102,6 @@ export default {
         this.$toast.warn(res.data.msg)
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'loginUser',
-      'neededIsShow',
-      'neededMediaId'
-    ])
   }
 }
 </script>

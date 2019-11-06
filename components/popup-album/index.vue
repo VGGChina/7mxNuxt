@@ -26,11 +26,13 @@
 
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
-import { mapGetters } from 'vuex'
 import noContent from '~/components/no-content/NoContent_2'
 
 export default {
   name: 'PopupAlbum',
+  components: {
+    noContent
+  },
   data: () => ({
     show: false,
     switchMode: 0,
@@ -115,14 +117,6 @@ export default {
         this.isLoading = false
       }, 500)
     }
-  },
-  computed: {
-    ...mapGetters([
-      'loginUser'
-    ])
-  },
-  components: {
-    noContent
   }
 }
 </script>

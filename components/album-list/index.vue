@@ -59,7 +59,7 @@ export default {
         return
       }
 
-      this.$store.commit('confirmationDialogData', {
+      this.$store.commit('confirmationDialog/confirmationDialogData', {
         isShowConfirmationDialog: true,
         confirmationDialogTitle: '是否删除此灵感集？',
         confirmFunction: this.deleteAlbum,
@@ -72,7 +72,7 @@ export default {
         .deleteAlbum({ album_id: data.album_id })
 
       if (res.data.out == '1') {
-        this.$store.commit('confirmationDialogData', {
+        this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',
           confirmFunction: null,

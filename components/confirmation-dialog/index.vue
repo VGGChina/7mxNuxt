@@ -1,22 +1,25 @@
 <template>
   <div class="confirmation-container">
     <transition name="cover-fade">
-      <div class="confirmation-cover" @click="cancel" v-if="isShowConfirmationDialog">
-      </div>
+      <div v-if="isShowConfirmationDialog" class="confirmation-cover" @click="cancel" />
     </transition>
-  
+
     <transition name="confirmation-fade">
-      <div class="confirmation" v-if="isShowConfirmationDialog">
+      <div v-if="isShowConfirmationDialog" class="confirmation">
         <div class="confirmation-title">{{ confirmationDialogTitle }}</div>
 
         <div>
-          <button class="button-green"
-            @click="commit()">
+          <button
+            class="button-green"
+            @click="commit()"
+          >
             确定
           </button>
 
-          <button class="button-grey cancel"
-            @click="cancel()">
+          <button
+            class="button-grey cancel"
+            @click="cancel()"
+          >
             取消
           </button>
         </div>
@@ -26,12 +29,31 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
 export default {
+  computed: {
+    isShowConfirmationDialog() {
+      return this.$store.state.confirmationDialog.isShowConfirmationDialog
+    },
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    confirmationDialogTitle() {
+      return this.$store.state.confirmationDialog.confirmationDialogTitle
+    },
+    confirmFunction() {
+      return this.$store.state.confirmationDialog.confirmFunction
+    },
+    confirmFunctionParams() {
+      return this.$store.state.confirmationDialog.confirmFunctionParams
+    }
+  },
   methods: {
     cancel() {
-      this.$store.commit('confirmationDialogData', {
+      this.$store.commit('confirmationDialog/confirmationDialogData', {
         isShowConfirmationDialog: false,
         confirmationDialogTitle: '是否确定删除？',
         confirmFunction: null,
@@ -39,22 +61,12 @@ export default {
       })
     },
     commit() {
-      if (typeof this.confirmFunction == 'function') {
+      if (typeof this.confirmFunction === 'function') {
         this.confirmFunction(this.confirmFunctionParams)
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser',
-      'isShowConfirmationDialog',
-      'confirmationDialogTitle',
-      'confirmFunction',
-      'confirmFunctionParams'
-    ])
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

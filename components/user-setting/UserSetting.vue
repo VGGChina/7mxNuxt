@@ -97,7 +97,6 @@
 
 <script>
 /* global QiniuJsSDK */
-import { mapGetters } from 'vuex'
 import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
 import apiFactory from '~/api/factory/apiFactory.js'
@@ -130,8 +129,19 @@ export default {
       isTimer: false
     }
   },
+  computed: {
+    isShowSettingDialog() {
+      return this.$store.state.setting.isShowSettingDialog
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    timeLeft() {
+      return this.time > 0 ? this.time + 's后重新获取' : '发送验证码'
+    }
+  },
   watch: {
-    'isShowSettingDialog': function(val, oldVal) {
+    isShowSettingDialog(val, oldVal) {
       if (val) {
         this.initQiNiu()
       }
@@ -143,7 +153,7 @@ export default {
   },
   methods: {
     cancel() {
-      this.$store.commit('isShowSettingDialog', false)
+      this.$store.commit('setting/isShowSettingDialog', false)
       this.selectedOptionIndex = 0
       this.reSet()
     },
@@ -171,7 +181,7 @@ export default {
         const reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/
         if (!reg1.test(this.nick)) {
           this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!')
-          return;
+          return
         }
 
         const data = {
@@ -254,7 +264,7 @@ export default {
 
       if (!(/^[0-9]{11}$/.test(this.phone))) {
         this.$toast.warn('请输入正确的手机号码')
-        return;
+        return
       }
 
       // 获取服务器时间
@@ -273,7 +283,7 @@ export default {
         phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.phone + '@' + time)
       }
 
-      let res = await apiFactory.getCommonApi().smcode(rqBody)
+      const res = await apiFactory.getCommonApi().smcode(rqBody)
 
       if (res.data.out === '1') {
         this.isTimer = true
@@ -297,7 +307,7 @@ export default {
       }
       if (this.newPassword !== this.passwordRepeat) {
         this.$toast.warn('两次输入的密码不同')
-        return;
+        return
       }
 
       const data = {
@@ -384,9 +394,9 @@ export default {
             },
             // 上传完成以后
             'FileUploaded': (up, file, info) => {
-              const infoJson = JSON.parse(info);
-                let key = infoJson.key;
-                let url = 'http://images.gaga.me/' + key
+              const infoJson = JSON.parse(info)
+              const key = infoJson.key
+              const url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
               apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
@@ -413,17 +423,6 @@ export default {
           }
         })
       })
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'isShowSettingDialog'
-    ]),
-    loginUser() {
-      return this.$store.state.login.loginUser
-    },
-    timeLeft() {
-      return this.time > 0 ? this.time + 's后重新获取' : '发送验证码'
     }
   }
 }

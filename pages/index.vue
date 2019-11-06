@@ -38,7 +38,6 @@
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
 import utilHelper from '~/utils/utils.js'
-import { mapGetters } from 'vuex'
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
 import slide from '~/components/slide/index'
 import IndexFooter from '~/components/footer/IndexFooter'
@@ -55,6 +54,16 @@ export default {
     return {
       title: '7MX - 中国领先的视觉创作社区'
     }
+  },
+  components: {
+    ImgWaterfall,
+    slide,
+    Category,
+    IndexFooter,
+    recommend,
+    photography,
+    hotBabel,
+    cooperationFooter
   },
   data: () => ({
     show_picList: false,
@@ -260,7 +269,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['winPageYOffset', 'getMyLoading']),
+    winPageYOffset() {
+      return this.$store.state.window.winPageYOffset
+    },
     isLogin() {
       return this.$store.state.login.isLogin
     },
@@ -273,20 +284,10 @@ export default {
     }
   },
   watch: {
-    winPageYOffset: function(val) {
+    winPageYOffset(val) {
       // 当页面的滚动条滚动时,会执行这里的代码
       this.setStyle(400, val)
     }
-  },
-  components: {
-    ImgWaterfall,
-    slide,
-    Category,
-    IndexFooter,
-    recommend,
-    photography,
-    hotBabel,
-    cooperationFooter
   }
 }
 </script>

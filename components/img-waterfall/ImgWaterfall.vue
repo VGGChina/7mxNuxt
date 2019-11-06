@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import EditDialog from './edit-dialog/EditDialog'
 import ImgItem from './img-item/ImgItem'
 import NoContent from '~/components/no-content/NoContent'
@@ -66,6 +65,13 @@ import WaterfallSlot from './vue-waterfall/waterfall-slot'
 
 export default {
   name: '',
+  components: {
+    Waterfall,
+    WaterfallSlot,
+    NoContent,
+    ImgItem,
+    EditDialog
+  },
   props: {
     imgList: {
       type: Array,
@@ -126,8 +132,45 @@ export default {
     isShowEditDialog: false,
     currnetEditImg: null
   }),
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    onresizeFlag() {
+      return this.$store.state.window.onresizeFlag
+    },
+    isNoMore() {
+      if (this.isLoading) {
+        return false
+      }
+      if (this.imgList.length > 0 && this.line === 'end') {
+        return true
+      }
+      if (this.imgList.length === 0 && this.line === 'end') {
+        return false
+      }
+      return false
+    },
+    isShowNoContent() {
+      if (this.imgList.length < 1 && this.line === 'end') {
+        return true
+      } else {
+        return false
+      }
+    },
+    content() {
+      if (this.$route.name === 'user-id' || this.$route.name === 'user-home') {
+        return '这个人很懒，什么也没留下 ~'
+      }
+
+      return 'Sorry，暂无内容，您可以尝试刷新页面'
+    }
+  },
   watch: {
-    'onresizeFlag': function(val) {
+    onresizeFlag(val) {
       this.bodyWidth = document.body.clientWidth
       if (!this.timer) {
         this.timer = true
@@ -189,46 +232,6 @@ export default {
     noUser() {
       // no use
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser',
-      'onresizeFlag'
-    ]),
-    isNoMore() {
-      if (this.isLoading) {
-        return false
-      }
-      if (this.imgList.length > 0 && this.line === 'end') {
-        return true
-      }
-      if (this.imgList.length === 0 && this.line === 'end') {
-        return false
-      }
-      return false
-    },
-    isShowNoContent() {
-      if (this.imgList.length < 1 && this.line === 'end') {
-        return true
-      } else {
-        return false
-      }
-    },
-    content() {
-      if (this.$route.name === 'user-id' || this.$route.name === 'user-home') {
-        return '这个人很懒，什么也没留下 ~'
-      }
-
-      return 'Sorry，暂无内容，您可以尝试刷新页面'
-    }
-  },
-  components: {
-    Waterfall,
-    WaterfallSlot,
-    NoContent,
-    ImgItem,
-    EditDialog
   }
 }
 </script>

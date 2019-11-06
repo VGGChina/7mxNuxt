@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <login-register /> -->
+    <login-register />
     <upload />
     <upload-paixin />
     <user-setting />
@@ -16,7 +16,6 @@
   </div>
 </template>
 <script>
-// import { mapGetters } from 'vuex'
 import Topbar from '~/components/topbar/Topbar'
 import LoginRegister from '~/components/login-register/LoginRegister'
 import Upload from '~/components/upload/Upload'

@@ -2,10 +2,10 @@
   <div class="choose-works">
     <div class="left">
       <work-list
-        :workList="choosedList"
+        :work-list="choosedList"
         :step="1"
-        :isReleasClicked="isReleasClicked">
-      </work-list>
+        :is-releas-clicked="isReleasClicked"
+      />
     </div>
 
     <div class="right">
@@ -19,16 +19,18 @@
             color: currentForm.exclusive.id == index ? '#fff' : '#000',
             background: currentForm.exclusive.id == index ? '#595959' : '#fff'
           }"
-          @click="selecteExclusive(item)">
-          {{item.name}}
+          @click="selecteExclusive(item)"
+        >
+          {{ item.name }}
         </div>
       </div>
 
       <ul>
         <li
           v-for="(item, index) in currentTips"
+          :key="index"
           @click="onItemClick(index)"
-          :key="index">
+        >
           {{ item }}
         </li>
       </ul>
@@ -36,11 +38,12 @@
       <h3>选择图片类型</h3>
 
       <div
-        class="selecte-img-type"
         v-for="(item, index) in imgTypes"
-        :key="index">
+        :key="index"
+        class="selecte-img-type"
+      >
         <div class="check-box" @click="selecteImgType(item)">
-          <div v-if="currentForm.editorial.id == index"></div>
+          <div v-if="currentForm.editorial.id == index" />
         </div>
 
         <div class="img-type-description">
@@ -51,16 +54,15 @@
       <div class="what-is">
         <a href="/media-notes" target="_blank">什么是传媒图片？</a>
       </div>
-      
+
       <div class="release-button" @click="release">{{ isReleasing ? '发布中...' : '发布' }}</div>
     </div>
 
-    <Protocol @cancelProtocolDialog="cancelProtocolDialog" :isShow="isShowProtocolDialog"></Protocol>
+    <Protocol :is-show="isShowProtocolDialog" @cancelProtocolDialog="cancelProtocolDialog" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Protocol from './protocol/Protocol'
 import WorkList from './work-list/WorkList'
 import apiFactory from '~/api/factory/apiFactory.js'
@@ -68,9 +70,16 @@ import apiFactory from '~/api/factory/apiFactory.js'
 const catchHandler = error => ({
   payload: error,
   data: { out: '0' }
-});
+})
 
 export default {
+  components: {
+    WorkList,
+    Protocol
+  },
+  props: [
+    'choosedList'
+  ],
   data() {
     return {
       exclusiveList: [{
@@ -104,9 +113,41 @@ export default {
       isReleasClicked: false
     }
   },
-  props: [
-    'choosedList'
-  ],
+  computed: {
+    currentTips() {
+      if (this.currentForm.exclusive.id == 0) {
+        return this.exclusiveTips;
+      } else if (this.currentForm.exclusive.id == 1) {
+        return this.unexclusiveTips;
+      } else {
+        return [];
+      }
+    },
+    currentSeleted() {
+      return this.choosedList.filter(e => {
+        return e.isSelected
+      })
+    },
+    currentForm() {
+      if (this.currentSeleted.length < 1) {
+        return {
+          exclusive: {
+            id: -1,
+            name: ''
+          },
+          editorial: {
+            name: '',
+            id: -1
+          }
+        }
+      }
+
+      return this.currentSeleted[0].toPaixinForm
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
   created() {
     if (this.choosedList.length > 0) {
       this.choosedList.map(e => {
@@ -257,45 +298,6 @@ export default {
     cancelProtocolDialog() {
       this.isShowProtocolDialog = false;
     }
-  },
-  computed: {
-    currentTips() {
-      if (this.currentForm.exclusive.id == 0) {
-        return this.exclusiveTips;
-      } else if (this.currentForm.exclusive.id == 1) {
-        return this.unexclusiveTips;
-      } else {
-        return [];
-      }
-    },
-    currentSeleted() {
-      return this.choosedList.filter(e => {
-        return e.isSelected
-      })
-    },
-    currentForm() {
-      if (this.currentSeleted.length < 1) {
-        return {
-          exclusive: {
-            id: -1,
-            name: ''
-          },
-          editorial: {
-            name: '',
-            id: -1
-          }
-        }
-      }
-
-      return this.currentSeleted[0].toPaixinForm
-    },
-    ...mapGetters([
-      'loginUser'
-    ])
-  },
-  components: {
-    WorkList,
-    Protocol
   }
 }
 </script>
@@ -328,7 +330,7 @@ export default {
   font-size: 14px;
   line-height: 2.5;
   overflow: auto;
-  padding-bottom: 20px; 
+  padding-bottom: 20px;
 }
 
 .choose-exclusive {

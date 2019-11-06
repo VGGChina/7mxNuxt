@@ -61,11 +61,14 @@
 
 <script>
 import PushNotifi from '~/components/push-notifi/index'
-import { mapGetters } from 'vuex'
 import AvatarList from './AvatarList'
 import utilHelper from '~/utils/utils.js'
 
 export default {
+  components: {
+    AvatarList,
+    PushNotifi
+  },
   data: () => ({
     isShowList: false,
     imageNum: 0,
@@ -92,10 +95,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser'
-    ]),
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
     newMessages() {
       try {
         return ((this.loginUser.un_comment_num * 1 +
@@ -139,10 +144,6 @@ export default {
   },
   created() {
     this.cancelPushNotifi()
-  },
-  components: {
-    AvatarList,
-    PushNotifi
   }
 }
 </script>

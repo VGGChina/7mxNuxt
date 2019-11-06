@@ -20,7 +20,7 @@
         <li @click="toFirends">
           <router-link :to="'/friends/' + (loginUser&&loginUser.id || '') + '/0'" class="link">好友</router-link>
         </li>
-        <li @click="$store.commit('isShowSettingDialog', true)">设置</li>
+        <li @click="$store.commit('setting/isShowSettingDialog', true)">设置</li>
         <div class="loginout" @click="logout">退出</div>
       </ul>
     </div>

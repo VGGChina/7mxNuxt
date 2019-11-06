@@ -1,12 +1,11 @@
 <template>
   <div class="withdraw-container">
     <transition name="cover-fade">
-      <div class="setting-cover" @click="cancel" v-if="isShowWithdrawDialog">
-      </div>
+      <div v-if="isShowWithdrawDialog" class="setting-cover" @click="cancel" />
     </transition>
-  
+
     <transition name="withdraw-fade">
-      <div class="withdraw" v-if="isShowWithdrawDialog">
+      <div v-if="isShowWithdrawDialog" class="withdraw">
         <div class="title">申请提现</div>
         <div class="detail">
           留下联系方式申请，我们会在3个工作日内和你取得联系，并进行转账，（提现金额必须大于100）
@@ -14,11 +13,13 @@
         <input
           disabled
           class="border-normal"
-          :placeholder="name">
+          :placeholder="name"
+        >
         <input
           disabled
           class="border-normal"
-          :placeholder="phone">
+          :placeholder="phone"
+        >
         <button @click="commit">发送提现申请</button>
       </div>
     </transition>
@@ -30,44 +31,48 @@ import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
-  methods: {
-    cancel() {
-      this.$store.commit('isShowWithdrawDialog', false);
-    },
-    commit() {
-      apiFactory.getMediaApi().enchashment()
-        .then(res => {
-          if (res.data.out === '1') {
-            this.$toast.notice(res.data.msg);
-            this.$store.commit('isShowWithdrawDialog', false);
-          } else {
-            this.$toast.warn(res.data.msg);
-          }
-        });
-    }
-  },
   computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser',
-      'isShowWithdrawDialog'
-    ]),
+    isShowWithdrawDialog() {
+      return this.$store.state.withdraw.isShowWithdrawDialog
+    },
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
     name() {
       if (this.isLogin) {
-        return this.loginUser.user_data.company;
+        return this.loginUser.user_data.company
       } else {
         return ''
       }
     },
     phone() {
       if (this.isLogin) {
-        return this.loginUser.user_data.phone;
+        return this.loginUser.user_data.phone
       } else {
         return ''
       }
     }
+  },
+  methods: {
+    cancel() {
+      this.$store.commit('isShowWithdrawDialog', false)
+    },
+    commit() {
+      apiFactory.getMediaApi().enchashment()
+        .then(res => {
+          if (res.data.out === '1') {
+            this.$toast.notice(res.data.msg)
+            this.$store.commit('isShowWithdrawDialog', false)
+          } else {
+            this.$toast.warn(res.data.msg)
+          }
+        })
+    }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -144,7 +149,7 @@ input {
   box-sizing: border-box;
   width: 449px;
   height: 50px;
-  font-size: 16px; 
+  font-size: 16px;
   margin-bottom: 30px;
   outline: none;
   border-radius: 8px;

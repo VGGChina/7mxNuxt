@@ -1,56 +1,65 @@
 <template>
   <div class="photographers">
-    <div v-for="(item, index) in userList" class="photographer-item" :key="index">
+    <div v-for="(item, index) in userList" :key="index" class="photographer-item">
       <div class="user">
         <a :href="$utilHelper.toUserPage(item)" style="height: 148px;">
           <div
             class="avatar"
             :style="{
-              background: 'url(' + ($utilHelper.getCompressionUrl(item.avatar, 300, 300) || require('~/assets/img/avatar-default.svg'))  + ')'
-            }">
-          </div>
+              background: 'url(' + ($utilHelper.getCompressionUrl(item.avatar, 300, 300) || require('~/assets/img/avatar-default.svg')) + ')'
+            }"
+          />
         </a>
 
         <div class="user-info">
           <div class="name">{{ item.nick || item.name }}</div>
           <div
             class="follow"
-            @click="follow(item)"
             :class="{
               'followed': item.is_follow == '1',
               'not-follow': item.is_follow == '0'
-            }">
+            }"
+            @click="follow(item)"
+          >
             {{ item.is_follow == '0' ? '关注' : '已关注' }}
           </div>
-          <div class="instruction">{{ item.user_data.about || '这个人很懒，什么也没留下~~~'}}</div>
+          <div class="instruction">{{ item.user_data.about || '这个人很懒，什么也没留下~~~' }}</div>
         </div>
       </div>
 
       <div class="images">
-        <a v-if='index < 3' v-for="(img, index) in (!item.medias ? [] : item.medias)"
-          :key="index" :href="'/photo/' + img.id"
-          target="_blank">
+        <a
+          v-for="(img, index) in (!item.medias ? [] : item.medias)"
+          v-if="index < 3"
+          :key="index"
+          :href="'/photo/' + img.id"
+          target="_blank"
+        >
           <div
             :style="{
               background: 'url(' + $utilHelper.getCompressionUrl(img.image) + ') no-repeat'
             }"
             width="242px"
             height="148px"
-            alt="">
-          </div>
+            alt=""
+          />
         </a>
 
-        <div v-if='getMediasLength(item.medias) > 0' 
-          v-for='(i, index_1) in new Array(3 - getMediasLength(item.medias))'
+        <div
+          v-for="(i, index_1) in new Array(3 - getMediasLength(item.medias))"
+          v-if="getMediasLength(item.medias) > 0"
           :key="'images' + index_1"
-          class='placeHolder'
+          class="placeHolder"
           width="242px"
-          height="148px">
+          height="148px"
+        >
           <div class="nothing">无</div>
         </div>
 
-        <div v-if="getMediasLength(item.medias) < 1"
-          class="no-images">
+        <div
+          v-if="getMediasLength(item.medias) < 1"
+          class="no-images"
+        >
           这个人很懒，还没发布过作品~~~
         </div>
       </div>
@@ -59,37 +68,41 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   props: [
     'userList'
   ],
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    }
+  },
   methods: {
     follow(user) {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
         this.$store.commit('login/isShowLoginDialog', true)
-        return;
+        return
       }
       var rqBody = {
         user_id: user.id
-      };
+      }
       if (user.is_follow === '1') {
         apiFactory.getUserApi().unfollow(rqBody)
           .then(res => {
             if (res.data.out == '1') {
-              user.is_follow = '0';
+              user.is_follow = '0'
             }
-          });
+          })
       } else {
         apiFactory.getUserApi().follow(rqBody)
           .then(res => {
             if (res.data.out == '1') {
-              user.is_follow = '1';
+              user.is_follow = '1'
             }
-          });
+          })
       }
     },
     getMediasLength(medias) {
@@ -99,11 +112,6 @@ export default {
         return 0
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin'
-    ])
   }
 }
 </script>
@@ -159,7 +167,7 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   word-break: break-all;
   font-size: 15px;
   max-height: 58px;
@@ -245,7 +253,7 @@ export default {
   opacity: .5;
   box-sizing: border-box;
   border: dotted 2px #e2e2e2;
-  
+
   cursor: default !important;
   .nothing {
     height: 100%;

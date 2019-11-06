@@ -4,18 +4,19 @@
       <div class="title">选择作品</div>
       <work-list
         :step="0"
-        :workList="worksList">
-      </work-list>
+        :work-list="worksList"
+      />
 
       <no-content
-        :isNoContentShow="!isFetching && worksList.length < 1"
-        :content="'Sorry，没有可以上架的图片'">
-      </no-content>
+        :is-no-content-show="!isFetching && worksList.length < 1"
+        :content="'Sorry，没有可以上架的图片'"
+      />
 
       <div
-        class="more-comments"
         v-if="worksList.length > 0"
-        @click="fetchData">
+        class="more-comments"
+        @click="fetchData"
+      >
         {{ line == 'end' ? '没有更多' : '加载更多' }}
       </div>
     </div>
@@ -32,7 +33,8 @@
         若作品中可辨认面孔的人物必须拥有正确的人物肖像权协议<br>
         <a
           href="/static/pdf/portrait.pdf"
-          target="view_window">
+          target="view_window"
+        >
           下载《肖像授权书模板》
         </a>
       </div>
@@ -41,7 +43,8 @@
         若作品中如涉及物产的图片，必须拥有正确的物产权协议<br>
         <a
           href="/static/pdf/realRight.pdf"
-          target="view_window">
+          target="view_window"
+        >
           下载《物产权协议模板》
         </a>
       </div>
@@ -52,12 +55,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import WorkList from './work-list/WorkList'
 import NoContent from '~/components/no-content/NoContent'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
+  components: {
+    WorkList,
+    NoContent
+  },
   data() {
     return {
       worksList: [],
@@ -71,12 +77,12 @@ export default {
   methods: {
     async fetchData() {
       if (this.isFetching || this.line == 'end') {
-        return;
+        return
       }
 
-      this.isFetching = true;
+      this.isFetching = true
 
-      let reBody = {};
+      let reBody = {}
       try {
         reBody = {
           type: '6',
@@ -84,55 +90,51 @@ export default {
           check: '0'
         }
       } catch (e) {
-        return;
+        return
       }
 
-      let query = {
+      const query = {
         line: this.line
       }
 
-      let res = await apiFactory.getMediaApi().originList(reBody, query);
+      const res = await apiFactory.getMediaApi().originList(reBody, query)
       if (res.data.out == '1') {
-        this.worksList.push(...res.data.data);
+        this.worksList.push(...res.data.data)
         this.worksList.map(item => {
           this.$set(item, 'isSelected', false)
         })
       }
 
-      this.line = res.data.line;
+      this.line = res.data.line
       setTimeout(() => {
         this.isFetching = false
       }, 500)
     },
     handle(list) {
-      this.worksList = list;
+      this.worksList = list
     },
     nextStep() {
-      let list = [],
-        l = this.worksList.length;
+      const list = [];
+        let l = this.worksList.length
       for (let i = 0; i < l; i++) {
         if (this.worksList[i].isSelected) {
-          this.worksList[i].isSelected = false;
+          this.worksList[i].isSelected = false
           list.push(this.worksList[i])
         }
       }
 
       if (list.length < 1) {
-        this.$toast.warn('您还没有选中任何作品');
+        this.$toast.warn('您还没有选中任何作品')
         return;
       }
 
-      this.$emit('nextStep', { choosedList: list, isChoosed: true });
+      this.$emit('nextStep', { choosedList: list, isChoosed: true })
     }
   },
   computed: {
-    ...mapGetters([
-      'loginUser'
-    ])
-  },
-  components: {
-    WorkList,
-    NoContent
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
   }
 }
 </script>

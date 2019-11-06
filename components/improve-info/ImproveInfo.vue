@@ -58,7 +58,6 @@
 
 <script>
 /* global QiniuJsSDK */
-import { mapGetters } from 'vuex'
 import uploadUtil from '~/utils/uploadUtil'
 import getUptoken from '~/api/uptokenService'
 import apiFactory from '~/api/factory/apiFactory.js'
@@ -71,9 +70,24 @@ export default {
       commitCheak: false
     }
   },
+  computed: {
+    isShowImproveInfo() {
+      return this.$store.state.improveInfo.isShowImproveInfo
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
+  watch: {
+    isShowImproveInfo(val, oldVal) {
+      if (val) {
+        this.initQiNiu()
+      }
+    }
+  },
   methods: {
     cancel() {
-      this.$store.commit('isShowImproveInfo', false)
+      this.$store.commit('improveInfo/isShowImproveInfo', false)
     },
     initQiNiu() {
       this.$nextTick(() => {
@@ -232,21 +246,6 @@ export default {
 
       if (this.name != '') {
         this.setName()
-      }
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'isShowImproveInfo'
-    ]),
-    loginUser() {
-      return this.$store.state.login.loginUser
-    }
-  },
-  watch: {
-    'isShowImproveInfo': function(val, oldVal) {
-      if (val) {
-        this.initQiNiu()
       }
     }
   }
