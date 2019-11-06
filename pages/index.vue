@@ -37,7 +37,6 @@
 
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
-import utilHelper from '~/utils/utils.js'
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
 import slide from '~/components/slide/index'
 import IndexFooter from '~/components/footer/IndexFooter'

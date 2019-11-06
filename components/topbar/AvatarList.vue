@@ -29,7 +29,6 @@
 
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
-import utilHelper from '~/utils/utils.js'
 
 export default {
   props: ['isShowList'],
@@ -66,7 +65,7 @@ export default {
       }
     },
     userRef() {
-      return utilHelper.toUserPage(this.loginUser)
+      return this.$utilHelper.toUserPage(this.loginUser)
     }
   },
   methods: {

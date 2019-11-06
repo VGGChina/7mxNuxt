@@ -6,7 +6,7 @@
   >
     <!-- 图片 -->
     <img
-      :src="dataUtilHelper.getCompressionUrl(img.image, 600, 1000)"
+      :src="$utilHelper.getCompressionUrl(img.image, 600, 1000)"
       :alt="imageAlt"
     >
 
@@ -86,7 +86,7 @@
         v-if="isHover"
         class="imgWarterfall-imgItem-score"
       >
-        {{ dataUtilHelper.score(img) }}
+        {{ $utilHelper.score(img) }}
       </div>
     </transition>
 
@@ -103,7 +103,7 @@
           :style="{
             backgroundImage: 'url(' + (!img.user_data.avatar ?
               require('~/assets/img/avatar-default.svg') :
-              dataUtilHelper.getCompressionUrl(img.user_data.avatar, 200, 200)) + ')'
+              $utilHelper.getCompressionUrl(img.user_data.avatar, 200, 200)) + ')'
           }"
           @click.stop="toUserHomePage()"
         />
@@ -148,7 +148,6 @@
 <script>
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 import apiFactory from '~/api/factory/apiFactory.js'
-import utilHelper from '~/utils/utils.js'
 
 export default {
   components: {
@@ -170,8 +169,7 @@ export default {
       isHoverUser: false,
       mouseEnterTime: 0,
       mouseLeaveTime: 0,
-      intervalTime: null,
-      dataUtilHelper: utilHelper
+      intervalTime: null
     }
   },
   computed: {
@@ -245,7 +243,7 @@ export default {
       return eputId
     },
     userRef() {
-      return utilHelper.toUserPage(this.img.user_data)
+      return this.$utilHelper.toUserPage(this.img.user_data)
     }
   },
   created() {

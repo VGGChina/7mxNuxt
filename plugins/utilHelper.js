@@ -1,4 +1,4 @@
-/* global JSEncrypt */
+import Vue from 'vue'
 
 var utilHelper = {
   debugTypes: {
@@ -184,4 +184,4 @@ var utilHelper = {
   }
 }
 
-export default utilHelper
+Vue.prototype.$utilHelper = utilHelper

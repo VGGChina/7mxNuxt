@@ -12,7 +12,7 @@
           <div
             class="avatar"
             :style="{
-              background: 'url(' + (dataUtilHelper.getCompressionUrl(userData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
+              background: 'url(' + ($utilHelper.getCompressionUrl(userData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
             }"
           />
         </a>
@@ -65,7 +65,6 @@
 
 <script>
 import apiFactory from '~/api/factory/apiFactory.js'
-import utilHelper from '~/utils/utils.js'
 import loading from '~/components/loading/Loading'
 
 export default {
@@ -80,8 +79,7 @@ export default {
   data() {
     return {
       imgList: [],
-      isFetching: false,
-      dataUtilHelper: utilHelper
+      isFetching: false
     }
   },
   computed: {
@@ -104,7 +102,13 @@ export default {
       return eputUserId
     },
     userRef() {
-      return utilHelper.toUserPage(this.userData)
+      return this.$utilHelper.toUserPage(this.userData)
+    }
+  },
+  watch: {
+    'userData': function(val) {
+      this.imgList = []
+      this.fetchData()
     }
   },
   created() {
@@ -160,12 +164,6 @@ export default {
       if (this.leave) {
         this.leave()
       }
-    }
-  },
-  watch: {
-    'userData': function(val) {
-      this.imgList = []
-      this.fetchData()
     }
   }
 }

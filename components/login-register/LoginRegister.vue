@@ -34,13 +34,13 @@ export default {
       return this.$store.state.login.isShowLoginDialog
     },
     isShowRegisterDialog() {
-      return this.$store.state.login.isShowRegisterDialog
+      return this.$store.state.register.isShowRegisterDialog
     }
   },
   methods: {
     cancelDialog() {
       this.$store.commit('login/isShowLoginDialog', false)
-      this.$store.commit('isShowRegisterDialog', false)
+      this.$store.commit('register/isShowRegisterDialog', false)
     }
   }
 }

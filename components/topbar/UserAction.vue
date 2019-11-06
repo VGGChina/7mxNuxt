@@ -45,7 +45,7 @@
           class="avatar"
           :style=" {
             'backgroundImage': 'url(' +
-              (dataUtilHelper.getCompressionUrl(loginUser.avatar, 200, 200) ||
+              ($utilHelper.getCompressionUrl(loginUser.avatar, 200, 200) ||
                 require('~/assets/img/avatar-default.svg')) + ')'
           }"
         />
@@ -62,7 +62,6 @@
 <script>
 import PushNotifi from '~/components/push-notifi/index'
 import AvatarList from './AvatarList'
-import utilHelper from '~/utils/utils.js'
 
 export default {
   components: {
@@ -74,8 +73,7 @@ export default {
     imageNum: 0,
     showPushNotifi: false,
     // 点击后红点临时消除
-    readedMessages: false,
-    dataUtilHelper: utilHelper
+    readedMessages: false
   }),
   computed: {
     isLogin() {
@@ -121,7 +119,7 @@ export default {
       }
     },
     userRef() {
-      return utilHelper.toUserPage(this.loginUser)
+      return this.$utilHelper.toUserPage(this.loginUser)
     }
   },
   created() {
