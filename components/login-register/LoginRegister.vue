@@ -33,9 +33,6 @@ export default {
     isShowLoginDialog() {
       return this.$store.state.login.isShowLoginDialog
     },
-    isShowRegister() {
-      return this.$store.state.login.isShowRegister
-    },
     isShowRegisterDialog() {
       return this.$store.state.login.isShowRegisterDialog
     }

@@ -77,23 +77,6 @@ export default {
     readedMessages: false,
     dataUtilHelper: utilHelper
   }),
-  methods: {
-    goUpload() {
-      this.$store.commit('upload/isShowUploadDialog', true)
-    },
-    showNoti() {
-      this.readedMessages = true
-      this.showPushNotifi = !this.showPushNotifi
-    },
-    toContributor() {
-      this.$router.push({ name: 'contributor' })
-    },
-    cancelPushNotifi() {
-      this.$bus.on('cancel', e => {
-        this.showPushNotifi = false
-      })
-    }
-  },
   computed: {
     isLogin() {
       return this.$store.state.login.isLogin
@@ -106,7 +89,6 @@ export default {
         return ((this.loginUser.un_comment_num * 1 +
           this.loginUser.un_fan_num * 1 +
           this.loginUser.un_like_num * 1 +
-          //  this.loginUser.un_needed_num * 1 +
           this.loginUser.un_notice_num * 1
         ) > 0) && !this.readedMessages
       } catch (e) {
@@ -120,14 +102,14 @@ export default {
         return '0'
       }
     },
-    companyStatus: function() {
+    companyStatus() {
       try {
         return this.loginUser.user_data.company_status
       } catch (e) {
         return '0'
       }
     },
-    status: function() {
+    status() {
       if (this.cardStatus == '0') {
         if (this.companyStatus == '0') {
           return '0'
@@ -144,6 +126,23 @@ export default {
   },
   created() {
     this.cancelPushNotifi()
+  },
+  methods: {
+    goUpload() {
+      this.$store.commit('upload/isShowUploadDialog', true)
+    },
+    showNoti() {
+      this.readedMessages = true
+      this.showPushNotifi = !this.showPushNotifi
+    },
+    toContributor() {
+      this.$router.push({ name: 'contributor' })
+    },
+    cancelPushNotifi() {
+      this.$bus.on('cancel', e => {
+        this.showPushNotifi = false
+      })
+    }
   }
 }
 </script>

@@ -107,17 +107,8 @@ export default {
   data: () => ({
 
   }),
-  computed: {
-
-  },
-  watch: {
-
-  },
   created() {
     this.bannerAnime()
-  },
-  mounted() {
-
   },
   methods: {
     // 自动切换 & 重置自动切换动画

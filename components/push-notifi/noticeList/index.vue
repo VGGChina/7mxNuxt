@@ -1,37 +1,37 @@
 <template>
   <div>
-    <div class='noticeList list_item' v-for='item in list' :key='item.dateline'>
+    <div v-for='item in list' class='noticeList list_item' :key="item.dateline">
       <!-- <div v-if='item.avatar' class="avatar" :style="{ 'backgroundImage' : `url(${item.avatar})` }"></div> -->
-      <div v-if='item.type == 0 || item.type == 1' class="text">
+      <div v-if="item.type == 0 || item.type == 1" class="text">
         <div class="operation">
-          <span class='action' :style="{'cursor': item.jump ? 'pointer' : ''}" @click='toPhoto(item.jump)'>{{item.title}}</span>
+          <span class="action" :style="{'cursor': item.jump ? 'pointer' : ''}" @click="toPhoto(item.jump)">{{ item.title }}</span>
         </div>
       </div>
 
-      <div v-if='item.type == 11 || item.type == 12' class="text">
+      <div v-if="item.type == 11 || item.type == 12" class="text">
         <div class="operation">
           <span class="title">
-            {{item.title}}
-            <span v-if='item.type == 11 || item.type == 12' :style="{'background':item.type==11?'rgba(117, 181, 56, 0.68)':'rgba(255, 56, 14, 0.58)'}" class='innerTitle'>
-              {{item.type == 11 ? '通过' : '未通过'}}
+            {{ item.title }}
+            <span v-if="item.type == 11 || item.type == 12" :style="{'background':item.type==11?'rgba(117, 181, 56, 0.68)':'rgba(255, 56, 14, 0.58)'}" class="innerTitle">
+              {{ item.type == 11 ? '通过' : '未通过' }}
             </span>
           </span>
         </div>
-        <div @click='toPhoto(item.jump)' class="photo" :style="{ 'backgroundImage' : `url(${item.image})` }"></div>
+        <div class="photo" @click='toPhoto(item.jump)' :style="{ 'backgroundImage' : `url(${item.image})` }"/>
       </div>
 
-      <div v-if='item.type == 2' class="text">
+      <div v-if="item.type == 2" class="text">
         <div class="operation">
           <span class="title">
-            {{item.title}}
+            {{ item.title }}
           </span>
         </div>
-        <div @click='toPhoto(item.jump)' class="photo" :style="{ 'backgroundImage' : `url(${item.image})` }"></div>
+        <div class="photo" @click='toPhoto(item.jump)' :style="{ 'backgroundImage' : `url(${item.image})` }"/>
       </div>
 
-      <div v-if='item.type == 21 || item.type == 22' class="text">
+      <div v-if="item.type == 21 || item.type == 22" class="text">
         <div class="operation">
-          <span class='action' @click='toPhoto(item.jump)'>您的摄影师审核{{item.type==21?'通过':'未通过'}}</span>
+          <span class="action" @click="toPhoto(item.jump)">您的摄影师审核{{ item.type==21?'通过':'未通过' }}</span>
         </div>
       </div>
 
@@ -41,34 +41,19 @@
 
 <script>
 export default {
-  name: 'noticeList',
-  data: () => ({
-
-  }),
+  name: 'NoticeList',
   props: [
     'list'
   ],
+  data: () => ({
+
+  }),
   methods: {
     toPhoto(id) {
       if (!id) return
       if (id.indexOf('http') > -1) return window.open(id, '_blank')
       window.open(`/photo/${id.split(':')[1]}`, '_blank')
     }
-  },
-  created() {
-
-  },
-  mounted() {
-
-  },
-  watch: {
-
-  },
-  computed: {
-
-  },
-  components: {
-
   }
 }
 </script>

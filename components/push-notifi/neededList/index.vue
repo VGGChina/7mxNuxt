@@ -1,32 +1,13 @@
 <template>
-  <div class='noticeList'>
-  </div>
+  <div class="noticeList"/>
 </template>
 
 <script>
 export default {
-  name: 'noticeList',
+  name: 'NoticeList',
   data: () => ({
 
-  }),
-  methods: {
-
-  },
-  created() {
-
-  },
-  mounted () {
-
-  },
-  watch: {
-
-  },
-  computed: {
-
-  },
-  components: {
-
-  }
+  })
 }
 </script>
 

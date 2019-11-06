@@ -6,14 +6,14 @@
     @mouseleave="isShowMask = false"
   >
     <transition name="cover-fade">
-      <div class="img-pre-cover" v-show="file.status != 5 || isShowMask">
-        <!-- 
+      <div v-show="file.status != 5 || isShowMask" class="img-pre-cover">
+        <!--
           file.status的含义：
           源码地址（第124至142行）：https://github.com/moxiecode/plupload/blob/master/src/plupload.js
         -->
         <div
-          class="error-info"
           v-if="file.status == 4 || file.putStatus == -1"
+          class="error-info"
         >{{ file.status == 4 ? '上传失败' : file.putStatus == -1 ? '发布失败' : '' }}</div>
       </div>
     </transition>
@@ -25,29 +25,36 @@
         borderColor: file.isSelected ? '#56cb8f' : '#fff'
       }"
     >
-      <div class="delete" v-if="file.status == 4 || isShowMask" @click.stop="remove"></div>
+      <div v-if="file.status == 4 || isShowMask" class="delete" @click.stop="remove" />
     </div>
 
     <!-- <div class="progress" v-if="file.status == 2 || file.imagePutStatus == 2"> -->
-    <div class="progress" v-if="file.status == 2">
+    <div v-if="file.status == 2" class="progress">
       <div class="progress-all">
-        <div class="progress-current" :style="progressStyle"></div>
+        <div class="progress-current" :style="progressStyle" />
       </div>
-      <div class="cancel-upload" @click.stop="remove"></div>
+      <div class="cancel-upload" @click.stop="remove" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    isShowMask: false
-  }),
   props: [
     'index',
     'file',
     'uploader'
   ],
+  data: () => ({
+    isShowMask: false
+  }),
+  computed: {
+    progressStyle() {
+      return {
+        width: this.file.percent / 100 * 120 + 'px'
+      }
+    }
+  },
   methods: {
     selected() {
       this.uploader.files.forEach(e => {
@@ -65,19 +72,6 @@ export default {
 
       if (this.uploader.files.length <= 0) {
         this.$emit('uploadImgPreEmpty', '')
-      }
-    }
-  },
-  computed: {
-    progressStyle() {
-      return {
-        // width: (this.file.loaded + this.file.imageLoaded) / (this.file.size + this.file.imageSize) * 120 + 'px'
-        width: this.file.percent / 100 * 120 + 'px'
-      }
-    },
-    imgProStyle() {
-      return {
-        'background-image': 'url(' + this.file.src + ')'
       }
     }
   }

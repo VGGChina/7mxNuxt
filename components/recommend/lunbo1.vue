@@ -42,7 +42,6 @@ export default {
   }),
   computed: {
     largerBannerWidth: function() {
-      // this.left = -this.screenWidthBanner
       return this.screenWidthBanner
     },
     largerBannerWidthBox: function() {

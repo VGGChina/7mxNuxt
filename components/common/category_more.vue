@@ -14,16 +14,6 @@ export default {
   props: ['moreInfo', 'moreText', 'istype'],
   data: () => ({
   }),
-  computed: {
-
-  },
-  watch: {
-
-  },
-  created() {
-  },
-  mounted() {
-  },
   methods: {
     gode() {
       if (this.istype === 'ishotimg') {

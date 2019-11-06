@@ -16,13 +16,6 @@ export default {
   ],
   computed: {
     tips() {
-      // if (this.$route.name == 'user-id' || this.$route.name == 'user-home') {
-      //   return '这个人很懒，什么也没留下 ~'
-      // } else if (this.$route.name == 'income') {
-      //   return this.content || 'sorry, 暂无订单'
-      // }
-      // return 'sorry，暂无内容，您可以尝试刷新页面'
-
       return this.content || 'Sorry，暂无内容'
     }
   }

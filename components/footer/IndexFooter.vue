@@ -123,18 +123,6 @@ export default {
   data: () => ({
 
   }),
-  computed: {
-
-  },
-  watch: {
-
-  },
-  created() {
-
-  },
-  mounted() {
-
-  },
   methods: {
     toHelpCenter(to) {
       if (!to) {

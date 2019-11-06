@@ -35,12 +35,6 @@ export default {
     isShowConfirmationDialog() {
       return this.$store.state.confirmationDialog.isShowConfirmationDialog
     },
-    isLogin() {
-      return this.$store.state.login.isLogin
-    },
-    loginUser() {
-      return this.$store.state.login.loginUser
-    },
     confirmationDialogTitle() {
       return this.$store.state.confirmationDialog.confirmationDialogTitle
     },

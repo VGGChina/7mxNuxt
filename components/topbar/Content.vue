@@ -60,12 +60,7 @@ export default {
     mleave() {
       this.isTypeShow = false
     }
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  components: {}
+  }
 }
 </script>
 

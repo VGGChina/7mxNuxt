@@ -137,6 +137,27 @@ export default {
     column3: ['社群', '微博', '公众号', '&nbsp;'],
     showSearch: true
   }),
+  computed: {
+    winPageYOffset() {
+      return this.$store.state.window.winPageYOffset
+    },
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    isToPaixin() {
+      if (this.currentItem == 2) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  watch: {
+    winPageYOffset(val) {
+      // 当页面的滚动条滚动时,会执行这里的代码
+      this.setStyle(400, val)
+    }
+  },
 
   async asyncData() {
     // recommend
@@ -266,27 +287,6 @@ export default {
 
         taopBar.style.background = 'rgba(26, 26, 26, ' + transparent + ')'
       }
-    }
-  },
-  computed: {
-    winPageYOffset() {
-      return this.$store.state.window.winPageYOffset
-    },
-    isLogin() {
-      return this.$store.state.login.isLogin
-    },
-    isToPaixin() {
-      if (this.currentItem == 2) {
-        return true
-      } else {
-        return false
-      }
-    }
-  },
-  watch: {
-    winPageYOffset(val) {
-      // 当页面的滚动条滚动时,会执行这里的代码
-      this.setStyle(400, val)
     }
   }
 }

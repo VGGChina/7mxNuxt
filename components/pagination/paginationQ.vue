@@ -1,40 +1,50 @@
 <template>
-  <div class="pagination-container" v-if="pageList.length > 0">
+  <div v-if="pageList.length > 0" class="pagination-container">
     <div>
-      <div class="pagination-page"
+      <div
         v-for="(page, index) in pageList"
         :key="index"
+        class="pagination-page"
         :class="{
           'pagination-current': page == currentPage
-        }">
-        <router-link class="pagination-page-router"
+        }"
+      >
+        <router-link
           v-if="baseUrl && page != '...'"
-          :to="baseUrl + page">
+          class="pagination-page-router"
+          :to="baseUrl + page"
+        >
           {{ page }}
         </router-link>
 
-        <span class="pagination-page-router"
+        <span
           v-if="!baseUrl || page == '...'"
-          @click="jumpTo(page)">
-          {{page}}
+          class="pagination-page-router"
+          @click="jumpTo(page)"
+        >
+          {{ page }}
         </span>
       </div>
 
-      <div class="pagination-next"
+      <div
         v-if="!baseUrl && currentPage != line.split(',')[1]"
-        @click="jumpTo(currentPage + 1)">
+        class="pagination-next"
+        @click="jumpTo(currentPage + 1)"
+      >
         下一页
       </div>
 
-      <router-link class="pagination-next"
+      <router-link
         v-if="baseUrl && currentPage != line.split(',')[1]"
-        :to="baseUrl + (currentPage + 1)">
+        class="pagination-next"
+        :to="baseUrl + (currentPage + 1)"
+      >
         下一页
       </router-link>
 
       <div class="pagination-jump">
         到第
-        <input v-model="jumpPage" @keyup.enter="jumpTo(jumpPage)" type="text">
+        <input v-model="jumpPage" type="text" @keyup.enter="jumpTo(jumpPage)">
         页
         <div @click="jumpTo(jumpPage)">确定</div>
       </div>
@@ -53,34 +63,13 @@ export default {
       jumpPage: ''
     }
   },
-  methods: {
-    jumpTo(page) {
-      if (page == this.currentPage || page == '...') {
-        return
-      }
-
-      let lineArray = this.line.split(',')
-
-      if (page == '' || page < 0 || page > parseInt(lineArray[1])) {
-        this.$toast.warn('页码错误！')
-
-        return
-      }
-
-      lineArray[0] = page + ''
-
-      this.$emit('paginationJumpToPage', lineArray.join(','))
-
-      this.jumpPage = ''
-    }
-  },
   computed: {
     currentPage() {
       if (!this.line) {
         return 0
       }
 
-      let lineArray = this.line.split(',')
+      const lineArray = this.line.split(',')
 
       return lineArray[0] == 'end' ? parseInt(lineArray[2]) : parseInt(lineArray[0]) - 1
     },
@@ -89,10 +78,10 @@ export default {
         return []
       }
 
-      let list = []
-      let lineArray = this.line.split(',')
+      const list = []
+      const lineArray = this.line.split(',')
 
-      if (lineArray.length != 3) {
+      if (lineArray.length !== 3) {
         return list
       }
 
@@ -104,7 +93,7 @@ export default {
         return list
       }
 
-      let currentPage = lineArray[0] == 'end' ? parseInt(lineArray[2]) : parseInt(lineArray[0]) - 1
+      const currentPage = lineArray[0] == 'end' ? parseInt(lineArray[2]) : parseInt(lineArray[0]) - 1
 
       if (currentPage <= 4) {
         for (let i = 0; i < 10; i++) {
@@ -166,10 +155,30 @@ export default {
 
       return list
     }
+  },
+  methods: {
+    jumpTo(page) {
+      if (page == this.currentPage || page == '...') {
+        return
+      }
+
+      const lineArray = this.line.split(',')
+
+      if (page == '' || page < 0 || page > parseInt(lineArray[1])) {
+        this.$toast.warn('页码错误！')
+
+        return
+      }
+
+      lineArray[0] = page + ''
+
+      this.$emit('paginationJumpToPage', lineArray.join(','))
+
+      this.jumpPage = ''
+    }
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .pagination-container {

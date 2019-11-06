@@ -133,12 +133,6 @@ export default {
     currnetEditImg: null
   }),
   computed: {
-    isLogin() {
-      return this.$store.state.login.isLogin
-    },
-    loginUser() {
-      return this.$store.state.login.loginUser
-    },
     onresizeFlag() {
       return this.$store.state.window.onresizeFlag
     },

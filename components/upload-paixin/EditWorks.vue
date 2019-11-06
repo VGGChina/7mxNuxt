@@ -116,11 +116,11 @@ export default {
   computed: {
     currentTips() {
       if (this.currentForm.exclusive.id == 0) {
-        return this.exclusiveTips;
+        return this.exclusiveTips
       } else if (this.currentForm.exclusive.id == 1) {
-        return this.unexclusiveTips;
+        return this.unexclusiveTips
       } else {
-        return [];
+        return []
       }
     },
     currentSeleted() {
@@ -166,7 +166,7 @@ export default {
     }
 
     window.onerror = (message, source, lineno, colno, error) => {
-      let rqBody = {
+      const rqBody = {
         type: this.$utilHelper.debugTypes.UPLOAD_ERROR,
         client: this.$utilHelper.getBrowser(),
         content: JSON.stringify({
@@ -190,32 +190,32 @@ export default {
   methods: {
     selecteExclusive(item) {
       if (this.currentSeleted.length < 1) {
-        this.$toast.warn('您还没有选中要编辑的作品');
-        return;
+        this.$toast.warn('您还没有选中要编辑的作品')
+        return
       }
 
       this.currentSeleted.forEach(e => {
-        e.toPaixinForm.exclusive = item;
+        e.toPaixinForm.exclusive = item
       })
     },
     selecteImgType(item) {
       if (this.currentSeleted.length < 1) {
-        this.$toast.warn('您还没有选中要编辑的作品');
-        return;
+        this.$toast.warn('您还没有选中要编辑的作品')
+        return
       }
 
       this.currentSeleted.forEach(e => {
-        e.toPaixinForm.editorial = item;
+        e.toPaixinForm.editorial = item
       })
     },
     async release() {
       this.isReleasClicked = true
 
       if (this.isReleasing) {
-        return;
+        return
       }
 
-      let l = this.choosedList.length;
+      const l = this.choosedList.length
 
       for (let i = 0; i < l; i++) {
         if (this.choosedList[i].toPaixinForm.exclusive.id == -1 ||
@@ -227,11 +227,11 @@ export default {
         }
       }
 
-      let promises = [],
-        dataArray = []
+      const promises = []
+      const dataArray = []
 
       this.choosedList.forEach(e => {
-        let rqBody = {
+        const rqBody = {
           media_id: e.id,
           is_exclusive: e.toPaixinForm.exclusive.id == 0 ? '1' : '0',
           is_editorial: e.toPaixinForm.editorial.id == 0 ? '1' : '0',
@@ -247,15 +247,15 @@ export default {
 
       this.isReleasing = true
 
-      let results = await Promise.all(promises)
+      const results = await Promise.all(promises)
 
       results.forEach((e, index) => {
         if (e.data.out == '1') {
-          this.choosedList[index].toPaixinForm.status = 1;
+          this.choosedList[index].toPaixinForm.status = 1
         } else {
-          this.$toast.warn(e.data.msg);
+          this.$toast.warn(e.data.msg)
 
-          let errorData = {
+          const errorData = {
             type: this.$utilHelper.debugTypes.UPLOAD_TO_PAIXIN_ERROR,
             client: this.$utilHelper.getBrowser(),
             content: JSON.stringify({
@@ -275,8 +275,8 @@ export default {
         }
       })
 
-      let filterArray = this.choosedList.filter(e => {
-        return e.toPaixinForm.status == 0;
+      const filterArray = this.choosedList.filter(e => {
+        return e.toPaixinForm.status == 0
       })
 
       this.choosedList.splice(0, this.choosedList.length)
@@ -284,19 +284,19 @@ export default {
       this.choosedList.push(...filterArray)
 
       if (this.choosedList.length < 1) {
-        this.$toast.notice('上架成功');
-        this.isReleasing = false;
-        this.$emit('nextStep', { choosedList: this.choosedList, isChoosed: false });
-        this.$store.commit('isShowUploadPaixinDialog', false);
+        this.$toast.notice('上架成功')
+        this.isReleasing = false
+        this.$emit('nextStep', { choosedList: this.choosedList, isChoosed: false })
+        this.$store.commit('isShowUploadPaixinDialog', false)
       }
     },
     onItemClick(index) {
       if (index == 0) {
-        this.isShowProtocolDialog = true;
+        this.isShowProtocolDialog = true
       }
     },
     cancelProtocolDialog() {
-      this.isShowProtocolDialog = false;
+      this.isShowProtocolDialog = false
     }
   }
 }

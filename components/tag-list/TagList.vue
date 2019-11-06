@@ -78,12 +78,6 @@ export default {
       return this.$store.state.login.isLogin
     }
   },
-  watch: {
-  },
-  created() {
-  },
-  mounted() {
-  },
   methods: {
     toTagPage(id) {
       window.open('/tag-photos/' + id, '_blank')

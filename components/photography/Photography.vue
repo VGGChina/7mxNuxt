@@ -86,8 +86,6 @@ export default {
     intervalTime: null,
     avatarIndex: 0
   }),
-  computed: {},
-  watch: {},
   created() {
     this.$bus.on('choosephotography', index => {
       this.avatarIndex = index

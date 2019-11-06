@@ -202,6 +202,157 @@ export default {
     isNoKewords: false,
     maxUploadNum: 20
   }),
+  computed: {
+    isShowUploadDialog() {
+      return this.$store.state.upload.isShowUploadDialog
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    categoryList() {
+      return this.$store.state.category.categoryList
+    },
+    uploadActivity() {
+      return this.$store.state.upload.uploadActivity
+    },
+    recommendTagList() {
+      if (this.$utilHelper.isEmptyObj(this.uploader)) {
+        return []
+      }
+
+      if (this.uploader.files.length < 1) {
+        return []
+      }
+
+      const selectedFiles = this.uploader.files.filter(e => {
+        return e.isSelected
+      })
+
+      if (selectedFiles.length < 1) {
+        return []
+      }
+
+      return selectedFiles[0].recommendTagList
+    },
+    userRef() {
+      return this.$utilHelper.toUserPage(this.loginUser)
+    }
+  },
+  watch: {
+    'isAgreeRules': function(val) {
+      if (val) {
+        this.activity = this.uploadActivity
+
+        this.$nextTick(() => {
+          this.initQiNiu()
+        })
+      }
+    },
+    'title': function(val) {
+      if (this.$utilHelper.isEmptyObj(this.uploader)) return
+
+      this.uploader.files.forEach(e => {
+        if (e.isSelected) {
+          e.title = val
+        }
+      })
+    },
+    'text': function(val) {
+      if (this.$utilHelper.isEmptyObj(this.uploader)) return
+
+      this.uploader.files.forEach(e => {
+        if (e.isSelected) {
+          e.text = val
+        }
+      })
+    },
+    'category': function(val, oldVal) {
+      if (this.$utilHelper.isEmptyObj(this.uploader)) return
+
+      if (this.uploader.files.length < 1) return
+
+      this.uploader.files.forEach(e => {
+        if (e.isSelected) {
+          e.category = val
+        }
+      })
+
+      if (!this.$utilHelper.isEmptyObj(this.uploader.files[0].category)) {
+        this.isNoCategory = false
+      }
+    },
+    'activity': function(val, oldVal) {
+      if (this.$utilHelper.isEmptyObj(this.uploader)) return
+
+      this.uploader.files.forEach(e => {
+        if (e.isSelected) {
+          e.activity = val
+        }
+      })
+    },
+    'isWaterMark': function(val) {
+      if (this.$utilHelper.isEmptyObj(this.uploader)) return
+
+      this.uploader.files.forEach(e => {
+        if (e.isSelected) {
+          e.isWaterMark = val
+        }
+      })
+    },
+    'tag': function(val) {
+      if (val.charAt(val.length - 1) == ' ') {
+        this.pushTag()
+      }
+    },
+    'tagList': {
+      handler: function(val) {
+        if (this.$utilHelper.isEmptyObj(this.uploader)) return
+
+        if (this.uploader.files.length < 1) return
+
+        this.uploader.files.forEach(e => {
+          if (e.isSelected) {
+            e.tagList = JSON.parse(JSON.stringify(val))
+          }
+        })
+
+        if (!this.uploader.files[0].tagList.length < 1) {
+          this.isNoKewords = false
+        }
+      },
+      deep: true
+    },
+    'isShowUploadDialog': function(val) {
+      if (val) {
+        window.onerror = (message, source, lineno, colno, error) => {
+          const rqBody = {
+            type: this.$utilHelper.debugTypes.UPLOAD_ERROR,
+            client: this.$utilHelper.getBrowser(),
+            content: JSON.stringify({
+              user_id: this.loginUser.id,
+              user_agent: navigator.userAgent,
+              description: '上传图片时发生错误（window.onerror全局监听）',
+              data: {
+                message: message,
+                source: source,
+                lineno: lineno,
+                colno: colno,
+                error: error
+              },
+              time: (new Date()).getTime()
+            })
+          }
+
+          apiFactory.getPaixinApi().debug(rqBody)
+        }
+      } else {
+        window.onerror = null
+      }
+    }
+  },
   created() {
     this.fetchActivities()
   },
@@ -891,164 +1042,6 @@ export default {
       const url = '//es0.paixin.com/ai/feedback'
 
       await axiosPost(url, rqBody, {})
-    }
-  },
-  computed: {
-    isShowUploadDialog() {
-      return this.$store.state.upload.isShowUploadDialog
-    },
-    loginUser() {
-      return this.$store.state.login.loginUser
-    },
-    isLogin() {
-      return this.$store.state.login.isLogin
-    },
-    categoryList() {
-      return this.$store.state.category.categoryList
-    },
-    uploadActivity() {
-      return this.$store.state.upload.uploadActivity
-    },
-    hasFiles() {
-      try {
-        return this.uploader.files.length > 0
-      } catch (e) {
-        return false
-      }
-    },
-    recommendTagList() {
-      if (this.$utilHelper.isEmptyObj(this.uploader)) {
-        return []
-      }
-
-      if (this.uploader.files.length < 1) {
-        return []
-      }
-
-      const selectedFiles = this.uploader.files.filter(e => {
-        return e.isSelected
-      })
-
-      if (selectedFiles.length < 1) {
-        return []
-      }
-
-      return selectedFiles[0].recommendTagList
-    },
-    userRef() {
-      return this.$utilHelper.toUserPage(this.loginUser)
-    }
-  },
-  watch: {
-    'isAgreeRules': function(val) {
-      if (val) {
-        this.activity = this.uploadActivity
-
-        this.$nextTick(() => {
-          this.initQiNiu()
-        })
-      }
-    },
-    'title': function(val) {
-      if (this.$utilHelper.isEmptyObj(this.uploader)) return
-
-      this.uploader.files.forEach(e => {
-        if (e.isSelected) {
-          e.title = val
-        }
-      })
-    },
-    'text': function(val) {
-      if (this.$utilHelper.isEmptyObj(this.uploader)) return
-
-      this.uploader.files.forEach(e => {
-        if (e.isSelected) {
-          e.text = val
-        }
-      })
-    },
-    'category': function(val, oldVal) {
-      if (this.$utilHelper.isEmptyObj(this.uploader)) return
-
-      if (this.uploader.files.length < 1) return
-
-      this.uploader.files.forEach(e => {
-        if (e.isSelected) {
-          e.category = val
-        }
-      })
-
-      if (!this.$utilHelper.isEmptyObj(this.uploader.files[0].category)) {
-        this.isNoCategory = false
-      }
-    },
-    'activity': function(val, oldVal) {
-      if (this.$utilHelper.isEmptyObj(this.uploader)) return
-
-      this.uploader.files.forEach(e => {
-        if (e.isSelected) {
-          e.activity = val
-        }
-      })
-    },
-    'isWaterMark': function(val) {
-      if (this.$utilHelper.isEmptyObj(this.uploader)) return
-
-      this.uploader.files.forEach(e => {
-        if (e.isSelected) {
-          e.isWaterMark = val
-        }
-      })
-    },
-    'tag': function(val) {
-      if (val.charAt(val.length - 1) == ' ') {
-        this.pushTag()
-      }
-    },
-    'tagList': {
-      handler: function(val) {
-        if (this.$utilHelper.isEmptyObj(this.uploader)) return
-
-        if (this.uploader.files.length < 1) return
-
-        this.uploader.files.forEach(e => {
-          if (e.isSelected) {
-            e.tagList = JSON.parse(JSON.stringify(val))
-          }
-        })
-
-        if (!this.uploader.files[0].tagList.length < 1) {
-          this.isNoKewords = false
-        }
-      },
-      deep: true
-    },
-    'isShowUploadDialog': function(val) {
-      if (val) {
-        window.onerror = (message, source, lineno, colno, error) => {
-          const rqBody = {
-            type: this.$utilHelper.debugTypes.UPLOAD_ERROR,
-            client: this.$utilHelper.getBrowser(),
-            content: JSON.stringify({
-              user_id: this.loginUser.id,
-              user_agent: navigator.userAgent,
-              description: '上传图片时发生错误（window.onerror全局监听）',
-              data: {
-                message: message,
-                source: source,
-                lineno: lineno,
-                colno: colno,
-                error: error
-              },
-              time: (new Date()).getTime()
-            })
-          }
-
-          apiFactory.getPaixinApi().debug(rqBody)
-        }
-      } else {
-        window.onerror = null
-      }
     }
   }
 }

@@ -102,8 +102,6 @@ export default {
     setIntTImer: true,
     isImage: false // 图片加载
   }),
-  computed: {
-  },
   watch: {
     smallBannerList(val, old) {
       this.isImage = false

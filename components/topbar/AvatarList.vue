@@ -40,21 +40,21 @@ export default {
     loginUser() {
       return this.$store.state.login.loginUser
     },
-    cardStatus: function() {
+    cardStatus() {
       try {
         return this.loginUser.user_data.card_status
       } catch (e) {
         return '0'
       }
     },
-    companyStatus: function() {
+    companyStatus() {
       try {
         return this.loginUser.user_data.company_status
       } catch (e) {
         return '0'
       }
     },
-    status: function() {
+    status() {
       if (this.cardStatus == '0') {
         if (this.companyStatus == '0') {
           return '0'

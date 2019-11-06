@@ -26,17 +26,6 @@ export default {
     ],
     currentIndex: 0
   }),
-  computed: {
-
-  },
-  watch: {
-
-  },
-  created() {
-  },
-  mounted() {
-
-  },
   methods: {
     select(index) {
       this.currentIndex = index

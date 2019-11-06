@@ -79,7 +79,6 @@ export default {
       return '暂无消息'
     }
   },
-  watch: {},
   created() {
     this.select(0)
   },

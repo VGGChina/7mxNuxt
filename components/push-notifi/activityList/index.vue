@@ -1,17 +1,17 @@
 <template>
-  <div class='activityList'>
+  <div class="activityList">
     <div class="list">
-      <div v-for='(item, i) in list' :key="i" class="list_item">
-        <div @click='toUser(item.user.name)' class="avatar" :style="{ 'backgroundImage' : `url(${item.user.avatar})` }"></div>
+      <div v-for="(item, i) in list" :key="i" class="list_item">
+        <div class="avatar" @click='toUser(item.user.name)' :style="{ 'backgroundImage' : `url(${item.user.avatar})` }"/>
         <div class="text">
           <div class="operation">
-            <span @click='toUser(item.user.name)' class='name'>{{item.user.nick || item.user.name}}</span>
-            <span class='action'>&nbsp;{{ actionTip(item.msg_type) }}</span>
+            <span class='name' @click='toUser(item.user.name)'>{{ item.user.nick || item.user.name }}</span>
+            <span class="action">&nbsp;{{ actionTip(item.msg_type) }}</span>
           </div>
-          <div v-if='item.media_id'>
-            <span class="title" @click='toPhoto(item.media_id)'>《 {{item.media.title}} 》</span>
+          <div v-if="item.media_id">
+            <span class="title" @click="toPhoto(item.media_id)">《 {{ item.media.title }} 》</span>
           </div>
-          <div v-if='item.media_id' @click='toPhoto(item.media_id)' class="photo" :style="{ 'backgroundImage' : `url(${item.media.image})` }"></div>
+          <div v-if="item.media_id" class="photo" @click='toPhoto(item.media_id)' :style="{ 'backgroundImage' : `url(${item.media.image})` }"/>
         </div>
       </div>
     </div>
@@ -20,12 +20,12 @@
 
 <script>
 export default {
-  name: 'activityList',
-  data: () => ({
-  }),
+  name: 'ActivityList',
   props: [
     'list'
   ],
+  data: () => ({
+  }),
   methods: {
     toUser(name) {
       window.open(`/${name}`, '_blank')
@@ -43,21 +43,6 @@ export default {
         return '评论了'
       }
     }
-  },
-  created() {
-
-  },
-  mounted() {
-
-  },
-  watch: {
-
-  },
-  computed: {
-
-  },
-  components: {
-
   }
 }
 </script>

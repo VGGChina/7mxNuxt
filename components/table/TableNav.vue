@@ -1,12 +1,13 @@
 <template>
   <div class="category-list">
     <div class="type_wrap">
-      <div class="type" v-for="(item, index) in optionsCopy" :key="index">
+      <div v-for="(item, index) in optionsCopy" :key="index" class="type">
         <span
-          class="category-list-router"
           v-if="!item.url"
+          class="category-list-router"
           :class="{ selected : currentIndex == index }"
-          @click="onOptionClicked(index)">
+          @click="onOptionClicked(index)"
+        >
           {{ item.name }}
         </span>
 
@@ -14,7 +15,8 @@
           v-if="item.url"
           class="category-list-router"
           :class="{ selected : currentIndex == index }"
-          :to="item.url ? item.url : ''">
+          :to="item.url ? item.url : ''"
+        >
           {{ item.name }}
         </router-link>
       </div>
@@ -24,11 +26,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      currentIndex: 0
-    }
-  },
   props: {
     options: Array,
     defaultIndex: {
@@ -36,21 +33,10 @@ export default {
     },
     isLoading: Boolean
   },
-  methods: {
-    onOptionClicked(index) {
-      if (this.currentIndex == index || this.isLoading) {
-        return
-      }
-
-      this.currentIndex = index;
-      this.$emit('updateTableIndex', index);
-    },
-    getDefault() {
-      this.currentIndex = this.defaultIndex
+  data() {
+    return {
+      currentIndex: 0
     }
-  },
-  created () {
-    this.getDefault()
   },
   computed: {
     optionsCopy() {
@@ -58,8 +44,24 @@ export default {
     }
   },
   watch: {
-    '$route.params.tableIndex': function (val) {
+    '$route.params.tableIndex': function(val) {
       this.currentIndex = parseInt(val)
+    }
+  },
+  created() {
+    this.getDefault()
+  },
+  methods: {
+    onOptionClicked(index) {
+      if (this.currentIndex == index || this.isLoading) {
+        return
+      }
+
+      this.currentIndex = index
+      this.$emit('updateTableIndex', index)
+    },
+    getDefault() {
+      this.currentIndex = this.defaultIndex
     }
   }
 }
@@ -104,5 +106,4 @@ export default {
   color: rgba(255, 255, 255, 1);
 }
 </style>
-
 

@@ -1,20 +1,21 @@
 <template>
   <div class="work-pre">
     <!-- 单个编辑或者多个编辑 -->
-    <div class="category-options" v-if="step == 1">
-      <div class="slide" :style="slideStyle"></div>
+    <div v-if="step == 1" class="category-options">
+      <div class="slide" :style="slideStyle" />
       <div
-        class="category-option"
         v-for="(option, index) in categoryOptions"
         :key="index"
-        @click="slide(index)">
+        class="category-option"
+        @click="slide(index)"
+      >
         {{ option }}
       </div>
     </div>
 
-    <div class="select-all" v-if="whichOption == 1 || step == 0">
-      <div class="circle" @click="selectAll()" :style="selectAllStyle">
-        <div class="hook"></div>
+    <div v-if="whichOption == 1 || step == 0" class="select-all">
+      <div class="circle" :style="selectAllStyle" @click="selectAll()">
+        <div class="hook" />
       </div>
       全部选择
       <span class="selected-commoditys">
@@ -23,14 +24,16 @@
     </div>
 
     <div class="workItem-list">
-      <div class="work-item"
+      <div
         v-for="(item, index) in workList"
+        :key="index"
+        class="work-item"
         :style="{
           background: 'url(' + $utilHelper.getCompressionUrl(item.image) + ')',
           borderColor: item.isSelected ? '#56cb8f' : '#fff'
         }"
         @click="selected(item, index)"
-        :key="index">
+      >
         <div
           v-if="step == 1"
           class="mask"
@@ -38,9 +41,10 @@
             background: currentIndex == index ? 'rgba(0, 0, 0, .2)' : 'transparent'
           }"
           @mouseenter="currentIndex = index"
-          @mouseleave="currentIndex = -1">
+          @mouseleave="currentIndex = -1"
+        >
           <transition name="">
-            <div class="remove" @click="removeItem(index)" v-if="currentIndex == index"></div>
+            <div v-if="currentIndex == index" class="remove" @click="removeItem(index)" />
           </transition>
 
           <span v-if="isReleasClicked && (item.toPaixinForm.exclusive.id == -1 || item.toPaixinForm.editorial.id == -1)">未编辑</span>
@@ -52,6 +56,11 @@
 
 <script>
 export default {
+  props: [
+    'workList',
+    'step',
+    'isReleasClicked'
+  ],
   data() {
     return {
       categoryOptions: ['单个编辑', '多个编辑'],
@@ -61,18 +70,37 @@ export default {
       isSelectAll: false
     }
   },
-  props: [
-    'workList',
-    'step',
-    'isReleasClicked'
-  ],
+  computed: {
+    selectAllStyle() {
+      if (this.isSelectAll) {
+        return {
+          background: '#57cb8f'
+        }
+      } else {
+        return {
+          border: '1px solid #cecece'
+        }
+      }
+    },
+    selectedNum() {
+      let sum = 0
+
+      this.workList.forEach(e => {
+        if (e.isSelected) {
+          sum++
+        }
+      })
+
+      return sum
+    }
+  },
   methods: {
     /**
     * 顶部选项卡选中时的动画控制
     * @param index 这个参数是指当前选中的选项卡的索引
     */
     slide(index) {
-      this.whichOption = index;
+      this.whichOption = index
       // 每个选项卡的宽度为190px，滑块宽度为188， 所以需要滑动188
       this.slideStyle = {
         transform: 'translateX(' + index * 188 + 'px)'
@@ -82,7 +110,7 @@ export default {
 
       this.workList.forEach(e => {
         e.isSelected = false
-      });
+      })
     },
     minNum(x, y) {
       return x > y ? y : x
@@ -91,8 +119,8 @@ export default {
       return x > y ? x : y
     },
     selected(item, index) {
-      let width = parseInt(item.image_width),
-        height = parseInt(item.image_height)
+      const width = parseInt(item.image_width)
+      const height = parseInt(item.image_height)
 
       if (this.maxNum(width, height) < 4000 || this.minNum(width, height) < 2800) {
         this.$toast.warn('图片的最长边必须大于4000像素、最短边必须大于3000像素才能上架，请选择其他图片')
@@ -108,12 +136,12 @@ export default {
         if (this.whichOption == 0) {
           this.workList.forEach((e, i) => {
             if (i != index) {
-              e.isSelected = false;
+              e.isSelected = false
             }
           })
-          item.isSelected = true;
+          item.isSelected = true
         } else {
-          item.isSelected = !item.isSelected;
+          item.isSelected = !item.isSelected
         }
       }
     },
@@ -124,10 +152,10 @@ export default {
       this.isSelectAll = !this.isSelectAll
 
       this.workList.forEach(e => {
-        let width = parseInt(e.image_width),
-          height = parseInt(e.image_height)
+        const width = parseInt(e.image_width)
+        const height = parseInt(e.image_height)
 
-        let b = this.maxNum(width, height) < 4000 || this.minNum(width, height) < 2800
+        const b = this.maxNum(width, height) < 4000 || this.minNum(width, height) < 2800
         if (b) {
           if (this.isSelectAll) {
             this.$toast.warn('部分图片不满足上架条件，已自动过滤')
@@ -136,30 +164,6 @@ export default {
           e.isSelected = this.isSelectAll
         }
       })
-    }
-  },
-  computed: {
-    selectAllStyle() {
-      if (this.isSelectAll) {
-        return {
-          background: '#57cb8f'
-        };
-      } else {
-        return {
-          border: '1px solid #cecece'
-        };
-      }
-    },
-    selectedNum() {
-      let sum = 0
-
-      this.workList.forEach(e => {
-        if (e.isSelected) {
-          sum++
-        }
-      })
-
-      return sum
     }
   }
 }

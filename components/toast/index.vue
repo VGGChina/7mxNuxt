@@ -21,7 +21,7 @@ export default {
     }
   },
   computed: {
-    icon: function() {
+    icon() {
       return this.type === 'warn' ? require('./img/warn.svg') : require('./img/notice.svg')
     }
   }
