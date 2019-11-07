@@ -21,7 +21,7 @@ const actions = {
     commit('login/isShowLoginDialog', isShow)
   },
   loginUser({ commit, state }, user) {
-    commit('loginUser', user)
+    commit('login/loginUser', user)
   }
 }
 

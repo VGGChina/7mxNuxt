@@ -172,7 +172,7 @@ export default {
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice('个人简介设置成功')
-            this.$store.commit('loginUser', res.data.data)
+            this.$store.commit('login/loginUser', res.data.data)
           }
         })
     },
@@ -191,7 +191,7 @@ export default {
         const res = await apiFactory.getUserApi().setNick(data)
         if (res.data.out === '1') {
           this.$toast.notice('昵称设置成功')
-          this.$store.commit('loginUser', res.data.data)
+          this.$store.commit('login/loginUser', res.data.data)
           this.cancel()
         }
       }
@@ -244,7 +244,7 @@ export default {
       if (res.data.out == '1') {
         this.loginUser.phone = this.phone
 
-        this.$store.commit('loginUser', this.loginUser)
+        this.$store.commit('login/loginUser', this.loginUser)
       } else {
         this.$toast.warn(res.data.msg)
       }
@@ -401,7 +401,7 @@ export default {
               apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
-                    this.$store.commit('loginUser', res.data.data)
+                    this.$store.commit('login/loginUser', res.data.data)
                     this.$toast.notice('头像修改成功')
                   }
                 })

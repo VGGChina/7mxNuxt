@@ -12,7 +12,7 @@ const getters = {
 
 const actions = {
   isShowWithdrawDialog({ commit, state }, isShow) {
-    commit('isShowWithdrawDialog', isShow)
+    commit('withdraw/isShowWithdrawDialog', isShow)
   },
   gains({ commit, state }, g) {
     commit('gains', g)

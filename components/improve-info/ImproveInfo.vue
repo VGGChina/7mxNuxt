@@ -147,7 +147,7 @@ export default {
               apiFactory.getUserApi().setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
-                    this.$store.commit('loginUser', res.data.data)
+                    this.$store.commit('login/loginUser', res.data.data)
                     this.$toast.notice('头像修改成功')
                   }
                 })
@@ -187,7 +187,7 @@ export default {
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg)
-            this.$store.commit('loginUser', res.data.data)
+            this.$store.commit('login/loginUser', res.data.data)
             this.cancel()
           }
         })
@@ -228,7 +228,7 @@ export default {
           .then(res1 => {
             if (res1.data.out === '1') {
               this.$toast.notice(res1.data.msg)
-              this.$store.commit('loginUser', res1.data.data)
+              this.$store.commit('login/loginUser', res1.data.data)
               this.cancel()
             }
           })

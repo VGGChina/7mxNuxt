@@ -22,7 +22,7 @@ export default {
     }
   },
   watch: {
-    winPageYOffset(n, o) {
+    winPageYOffset(n) {
       if (n > 2000) {
         this.ifshow = true
       } else {

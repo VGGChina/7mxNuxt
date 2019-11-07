@@ -1,6 +1,6 @@
 <template>
   <div :class="['topbar-contanier',!isIndex ? 'is_index' : null]">
-    <div id="topbar" class="topbar" :style="topbarStyle">
+    <div id="topbar" ref="topbar" class="topbar" :style="topbarStyle">
       <div style="width: calc(100% / 3); min-width: 500px;">
         <search :ifshow="isIndex || isShowSearch" />
       </div>
@@ -85,6 +85,28 @@ export default {
       return this.$store.state.login.isLogin
     }
   },
+  watch: {
+    '$route.path': function(newval, oldval) {
+      this.getRoute()
+    },
+    getShowSearch(val) {
+      this.isIndex = val
+    },
+    winPageYOffset(newval) {
+      this.pageY = newval
+      if (this.winPageYOffset < 400 && this.$route.path === '/') {
+        this.isIndex = false
+      }
+      if (newval >= 500) {
+        this.isShowSearch = true
+      } else {
+        this.isShowSearch = false
+      }
+    }
+  },
+  created() {
+    this.getRoute()
+  },
   methods: {
     noUse() {
       this.$toast.warn('暂功能暂未上线，敬请期待')
@@ -108,28 +130,6 @@ export default {
         this.isIndex = true
       }
     }
-  },
-  watch: {
-    '$route.path': function(newval, oldval) {
-      this.getRoute()
-    },
-    getShowSearch(val) {
-      this.isIndex = val
-    },
-    winPageYOffset(newval, oldval) {
-      this.pageY = newval
-      if (this.winPageYOffset < 400 && this.$route.path === '/') {
-        this.isIndex = false
-      }
-      if (newval >= 500) {
-        this.isShowSearch = true
-      } else {
-        this.isShowSearch = false
-      }
-    }
-  },
-  created() {
-    this.getRoute()
   }
 }
 </script>

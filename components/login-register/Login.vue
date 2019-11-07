@@ -109,7 +109,7 @@ export default {
       if (loginRes.data.out == '1') {
         const data = loginRes.data.data
 
-        this.$store.commit('loginUser', data)
+        this.$store.commit('login/loginUser', data)
 
         this.$store.commit('login/isShowLoginDialog', false)
 
@@ -122,7 +122,7 @@ export default {
           const otherRes = await apiFactory.getUserApi().intoOther()
           if (otherRes.data.out == '1') {
             data.gaga_id = otherRes.data.data.gaga_id
-            this.$store.commit('loginUser', data)
+            this.$store.commit('login/loginUser', data)
           }
         }
       } else {

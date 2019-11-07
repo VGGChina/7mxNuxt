@@ -115,7 +115,7 @@
 
               <div
                 class="upload-keyworkHelp"
-                @click="$store.commit('help_show', { current: { index: 6, subIndex: 0 } })"
+                @click="$store.commit('help/help_show', { current: { index: 6, subIndex: 0 } })"
               >如何填写图片关键词？</div>
 
               <span v-show="tagList.length > 0" class="copy-tags" @click="copyTags()">复制关键词</span>

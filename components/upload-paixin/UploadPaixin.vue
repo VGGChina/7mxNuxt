@@ -45,7 +45,7 @@ export default {
       this.choosedList = data.choosedList
     },
     cancleDialog() {
-      this.$store.commit('isShowUploadPaixinDialog', false)
+      this.$store.commit('uploadPaixin/isShowUploadPaixinDialog', false)
       this.isChoosed = false
     }
   }

@@ -7,7 +7,7 @@ const state = () => ({
 
 const actions = {
   helpShow({ commit, state }, info) {
-    commit('help_show', info)
+    commit('help/help_show', info)
   }
 }
 

@@ -95,7 +95,8 @@ export default {
   ],
   data() {
     return {
-      showBgFlag: false,
+      // showBgFlag: false,
+      showBgFlag: true,
       userInfoHeight: 200
     }
   },
@@ -117,29 +118,32 @@ export default {
         return '0px'
       }
 
-      this.userInfoHeight = document.querySelector('.info-container').offsetHeight
+      // this.userInfoHeight = document.querySelector('.info-container').offsetHeight
 
-      return this.userInfoHeight + 'px'
+      // return this.userInfoHeight + 'px'
+      return '300px'
     },
     userBg() {
       try {
-        if (this.userInfo.user_data.image == 'http://eput.com/images/show/0d2bb68b98bd5246fe99a698c9a3aa3e.jpg') {
+        if (this.userInfo.user_data.image === 'http://eput.com/images/show/0d2bb68b98bd5246fe99a698c9a3aa3e.jpg') {
           this.userInfo.user_data.image = require('~/assets/img/13.jpg')
         }
         if (this.userInfo.user_data.image != '') {
           const defUrl = 'http://eput.com/images/default_personal_bg.jpg'
-          if (this.userInfo.user_data.image == defUrl) {
-            if (this.firstImg) this.firstImg += '?imageMogr2/blur/10x6'
+          if (this.userInfo.user_data.image === defUrl) {
+            if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) this.firstImg += '?imageMogr2/blur/10x6'
             return this.firstImg
           }
-          if (this.userInfo.user_data.image) this.userInfo.user_data.image += '?imageMogr2/blur/10x6'
+          if (this.userInfo.user_data.image && !this.userInfo.user_data.image.includes('?imageMogr2/blur/10x6')) {
+            this.userInfo.user_data.image += '?imageMogr2/blur/10x6'
+          }
           return this.userInfo.user_data.image
         } else {
-          if (this.firstImg) this.firstImg += '?imageMogr2/blur/10x6'
+          if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) this.firstImg += '?imageMogr2/blur/10x6'
           return this.firstImg
         }
       } catch (e) {
-        if (this.firstImg) this.firstImg += '?imageMogr2/blur/10x6'
+        if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) this.firstImg += '?imageMogr2/blur/10x6'
         return this.firstImg
       }
     },
@@ -173,19 +177,16 @@ export default {
     '$route'(to, from) {
       this.fetchData()
     },
-    'winPageYOffset'(val) {
+    winPageYOffset(val) {
       this.setTopbarStyle(100, val)
-    },
-    'userInfo': function(val) {
-      this.$nextTick(() => {
-        this.showBg()
-      })
     }
+    // userInfo(val) {
+    //   this.$nextTick(() => {
+    //     this.showBgFlag = true
+    //   })
+    // }
   },
   methods: {
-    showBg() {
-      this.showBgFlag = true
-    },
     follow: function() {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
@@ -214,7 +215,7 @@ export default {
         return
       }
 
-      this.$store.commit('loginUser', res.data.data)
+      this.$store.commit('login/loginUser', res.data.data)
 
       setTimeout(() => {
         if (this.status == '3') {
@@ -230,9 +231,9 @@ export default {
       if (otherRes.data.out == '1') {
         this.loginUser.gaga_id = otherRes.data.data.gaga_id
 
-        this.$store.commit('loginUser', this.loginUser)
+        this.$store.commit('login/loginUser', this.loginUser)
 
-        this.$store.commit('isShowUploadPaixinDialog', true)
+        this.$store.commit('uploadPaixin/isShowUploadPaixinDialog', true)
       } else {
         this.$toast.warn('您的账号信息有问题，请联系客服')
       }
@@ -242,7 +243,9 @@ export default {
      * @param { float } pageYOffset 窗口滚动的距离
      */
     setTopbarStyle(startHeight, pageYOffset) {
+      // if (process.server) return
       const taopBar = document.getElementById('topbar')
+      // const taopBar = this.$refs.topbar
 
       if (pageYOffset < startHeight) {
         taopBar.style.position = 'absolute'

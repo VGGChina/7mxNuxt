@@ -8,7 +8,7 @@ const getters = {
 
 const actions = {
   isShowUploadPaixinDialog({ commit, state }, isShow) {
-    commit('isShowUploadPaixinDialog', isShow)
+    commit('uploadPaixin/isShowUploadPaixinDialog', isShow)
   }
 }
 
