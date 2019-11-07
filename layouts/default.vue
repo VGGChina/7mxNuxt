@@ -82,7 +82,7 @@ export default {
   },
   mounted() {
     window.onresize = () => {
-      this.$store.commit('onresizeFlag', new Date().getTime())
+      this.$store.commit('window/onresizeFlag', new Date().getTime())
     }
 
     window.onscroll = e => {
