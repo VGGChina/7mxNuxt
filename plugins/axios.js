@@ -1,3 +1,5 @@
+// import userService from '~/api/userService'
+
 export default function({ $axios, redirect }) {
   $axios.onRequest((config) => {
     config.method = 'POST'

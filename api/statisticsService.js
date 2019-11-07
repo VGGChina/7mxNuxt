@@ -1,10 +1,10 @@
-import { axios7mx } from './factory/axiosFactory'
+import { $axios } from './factory/axiosFactory'
 
 const statisticsService = {
   // 统计
   postBannerClickNum(data) {
     const url = 'tag/click'
-    return axios7mx(url, data, {})
+    return $axios(url, data, {})
   }
 }
 

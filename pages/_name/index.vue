@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
-
 import UserInfo from '~/components/userinfo/UserInfo'
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
 import AlbumList from '~/components/album-list/index'
@@ -89,45 +87,33 @@ export default {
       }
     }
   },
+
   watch: {
     '$route'(to, from) {
       location.reload()
     }
   },
+
   async asyncData({ $axios }) {
     let userInfo = {}
+
     const rqBody = {}
-
-    // if (this.$route.name === 'user-id') {
-    //   rqBody.user_id = this.$route.params.id
-    // } else {
-    //   rqBody.name = this.$route.params.name
-    // }
-
     rqBody.name = 'blackstation'
+    const userinfo = $axios.userService.userDetail(rqBody)
 
-    const data = {
-      url: '/api/user/detail',
-      data: rqBody
-    }
+    const reses = await Promise.all([userinfo])
 
-    // const res = await apiFactory.userService.userDetail(rqBody)
-
-    const res = await $axios(data)
-
-    if (res.data.out === '1') {
-      userInfo = res.data.data
-
-      // document.title = this.getTitle(this.userInfo)
-
-      // this.fetchData()
-      return {
-        userInfo: userInfo
-      }
+    // 用户信息
+    if (reses[0].data.out === '1') {
+      userInfo = reses[0].data.data
     } else {
       this.$router.push({
         name: 'redirectToIndex'
       })
+    }
+
+    return {
+      userInfo: userInfo
     }
   },
   async created() {

@@ -34,7 +34,15 @@ export default {
     '~/plugins/bus',
     // { src: '~/plugins/axios.js', ssr: true }
     '~/plugins/axios',
-    '~/plugins/utilHelper'
+    '~/plugins/utilHelper',
+    '~/api/albumService',
+    '~/api/commonService',
+    '~/api/mediaService',
+    '~/api/paixinService',
+    '~/api/statisticsService',
+    '~/api/tagService',
+    // '~/api/uptokenService',
+    '~/api/userService'
   ],
   /*
   ** Nuxt.js dev-modules

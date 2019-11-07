@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
 import slide from '~/components/slide/index'
 import IndexFooter from '~/components/footer/IndexFooter'
@@ -158,7 +157,7 @@ export default {
     }
   },
 
-  async asyncData() {
+  async asyncData({ $axios }) {
     // recommend
     // const result = await apiFactory.getTagApi().getActivityList()
     // let res = result.data.data.filter(item => {
@@ -176,7 +175,9 @@ export default {
     // }
     // const smallBannerList = res
 
-    const res2 = await apiFactory.commonService.categoryList({ type: '6', category_id: '1' })
+    // const res2 = await apiFactory.commonService.categoryList({ type: '6', category_id: '1' })
+    const res2 = await $axios.commonService.categoryList({ type: '6', category_id: '1' })
+
     const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
     const obj = res2.data.data
     const picList = []
@@ -195,7 +196,11 @@ export default {
       let babelList = []
       if (picList.length > 0) {
       // window.localStorage.setItem('crrentType', JSON.stringify(this.categoryList[index]))
-        let res = await apiFactory.mediaService.recommendCategory({ category_id: picList[i].id, type: 6 }, { line: '1,0,0' })
+        const data = {
+          data: { category_id: picList[i].id, type: 6 },
+          params: { line: '1,0,0' }
+        }
+        let res = await $axios.mediaService.recommendCategory(data.data, data.params)
         res = res.data.data
         res.forEach(item => {
           item.image += '?imageView2/2/w/632/h/389'
@@ -207,7 +212,7 @@ export default {
     }
 
     // photography-categoryList
-    const res_pc = await apiFactory.commonService.categoryList({ type: '16' })
+    const res_pc = await $axios.commonService.categoryList({ type: '16' })
     const photography_categoryList = []
     if (res_pc.data.data.length > 0) {
       for (const item of res_pc.data.data) {
@@ -224,7 +229,7 @@ export default {
       const rqBody = {
         category_id: pcate.id
       }
-      const adv0 = await apiFactory.userService.recommendUser(rqBody, { line: '1,0,0' })
+      const adv0 = await $axios.userService.recommendUser(rqBody, { line: '1,0,0' })
       const tmpData = adv0.data.data
       if (tmpData && tmpData.length > 0) {
         const tmp = {
@@ -239,7 +244,7 @@ export default {
     const imgList = []
     const data = { type: '6' }
     const params = { line: '1,0,0', limit: '40' }
-    const res_hotpics = await apiFactory.mediaService.randomRecommend(data, params)
+    const res_hotpics = await $axios.mediaService.randomRecommend(data, params)
     imgList.push(...res_hotpics.data.data)
 
     return {

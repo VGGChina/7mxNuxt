@@ -95,7 +95,6 @@ export default {
   ],
   data() {
     return {
-      // showBgFlag: false,
       showBgFlag: true,
       userInfoHeight: 200
     }
@@ -119,7 +118,6 @@ export default {
       }
 
       // this.userInfoHeight = document.querySelector('.info-container').offsetHeight
-
       // return this.userInfoHeight + 'px'
       return '300px'
     },
@@ -180,14 +178,12 @@ export default {
     winPageYOffset(val) {
       this.setTopbarStyle(100, val)
     }
-    // userInfo(val) {
-    //   this.$nextTick(() => {
-    //     this.showBgFlag = true
-    //   })
-    // }
+  },
+  mounted() {
+    document.getElementById('topbar').style.background = 'transparent'
   },
   methods: {
-    follow: function() {
+    follow() {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
         this.$store.commit('login/isShowLoginDialog', true)
@@ -206,6 +202,7 @@ export default {
         })
       }
     },
+
     async uploadToPaixin() {
       const res = await this.$apiFactory.getUserApi().currentUser()
 
@@ -225,6 +222,7 @@ export default {
         }
       }, 30)
     },
+
     async intoOther() {
       const otherRes = await this.$apiFactory.getUserApi().intoOther()
 
@@ -243,9 +241,7 @@ export default {
      * @param { float } pageYOffset 窗口滚动的距离
      */
     setTopbarStyle(startHeight, pageYOffset) {
-      // if (process.server) return
       const taopBar = document.getElementById('topbar')
-      // const taopBar = this.$refs.topbar
 
       if (pageYOffset < startHeight) {
         taopBar.style.position = 'absolute'
