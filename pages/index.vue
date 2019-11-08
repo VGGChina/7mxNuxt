@@ -3,9 +3,9 @@
     <!-- banner展示 -->
     <!-- <recommend :small-banner-list="smallBannerList" /> -->
     <!-- 热门标签 -->
-    <hotBabel title="热门标签" :category-list="categoryList" :hot-babels="hotBabels" />
+    <hotBabel title="热门标签" />
     <!-- 推荐摄影师 -->
-    <photography :category-list="photography_categoryList" :avatar-list="avatarList" />
+    <photography />
     <!-- 热门图片 -->
     <div>
       <h3 class="hot-img-title">热门图片</h3>
@@ -175,70 +175,22 @@ export default {
     // }
     // const smallBannerList = res
 
-    // const res2 = await apiFactory.commonService.categoryList({ type: '6', category_id: '1' })
-    const res2 = await $axios.commonService.categoryList({ type: '6', category_id: '1' })
-
-    const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
-    const obj = res2.data.data
-    const picList = []
-    ArrTemp.filter(item => {
-      obj.forEach(element => {
-        if (element['name'] === item) {
-          picList.push(element)
-        }
-      })
-      return true
-    })
-
-    // hot babels
-    const hotBabels = []
-    for (const i in picList) {
-      let babelList = []
-      if (picList.length > 0) {
-      // window.localStorage.setItem('crrentType', JSON.stringify(this.categoryList[index]))
-        const data = {
-          data: { category_id: picList[i].id, type: 6 },
-          params: { line: '1,0,0' }
-        }
-        let res = await $axios.mediaService.recommendCategory(data.data, data.params)
-        res = res.data.data
-        res.forEach(item => {
-          item.image += '?imageView2/2/w/632/h/389'
-        })
-        babelList = res.splice(0, 8)
-      }
-
-      hotBabels.push(babelList)
-    }
-
-    // photography-categoryList
-    const res_pc = await $axios.commonService.categoryList({ type: '16' })
-    const photography_categoryList = []
-    if (res_pc.data.data.length > 0) {
-      for (const item of res_pc.data.data) {
-        const temp = {}
-        temp.id = item.id
-        temp.name = item.name
-        photography_categoryList.push(temp)
-      }
-    }
-
     // AvatarList
-    const avatarList = []
-    for (const pcate of photography_categoryList) {
-      const rqBody = {
-        category_id: pcate.id
-      }
-      const adv0 = await $axios.userService.recommendUser(rqBody, { line: '1,0,0' })
-      const tmpData = adv0.data.data
-      if (tmpData && tmpData.length > 0) {
-        const tmp = {
-          firstAvatar: tmpData.splice(0, 1),
-          avatarList: tmpData.splice(0, 6)
-        }
-        avatarList.push(tmp)
-      }
-    }
+    // const avatarList = []
+    // for (const pcate of photography_categoryList) {
+    //   const rqBody = {
+    //     category_id: pcate.id
+    //   }
+    //   const adv0 = await $axios.userService.recommendUser(rqBody, { line: '1,0,0' })
+    //   const tmpData = adv0.data.data
+    //   if (tmpData && tmpData.length > 0) {
+    //     const tmp = {
+    //       firstAvatar: tmpData.splice(0, 1),
+    //       avatarList: tmpData.splice(0, 6)
+    //     }
+    //     avatarList.push(tmp)
+    //   }
+    // }
 
     // 热门图片
     const imgList = []
@@ -248,11 +200,9 @@ export default {
     imgList.push(...res_hotpics.data.data)
 
     return {
-      categoryList: picList,
       // smallBannerList: smallBannerList,
-      hotBabels: hotBabels,
-      photography_categoryList: photography_categoryList,
-      avatarList: avatarList,
+      // photography_categoryList: photography_categoryList,
+      // avatarList: avatarList,
       imgList: imgList
     }
   },

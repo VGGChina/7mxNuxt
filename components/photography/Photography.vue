@@ -3,7 +3,7 @@
     <sharetitle :title="title" :category-list="categoryList" :identity="1" />
     <div class="content">
       <div
-        v-for="item in avatarList[avatarIndex].firstAvatar"
+        v-for="item in firstAvatar"
         :key="item.id"
         class="content_left"
         @click.stop="goAvatarDetai(item.name)"
@@ -25,7 +25,7 @@
       </div>
       <div class="content_right">
         <div
-          v-for="(item,index) in avatarList[avatarIndex].avatarList"
+          v-for="(item,index) in avatarList"
           :key="item.id"
           class="photo_item"
           @click.stop="goAvatarDetai(item.name)"
@@ -63,32 +63,36 @@ export default {
     morecategory,
     AvatarDialog
   },
-  props: {
-    categoryList: {
-      type: Array,
-      required: true
-    },
-    avatarList: {
-      type: Array,
-      required: true
-    }
-  },
   data: () => ({
     title: '推荐摄影师',
     moreText: '更多摄影师',
     moreInfo: 'ranking',
-    firstAvatar: [],
     line: '',
     isHoverUser: false,
     currentHoverUser: 1000000,
     mouseEnterTime: 0,
     mouseLeaveTime: 0,
     intervalTime: null,
-    avatarIndex: 0
+    categoryList: [],
+    currentAvatars: {},
+    firstAvatar: [],
+    avatarList: []
   }),
-  created() {
+  async created() {
+    const res = await this.$axios.commonService.categoryList({ type: '16' })
+    if (res.data.data.length > 0) {
+      for (const item of res.data.data) {
+        const temp = {}
+        temp.id = item.id
+        temp.name = item.name
+        this.categoryList.push(temp)
+      }
+    }
+
+    this.getAvatars()
+
     this.$bus.on('choosephotography', index => {
-      this.avatarIndex = index
+      this.getAvatars(index)
     })
   },
   mounted() { },
@@ -115,6 +119,17 @@ export default {
         path = ''
       }
       this.$router.push({ path: `/${path}` })
+    },
+
+    async getAvatars(index = 0) {
+      const rqBody = {
+        category_id: this.categoryList[index].id
+      }
+      this.currentAvatars = {}
+      const adv0 = await this.$axios.userService.recommendUser(rqBody, { line: '1,0,0' })
+      const tmpData = adv0.data.data
+      this.firstAvatar = tmpData.splice(0, 1)
+      this.avatarList = tmpData.splice(0, 6)
     }
   }
 }
