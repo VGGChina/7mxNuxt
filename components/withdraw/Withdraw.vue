@@ -58,14 +58,14 @@ export default {
   },
   methods: {
     cancel() {
-      this.$store.commit('isShowWithdrawDialog', false)
+      this.$store.commit('withdraw/isShowWithdrawDialog', false)
     },
     commit() {
       apiFactory.getMediaApi().enchashment()
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg)
-            this.$store.commit('isShowWithdrawDialog', false)
+            this.$store.commit('withdraw/isShowWithdrawDialog', false)
           } else {
             this.$toast.warn(res.data.msg)
           }

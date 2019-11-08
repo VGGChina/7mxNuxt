@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     cancel() {
-      this.$store.commit('neededData', {
+      this.$store.commit('needed/neededData', {
         isShow: false,
         mediaId: ''
       })
@@ -94,7 +94,7 @@ export default {
         })
         localStorage.setItem('neededUserList', JSON.stringify(neededUserList))
         this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
-        this.$store.commit('neededData', {
+        this.$store.commit('needed/neededData', {
           isShow: false,
           mediaId: ''
         })

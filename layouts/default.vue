@@ -43,6 +43,52 @@ export default {
     BackTop,
     Contact,
     ConfirmationDialog
+  },
+  computed: {
+    isShowLoginDialog() {
+      return this.$store.state.login.isShowLoginDialog
+    },
+    isShowRegisterDialog() {
+      return this.$store.state.register.isShowRegisterDialog
+    },
+    isShowWithdrawDialog() {
+      return this.$store.state.withdraw.isShowWithdrawDialog
+    },
+    isShowUploadDialog() {
+      return this.$store.state.upload.isShowUploadDialog
+    },
+    isShowUploadPaixinDialog() {
+      return this.$store.state.uploadPaixin.isShowUploadPaixinDialog
+    },
+    isShowSettingDialog() {
+      return this.$store.state.setting.isShowSettingDialog
+    },
+    neededIsShow() {
+      return this.$store.state.needed.neededIsShow
+    },
+    isShowConfirmationDialog() {
+      return this.$store.state.confirmationDialog.isShowConfirmationDialog
+    },
+    notScroll() {
+      return this.isShowLoginDialog ||
+        this.isShowRegisterDialog ||
+        this.isShowWithdrawDialog ||
+        this.isShowUploadDialog ||
+        this.isShowUploadPaixinDialog ||
+        this.isShowSettingDialog ||
+        this.neededIsShow ||
+        this.isShowConfirmationDialog
+    }
+  },
+  mounted() {
+    window.onresize = () => {
+      this.$store.commit('window/onresizeFlag', new Date().getTime())
+    }
+
+    window.onscroll = e => {
+      const pageYOffset = window.pageYOffset
+      this.$store.commit('window/winPageYOffset', pageYOffset)
+    }
   }
 }
 </script>

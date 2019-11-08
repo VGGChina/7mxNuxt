@@ -89,7 +89,7 @@ export default {
     },
     toLogin() {
       this.$store.commit('login/isShowLoginDialog', true)
-      this.$store.commit('isShowRegisterDialog', false)
+      this.$store.commit('register/isShowRegisterDialog', false)
     },
     timer() {
       if (this.time > 0) {
@@ -185,9 +185,9 @@ export default {
         const resData = registerRes.data.data
 
         // 改变登录状态
-        this.$store.commit('loginUser', resData)
+        this.$store.commit('login/loginUser', resData)
 
-        this.$store.commit('isShowRegisterDialog', false)
+        this.$store.commit('register/isShowRegisterDialog', false)
 
         if (resData.name == '' || resData.nick == '' || resData.avatar == '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)

@@ -8,7 +8,7 @@ const getters = {
 
 const actions = {
   isShowRegisterDialog({ commit, state }, isShow) {
-    commit('isShowRegisterDialog', isShow)
+    commit('register/isShowRegisterDialog', isShow)
   }
 }
 

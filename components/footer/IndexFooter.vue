@@ -126,11 +126,11 @@ export default {
   methods: {
     toHelpCenter(to) {
       if (!to) {
-        this.$store.commit('help_show')
+        this.$store.commit('help/help_show')
       } else if (to === 'create') {
-        this.$store.commit('help_show', { current: { index: 4, subIndex: 0 }})
+        this.$store.commit('help/help_show', { current: { index: 4, subIndex: 0 }})
       } else if (to === 'order') {
-        this.$store.commit('help_show', { current: { index: 2, subIndex: 0 }})
+        this.$store.commit('help/help_show', { current: { index: 2, subIndex: 0 }})
       }
     }
   }

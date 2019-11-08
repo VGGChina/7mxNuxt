@@ -287,7 +287,7 @@ export default {
         this.$toast.notice('上架成功')
         this.isReleasing = false
         this.$emit('nextStep', { choosedList: this.choosedList, isChoosed: false })
-        this.$store.commit('isShowUploadPaixinDialog', false)
+        this.$store.commit('uploadPaixin/isShowUploadPaixinDialog', false)
       }
     },
     onItemClick(index) {
