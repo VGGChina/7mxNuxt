@@ -175,23 +175,6 @@ export default {
     // }
     // const smallBannerList = res
 
-    // AvatarList
-    // const avatarList = []
-    // for (const pcate of photography_categoryList) {
-    //   const rqBody = {
-    //     category_id: pcate.id
-    //   }
-    //   const adv0 = await $axios.userService.recommendUser(rqBody, { line: '1,0,0' })
-    //   const tmpData = adv0.data.data
-    //   if (tmpData && tmpData.length > 0) {
-    //     const tmp = {
-    //       firstAvatar: tmpData.splice(0, 1),
-    //       avatarList: tmpData.splice(0, 6)
-    //     }
-    //     avatarList.push(tmp)
-    //   }
-    // }
-
     // 热门图片
     const imgList = []
     const data = { type: '6' }
@@ -201,8 +184,7 @@ export default {
 
     return {
       // smallBannerList: smallBannerList,
-      // photography_categoryList: photography_categoryList,
-      // avatarList: avatarList,
+      // photography_categoryLis
       imgList: imgList
     }
   },

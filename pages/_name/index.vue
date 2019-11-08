@@ -97,9 +97,37 @@ export default {
   async asyncData({ $axios }) {
     let userInfo = {}
 
-    const rqBody = {}
-    rqBody.name = 'blackstation'
+    const rqBody = {
+      name: 'blackstation'
+    }
     const userinfo = $axios.userService.userDetail(rqBody)
+
+    // 作品
+    // this.isLoading = true
+
+    // const data = { user_id: this.userInfo.id }
+    // const params = { line: this.line }
+
+    // if (this.userHomeNavIndex == 1) {
+    //   data.check = '1'
+    //   data.user_id = this.userInfo.id
+    // }
+
+    // if (this.userHomeNavIndex == 2) {
+    //   data.check = '2,3'
+    // }
+
+    // const res = await this.$apiFactory.getMediaApi().originList(data, params)
+
+    // if (res.data.out == '1') {
+    //   this.imgList.push(...res.data.data)
+    // }
+
+    // this.line = res.data.line
+
+    // setTimeout(() => {
+    //   this.isLoading = false
+    // }, 500)
 
     const reses = await Promise.all([userinfo])
 
@@ -120,28 +148,6 @@ export default {
     this.getIsLarge()
 
     this.getUserHomeNavIndex()
-
-    // const rqBody = {}
-
-    // if (this.$route.name == 'user-id') {
-    //   rqBody.user_id = this.$route.params.id
-    // } else {
-    //   rqBody.name = this.$route.params.name
-    // }
-
-    // const res = await this.$apiFactory.getUserApi().userDetail(rqBody)
-
-    // if (res.data.out == '1') {
-    //   this.userInfo = res.data.data
-
-    //   document.title = this.getTitle(this.userInfo)
-
-    //   this.fetchData()
-    // } else {
-    //   this.$router.push({
-    //     name: 'redirectToIndex'
-    //   })
-    // }
   },
   mounted() {
     // this.waterfallMinHeight = 2 * this.$utilHelper.getWindowHeight()
