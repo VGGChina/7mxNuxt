@@ -96,17 +96,24 @@ export default {
 
   async asyncData({ $axios }) {
     let userInfo = {}
+    const imgList = []
+    let line = ''
 
     const rqBody = {
       name: 'blackstation'
     }
-    const userinfo = $axios.userService.userDetail(rqBody)
+    const userinfo = await $axios.userService.userDetail(rqBody)
+    if (userinfo.data.out === '1') {
+      userInfo = userinfo.data.data
+    } else {
+      this.$router.push({
+        name: 'redirectToIndex'
+      })
+    }
 
     // 作品
-    // this.isLoading = true
-
-    // const data = { user_id: this.userInfo.id }
-    // const params = { line: this.line }
+    const data = { user_id: userInfo.id }
+    const params = { line: '' }
 
     // if (this.userHomeNavIndex == 1) {
     //   data.check = '1'
@@ -117,31 +124,19 @@ export default {
     //   data.check = '2,3'
     // }
 
-    // const res = await this.$apiFactory.getMediaApi().originList(data, params)
+    const works = await $axios.mediaService.originList(data, params)
 
-    // if (res.data.out == '1') {
-    //   this.imgList.push(...res.data.data)
-    // }
+    if (works.data.out === '1') {
+      imgList.push(...works.data.data)
+      line = works.data.line
+    }
 
     // this.line = res.data.line
 
-    // setTimeout(() => {
-    //   this.isLoading = false
-    // }, 500)
-
-    const reses = await Promise.all([userinfo])
-
-    // 用户信息
-    if (reses[0].data.out === '1') {
-      userInfo = reses[0].data.data
-    } else {
-      this.$router.push({
-        name: 'redirectToIndex'
-      })
-    }
-
     return {
-      userInfo: userInfo
+      userInfo: userInfo,
+      imgList: imgList,
+      line: line
     }
   },
   async created() {
@@ -197,18 +192,18 @@ export default {
       const data = { user_id: this.userInfo.id }
       const params = { line: this.line }
 
-      if (this.userHomeNavIndex == 1) {
+      if (this.userHomeNavIndex === 1) {
         data.check = '1'
         data.user_id = this.userInfo.id
       }
 
-      if (this.userHomeNavIndex == 2) {
+      if (this.userHomeNavIndex === 2) {
         data.check = '2,3'
       }
 
-      const res = await this.$apiFactory.getMediaApi().originList(data, params)
+      const res = await this.$axios.mediaService().originList(data, params)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.imgList.push(...res.data.data)
       }
 
