@@ -21,7 +21,7 @@
           <div class="type works" v-if="activeDetail.vote == '1' || activeDetail.vote == '2'">
             <img
               v-if="activeDetail.vote == '1'"
-              src="../../img/poll.png"
+              :src="require('../../img/poll.png')"
               alt="点我投票"
               class="poll-remind"
             >
