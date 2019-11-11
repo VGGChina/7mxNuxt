@@ -2,23 +2,23 @@
   <div class="activityDetail">
     <!-- 顶部菜单 -->
     <top-nav
-      :active-detail-img="activeDetail.image0 || activeDetail.image"
-      :active-detail="activeDetail"
       @toPublish="toPublish"
-    />
-    <div v-if="!$utilHelper.isEmptyObj(activeDetail)" class="activeBar">
+      :activeDetailImg="activeDetail.image0 || activeDetail.image"
+      :activeDetail="activeDetail"
+    ></top-nav>
+    <div class="activeBar" v-if="!$utilHelper.isEmptyObj(activeDetail)">
       <div class="category-list">
         <div class="type_wrap">
           <div class="type intro">
             <router-link
               :class="{ selected : currentIndex == 0 }"
               :to="{
-                name: 'activityDetail',
+                name: 'activity-id-table-page',
                 params: { id : activeDetail.id, tableIndex: '0', page: '1' }
               }"
             >活动介绍</router-link>
           </div>
-          <div v-if="activeDetail.vote == '1' || activeDetail.vote == '2'" class="type works">
+          <div class="type works" v-if="activeDetail.vote == '1' || activeDetail.vote == '2'">
             <img
               v-if="activeDetail.vote == '1'"
               src="../../img/poll.png"
@@ -31,7 +31,7 @@
                 name: 'activityDetail',
                 params: { id : activeDetail.id, tableIndex: '1', page: '1' }
               }"
-            >{{ getEventStage }}</router-link>
+            >{{getEventStage}}</router-link>
           </div>
           <div class="type works">
             <router-link
@@ -64,31 +64,31 @@
       </div>
     </div>
     <transition name="drop-choose-fade">
-      <div v-if="isShowChoose" class="drop-choose">
+      <div class="drop-choose" v-if="isShowChoose">
         <div class="array">
-          <div />
+          <div></div>
         </div>
         <div class="option" @click="publishNew">发布新作品</div>
         <div class="option" @click="publishOld">从历史作品中选择</div>
       </div>
     </transition>
     <transition name="choose-works-mask-fade">
-      <div v-if="isShowChooseWorks" class="choose-works-mask" @click="isShowChooseWorks = false">
-        <div class="cancle-button" />
+      <div class="choose-works-mask" v-if="isShowChooseWorks" @click="isShowChooseWorks = false">
+        <div class="cancle-button"></div>
       </div>
     </transition>
     <transition name="choose-works-fade">
       <choose-works
         v-if="isShowChooseWorks"
-        :activity-id="activeDetail.id"
-        :tag-id="activeDetail.id"
-        @cancleActivityChooseWorksDialog="isShowChooseWorks = false"
-      />
+        :activityId="activeDetail.id"
+        :tagId="activeDetail.id"
+        v-on:cancleActivityChooseWorksDialog="isShowChooseWorks = false"
+      ></choose-works>
     </transition>
     <div v-if="!$utilHelper.isEmptyObj(activeDetail) && currentIndex == 0" class="article">
       <div v-if="activeDetail.caution" class="title">介绍</div>
       <div v-if="activeDetail.caution" class="content">
-        <span v-html="activeDetail.caution" />
+        <span v-html="activeDetail.caution"></span>
       </div>
       <div v-if="activeDetail.start_time" class="title">征稿时间</div>
       <div
@@ -98,25 +98,25 @@
       <div v-if="!activeDetail.awards" class="title">奖项设置</div>
       <div v-if="!activeDetail.awards" class="content">
         <div v-for="(item, index) in stageList" :key="index" class="oneAward">
-          <strong>{{ item.name }}</strong>&nbsp;&nbsp;
+          <strong>{{item.name}}</strong>&nbsp;&nbsp;
           <strong>数量:</strong>
-          {{ item.num }}&nbsp;&nbsp;
+          {{item.num}}&nbsp;&nbsp;
           <strong>奖品:</strong>
-          {{ item.award }}&nbsp;&nbsp;
+          {{item.award}}&nbsp;&nbsp;
         </div>
       </div>
       <div class="contentNew">
-        <span v-html="activeDetail.content" />
+        <span v-html="activeDetail.content"></span>
       </div>
     </div>
     <div class="auth_wrap">
       <poll
         v-if="currentIndex == 1"
-        :stage-list="stageList"
+        :stageList="stageList"
         :stage="stage"
-        :is-loading="isLoading"
-        :active-detail="activeDetail"
-      />
+        :isLoading="isLoading"
+        :activeDetail="activeDetail"
+      ></poll>
     </div>
     <!-- 作品列表 -->
     <div
@@ -125,21 +125,21 @@
       :style="{ 'min-height': waterfallMinHeight + 'px' }"
     >
       <div class="waterfallContainer">
-        <img-waterfall :img-list="imgList" :line="line" :is-to-paixin="false" :is-show-loading="false" />
+        <img-waterfall :imgList="imgList" :line="line" :isToPaixin="false" :isShowLoading="false"></img-waterfall>
       </div>
     </div>
     <!-- 作者列表 -->
     <div class="auth_wrap">
-      <user-preview v-if="currentIndex == 4" :user-list="userList" />
+      <user-preview v-if="currentIndex == 4" :userList="userList"></user-preview>
     </div>
-    <loading :is-loading="isLoading" :loading-color="'#000'" />
+    <loading :isLoading="isLoading" :loadingColor="'#000'"></loading>
     <pagination
-      v-show="!isLoading && isShowPagination"
       style="margin: 64px 0 160px 0;"
-      :base-url="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
+      v-show="!isLoading && isShowPagination"
+      :baseUrl="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
       :line="line"
       @paginationJumpToPage="jumpToPage"
-    />
+    ></pagination>
   </div>
 </template>
 
@@ -153,13 +153,7 @@ import Poll from './poll'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'ActivityDetail',
-  filters: {
-    timeParse(v) {
-      var t = new Date(v * 1000)
-      return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
-    }
-  },
+  name: 'activityDetail',
   data: () => ({
     activeDetail: {},
     imgList: [],
@@ -178,45 +172,6 @@ export default {
     line1: '',
     currentItem: 1
   }),
-  watch: {
-    isShowChooseWorks: function(val) {
-      if (val) {
-        document.querySelector('html').style.overflow = 'hidden'
-      } else {
-        document.querySelector('html').style.overflow = 'auto'
-      }
-    },
-    '$route.params.tableIndex': function(val) {
-      this.reload()
-    },
-    '$route.params.page': function(val) {
-      const lineArray = this.line.split(',')
-
-      lineArray[0] = val
-
-      this.reload(lineArray.join(','))
-    }
-  },
-  async created() {
-    if (this.$route.params.id == '285671') {
-      try {
-        await this.$apiFactory
-          .getStatisticsApi()
-          .postBannerClickNum({ id: '285671' })
-      } catch (error) {
-        console.log(error)
-      }
-      window.location.href = 'http://www.hotspringphoto.com'
-      return
-    }
-    this.line = this.$route.params.page + ',0,0'
-
-    this.pullActivityDetail()
-
-    this.$bus.on('cancel', e => {
-      this.isShowChoose = false
-    })
-  },
   methods: {
     toPublish() {
       if (!this.isLogin) {
@@ -263,7 +218,7 @@ export default {
       this.fetchData()
     },
     fetchData() {
-      if (this.isLoading || this.line.split(',')[0] === 'end') {
+      if (this.isLoading || this.line.split(',')[0] == 'end') {
         return
       }
 
@@ -310,13 +265,13 @@ export default {
       }, 500)
     },
     async pullActivityDetail() {
-      const { $router, $route, $apiFactory } = this
+      let { $router, $route, $apiFactory } = this
 
-      const res = await $apiFactory
+      let res = await $apiFactory
         .getTagApi()
         .getTagDetail({ tag_id: $route.params.id })
 
-      const { data, out } = res.data
+      let { data, out } = res.data
 
       if (out != '1' || data.is_activity != '1') {
         // 跳转至根目录
@@ -333,7 +288,7 @@ export default {
       this.pullAwardWinningList()
     },
     async pullAwardWinningList() {
-      const api = this.$apiFactory.getMediaApi()
+      let api = this.$apiFactory.getMediaApi()
       let res = null
       res = await api.getAwardWinningList(
         { tag_id: this.$route.params.id },
@@ -352,7 +307,7 @@ export default {
 
       this.isLoading = true
 
-      const api = this.$apiFactory.getMediaApi()
+      let api = this.$apiFactory.getMediaApi()
       let res = null
 
       // 判断是否有获奖名单
@@ -374,7 +329,7 @@ export default {
 
       this.isLoading = true
 
-      const res = await this.$apiFactory
+      let res = await this.$apiFactory
         .getTagApi()
         .getJoinUser(
           { tag_id: this.$route.params.id },
@@ -388,7 +343,7 @@ export default {
 
       this.isLoading = true
 
-      const res = await this.$apiFactory
+      let res = await this.$apiFactory
         .getMediaApi()
         .inTagList(
           { tag_id: this.$route.params.id },
@@ -402,7 +357,7 @@ export default {
 
       this.isLoading = true
 
-      const res = await this.$apiFactory
+      let res = await this.$apiFactory
         .getMediaApi()
         .recommendInTagList(
           { tag_id: this.$route.params.id },
@@ -410,6 +365,49 @@ export default {
         )
 
       this.afterResponse(res)
+    }
+  },
+  async created() {
+    if (this.$route.params.id == '285671') {
+      try {
+        await this.$apiFactory
+          .getStatisticsApi()
+          .postBannerClickNum({ id: '285671' })
+      } catch (error) {
+        console.log(error)
+      }
+      window.location.href = 'http://www.hotspringphoto.com'
+      return
+    }
+    this.line = this.$route.params.page + ',0,0'
+    this.pullActivityDetail()
+    this.$bus.on('cancel', e => {
+      this.isShowChoose = false
+    })
+  },
+  watch: {
+    isShowChooseWorks: function(val) {
+      if (val) {
+        document.querySelector('html').style.overflow = 'hidden'
+      } else {
+        document.querySelector('html').style.overflow = 'auto'
+      }
+    },
+    '$route.params.tableIndex': function(val) {
+      this.reload()
+    },
+    '$route.params.page': function(val) {
+      let lineArray = this.line.split(',')
+
+      lineArray[0] = val
+
+      this.reload(lineArray.join(','))
+    }
+  },
+  filters: {
+    timeParse(v) {
+      var t = new Date(v * 1000)
+      return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
     }
   },
   computed: {
@@ -426,7 +424,7 @@ export default {
         return false
       }
 
-      const lineArray = this.line.split(',')
+      let lineArray = this.line.split(',')
 
       if (lineArray[0] == 'end' && lineArray[2] == '1') {
         return false
