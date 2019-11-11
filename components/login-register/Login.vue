@@ -89,7 +89,7 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 
