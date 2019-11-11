@@ -11,8 +11,11 @@ export default ({ $axios }) => {
     },
 
     login(data) {
-      const url = '/api/user/login'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/login',
+        data
+      }
+      return $axios(httpData)
     },
 
     currentUser(cookie) {
