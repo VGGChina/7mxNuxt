@@ -87,12 +87,34 @@ export default {
   components: {
     SelectCards
   },
-  props: [
-    'firstImg',
-    'userInfo',
-    'originList',
-    'isLoading'
-  ],
+  // props: [
+  //   // 'firstImg',
+  //   // 'userInfo',
+  //   // 'originList',
+  //   // 'isLoading'
+  // ],
+  props: {
+    userInfo: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    originList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
+    },
+    firstImg: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       showBgFlag: true,

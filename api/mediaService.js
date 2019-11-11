@@ -100,8 +100,12 @@ export default ({ $axios }) => {
     },
 
     likeList(data, params) {
-      const url = '/media/like_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/like_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     followList(data, params) {

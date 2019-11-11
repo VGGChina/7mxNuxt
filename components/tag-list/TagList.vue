@@ -61,11 +61,13 @@
 <script>
 import noContent from '~/components/no-content/NoContent'
 import apiFactory from '~/api/factory/apiFactory.js'
+import loading from '~/components/loading/Loading'
 
 export default {
   name: 'TagList',
   components: {
-    noContent
+    noContent,
+    loading
   },
   props: [
     'tags',

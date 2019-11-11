@@ -10,7 +10,7 @@
       <div class="navs">
         <span
           v-for="(item, index) in options"
-          v-if="index != 2 || loginUser.id == userInfo.id"
+          v-if="index !== 2 || loginUser.id === userInfo.id"
           :key="index"
           :class="{ 'option-selected': index == currentIndex }"
           @click="onOptionClicked(index)"
@@ -106,7 +106,7 @@ export default {
     }
   },
   watch: {
-    'userInfo': function(val) {
+    userInfo(val) {
       if (this.$utilHelper.isEmptyObj(val)) {
         return
       }
@@ -123,6 +123,23 @@ export default {
 
       this.options[3].num = val.media_like_num != '0' ? val.media_like_num : ''
     }
+  },
+  created() {
+    if (this.$utilHelper.isEmptyObj(this.userInfo)) {
+      return
+    }
+
+    this.options[0].num = this.userInfo.media_num != '0' ? this.userInfo.media_num : ''
+
+    this.options[1].num = this.userInfo.product_num != '0' ? this.userInfo.product_num : ''
+
+    const checkingNum = this.userInfo.checking_num ? this.userInfo.checking_num : '0'
+    const denyNum = this.userInfo.deny_num ? this.userInfo.deny_num : '0'
+    const sum = parseInt(checkingNum) + parseInt(denyNum)
+
+    this.options[2].num = sum == 0 ? '' : sum
+
+    this.options[3].num = this.userInfo.media_like_num != '0' ? this.userInfo.media_like_num : ''
   },
   methods: {
     onOptionClicked(index) {
@@ -143,13 +160,13 @@ export default {
         user_id: user.id
       }
       if (user.is_follow === '1') {
-        this.$apiFactory.getUserApi().unfollow(rqBody).then(res => {
+        this.$axios.userService.unfollow(rqBody).then(res => {
           if (res.data.out == '1') {
             user.is_follow = '0'
           }
         })
       } else {
-        this.$apiFactory.getUserApi().follow(rqBody).then(res => {
+        this.$axios.userService.follow(rqBody).then(res => {
           if (res.data.out == '1') {
             user.is_follow = '1'
           }

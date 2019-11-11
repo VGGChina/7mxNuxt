@@ -95,7 +95,7 @@ export default {
         this.$toast.warn('您尚未输入任何名称')
         return
       }
-      const res = await apiFactory.getAlbumApi().createAlbum({ name: this.submitName })
+      const res = await this.$axios.albumService.createAlbum({ name: this.submitName })
       if (res.data.out > 0) {
         this.$toast.notice(res.data.msg)
         setTimeout(() => {
@@ -109,7 +109,7 @@ export default {
     // 获取灵感集列表
     async getAlbumList() {
       this.switchMode = 0
-      const res = await apiFactory.getAlbumApi().albumList({ media_id: this.media_id })
+      const res = await this.$axios.albumService.albumList({ media_id: this.media_id })
       if (res.data.out > 0) {
         this.list = res.data.data
       }

@@ -44,13 +44,19 @@ export default ({ $axios }) => {
     },
 
     follow(data) {
-      const url = '/api/user/follow'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/follow',
+        data
+      }
+      return $axios(httpData)
     },
 
     unfollow(data) {
-      const url = '/api/user/drop_follow'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/drop_follow',
+        data
+      }
+      return $axios(httpData)
     },
 
     bindPhone(data) {

@@ -54,8 +54,12 @@ export default ({ $axios }) => {
     },
 
     followList(data, params) {
-      const url = 'tag/follow_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/tag/follow_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     }
   }
   $axios.tagService = tagService

@@ -55,6 +55,7 @@ import AlbumList from '~/components/album-list/index'
 import IndexFooter from '~/components/footer/IndexFooter'
 import NoContent from '~/components/no-content/NoContent'
 import TagList from '~/components/tag-list/TagList'
+import loading from '~/components/loading/Loading'
 
 export default {
   components: {
@@ -63,7 +64,8 @@ export default {
     AlbumList,
     NoContent,
     IndexFooter,
-    TagList
+    TagList,
+    loading
   },
   data: () => ({
     // userInfo: {},
@@ -201,7 +203,7 @@ export default {
         data.check = '2,3'
       }
 
-      const res = await this.$axios.mediaService().originList(data, params)
+      const res = await this.$axios.mediaService.originList(data, params)
 
       if (res.data.out === '1') {
         this.imgList.push(...res.data.data)
@@ -223,7 +225,7 @@ export default {
       const data = { user_id: this.userInfo.id }
       const params = { line: this.line }
 
-      const res = await this.$apiFactory.getMediaApi().likeList(data, params)
+      const res = await this.$axios.mediaService.likeList(data, params)
 
       if (res.data.out == '1') {
         this.imgList.push(...res.data.data)
@@ -264,9 +266,9 @@ export default {
     async fetchAlbum() {
       this.isLoading = true
 
-      const res = await this.$apiFactory.getAlbumApi().albumList({ user_id: this.userInfo.id || '' })
+      const res = await this.$axios.albumService.albumList({ user_id: this.userInfo.id || '' })
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.albumList = res.data.data
       }
 
@@ -277,9 +279,9 @@ export default {
       this.line = res.data.line
     },
     async fetchTag() {
-      const res = await this.$apiFactory.getTagApi().followList({ user_id: this.userInfo.id })
+      const res = await this.$axios.tagService.followList({ user_id: this.userInfo.id })
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.tags = res.data.data
       }
 

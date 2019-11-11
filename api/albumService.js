@@ -3,8 +3,11 @@ export default ({ $axios }) => {
     // 灵感集搜索列表
     albumList(data) {
       // 参数:user_id(某个人的), 缺省是自己的
-      const url = 'album/list_by_user'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/album/list_by_user',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 灵感集搜索列表
@@ -22,8 +25,10 @@ export default ({ $axios }) => {
 
     // 创建灵感集
     createAlbum(data) {
-      const url = 'album/add'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/album/add'
+      }
+      return $axios(httpData)
     },
 
     // 删除灵感集（只能创建者可用）
@@ -39,6 +44,6 @@ export default ({ $axios }) => {
     }
   }
 
-  return albumService
+  $axios.albumService = albumService
 }
 

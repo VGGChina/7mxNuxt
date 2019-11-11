@@ -17,13 +17,13 @@ export default {
   computed: {
     textHeight() {
       if (this.content) {
-        let a = Math.floor(this.content.length / 8)
+        const a = Math.floor(this.content.length / 8)
         return a == 0 ? 1 : a
       }
       return 1
     }
   }
-};
+}
 </script>
 
 <style lang='scss' scoped>
