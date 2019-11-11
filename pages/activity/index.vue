@@ -3,7 +3,9 @@
     <table-nav :options="options" :defaultIndex="tableIndex" v-on:updateTableIndex="tableChanged"></table-nav>
     <div class="activity-list" v-show="tableIndex != 2">
       <div class="card" v-for="item in currentListShow" :key="item.id">
-        <nuxt-link :to="{ name: '', params: { id : item.id, tableIndex: '3', page: '1' } }">
+        <nuxt-link
+          :to="{ name: 'activity-id-table-page', params: { id : item.id, table: '3', page: '1' } }"
+        >
           <div class="bg" :title="item.name">
             <div :style="{ 'backgroundImage': `url(${item.image})` }"></div>
           </div>

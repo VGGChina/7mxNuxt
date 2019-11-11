@@ -1,146 +1,158 @@
 <template>
-  <div class="activityDetail">
-    <!-- 顶部菜单 -->
-    <top-nav
-      @toPublish="toPublish"
-      :activeDetailImg="activeDetail.image0 || activeDetail.image"
-      :activeDetail="activeDetail"
-    ></top-nav>
-    <div class="activeBar" v-if="!$utilHelper.isEmptyObj(activeDetail)">
-      <div class="category-list">
-        <div class="type_wrap">
-          <div class="type intro">
-            <router-link
-              :class="{ selected : currentIndex == 0 }"
-              :to="{
-                name: 'activityDetail',
+    <div class="activityDetail">
+        <!-- 顶部菜单 -->
+        <top-nav
+            @toPublish="toPublish"
+            :activeDetailImg="activeDetail.image0 || activeDetail.image"
+            :activeDetail="activeDetail"
+        ></top-nav>
+        <div class="activeBar" v-if="!$utilHelper.isEmptyObj(activeDetail)">
+            <div class="category-list">
+                <div class="type_wrap">
+                    <div class="type intro">
+                        <router-link
+                            :class="{ selected : currentIndex == 0 }"
+                            :to="{
+                name: 'activity-id-table-page',
                 params: { id : activeDetail.id, tableIndex: '0', page: '1' }
               }"
-            >活动介绍</router-link>
-          </div>
-          <div class="type works" v-if="activeDetail.vote == '1' || activeDetail.vote == '2'">
-            <img
-              v-if="activeDetail.vote == '1'"
-              src="../img/poll.png"
-              alt="点我投票"
-              class="poll-remind"
-            >
-            <router-link
-              :class="{ selected : currentIndex == 1 }"
-              :to="{
+                        >活动介绍</router-link>
+                    </div>
+                    <div
+                        class="type works"
+                        v-if="activeDetail.vote == '1' || activeDetail.vote == '2'"
+                    >
+                        <img
+                            v-if="activeDetail.vote == '1'"
+                            src="../../img/poll.png"
+                            alt="点我投票"
+                            class="poll-remind"
+                        >
+                        <router-link
+                            :class="{ selected : currentIndex == 1 }"
+                            :to="{
                 name: 'activityDetail',
                 params: { id : activeDetail.id, tableIndex: '1', page: '1' }
               }"
-            >{{getEventStage}}</router-link>
-          </div>
-          <div class="type works">
-            <router-link
-              :class="{ selected : currentIndex == 2 }"
-              :to="{
+                        >{{getEventStage}}</router-link>
+                    </div>
+                    <div class="type works">
+                        <router-link
+                            :class="{ selected : currentIndex == 2 }"
+                            :to="{
                 name: 'activityDetail',
                 params: { id : activeDetail.id, tableIndex: '2', page: '1' }
               }"
-            >推荐作品</router-link>
-          </div>
-          <div class="type works">
-            <router-link
-              :class="{ selected : currentIndex == 3 }"
-              :to="{
+                        >推荐作品</router-link>
+                    </div>
+                    <div class="type works">
+                        <router-link
+                            :class="{ selected : currentIndex == 3 }"
+                            :to="{
                 name: 'activityDetail',
                 params: { id : activeDetail.id, tableIndex: '3', page: '1' }
               }"
-            >{{ activeDetail.media_num }} 全部作品</router-link>
-          </div>
-          <div class="type authors">
-            <router-link
-              :class="{ selected : currentIndex == 4 }"
-              :to="{
+                        >{{ activeDetail.media_num }} 全部作品</router-link>
+                    </div>
+                    <div class="type authors">
+                        <router-link
+                            :class="{ selected : currentIndex == 4 }"
+                            :to="{
                 name: 'activityDetail',
                 params: { id : activeDetail.id, tableIndex: '4', page: '1' }
               }"
-            >{{ activeDetail.user_num }} 人</router-link>
-          </div>
+                        >{{ activeDetail.user_num }} 人</router-link>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <transition name="drop-choose-fade">
-      <div class="drop-choose" v-if="isShowChoose">
-        <div class="array">
-          <div></div>
+        <transition name="drop-choose-fade">
+            <div class="drop-choose" v-if="isShowChoose">
+                <div class="array">
+                    <div></div>
+                </div>
+                <div class="option" @click="publishNew">发布新作品</div>
+                <div class="option" @click="publishOld">从历史作品中选择</div>
+            </div>
+        </transition>
+        <transition name="choose-works-mask-fade">
+            <div
+                class="choose-works-mask"
+                v-if="isShowChooseWorks"
+                @click="isShowChooseWorks = false"
+            >
+                <div class="cancle-button"></div>
+            </div>
+        </transition>
+        <transition name="choose-works-fade">
+            <choose-works
+                v-if="isShowChooseWorks"
+                :activityId="activeDetail.id"
+                :tagId="activeDetail.id"
+                v-on:cancleActivityChooseWorksDialog="isShowChooseWorks = false"
+            ></choose-works>
+        </transition>
+        <div v-if="!$utilHelper.isEmptyObj(activeDetail) && currentIndex == 0" class="article">
+            <div v-if="activeDetail.caution" class="title">介绍</div>
+            <div v-if="activeDetail.caution" class="content">
+                <span v-html="activeDetail.caution"></span>
+            </div>
+            <div v-if="activeDetail.start_time" class="title">征稿时间</div>
+            <div
+                v-if="activeDetail.start_time"
+                class="content"
+            >{{ activeDetail.start_time | timeParse }} ~ {{ activeDetail.close_time | timeParse }}</div>
+            <div v-if="!activeDetail.awards" class="title">奖项设置</div>
+            <div v-if="!activeDetail.awards" class="content">
+                <div v-for="(item, index) in stageList" :key="index" class="oneAward">
+                    <strong>{{item.name}}</strong>&nbsp;&nbsp;
+                    <strong>数量:</strong>
+                    {{item.num}}&nbsp;&nbsp;
+                    <strong>奖品:</strong>
+                    {{item.award}}&nbsp;&nbsp;
+                </div>
+            </div>
+            <div class="contentNew">
+                <span v-html="activeDetail.content"></span>
+            </div>
         </div>
-        <div class="option" @click="publishNew">发布新作品</div>
-        <div class="option" @click="publishOld">从历史作品中选择</div>
-      </div>
-    </transition>
-    <transition name="choose-works-mask-fade">
-      <div class="choose-works-mask" v-if="isShowChooseWorks" @click="isShowChooseWorks = false">
-        <div class="cancle-button"></div>
-      </div>
-    </transition>
-    <transition name="choose-works-fade">
-      <choose-works
-        v-if="isShowChooseWorks"
-        :activityId="activeDetail.id"
-        :tagId="activeDetail.id"
-        v-on:cancleActivityChooseWorksDialog="isShowChooseWorks = false"
-      ></choose-works>
-    </transition>
-    <div v-if="!$utilHelper.isEmptyObj(activeDetail) && currentIndex == 0" class="article">
-      <div v-if="activeDetail.caution" class="title">介绍</div>
-      <div v-if="activeDetail.caution" class="content">
-        <span v-html="activeDetail.caution"></span>
-      </div>
-      <div v-if="activeDetail.start_time" class="title">征稿时间</div>
-      <div
-        v-if="activeDetail.start_time"
-        class="content"
-      >{{ activeDetail.start_time | timeParse }} ~ {{ activeDetail.close_time | timeParse }}</div>
-      <div v-if="!activeDetail.awards" class="title">奖项设置</div>
-      <div v-if="!activeDetail.awards" class="content">
-        <div v-for="(item, index) in stageList" :key="index" class="oneAward">
-          <strong>{{item.name}}</strong>&nbsp;&nbsp;
-          <strong>数量:</strong>
-          {{item.num}}&nbsp;&nbsp;
-          <strong>奖品:</strong>
-          {{item.award}}&nbsp;&nbsp;
+        <div class="auth_wrap">
+            <poll
+                v-if="currentIndex == 1"
+                :stageList="stageList"
+                :stage="stage"
+                :isLoading="isLoading"
+                :activeDetail="activeDetail"
+            ></poll>
         </div>
-      </div>
-      <div class="contentNew">
-        <span v-html="activeDetail.content"></span>
-      </div>
+        <!-- 作品列表 -->
+        <div
+            v-if="currentIndex == 2 || currentIndex == 3"
+            class="work_wrap"
+            :style="{ 'min-height': waterfallMinHeight + 'px' }"
+        >
+            <div class="waterfallContainer">
+                <img-waterfall
+                    :imgList="imgList"
+                    :line="line"
+                    :isToPaixin="false"
+                    :isShowLoading="false"
+                ></img-waterfall>
+            </div>
+        </div>
+        <!-- 作者列表 -->
+        <div class="auth_wrap">
+            <user-preview v-if="currentIndex == 4" :userList="userList"></user-preview>
+        </div>
+        <loading :isLoading="isLoading" :loadingColor="'#000'"></loading>
+        <pagination
+            style="margin: 64px 0 160px 0;"
+            v-show="!isLoading && isShowPagination"
+            :baseUrl="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
+            :line="line"
+            @paginationJumpToPage="jumpToPage"
+        ></pagination>
     </div>
-    <div class="auth_wrap">
-      <poll
-        v-if="currentIndex == 1"
-        :stageList="stageList"
-        :stage="stage"
-        :isLoading="isLoading"
-        :activeDetail="activeDetail"
-      ></poll>
-    </div>
-    <!-- 作品列表 -->
-    <div
-      v-if="currentIndex == 2 || currentIndex == 3"
-      class="work_wrap"
-      :style="{ 'min-height': waterfallMinHeight + 'px' }"
-    >
-      <div class="waterfallContainer">
-        <img-waterfall :imgList="imgList" :line="line" :isToPaixin="false" :isShowLoading="false"></img-waterfall>
-      </div>
-    </div>
-    <!-- 作者列表 -->
-    <div class="auth_wrap">
-      <user-preview v-if="currentIndex == 4" :userList="userList"></user-preview>
-    </div>
-    <loading :isLoading="isLoading" :loadingColor="'#000'"></loading>
-    <pagination
-      style="margin: 64px 0 160px 0;"
-      v-show="!isLoading && isShowPagination"
-      :baseUrl="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
-      :line="line"
-      @paginationJumpToPage="jumpToPage"
-    ></pagination>
-  </div>
 </template>
 
 <script>
@@ -380,9 +392,7 @@ export default {
       return
     }
     this.line = this.$route.params.page + ',0,0'
-
     this.pullActivityDetail()
-
     this.$bus.on('cancel', e => {
       this.isShowChoose = false
     })
@@ -684,7 +694,7 @@ export default {
   width: 15px;
   height: 15px;
   object-fit: contain;
-  background-image: url('../img/cancle.svg');
+  background-image: url('../../img/cancle.svg');
   position: absolute;
   right: 4px;
   top: 4px;
