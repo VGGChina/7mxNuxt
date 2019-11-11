@@ -177,7 +177,7 @@ export default {
         info: '1'
       }
 
-      const registerRes = await apiFactory.getUserApi().registerByPhone(data)
+      const registerRes = await this.$axios.userService.registerByPhone(data)
 
       if (registerRes.data.out === '1') {
         this.$toast.notice('注册成功')

@@ -90,16 +90,16 @@ export default {
         user_id: user.id
       }
       if (user.is_follow === '1') {
-        apiFactory.getUserApi().unfollow(rqBody)
+        this.$axios.userService.unfollow(rqBody)
           .then(res => {
-            if (res.data.out == '1') {
+            if (res.data.out === '1') {
               user.is_follow = '0'
             }
           })
       } else {
-        apiFactory.getUserApi().follow(rqBody)
+        this.$axios.userService.follow(rqBody)
           .then(res => {
-            if (res.data.out == '1') {
+            if (res.data.out === '1') {
               user.is_follow = '1'
             }
           })

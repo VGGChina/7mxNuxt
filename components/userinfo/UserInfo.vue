@@ -215,20 +215,20 @@ export default {
         user_id: this.userInfo.id
       }
       if (this.userInfo.is_follow === '1') {
-        this.$apiFactory.getUserApi().unfollow(user).then(res => {
+        this.$axios.userService.unfollow(user).then(res => {
           this.userInfo.is_follow = '0'
         })
       } else {
-        this.$apiFactory.getUserApi().follow(user).then(res => {
+        this.$axios.userService.follow(user).then(res => {
           this.userInfo.is_follow = '1'
         })
       }
     },
 
     async uploadToPaixin() {
-      const res = await this.$apiFactory.getUserApi().currentUser()
+      const res = await this.$axios.userService.currentUser()
 
-      if (res.data.out != '1') {
+      if (res.data.out !== '1') {
         this.$store.commit('login/isShowLoginDialog', true)
 
         return
@@ -246,7 +246,7 @@ export default {
     },
 
     async intoOther() {
-      const otherRes = await this.$apiFactory.getUserApi().intoOther()
+      const otherRes = await this.$axios.userService.intoOther()
 
       if (otherRes.data.out == '1') {
         this.loginUser.gaga_id = otherRes.data.data.gaga_id

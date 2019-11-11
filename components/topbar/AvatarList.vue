@@ -96,7 +96,7 @@ export default {
       })
     },
     logout() {
-      apiFactory.getUserApi().logout().then(res => {
+      this.$axios.userService.logout().then(res => {
         if (res.data.out === '1') {
           this.$store.commit('login/loginUser', {})
           this.$router.push({
@@ -108,9 +108,9 @@ export default {
       })
     },
     async uploadToPaixin() {
-      const res = await apiFactory.getUserApi().currentUser()
+      const res = await this.$axios.userService.currentUser()
 
-      if (res.data.out != '1') {
+      if (res.data.out !== '1') {
         this.$store.commit('login/isShowLoginDialog', true)
 
         return
@@ -127,7 +127,7 @@ export default {
       }, 30)
     },
     async intoOther() {
-      const otherRes = await apiFactory.getUserApi().intoOther()
+      const otherRes = await this.$axios.userService.intoOther()
 
       if (otherRes.data.out == '1') {
         this.loginUser.gaga_id = otherRes.data.data.gaga_id

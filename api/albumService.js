@@ -33,8 +33,11 @@ export default ({ $axios }) => {
 
     // 删除灵感集（只能创建者可用）
     deleteAlbum(data) {
-      const url = 'album/drop'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/album/drop',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 修改灵感集（只能创建者可用）

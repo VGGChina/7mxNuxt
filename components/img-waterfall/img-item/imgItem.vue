@@ -275,11 +275,9 @@ export default {
       }
 
       if (this.img.hasOwnProperty('user_id')) {
-        const res = await apiFactory
-          .getUserApi()
-          .userDetail({ user_id: this.img.user_id })
+        const res = await this.$axios.userService.userDetail({ user_id: this.img.user_id })
 
-        if (res.data.out == '1') {
+        if (res.data.out === '1') {
           this.$set(this.img, 'user_data', res.data.data)
         }
 

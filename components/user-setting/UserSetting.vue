@@ -168,7 +168,7 @@ export default {
       const data = {
         about: this.about
       }
-      apiFactory.getUserApi().setUserInfo(data)
+      this.$axios.userService.setUserInfo(data)
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice('个人简介设置成功')
@@ -188,7 +188,7 @@ export default {
           nick: this.nick || this.loginUser.nick
         }
 
-        const res = await apiFactory.getUserApi().setNick(data)
+        const res = await this.$axios.userService.setNick(data)
         if (res.data.out === '1') {
           this.$toast.notice('昵称设置成功')
           this.$store.commit('login/loginUser', res.data.data)
@@ -239,9 +239,9 @@ export default {
         smcode: 'test:' + this.$utilHelper.rsa_encrypt(this.smcode + '@' + time)
       }
 
-      const res = await apiFactory.getUserApi().bindPhone(rqBody)
+      const res = await this.$axios.userService.bindPhone(rqBody)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.loginUser.phone = this.phone
 
         this.$store.commit('login/loginUser', this.loginUser)
@@ -314,7 +314,7 @@ export default {
         oldpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.oldPassword),
         newpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.newPassword)
       }
-      apiFactory.getUserApi().setPassword(data)
+      this.$axios.userService.setPassword(data)
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg)
@@ -398,7 +398,7 @@ export default {
               const key = infoJson.key
               const url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
-              apiFactory.getUserApi().setAvatar({ 'avatar': url })
+              this.$axios.userService.setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
                     this.$store.commit('login/loginUser', res.data.data)

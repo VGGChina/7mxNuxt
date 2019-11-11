@@ -119,7 +119,7 @@ export default {
 
         // 如果关联过拍信账号，那么校验一遍，后端要求这样做
         if (data.gaga_id) {
-          const otherRes = await apiFactory.getUserApi().intoOther()
+          const otherRes = await this.$axios.userService.intoOther()
           if (otherRes.data.out == '1') {
             data.gaga_id = otherRes.data.data.gaga_id
             this.$store.commit('login/loginUser', data)
