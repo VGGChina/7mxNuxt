@@ -96,52 +96,53 @@ export default {
 
   async asyncData({ $axios }) {
     let userInfo = {}
+    const imgList = []
+    let line = ''
 
-    const rqBody = {}
-    rqBody.name = 'blackstation'
-    const userinfo = $axios.userService.userDetail(rqBody)
-
-    const reses = await Promise.all([userinfo])
-
-    // 用户信息
-    if (reses[0].data.out === '1') {
-      userInfo = reses[0].data.data
+    const rqBody = {
+      name: 'blackstation'
+    }
+    const userinfo = await $axios.userService.userDetail(rqBody)
+    if (userinfo.data.out === '1') {
+      userInfo = userinfo.data.data
     } else {
       this.$router.push({
         name: 'redirectToIndex'
       })
     }
 
+    // 作品
+    const data = { user_id: userInfo.id }
+    const params = { line: '' }
+
+    // if (this.userHomeNavIndex == 1) {
+    //   data.check = '1'
+    //   data.user_id = this.userInfo.id
+    // }
+
+    // if (this.userHomeNavIndex == 2) {
+    //   data.check = '2,3'
+    // }
+
+    const works = await $axios.mediaService.originList(data, params)
+
+    if (works.data.out === '1') {
+      imgList.push(...works.data.data)
+      line = works.data.line
+    }
+
+    // this.line = res.data.line
+
     return {
-      userInfo: userInfo
+      userInfo: userInfo,
+      imgList: imgList,
+      line: line
     }
   },
   async created() {
     this.getIsLarge()
 
     this.getUserHomeNavIndex()
-
-    // const rqBody = {}
-
-    // if (this.$route.name == 'user-id') {
-    //   rqBody.user_id = this.$route.params.id
-    // } else {
-    //   rqBody.name = this.$route.params.name
-    // }
-
-    // const res = await this.$apiFactory.getUserApi().userDetail(rqBody)
-
-    // if (res.data.out == '1') {
-    //   this.userInfo = res.data.data
-
-    //   document.title = this.getTitle(this.userInfo)
-
-    //   this.fetchData()
-    // } else {
-    //   this.$router.push({
-    //     name: 'redirectToIndex'
-    //   })
-    // }
   },
   mounted() {
     // this.waterfallMinHeight = 2 * this.$utilHelper.getWindowHeight()
@@ -191,18 +192,18 @@ export default {
       const data = { user_id: this.userInfo.id }
       const params = { line: this.line }
 
-      if (this.userHomeNavIndex == 1) {
+      if (this.userHomeNavIndex === 1) {
         data.check = '1'
         data.user_id = this.userInfo.id
       }
 
-      if (this.userHomeNavIndex == 2) {
+      if (this.userHomeNavIndex === 2) {
         data.check = '2,3'
       }
 
-      const res = await this.$apiFactory.getMediaApi().originList(data, params)
+      const res = await this.$axios.mediaService().originList(data, params)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.imgList.push(...res.data.data)
       }
 

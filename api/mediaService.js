@@ -81,8 +81,12 @@ export default ({ $axios }) => {
     },
 
     originList(data, params) {
-      const url = 'https://api.7mx.com/media/origin_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/origin_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     storeList(data, params) {
