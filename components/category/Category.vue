@@ -20,7 +20,7 @@
         <li
           v-for="(item,index) in categoryListAll"
           v-if="index <= 4"
-          :key="item.id"
+          :key="index"
         >
           <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }}</router-link>
         </li>
@@ -30,7 +30,7 @@
         <li
           v-for="(item,index) in categoryListAll"
           v-if="4 < index && index <=9"
-          :key="item.id"
+          :key="index"
         >
           <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
         </li>
@@ -40,7 +40,7 @@
         <li
           v-for="(item,index) in categoryListAll"
           v-if="9 < index && index <= 14"
-          :key="item.id"
+          :key="index"
         >
           <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
         </li>
@@ -50,7 +50,7 @@
         <li
           v-for="(item,index) in categoryListAll"
           v-if="14 < index"
-          :key="item.id"
+          :key="index"
         >
           <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
         </li>

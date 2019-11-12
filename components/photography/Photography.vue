@@ -3,8 +3,8 @@
     <sharetitle :title="title" :category-list="categoryList" :identity="1" />
     <div class="content">
       <div
-        v-for="item in firstAvatar"
-        :key="item.id"
+        v-for="(item, index) in firstAvatar"
+        :key="index"
         class="content_left"
         @click.stop="goAvatarDetai(item.name)"
         @mouseenter="contentMouseenter(1000000)"
@@ -26,7 +26,7 @@
       <div class="content_right">
         <div
           v-for="(item,index) in avatarList"
-          :key="item.id"
+          :key="index"
           class="photo_item"
           @click.stop="goAvatarDetai(item.name)"
           @mouseenter="contentMouseenter(index)"

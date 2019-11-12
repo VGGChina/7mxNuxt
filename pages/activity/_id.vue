@@ -1,17 +1,17 @@
 <template>
   <div class="activity">
-    <table-nav :options="options" :defaultIndex="tableIndex" v-on:updateTableIndex="tableChanged"></table-nav>
-    <div class="activity-list" v-show="tableIndex != 2">
-      <div class="card" v-for="item in currentListShow" :key="item.id">
+    <table-nav :options="options" :default-index="tableIndex" @updateTableIndex="tableChanged" />
+    <div v-show="tableIndex != 2" class="activity-list">
+      <div v-for="(item, index) in currentListShow" :key="index" class="card">
         <nuxt-link :to="{ name: '', params: { id : item.id, tableIndex: '3', page: '1' } }">
           <div class="bg" :title="item.name">
-            <div :style="{ 'backgroundImage': `url(${item.image})` }"></div>
+            <div :style="{ 'backgroundImage': `url(${item.image})` }" />
           </div>
           <div class="content">
-            <div class="title">{{item.name}}</div>
+            <div class="title">{{ item.name }}</div>
             <div v-if="item.about" class="subtitle" :title="item.about">
               <img src="./img/trophy.jpg" alt="">
-              <div>{{item.about}}</div>
+              <div>{{ item.about }}</div>
             </div>
             <div v-if="item.time" class="time">
               <img src="./img/time.jpg" alt="">
@@ -23,14 +23,14 @@
           </div>
         </nuxt-link>
       </div>
-      <div class="clear"></div>
+      <div class="clear" />
     </div>
-    <div class="apply-act" v-show="tableIndex == 2">
+    <div v-show="tableIndex == 2" class="apply-act">
       <p>如果您是摄影比赛主办方，需要在7MX举办活动并征稿，请点击下方”咨询客服”按钮将您的活动需求告诉我们。</p>
       <a href="http://q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank">咨询客服</a>
     </div>
-    <div style="position: relative" v-if="currentListShow.length < 1 && !isLoading">
-      <no-content :isNoContentShow="true"></no-content>
+    <div v-if="currentListShow.length < 1 && !isLoading" style="position: relative">
+      <no-content :is-no-content-show="true" />
     </div>
   </div>
 </template>
@@ -40,9 +40,11 @@ import NoContent from '~/components/no-content/NoContent'
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
 
 export default {
-  name: 'activity',
-  beforeCreate() {
-    // document.title = '活动 - 7MX 中国领先的视觉创作社区'
+  name: 'Activity',
+  components: {
+    TableNav,
+    'no-content': NoContent,
+    ImgWaterfall
   },
   data: () => ({
     navList: [
@@ -82,48 +84,6 @@ export default {
     isLoading: false,
     currentItem: 1
   }),
-  async asyncData({ $axios }) {
-    console.log(11111111)
-    let res = await $axios.tagService.getActivityList()
-    res.data.data.map(e => {
-      if (new Date().getTime() - e.close_time * 1000 > 0) {
-        e.time = '此活动已结束'
-      } else {
-        e.time = `距活动截止还剩 ${-Math.floor(
-          (new Date().getTime() - e.close_time * 1000) / 24 / 60 / 60 / 1000
-        )} 天`
-      }
-    })
-    console.log(res.data)
-    return {
-      activities: res.data.data
-    }
-  },
-  methods: {
-    tableChanged(index) {
-      this.tableIndex = index
-    },
-    // async pullList() {
-    //   this.isLoading = true
-    //   let res = await this.$apiFactory.getTagApi().getActivityList()
-    //   if (res.data.out < 1) return
-    //   let result = this.computeTime(res.data.data)
-    //   result = result.filter(item => {
-    //     return item.id !== '285671'
-    //   })
-    //   this.activities.push(...result)
-    //   this.isLoading = false
-    // },
-    judgePage() {
-      this.tableIndex = this.$route.params.page
-    }
-  },
-  created() {
-    // this.pullList()
-    // this.judgePage()
-  },
-  mounted() {},
-  watch: {},
   computed: {
     isToPaixin() {
       if (this.currentItem == 2) {
@@ -142,10 +102,50 @@ export default {
       }
     }
   },
-  components: {
-    TableNav,
-    'no-content': NoContent,
-    ImgWaterfall
+  watch: {},
+  async asyncData({ $axios }) {
+    console.log(11111111)
+    const res = await $axios.tagService.getActivityList()
+    res.data.data.map(e => {
+      if (new Date().getTime() - e.close_time * 1000 > 0) {
+        e.time = '此活动已结束'
+      } else {
+        e.time = `距活动截止还剩 ${-Math.floor(
+          (new Date().getTime() - e.close_time * 1000) / 24 / 60 / 60 / 1000
+        )} 天`
+      }
+    })
+    console.log(res.data)
+    return {
+      activities: res.data.data
+    }
+  },
+  beforeCreate() {
+    // document.title = '活动 - 7MX 中国领先的视觉创作社区'
+  },
+  created() {
+    // this.pullList()
+    // this.judgePage()
+  },
+  mounted() {},
+  methods: {
+    tableChanged(index) {
+      this.tableIndex = index
+    },
+    // async pullList() {
+    //   this.isLoading = true
+    //   let res = await this.$apiFactory.getTagApi().getActivityList()
+    //   if (res.data.out < 1) return
+    //   let result = this.computeTime(res.data.data)
+    //   result = result.filter(item => {
+    //     return item.id !== '285671'
+    //   })
+    //   this.activities.push(...result)
+    //   this.isLoading = false
+    // },
+    judgePage() {
+      this.tableIndex = this.$route.params.page
+    }
   }
 }
 </script>

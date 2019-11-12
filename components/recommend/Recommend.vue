@@ -37,7 +37,7 @@
         <h3 class="title">7MX官方推荐</h3>
         <a
           v-for="(item,index) in navList"
-          :key="item.id"
+          :key="index"
           href="javascript:void(0)"
           :class="['nav-item',index == isShowBanner ? 'active': null]"
           @click="curentClick(index)"

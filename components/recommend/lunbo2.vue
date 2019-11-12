@@ -28,8 +28,8 @@
           <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
         </router-link>
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id"
+          v-for="(item, index) in smallBannerList"
+          :key="index"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >
@@ -54,8 +54,8 @@
           <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
         </router-link>
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id"
+          v-for="(item, index) in smallBannerList"
+          :key="index"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >

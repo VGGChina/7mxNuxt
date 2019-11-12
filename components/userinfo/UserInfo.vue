@@ -141,7 +141,7 @@ export default {
 
       // this.userInfoHeight = document.querySelector('.info-container').offsetHeight
       // return this.userInfoHeight + 'px'
-      return '300px'
+      return '318px'
     },
     userBg() {
       try {
