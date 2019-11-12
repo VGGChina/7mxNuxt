@@ -180,8 +180,12 @@ export default ({ $axios }) => {
 
     // 某个tag全部作品列表
     inTagList(data, params) {
-      const url = 'media/in_tag_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/in_tag_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
     // 某个tag全部作品列表
     randomInTagList(data, params) {
@@ -191,8 +195,12 @@ export default ({ $axios }) => {
 
     // 某个tag推荐作品列表
     recommendInTagList(data, params) {
-      const url = 'media/recommend_in_tag_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/recommend_in_tag_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     inCategoryList(data, params) {
@@ -246,8 +254,12 @@ export default ({ $axios }) => {
     },
 
     getPollList(data, params) {
-      const url = 'media/in_tag_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/in_tag_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     poll(data) {
@@ -257,8 +269,12 @@ export default ({ $axios }) => {
 
     // 获奖作品名单
     getAwardWinningList(data, params) {
-      const url = 'media/in_tag_awards_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/in_tag_awards_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     }
   }
 

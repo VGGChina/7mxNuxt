@@ -85,7 +85,6 @@ export default {
     currentItem: 1
   }),
   async asyncData({ $axios }) {
-    console.log(11111111)
     let res = await $axios.tagService.getActivityList()
     res.data.data.map(e => {
       if (new Date().getTime() - e.close_time * 1000 > 0) {
