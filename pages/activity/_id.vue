@@ -104,7 +104,6 @@ export default {
   },
   watch: {},
   async asyncData({ $axios }) {
-    console.log(11111111)
     const res = await $axios.tagService.getActivityList()
     res.data.data.map(e => {
       if (new Date().getTime() - e.close_time * 1000 > 0) {
@@ -115,7 +114,6 @@ export default {
         )} 天`
       }
     })
-    console.log(res.data)
     return {
       activities: res.data.data
     }

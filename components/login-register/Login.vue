@@ -55,7 +55,6 @@
 
 <script>
 import Carousel from '~/components/carousel/Carousel'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   components: {
@@ -93,7 +92,7 @@ export default {
 
       let time = null
 
-      if (timeRes.data.out == '1') {
+      if (timeRes.data.out === '1') {
         time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
@@ -106,21 +105,21 @@ export default {
       }
 
       const loginRes = await this.$axios.userService.login(rqBody)
-      if (loginRes.data.out == '1') {
+      if (loginRes.data.out === '1') {
         const data = loginRes.data.data
 
         this.$store.commit('login/loginUser', data)
 
         this.$store.commit('login/isShowLoginDialog', false)
 
-        if (data.name == '' || data.nick == '' || data.avatar == '') {
+        if (data.name === '' || data.nick === '' || data.avatar === '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)
         }
 
         // 如果关联过拍信账号，那么校验一遍，后端要求这样做
         if (data.gaga_id) {
           const otherRes = await this.$axios.userService.intoOther()
-          if (otherRes.data.out == '1') {
+          if (otherRes.data.out === '1') {
             data.gaga_id = otherRes.data.data.gaga_id
             this.$store.commit('login/loginUser', data)
           }
