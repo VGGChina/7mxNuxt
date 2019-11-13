@@ -1,9 +1,13 @@
 
 export default ({ $axios }) => {
   const mediaService = {
-    mediaDetail(data) {
-      const url = '/media/detail'
-      return $axios(url, data, {})
+    mediaDetail(data, params) {
+      const httpData = {
+        url: '/api/media/detail',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     mediaDetailOld(data) {
@@ -22,8 +26,12 @@ export default ({ $axios }) => {
     },
 
     commentList(data, params) {
-      const url = '/media/comment_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/comment_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     dislike(data) {
