@@ -2,93 +2,93 @@
   <div class="activityDetail">
     <!-- 顶部菜单 -->
     <top-nav
-      :active-detail-img="activeDetail.image0 || activeDetail.image"
-      :active-detail="activeDetail"
       @toPublish="toPublish"
-    />
-    <div v-if="!$utilHelper.isEmptyObj(activeDetail)" class="activeBar">
+      :activeDetailImg="activeDetail.image0 || activeDetail.image"
+      :activeDetail="activeDetail"
+    ></top-nav>
+    <div class="activeBar" v-if="!$utilHelper.isEmptyObj(activeDetail)">
       <div class="category-list">
         <div class="type_wrap">
           <div class="type intro">
-            <router-link
+            <nuxt-link
               :class="{ selected : currentIndex == 0 }"
               :to="{
-                name: 'activityDetail',
-                params: { id : activeDetail.id, tableIndex: '0', page: '1' }
+                name: 'activity-id-table-page',
+                params: { id : activeDetail.id, table: '0', page: '1' }
               }"
-            >活动介绍</router-link>
+            >活动介绍</nuxt-link>
           </div>
-          <div v-if="activeDetail.vote == '1' || activeDetail.vote == '2'" class="type works">
+          <div class="type works" v-if="activeDetail.vote == '1' || activeDetail.vote == '2'">
             <img
               v-if="activeDetail.vote == '1'"
-              src="../../img/poll.png"
+              :src="require('../../img/poll.png')"
               alt="点我投票"
               class="poll-remind"
             >
-            <router-link
+            <nuxt-link
               :class="{ selected : currentIndex == 1 }"
               :to="{
-                name: 'activityDetail',
-                params: { id : activeDetail.id, tableIndex: '1', page: '1' }
+                name: 'activity-id-table-page',
+                params: { id : activeDetail.id, table: '1', page: '1' }
               }"
-            >{{ getEventStage }}</router-link>
+            >{{getEventStage}}</nuxt-link>
           </div>
           <div class="type works">
-            <router-link
+            <nuxt-link
               :class="{ selected : currentIndex == 2 }"
               :to="{
-                name: 'activityDetail',
-                params: { id : activeDetail.id, tableIndex: '2', page: '1' }
+                name: 'activity-id-table-page',
+                params: { id : activeDetail.id, table: '2', page: '1' }
               }"
-            >推荐作品</router-link>
+            >推荐作品</nuxt-link>
           </div>
           <div class="type works">
-            <router-link
+            <nuxt-link
               :class="{ selected : currentIndex == 3 }"
               :to="{
-                name: 'activityDetail',
-                params: { id : activeDetail.id, tableIndex: '3', page: '1' }
+                name: 'activity-id-table-page',
+                params: { id : activeDetail.id, table: '3', page: '1' }
               }"
-            >{{ activeDetail.media_num }} 全部作品</router-link>
+            >{{ activeDetail.media_num }} 全部作品</nuxt-link>
           </div>
           <div class="type authors">
-            <router-link
+            <nuxt-link
               :class="{ selected : currentIndex == 4 }"
               :to="{
-                name: 'activityDetail',
-                params: { id : activeDetail.id, tableIndex: '4', page: '1' }
+                name: 'activity-id-table-page',
+                params: { id : activeDetail.id, table: '4', page: '1' }
               }"
-            >{{ activeDetail.user_num }} 人</router-link>
+            >{{ activeDetail.user_num }} 人</nuxt-link>
           </div>
         </div>
       </div>
     </div>
     <transition name="drop-choose-fade">
-      <div v-if="isShowChoose" class="drop-choose">
+      <div class="drop-choose" v-if="isShowChoose">
         <div class="array">
-          <div />
+          <div></div>
         </div>
         <div class="option" @click="publishNew">发布新作品</div>
         <div class="option" @click="publishOld">从历史作品中选择</div>
       </div>
     </transition>
     <transition name="choose-works-mask-fade">
-      <div v-if="isShowChooseWorks" class="choose-works-mask" @click="isShowChooseWorks = false">
-        <div class="cancle-button" />
+      <div class="choose-works-mask" v-if="isShowChooseWorks" @click="isShowChooseWorks = false">
+        <div class="cancle-button"></div>
       </div>
     </transition>
     <transition name="choose-works-fade">
       <choose-works
         v-if="isShowChooseWorks"
-        :activity-id="activeDetail.id"
-        :tag-id="activeDetail.id"
-        @cancleActivityChooseWorksDialog="isShowChooseWorks = false"
-      />
+        :activityId="activeDetail.id"
+        :tagId="activeDetail.id"
+        v-on:cancleActivityChooseWorksDialog="isShowChooseWorks = false"
+      ></choose-works>
     </transition>
     <div v-if="!$utilHelper.isEmptyObj(activeDetail) && currentIndex == 0" class="article">
       <div v-if="activeDetail.caution" class="title">介绍</div>
       <div v-if="activeDetail.caution" class="content">
-        <span v-html="activeDetail.caution" />
+        <span v-html="activeDetail.caution"></span>
       </div>
       <div v-if="activeDetail.start_time" class="title">征稿时间</div>
       <div
@@ -98,25 +98,25 @@
       <div v-if="!activeDetail.awards" class="title">奖项设置</div>
       <div v-if="!activeDetail.awards" class="content">
         <div v-for="(item, index) in stageList" :key="index" class="oneAward">
-          <strong>{{ item.name }}</strong>&nbsp;&nbsp;
+          <strong>{{item.name}}</strong>&nbsp;&nbsp;
           <strong>数量:</strong>
-          {{ item.num }}&nbsp;&nbsp;
+          {{item.num}}&nbsp;&nbsp;
           <strong>奖品:</strong>
-          {{ item.award }}&nbsp;&nbsp;
+          {{item.award}}&nbsp;&nbsp;
         </div>
       </div>
       <div class="contentNew">
-        <span v-html="activeDetail.content" />
+        <span v-html="activeDetail.content"></span>
       </div>
     </div>
     <div class="auth_wrap">
       <poll
         v-if="currentIndex == 1"
-        :stage-list="stageList"
+        :stageList="stageList"
         :stage="stage"
-        :is-loading="isLoading"
-        :active-detail="activeDetail"
-      />
+        :isLoading="isLoading"
+        :activeDetail="activeDetail"
+      ></poll>
     </div>
     <!-- 作品列表 -->
     <div
@@ -125,21 +125,21 @@
       :style="{ 'min-height': waterfallMinHeight + 'px' }"
     >
       <div class="waterfallContainer">
-        <img-waterfall :img-list="imgList" :line="line" :is-to-paixin="false" :is-show-loading="false" />
+        <img-waterfall :imgList="imgList" :line="line" :isToPaixin="false" :isShowLoading="false"></img-waterfall>
       </div>
     </div>
     <!-- 作者列表 -->
     <div class="auth_wrap">
-      <user-preview v-if="currentIndex == 4" :user-list="userList" />
+      <user-preview v-if="currentIndex == 4" :userList="userList"></user-preview>
     </div>
-    <loading :is-loading="isLoading" :loading-color="'#000'" />
+    <loading :isLoading="isLoading" :loadingColor="'#000'"></loading>
     <pagination
-      v-show="!isLoading && isShowPagination"
       style="margin: 64px 0 160px 0;"
-      :base-url="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
+      v-show="!isLoading && isShowPagination"
+      :baseUrl="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
       :line="line"
       @paginationJumpToPage="jumpToPage"
-    />
+    ></pagination>
   </div>
 </template>
 
@@ -153,13 +153,7 @@ import Poll from './poll'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'ActivityDetail',
-  filters: {
-    timeParse(v) {
-      var t = new Date(v * 1000)
-      return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
-    }
-  },
+  name: 'activityDetail',
   data: () => ({
     activeDetail: {},
     imgList: [],
@@ -176,46 +170,113 @@ export default {
     waterfallMinHeight: 0,
     imgList1: [],
     line1: '',
-    currentItem: 1
+    currentItem: 1,
+    out: -1,
+    is_activity: -1
   }),
-  watch: {
-    isShowChooseWorks: function(val) {
-      if (val) {
-        document.querySelector('html').style.overflow = 'hidden'
-      } else {
-        document.querySelector('html').style.overflow = 'auto'
-      }
-    },
-    '$route.params.tableIndex': function(val) {
-      this.reload()
-    },
-    '$route.params.page': function(val) {
-      const lineArray = this.line.split(',')
-
-      lineArray[0] = val
-
-      this.reload(lineArray.join(','))
-    }
-  },
-  async created() {
-    if (this.$route.params.id == '285671') {
-      try {
-        await this.$apiFactory
-          .getStatisticsApi()
-          .postBannerClickNum({ id: '285671' })
-      } catch (error) {
-        console.log(error)
-      }
-      window.location.href = 'http://www.hotspringphoto.com'
-      return
-    }
-    this.line = this.$route.params.page + ',0,0'
-
-    this.pullActivityDetail()
-
-    this.$bus.on('cancel', e => {
-      this.isShowChoose = false
+  async asyncData({ $axios, params }) {
+    console.log(params)
+    // let { $router, $route, $apiFactory } = this
+    let res_detail = await $axios.tagService.getTagDetail({
+      tag_id: params.id
     })
+
+    let tempLine = params.page + ',0,0'
+
+    let res_win = await $axios.mediaService.getAwardWinningList(
+      { tag_id: params.id },
+      { line: tempLine }
+    )
+
+    let tempStage = 0
+    let tempStageList = []
+    let tempUserList = []
+    let tempImgList = []
+
+    // 判断是否有获奖名单
+    if (res_win.data.out == '1' && res_win.data.data.length > 0) {
+      tempStage = '3'
+      tempStageList = res.data.data
+    }
+
+    let tempIndex = parseInt(params.table)
+    console.log('b')
+    if (tempLine.split(',')[0] != 'end') {
+      console.log('aaaa')
+      console.log(tempIndex)
+      if (tempIndex == 1) {
+        if (tempStage != '3') {
+          let res_stageWorks = await $axios.mediaService.getPollList(
+            { tag_id: params.id, vote: '1' },
+            { line: tempLine, limit: '40' }
+          )
+          if (res_stageWorks.data.out == '1') {
+            tempStageList.push(...res_stageWorks.data.data)
+            tempLine =
+              res_stageWorks.data.line !== 'end'
+                ? res_stageWorks.data.line
+                : params.page + ',0,0'
+          }
+        }
+        console.log(1)
+      }
+      if (tempIndex == 2) {
+        let res_recommendWorks = await $axios.mediaService.recommendInTagList(
+          { tag_id: params.id },
+          { line: tempLine, limit: '40' }
+        )
+        if (res_recommendWorks.data.out == '1') {
+          tempImgList.push(...res_recommendWorks.data.data)
+          tempLine =
+            res_recommendWorks.data.line !== 'end'
+              ? res_recommendWorks.data.line
+              : params.page + ',0,0'
+        }
+        console.log(2)
+      }
+      if (tempIndex == 3) {
+        let res_allWorks = await $axios.mediaService.inTagList(
+          { tag_id: params.id },
+          { line: tempLine, limit: '40' }
+        )
+        if (res_allWorks.data.out == '1') {
+          tempImgList.push(...res_allWorks.data.data)
+          tempLine =
+            res_allWorks.data.line !== 'end'
+              ? res_allWorks.data.line
+              : params.page + ',0,0'
+        }
+        console.log(3)
+      }
+      if (tempIndex == 4) {
+        let res_authors = await $axios.tagService.getJoinUser(
+          { tag_id: params.id },
+          { line: tempLine, limit: '40' }
+        )
+        if (res_authors.data.out == '1') {
+          tempUserList.push(...res_authors.data.data)
+          tempLine =
+            res_authors.data.line !== 'end'
+              ? res_authors.data.line
+              : params.page + ',0,0'
+        }
+        console.log(4)
+      }
+    }
+
+    return {
+      activeDetail: res_detail.data.data,
+      out: res_detail.data.out,
+      is_activity: res_detail.data.data.is_activity,
+      now: !(new Date().getTime() - res_detail.data.data.close_time * 1000 > 0),
+      stage: res_detail.data.data.vote,
+      line: tempLine,
+      stage: tempStage,
+      stageList: tempStageList,
+      currentIndex: tempIndex,
+      userList: tempUserList,
+      imgList: tempImgList
+    }
   },
   methods: {
     toPublish() {
@@ -261,155 +322,41 @@ export default {
       this.line = line
 
       this.fetchData()
-    },
-    fetchData() {
-      if (this.isLoading || this.line.split(',')[0] === 'end') {
-        return
-      }
-
-      if (this.currentIndex == 1) {
-        this.pullStageWorks()
-
-        return
-      }
-
-      if (this.currentIndex == 2) {
-        this.pullRecommendWorks()
-
-        return
-      }
-
-      if (this.currentIndex == 3) {
-        this.pullAllWorks()
-
-        return
-      }
-
-      if (this.currentIndex == 4) {
-        this.pullAuthors()
-      }
-    },
-    afterResponse(res) {
-      if (res.data.out == '1') {
-        if (this.currentIndex == 1) {
-          this.stageList.push(...res.data.data)
-        } else if (this.currentIndex == 4) {
-          this.userList.push(...res.data.data)
-        } else {
-          this.imgList.push(...res.data.data)
-        }
-      }
-
-      this.line =
-        res.data.line !== 'end'
-          ? res.data.line
-          : this.$route.params.page + ',0,0'
-
-      setTimeout(() => {
-        this.isLoading = false
-      }, 500)
-    },
-    async pullActivityDetail() {
-      const { $router, $route, $apiFactory } = this
-
-      const res = await $apiFactory
-        .getTagApi()
-        .getTagDetail({ tag_id: $route.params.id })
-
-      const { data, out } = res.data
-
-      if (out != '1' || data.is_activity != '1') {
-        // 跳转至根目录
-        $router.push('/')
-        return false
-      }
-
-      this.activeDetail = data
-      document.title = data.name + ' - 7MX 中国领先的视觉创作社区'
-      // 已截止, 不显示上传按钮, 没有截止则显示, 但现在没这个功能
-      this.now = !(new Date().getTime() - data.close_time * 1000 > 0)
-      this.stage = data.vote
-
-      this.pullAwardWinningList()
-    },
-    async pullAwardWinningList() {
-      const api = this.$apiFactory.getMediaApi()
-      let res = null
-      res = await api.getAwardWinningList(
-        { tag_id: this.$route.params.id },
-        { line: this.line }
-      )
-      // 判断是否有获奖名单
-      if (res.data.out == '1' && res.data.data.length > 0) {
-        this.stage = '3'
-        this.stageList = res.data.data
-      }
-
-      this.fetchData()
-    },
-    async pullStageWorks() {
-      if (this.isLoading || this.line == 'end') return
-
-      this.isLoading = true
-
-      const api = this.$apiFactory.getMediaApi()
-      let res = null
-
-      // 判断是否有获奖名单
-      if (this.stage != '3') {
-        res = await api.getPollList(
-          { tag_id: this.$route.params.id, vote: '1' },
-          { line: this.line, limit: '40' }
-        )
-        if (res.data.out == '1') {
-          this.afterResponse(res)
-        }
+    }
+  },
+  created() {
+    if (this.out != '1' || this.is_activity != '1') {
+      // 跳转至根目录
+      this.$router.push('/')
+      return false
+    }
+    this.$bus.on('cancel', e => {
+      this.isShowChoose = false
+    })
+  },
+  watch: {
+    isShowChooseWorks: function(val) {
+      if (val) {
+        document.querySelector('html').style.overflow = 'hidden'
       } else {
-        this.isLoading = false
-        console.log('isLoading: ' + this.isLoading)
+        document.querySelector('html').style.overflow = 'auto'
       }
     },
-    async pullAuthors() {
-      if (this.isLoading || this.line == 'end') return
-
-      this.isLoading = true
-
-      const res = await this.$apiFactory
-        .getTagApi()
-        .getJoinUser(
-          { tag_id: this.$route.params.id },
-          { line: this.line, limit: '40' }
-        )
-
-      this.afterResponse(res)
+    '$route.params.tableIndex': function(val) {
+      this.reload()
     },
-    async pullAllWorks() {
-      if (this.isLoading || this.line == 'end') return
+    '$route.params.page': function(val) {
+      let lineArray = this.line.split(',')
 
-      this.isLoading = true
+      lineArray[0] = val
 
-      const res = await this.$apiFactory
-        .getMediaApi()
-        .inTagList(
-          { tag_id: this.$route.params.id },
-          { line: this.line, limit: '40' }
-        )
-
-      this.afterResponse(res)
-    },
-    async pullRecommendWorks() {
-      if (this.isLoading || this.line == 'end') return
-
-      this.isLoading = true
-
-      const res = await this.$apiFactory
-        .getMediaApi()
-        .recommendInTagList(
-          { tag_id: this.$route.params.id },
-          { line: this.line, limit: '40' }
-        )
-
-      this.afterResponse(res)
+      this.reload(lineArray.join(','))
+    }
+  },
+  filters: {
+    timeParse(v) {
+      var t = new Date(v * 1000)
+      return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
     }
   },
   computed: {
@@ -426,7 +373,7 @@ export default {
         return false
       }
 
-      const lineArray = this.line.split(',')
+      let lineArray = this.line.split(',')
 
       if (lineArray[0] == 'end' && lineArray[2] == '1') {
         return false
@@ -448,9 +395,6 @@ export default {
       }
 
       return str
-    },
-    currentIndex() {
-      return parseInt(this.$route.params.tableIndex)
     }
   },
   components: {

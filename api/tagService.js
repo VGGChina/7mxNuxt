@@ -11,9 +11,13 @@ export default ({ $axios }) => {
     },
 
     // 某活动详情(不是tag)
-    getTagDetail(data) {
-      const url = 'tag/detail'
-      return $axios(url, data, {})
+    getTagDetail(data, params) {
+      const httpData = {
+        url: `/api/tag/detail`,
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 某活动参赛作品
@@ -48,9 +52,13 @@ export default ({ $axios }) => {
     },
 
     // 参加活动的人
-    getJoinUser(data, param) {
-      const url = 'tag/joiner_list'
-      return $axios(url, data, param)
+    getJoinUser(data, params) {
+      const httpData = {
+        url: `/api/tag/joiner_list`,
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     followList(data, params) {

@@ -1,9 +1,11 @@
 <template>
   <div class="activity">
-    <table-nav :options="options" :default-index="tableIndex" @updateTableIndex="tableChanged" />
+    <table-nav :options="options" :default-index="tableIndex" @updateTableIndex="tableChanged"/>
     <div v-show="tableIndex != 2" class="activity-list">
-      <div v-for="(item, index) in currentListShow" :key="index" class="card">
-        <nuxt-link :to="{ name: '', params: { id : item.id, tableIndex: '3', page: '1' } }">
+      <div v-for="item in currentListShow" class="card" :key="item.id">
+        <nuxt-link
+          :to="{ name: 'activity-id-table-page', params: { id : item.id, table: '3', page: '1' } }"
+        >
           <div class="bg" :title="item.name">
             <div :style="{ 'backgroundImage': `url(${item.image})` }" />
           </div>
