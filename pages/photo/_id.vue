@@ -1,12 +1,12 @@
 <template>
-    <div class="img-detail">
-        <div class="detail-container">
-            <center :mediaDetail="mediaDetail" v-on:updateMedia="updateMedia"></center>
-            <!-- <right :mediaDetail="mediaDetail"></right> -->
-        </div>
-        <keywords :mediaDetail="mediaDetail"></keywords>
-        <comments :mediaDetail="mediaDetail" :commentList="commentList"></comments>
+  <div class="img-detail">
+    <div class="detail-container">
+      <center :media-detail="mediaDetail" @updateMedia="updateMedia" />
+      <!-- <right :mediaDetail="mediaDetail"></right> -->
     </div>
+    <keywords :media-detail="mediaDetail" />
+    <comments :media-detail="mediaDetail" :comment-list="commentList" />
+  </div>
 </template>
 
 <script>
@@ -16,6 +16,12 @@ import Keywords from './keywords/Keywords'
 import Comments from '~/components/comments/Comments'
 
 export default {
+  components: {
+    // Right,
+    Center,
+    Keywords,
+    Comments
+  },
   data() {
     return {
       mediaDetail: {},
@@ -23,27 +29,24 @@ export default {
     }
   },
   async asyncData({ $axios, params }) {
-    let rqBody = {
+    const rqBody = {
       media_id: params.id
     }
-    // console.log(111111)
-    let res = await $axios.mediaService.mediaDetail(rqBody)
-    // console.log(222222222)
+    const res = await $axios.mediaService.mediaDetail(rqBody)
     let tempMediaDetail = {}
-    if (res.data.out == '1') {
+    if (res.data.out === '1') {
       tempMediaDetail = res.data.data
     }
 
-    let res_commentList = await $axios.mediaService.commentList(
+    const res_commentList = await $axios.mediaService.commentList(
       { media_id: tempMediaDetail.id },
       { line: '' }
     )
-    let tempCommentList = []
-    if (res_commentList.data.out == '1') {
+    const tempCommentList = []
+    if (res_commentList.data.out === '1') {
       tempCommentList.push(...res_commentList.data.data)
     }
 
-    console.log(tempCommentList)
     return {
       mediaDetail: tempMediaDetail,
       commentList: tempCommentList
@@ -54,11 +57,11 @@ export default {
   },
   methods: {
     async fetchData() {
-      let rqBody = {
+      const rqBody = {
         media_id: this.$route.params.id
       }
 
-      let res = await this.$apiFactory.getMediaApi().mediaDetail(rqBody)
+      const res = await this.$apiFactory.getMediaApi().mediaDetail(rqBody)
       if (res.data.out == '1') {
         this.mediaDetail = res.data.data
 
@@ -88,12 +91,6 @@ export default {
         return '7MX - 中国领先的视觉创作社区'
       }
     }
-  },
-  components: {
-    // Right,
-    Center,
-    Keywords,
-    Comments
   }
 }
 </script>

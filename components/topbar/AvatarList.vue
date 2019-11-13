@@ -99,6 +99,8 @@ export default {
       this.$axios.userService.logout().then(res => {
         if (res.data.out === '1') {
           this.$store.commit('login/loginUser', {})
+          this.$store.commit('login/isLogin', false)
+          this.$store.commit('login/setXtoken', '')
           this.$router.push({
             name: 'index'
           })

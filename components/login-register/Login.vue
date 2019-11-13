@@ -105,12 +105,17 @@ export default {
       }
 
       const loginRes = await this.$axios.userService.login(rqBody)
+
       if (loginRes.data.out === '1') {
         const data = loginRes.data.data
 
         this.$store.commit('login/loginUser', data)
 
         this.$store.commit('login/isShowLoginDialog', false)
+
+        this.$store.commit('login/isLogin', true)
+
+        this.$store.commit('login/setXtoken', data['x-token1'])
 
         if (data.name === '' || data.nick === '' || data.avatar === '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)

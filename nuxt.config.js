@@ -54,7 +54,9 @@ export default {
     '~/api/statisticsService',
     '~/api/tagService',
     // '~/api/uptokenService',
-    '~/api/userService'
+    '~/api/userService',
+
+    '~/plugins/cookie'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -67,7 +69,9 @@ export default {
 
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    'cookie-universal-nuxt',
+    ['cookie-universal-nuxt', { alias: 'cookiz' }]
   ],
   axios: {
     proxy: true
