@@ -1,8 +1,8 @@
 <template>
   <div class="activity">
-    <table-nav :options="options" :default-index="tableIndex" @updateTableIndex="tableChanged"/>
+    <table-nav :options="options" :default-index="tableIndex" @updateTableIndex="tableChanged" />
     <div v-show="tableIndex != 2" class="activity-list">
-      <div v-for="item in currentListShow" class="card" :key="item.id">
+      <div v-for="(item, index) in currentListShow" :key="index" class="card">
         <nuxt-link
           :to="{ name: 'activity-id-table-page', params: { id : item.id, table: '3', page: '1' } }"
         >

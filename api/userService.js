@@ -180,13 +180,21 @@ export default ({ $axios }) => {
     },
 
     risingList(data, params) {
-      const url = '/api/user/rising_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/rising_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     rankingList(data, params) {
-      const url = '/api/user/ranking_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/ranking_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     descList(params) {
