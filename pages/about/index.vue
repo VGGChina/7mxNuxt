@@ -134,7 +134,7 @@ export default {
   methods: {
     async toContributor() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
@@ -147,11 +147,11 @@ export default {
     },
     toUpload() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
-      this.$store.commit('isShowUploadDialog', true)
+      this.$store.commit('upload/isShowUploadDialog', true)
     },
     setStyle(height, pageYOffset) {
       const taopBar = document.getElementById('topbar')
