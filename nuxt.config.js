@@ -84,6 +84,12 @@ export default {
       pathRewrite: {
         '^/api': '/'
       }
+    },
+    '/api2': {
+      target: 'https://api.paixin.com',
+      pathRewrite: {
+        '^/api2': '/'
+      }
     }
   },
 

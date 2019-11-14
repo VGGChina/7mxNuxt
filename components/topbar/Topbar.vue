@@ -8,7 +8,7 @@
         <a href="/" style="margin-left: 0px" :class="{'cl-white': $route.name == 'index'}">首页</a>
         <a :class="{'cl-white': $route.name == 'follow'}" @click="toFollow()">动态</a>
         <div @mouseenter="showCategory = true" @mouseleave="showCategory = false">
-          <router-link to="/category/全部/0/0/1" :class="{'cl-white': $route.name == 'category'}">探索</router-link>
+          <router-link to="/category/全部/0/0/1" :class="{'cl-white': $route.name == 'category-category-id-tableIndex-page'}">探索</router-link>
           <!-- <transition name='category-fade'> -->
           <category v-if="showCategory" :is-topbar="true" class="category" />
           <!-- </transition> -->

@@ -46,8 +46,12 @@ export default ({ $axios }) => {
     },
 
     commonList(data, params) {
-      const url = '/media/common_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/common_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 上传作品
@@ -225,8 +229,12 @@ export default ({ $axios }) => {
     },
 
     inCategoryList(data, params) {
-      const url = 'media/in_category_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/in_category_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     modify(data) {

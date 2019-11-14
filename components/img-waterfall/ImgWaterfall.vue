@@ -62,6 +62,7 @@ import ImgItem from './img-item/ImgItem'
 import NoContent from '~/components/no-content/NoContent'
 import Waterfall from './vue-waterfall/waterfall'
 import WaterfallSlot from './vue-waterfall/waterfall-slot'
+import loading from '~/components/loading/Loading'
 
 export default {
   name: '',
@@ -70,7 +71,8 @@ export default {
     WaterfallSlot,
     NoContent,
     ImgItem,
-    EditDialog
+    EditDialog,
+    loading
   },
   props: {
     imgList: {

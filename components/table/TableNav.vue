@@ -5,7 +5,7 @@
         <span
           v-if="!item.url"
           class="category-list-router"
-          :class="{ selected : currentIndex == index }"
+          :class="{ selected : $route.params.tableIndex == index }"
           @click="onOptionClicked(index)"
         >
           {{ item.name }}
@@ -14,7 +14,7 @@
         <router-link
           v-if="item.url"
           class="category-list-router"
-          :class="{ selected : currentIndex == index }"
+          :class="{ selected : $route.params.tableIndex == index }"
           :to="item.url ? item.url : ''"
         >
           {{ item.name }}
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0
+      // currentIndex: 0
     }
   },
   computed: {
@@ -43,11 +43,7 @@ export default {
       return this.options
     }
   },
-  watch: {
-    '$route.params.tableIndex': function(val) {
-      this.currentIndex = parseInt(val)
-    }
-  },
+
   created() {
     this.getDefault()
   },

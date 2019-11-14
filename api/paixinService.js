@@ -1,30 +1,46 @@
-import { axiosPaixin } from './factory/axiosFactory'
+export default ({ $axios }) => {
+  const paixinService = {
+    recommendList(data, params) {
+      const httpData = {
+        url: '/api2/media/recommend_list',
+        data,
+        params
+      }
+      return $axios(httpData)
+    },
 
-const paixinService = {
-  recommendList(data, params) {
-    const url = '/media/recommend_list'
-    return axiosPaixin(url, data, params)
-  },
+    smcode(data) {
+      const httpData = {
+        url: '/api2/common/smcode',
+        data
+      }
+      return $axios(httpData)
+    },
 
-  smcode(data) {
-    const url = '/common/smcode'
-    return axiosPaixin(url, data, {})
-  },
+    debug(data) {
+      const httpData = {
+        url: '/api2/common/debug',
+        data
+      }
+      return $axios(httpData)
+    },
 
-  debug(data) {
-    const url = '/common/debug'
-    return axiosPaixin(url, data, {})
-  },
+    userDetail(data) {
+      const httpData = {
+        url: '/api2/user/detail',
+        data
+      }
+      return $axios(httpData)
+    },
 
-  userDetail(data) {
-    const url = '/user/detail'
-    return axiosPaixin(url, data, {})
-  },
-
-  cashNeed(data) {
-    const url = '/user/cash_need'
-    return axiosPaixin(url, data, {})
+    cashNeed(data) {
+      const httpData = {
+        url: '/api2/user/cash_need',
+        data
+      }
+      return $axios(httpData)
+    }
   }
+  $axios.paixinService = paixinService
 }
 
-export default paixinService
