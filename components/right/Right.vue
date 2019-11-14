@@ -108,84 +108,12 @@ function getMediaExifList(mediaExifList, exifData) {
 export default {
   data() {
     return {
-      mediaExifList: [
-        {
-          key: 'Make',
-          label: '品牌',
-          value: 'no make'
-        },
-        {
-          key: 'Model',
-          label: '型号',
-          value: 'no model'
-        },
-        {
-          key: 'FocalLength',
-          label: '焦距',
-          value: 'no focal length'
-        },
-        {
-          key: 'ApertureValue',
-          label: '光圈',
-          value: 'no aperture'
-        },
-        {
-          key: 'ShutterSpeedValue',
-          label: '快门速度',
-          value: 'no shutter speed'
-        },
-        {
-          key: 'ISOSpeedRatings',
-          label: 'ISO',
-          value: 'no iso speed ratings'
-        },
-        {
-          key: 'ExposureBiasValue',
-          label: '曝光补偿',
-          value: 'no exposure bias'
-        },
-        {
-          key: 'BrightnessValue',
-          label: '亮度',
-          value: 'no exposure bias'
-        }
-      ],
       isMore: false,
-      isFetchingExif: true
+      isFetchingExif: false
     }
   },
-  props: ['mediaDetail'],
+  props: ['mediaDetail', 'mediaExifList'],
   methods: {
-    async fetchData(mediaData) {
-      try {
-        let res = await this.$apiFactory
-          .getMediaApi()
-          .exifUrl({ media_id: this.mediaDetail.id })
-
-        if (res.data.out == '1') {
-          let exifUrl = res.data.data.exif_url
-
-          if (exifUrl.indexOf('https') > -1) {
-            let res1 = await axiosGet(exifUrl)
-
-            this.setExifList(res1)
-          } else {
-            let res1 = await axiosGet(exifUrl.replace('http', 'https'))
-
-            this.setExifList(res1)
-          }
-        }
-      } catch (e) {
-        this.setExifList({ payload: 'error', status: '400' })
-      }
-    },
-    setExifList(exifData) {
-      if (exifData.status == '200') {
-        this.mediaExifList = getMediaExifList(this.mediaExifList, exifData.data)
-      }
-
-      this.isFetchingExif = false
-    },
     follow() {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
@@ -306,7 +234,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogin', 'loginUser']),
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
     userId() {
       try {
         return this.mediaDetail.user_data.id
@@ -377,11 +310,7 @@ export default {
       return this.$utilHelper.toUserPage(this.mediaDetail.user_data)
     }
   },
-  watch: {
-    mediaDetail: function(val) {
-      // this.fetchData(val)
-    }
-  }
+  watch: {}
 }
 </script>
 
