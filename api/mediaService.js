@@ -16,8 +16,11 @@ export default ({ $axios }) => {
     },
 
     like(data) {
-      const url = '/media/like'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/media/like',
+        data
+      }
+      return $axios(httpData)
     },
 
     comment(data) {
@@ -35,8 +38,11 @@ export default ({ $axios }) => {
     },
 
     dislike(data) {
-      const url = '/media/drop_like'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/media/drop_like',
+        data
+      }
+      return $axios(httpData)
     },
 
     commonList(data, params) {
@@ -117,8 +123,12 @@ export default ({ $axios }) => {
     },
 
     followList(data, params) {
-      const url = '/media/follow_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/follow_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     exif(data) {
@@ -181,8 +191,11 @@ export default ({ $axios }) => {
     },
 
     needed(data) {
-      const url = 'media/needed'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/media/needed',
+        data
+      }
+      return $axios(httpData)
     },
 
     mediaDrop(data) {
@@ -250,8 +263,12 @@ export default ({ $axios }) => {
     },
 
     dynamicList(data, params) {
-      const url = 'media/dynamic_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/dynamic_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     dynamicDrop(data) {

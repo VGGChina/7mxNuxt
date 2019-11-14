@@ -1,8 +1,8 @@
 const state = () => ({
   isShowLoginDialog: false,
-  loginUser: {
-    id: ''
-  }
+  loginUser: { },
+  xToken: '',
+  isLogin: false
 })
 
 const getters = {
@@ -17,12 +17,16 @@ const getters = {
 }
 
 const actions = {
-  isShowLoginDialog({ commit, state }, isShow) {
+  isShowLoginDialog({ commit }, isShow) {
     commit('login/isShowLoginDialog', isShow)
   },
-  loginUser({ commit, state }, user) {
+  loginUser({ commit }, user) {
     commit('login/loginUser', user)
+  },
+  setXtoken({ commit }, xtotken) {
+    commit('login/setXtoken', xtotken)
   }
+
 }
 
 const mutations = {
@@ -31,6 +35,12 @@ const mutations = {
   },
   loginUser(state, user) {
     state.loginUser = user
+  },
+  setXtoken(state, xtoken) {
+    state.xToken = xtoken
+  },
+  isLogin(state, isLogin) {
+    state.isLogin = isLogin
   }
 }
 

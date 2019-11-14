@@ -10,10 +10,20 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
-      // {lang: 'zh'}
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: '/js/jsencrypt.min.js',
+        async: true
+      },
+      { src: '/js/qiniu.min.js',
+        async: true
+      },
+      { src: '/js/plupload.full.min.js',
+        async: true
+      }
     ]
   },
   /*
@@ -35,6 +45,8 @@ export default {
     // { src: '~/plugins/axios.js', ssr: true }
     '~/plugins/axios',
     '~/plugins/utilHelper',
+    '~/plugins/toast',
+
     '~/api/albumService',
     '~/api/commonService',
     '~/api/mediaService',
@@ -42,7 +54,11 @@ export default {
     '~/api/statisticsService',
     '~/api/tagService',
     // '~/api/uptokenService',
-    '~/api/userService'
+    '~/api/userService',
+
+    '~/plugins/cookie',
+    '~/plugins/scroll'
+
   ],
   /*
   ** Nuxt.js dev-modules
@@ -55,7 +71,9 @@ export default {
 
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    'cookie-universal-nuxt',
+    ['cookie-universal-nuxt', { alias: 'cookiz' }]
   ],
   axios: {
     proxy: true

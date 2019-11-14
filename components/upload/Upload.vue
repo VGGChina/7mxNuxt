@@ -627,7 +627,6 @@ export default {
                   notMatchFiles.forEach(file => {
                     up.removeFile(file)
                   })
-                  console.log('up.start()')
                   up.start()
                 }
               }

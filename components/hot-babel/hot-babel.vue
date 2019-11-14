@@ -3,7 +3,7 @@
     <sharetitle :title="title" :category-list="categoryList" :identity="2" />
     <loading :is-loading="isLoading" loading-color="#000" class="loading" />
     <ul class="content">
-      <li v-for="item in picblocks" :key="item.id">
+      <li v-for="(item, index) in picblocks" :key="index">
         <a :href="goDetai(item.id)">
           <img :src="item.image" alt="" class="imgItem">
         </a>

@@ -55,7 +55,6 @@
 
 <script>
 import Carousel from '~/components/carousel/Carousel'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   components: {
@@ -89,11 +88,11 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 
-      if (timeRes.data.out == '1') {
+      if (timeRes.data.out === '1') {
         time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
@@ -105,22 +104,27 @@ export default {
         reme: this.isRemember ? '1' : '0'
       }
 
-      const loginRes = await apiFactory.getUserApi().login(rqBody)
-      if (loginRes.data.out == '1') {
+      const loginRes = await this.$axios.userService.login(rqBody)
+
+      if (loginRes.data.out === '1') {
         const data = loginRes.data.data
 
         this.$store.commit('login/loginUser', data)
 
         this.$store.commit('login/isShowLoginDialog', false)
 
-        if (data.name == '' || data.nick == '' || data.avatar == '') {
+        this.$store.commit('login/isLogin', true)
+
+        this.$store.commit('login/setXtoken', data['x-token1'])
+
+        if (data.name === '' || data.nick === '' || data.avatar === '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)
         }
 
         // 如果关联过拍信账号，那么校验一遍，后端要求这样做
         if (data.gaga_id) {
-          const otherRes = await apiFactory.getUserApi().intoOther()
-          if (otherRes.data.out == '1') {
+          const otherRes = await this.$axios.userService.intoOther()
+          if (otherRes.data.out === '1') {
             data.gaga_id = otherRes.data.data.gaga_id
             this.$store.commit('login/loginUser', data)
           }

@@ -16,6 +16,12 @@ import Keywords from '~/components/keywords/Keywords'
 import Comments from '~/components/comments/Comments'
 
 export default {
+  components: {
+    // Right,
+    Center,
+    Keywords,
+    Comments
+  },
   data() {
     return {
       mediaDetail: {},
@@ -23,23 +29,21 @@ export default {
     }
   },
   async asyncData({ $axios, params }) {
-    let rqBody = {
+    const rqBody = {
       media_id: params.id
     }
-    // console.log(111111)
-    let res = await $axios.mediaService.mediaDetail(rqBody)
-    // console.log(222222222)
+    const res = await $axios.mediaService.mediaDetail(rqBody)
     let tempMediaDetail = {}
-    if (res.data.out == '1') {
+    if (res.data.out === '1') {
       tempMediaDetail = res.data.data
     }
 
-    let res_commentList = await $axios.mediaService.commentList(
+    const res_commentList = await $axios.mediaService.commentList(
       { media_id: tempMediaDetail.id },
       { line: '' }
     )
-    let tempCommentList = []
-    if (res_commentList.data.out == '1') {
+    const tempCommentList = []
+    if (res_commentList.data.out === '1') {
       tempCommentList.push(...res_commentList.data.data)
     }
 
@@ -58,11 +62,11 @@ export default {
   },
   methods: {
     async fetchData() {
-      let rqBody = {
+      const rqBody = {
         media_id: this.$route.params.id
       }
 
-      let res = await this.$apiFactory.getMediaApi().mediaDetail(rqBody)
+      const res = await this.$apiFactory.getMediaApi().mediaDetail(rqBody)
       if (res.data.out == '1') {
         this.mediaDetail = res.data.data
 

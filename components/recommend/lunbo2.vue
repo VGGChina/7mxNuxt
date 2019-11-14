@@ -20,24 +20,24 @@
     <div v-show="(isShowBanner == 0 ) && !isImage" ref="sliderBox" class="slider-box" :style="{width: width + 'px',top: 0, left: left + 'px',transition: transtion}">
       <ul>
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id + 'first'"
+          v-for="(item, index) in smallBannerList"
+          :key="index + 'first'"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >
           <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
         </router-link>
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id"
+          v-for="(item, index) in smallBannerList"
+          :key="index"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >
           <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
         </router-link>
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id + 'last'"
+          v-for="(item, index) in smallBannerList"
+          :key="index + 'last'"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >
@@ -46,16 +46,16 @@
       </ul>
       <ul class="second">
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id+ 'first' "
+          v-for="(item, index) in smallBannerList"
+          :key="index"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >
           <img :src="item.image + '?imageView2/2/w/1920/h/1000'">
         </router-link>
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id"
+          v-for="(item, index) in smallBannerList"
+          :key="index"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >
@@ -63,8 +63,8 @@
         </router-link>
 
         <router-link
-          v-for="(item) in smallBannerList"
-          :key="item.id + 'last'"
+          v-for="(item, index) in smallBannerList"
+          :key="index"
           :to="{ name: 'activityDetail', params: { id : item.id, tableIndex: '3', page: '1' }}"
           tag="li"
         >

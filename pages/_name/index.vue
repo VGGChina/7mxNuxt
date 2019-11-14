@@ -96,13 +96,13 @@ export default {
     }
   },
 
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, params }) {
     let userInfo = {}
     const imgList = []
     let line = ''
 
     const rqBody = {
-      name: 'blackstation'
+      name: params.name
     }
     const userinfo = await $axios.userService.userDetail(rqBody)
     if (userinfo.data.out === '1') {
@@ -115,7 +115,7 @@ export default {
 
     // 作品
     const data = { user_id: userInfo.id }
-    const params = { line: '' }
+    const params2 = { line: '' }
 
     // if (this.userHomeNavIndex == 1) {
     //   data.check = '1'
@@ -126,14 +126,12 @@ export default {
     //   data.check = '2,3'
     // }
 
-    const works = await $axios.mediaService.originList(data, params)
+    const works = await $axios.mediaService.originList(data, params2)
 
     if (works.data.out === '1') {
       imgList.push(...works.data.data)
       line = works.data.line
     }
-
-    // this.line = res.data.line
 
     return {
       userInfo: userInfo,

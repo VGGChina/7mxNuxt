@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="896" height="568" viewBox="0 0 896 568">
+    <defs>
+        <rect id="a" width="216" height="40" x="1792" y="1638" rx="4"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(-1164 -1158)">
+        <path fill="#57CB8F" d="M0 1016h2508v745.685H0z"/>
+        <rect width="837.523" height="494.996" x="1191.5" y="1202.094" stroke="#FFF" rx="8"/>
+        <rect width="216" height="105.895" x="1792" y="1319" fill="#FFF" opacity=".2" rx="4"/>
+        <rect width="216" height="40" x="1792" y="1534" fill="#FFF" opacity=".2" rx="4"/>
+        <rect width="216" height="40" x="1792" y="1484" fill="#FFF" opacity=".2" rx="4"/>
+        <rect width="216" height="40" x="1792" y="1435" fill="#FFF" opacity=".2" rx="4"/>
+        <rect width="216" height="40" x="1792" y="1264" fill="#FFF" opacity=".2" rx="4"/>
+        <rect width="216" height="40" x="1792" y="1583" fill="#FFF" opacity=".2" rx="4"/>
+        <circle cx="1214" cy="1223" r="8" stroke="#FFF"/>
+        <circle cx="1242" cy="1223" r="8" stroke="#FFF"/>
+        <circle cx="1270" cy="1223" r="8" stroke="#FFF"/>
+        <rect width="570.197" height="414" x="1203.644" y="1264" fill="#FFF" opacity=".2" rx="10"/>
+        <use fill="#FFF" xlink:href="#a"/>
+        <rect width="215" height="39" x="1792.5" y="1638.5" stroke="#FFF" rx="4"/>
+        <rect width="29" height="21.099" x="1966.5" y="1273.5" stroke="#FFF" rx="4"/>
+        <text fill="#57CB8F" font-family=".PingFangSC-Regular, .PingFang SC" font-size="14">
+            <tspan x="1885" y="1665">BUY</tspan>
+        </text>
+        <text fill="#FFF" font-family=".PingFangSC-Regular, .PingFang SC" font-size="12">
+            <tspan x="1975" y="1289">＋</tspan>
+        </text>
+        <text fill="#FFF" font-family=".PingFangSC-Semibold, .PingFang SC" font-size="48" font-weight="500">
+            <tspan x="1835" y="1375">88.43</tspan>
+        </text>
+        <path fill="#FFF" d="M1843.503 1402.11c-.359 0-.67-.163-.742-.52l-1.007-4.902-.663 1.165c-.136.234-.385.402-.653.402h-3.666a.765.765 0 0 1-.758-.772c0-.426.34-.771.758-.771h3.233l1.441-2.477a.776.776 0 0 1 .39-.84.75.75 0 0 1 .903.151c.233.25.275.628.102.924l.61 2.996 1.39-7.841a.751.751 0 0 1 .746-.623h.003a.75.75 0 0 1 .744.628l1.484 8.802.477-1.23a.759.759 0 0 1 .705-.49h6.728c.419 0 .759.345.759.77 0 .427-.34.772-.759.772h-6.213l-1.283 3.299a.757.757 0 0 1-.784.484.763.763 0 0 1-.669-.638l-1.21-7.192-1.32 7.363c-.064.363-.373.54-.736.54h-.01z"/>
+        <path stroke="#FFF" stroke-linecap="square" d="M2028.848 1241.5h-836.38"/>
+        <text fill="#FFF" font-family=".PingFangSC-Semibold, .PingFang SC" font-size="14" font-weight="500">
+            <tspan x="1862" y="1401">highest pulse</tspan>
+        </text>
+        <text fill="#FFF" font-family=".PingFangSC-Semibold, .PingFang SC" font-size="14" font-weight="500">
+            <tspan x="1880" y="1462">TITLE</tspan>
+        </text>
+        <text fill="#FFF" font-family=".PingFangSC-Semibold, .PingFang SC" font-size="14" font-weight="500">
+            <tspan x="1884" y="1610">EXIF</tspan>
+        </text>
+        <text fill="#FFF" font-family=".PingFangSC-Semibold, .PingFang SC" font-size="14" font-weight="500">
+            <tspan x="1860" y="1560">CATEGORY</tspan>
+        </text>
+        <text fill="#FFF" font-family=".PingFangSC-Semibold, .PingFang SC" font-size="14" font-weight="500">
+            <tspan x="1870" y="1511">DETAILS</tspan>
+        </text>
+        <text fill="#FFF" font-family=".PingFangSC-Semibold, .PingFang SC" font-size="14" font-weight="500">
+            <tspan x="1879" y="1291">NAME</tspan>
+        </text>
+        <path fill="#FFF" fill-rule="nonzero" d="M1218.488 1451.633l11.163-11.162a1.578 1.578 0 1 1 2.233 2.233l-10.046 10.046 10.046 10.046a1.58 1.58 0 0 1-2.233 2.233l-11.163-11.162a1.581 1.581 0 0 1 0-2.234z"/>
+        <g fill="#FFF" fill-rule="nonzero">
+            <path d="M1757.512 1454.367l-11.163 11.162a1.578 1.578 0 1 1-2.233-2.233l10.046-10.046-10.046-10.046a1.58 1.58 0 0 1 2.233-2.233l11.163 11.162a1.581 1.581 0 0 1 0 2.234z"/>
+        </g>
+    </g>
+</svg>

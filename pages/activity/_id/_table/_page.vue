@@ -2,11 +2,11 @@
   <div class="activityDetail">
     <!-- 顶部菜单 -->
     <top-nav
+      :active-detail-img="activeDetail.image0 || activeDetail.image"
+      :active-detail="activeDetail"
       @toPublish="toPublish"
-      :activeDetailImg="activeDetail.image0 || activeDetail.image"
-      :activeDetail="activeDetail"
-    ></top-nav>
-    <div class="activeBar" v-if="!$utilHelper.isEmptyObj(activeDetail)">
+    />
+    <div v-if="!$utilHelper.isEmptyObj(activeDetail)" class="activeBar">
       <div class="category-list">
         <div class="type_wrap">
           <div class="type intro">
@@ -18,7 +18,7 @@
               }"
             >活动介绍</nuxt-link>
           </div>
-          <div class="type works" v-if="activeDetail.vote == '1' || activeDetail.vote == '2'">
+          <div v-if="activeDetail.vote == '1' || activeDetail.vote == '2'" class="type works">
             <img
               v-if="activeDetail.vote == '1'"
               :src="require('../../img/poll.png')"
@@ -31,7 +31,7 @@
                 name: 'activity-id-table-page',
                 params: { id : activeDetail.id, table: '1', page: '1' }
               }"
-            >{{getEventStage}}</nuxt-link>
+            >{{ getEventStage }}</nuxt-link>
           </div>
           <div class="type works">
             <nuxt-link
@@ -64,31 +64,31 @@
       </div>
     </div>
     <transition name="drop-choose-fade">
-      <div class="drop-choose" v-if="isShowChoose">
+      <div v-if="isShowChoose" class="drop-choose">
         <div class="array">
-          <div></div>
+          <div />
         </div>
         <div class="option" @click="publishNew">发布新作品</div>
         <div class="option" @click="publishOld">从历史作品中选择</div>
       </div>
     </transition>
     <transition name="choose-works-mask-fade">
-      <div class="choose-works-mask" v-if="isShowChooseWorks" @click="isShowChooseWorks = false">
-        <div class="cancle-button"></div>
+      <div v-if="isShowChooseWorks" class="choose-works-mask" @click="isShowChooseWorks = false">
+        <div class="cancle-button" />
       </div>
     </transition>
     <transition name="choose-works-fade">
       <choose-works
         v-if="isShowChooseWorks"
-        :activityId="activeDetail.id"
-        :tagId="activeDetail.id"
-        v-on:cancleActivityChooseWorksDialog="isShowChooseWorks = false"
-      ></choose-works>
+        :activity-id="activeDetail.id"
+        :tag-id="activeDetail.id"
+        @cancleActivityChooseWorksDialog="isShowChooseWorks = false"
+      />
     </transition>
     <div v-if="!$utilHelper.isEmptyObj(activeDetail) && currentIndex == 0" class="article">
       <div v-if="activeDetail.caution" class="title">介绍</div>
       <div v-if="activeDetail.caution" class="content">
-        <span v-html="activeDetail.caution"></span>
+        <span v-html="activeDetail.caution" />
       </div>
       <div v-if="activeDetail.start_time" class="title">征稿时间</div>
       <div
@@ -98,25 +98,25 @@
       <div v-if="!activeDetail.awards" class="title">奖项设置</div>
       <div v-if="!activeDetail.awards" class="content">
         <div v-for="(item, index) in stageList" :key="index" class="oneAward">
-          <strong>{{item.name}}</strong>&nbsp;&nbsp;
+          <strong>{{ item.name }}</strong>&nbsp;&nbsp;
           <strong>数量:</strong>
-          {{item.num}}&nbsp;&nbsp;
+          {{ item.num }}&nbsp;&nbsp;
           <strong>奖品:</strong>
-          {{item.award}}&nbsp;&nbsp;
+          {{ item.award }}&nbsp;&nbsp;
         </div>
       </div>
       <div class="contentNew">
-        <span v-html="activeDetail.content"></span>
+        <span v-html="activeDetail.content" />
       </div>
     </div>
     <div class="auth_wrap">
       <poll
         v-if="currentIndex == 1"
-        :stageList="stageList"
+        :stage-list="stageList"
         :stage="stage"
-        :isLoading="isLoading"
-        :activeDetail="activeDetail"
-      ></poll>
+        :is-loading="isLoading"
+        :active-detail="activeDetail"
+      />
     </div>
     <!-- 作品列表 -->
     <div
@@ -125,21 +125,21 @@
       :style="{ 'min-height': waterfallMinHeight + 'px' }"
     >
       <div class="waterfallContainer">
-        <img-waterfall :imgList="imgList" :line="line" :isToPaixin="false" :isShowLoading="false"></img-waterfall>
+        <img-waterfall :img-list="imgList" :line="line" :is-to-paixin="false" :is-show-loading="false" />
       </div>
     </div>
     <!-- 作者列表 -->
     <div class="auth_wrap">
-      <user-preview v-if="currentIndex == 4" :userList="userList"></user-preview>
+      <user-preview v-if="currentIndex == 4" :user-list="userList" />
     </div>
-    <loading :isLoading="isLoading" :loadingColor="'#000'"></loading>
+    <loading :is-loading="isLoading" :loading-color="'#000'" />
     <pagination
-      style="margin: 64px 0 160px 0;"
       v-show="!isLoading && isShowPagination"
-      :baseUrl="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
+      style="margin: 64px 0 160px 0;"
+      :base-url="'/activity/' + activeDetail.id + '/' + currentIndex + '/'"
       :line="line"
       @paginationJumpToPage="jumpToPage"
-    ></pagination>
+    />
   </div>
 </template>
 
@@ -153,7 +153,13 @@ import Poll from './poll'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'activityDetail',
+  name: 'ActivityDetail',
+  filters: {
+    timeParse(v) {
+      var t = new Date(v * 1000)
+      return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
+    }
+  },
   data: () => ({
     activeDetail: {},
     imgList: [],
@@ -174,39 +180,54 @@ export default {
     out: -1,
     is_activity: -1
   }),
+  watch: {
+    isShowChooseWorks: function(val) {
+      if (val) {
+        document.querySelector('html').style.overflow = 'hidden'
+      } else {
+        document.querySelector('html').style.overflow = 'auto'
+      }
+    },
+    '$route.params.tableIndex': function(val) {
+      this.reload()
+    },
+    '$route.params.page': function(val) {
+      const lineArray = this.line.split(',')
+
+      lineArray[0] = val
+
+      this.reload(lineArray.join(','))
+    }
+  },
   async asyncData({ $axios, params }) {
-    console.log(params)
     // let { $router, $route, $apiFactory } = this
-    let res_detail = await $axios.tagService.getTagDetail({
+    const res_detail = await $axios.tagService.getTagDetail({
       tag_id: params.id
     })
 
     let tempLine = params.page + ',0,0'
 
-    let res_win = await $axios.mediaService.getAwardWinningList(
+    const res_win = await $axios.mediaService.getAwardWinningList(
       { tag_id: params.id },
       { line: tempLine }
     )
 
     let tempStage = 0
     let tempStageList = []
-    let tempUserList = []
-    let tempImgList = []
+    const tempUserList = []
+    const tempImgList = []
 
     // 判断是否有获奖名单
     if (res_win.data.out == '1' && res_win.data.data.length > 0) {
       tempStage = '3'
-      tempStageList = res.data.data
+      tempStageList = res_win.data.data
     }
 
-    let tempIndex = parseInt(params.table)
-    console.log('b')
+    const tempIndex = parseInt(params.table)
     if (tempLine.split(',')[0] != 'end') {
-      console.log('aaaa')
-      console.log(tempIndex)
       if (tempIndex == 1) {
         if (tempStage != '3') {
-          let res_stageWorks = await $axios.mediaService.getPollList(
+          const res_stageWorks = await $axios.mediaService.getPollList(
             { tag_id: params.id, vote: '1' },
             { line: tempLine, limit: '40' }
           )
@@ -218,10 +239,9 @@ export default {
                 : params.page + ',0,0'
           }
         }
-        console.log(1)
       }
       if (tempIndex == 2) {
-        let res_recommendWorks = await $axios.mediaService.recommendInTagList(
+        const res_recommendWorks = await $axios.mediaService.recommendInTagList(
           { tag_id: params.id },
           { line: tempLine, limit: '40' }
         )
@@ -232,10 +252,9 @@ export default {
               ? res_recommendWorks.data.line
               : params.page + ',0,0'
         }
-        console.log(2)
       }
       if (tempIndex == 3) {
-        let res_allWorks = await $axios.mediaService.inTagList(
+        const res_allWorks = await $axios.mediaService.inTagList(
           { tag_id: params.id },
           { line: tempLine, limit: '40' }
         )
@@ -246,10 +265,9 @@ export default {
               ? res_allWorks.data.line
               : params.page + ',0,0'
         }
-        console.log(3)
       }
       if (tempIndex == 4) {
-        let res_authors = await $axios.tagService.getJoinUser(
+        const res_authors = await $axios.tagService.getJoinUser(
           { tag_id: params.id },
           { line: tempLine, limit: '40' }
         )
@@ -260,7 +278,6 @@ export default {
               ? res_authors.data.line
               : params.page + ',0,0'
         }
-        console.log(4)
       }
     }
 
@@ -277,6 +294,16 @@ export default {
       userList: tempUserList,
       imgList: tempImgList
     }
+  },
+  created() {
+    if (this.out != '1' || this.is_activity != '1') {
+      // 跳转至根目录
+      this.$router.push('/')
+      return false
+    }
+    this.$bus.on('cancel', e => {
+      this.isShowChoose = false
+    })
   },
   methods: {
     toPublish() {
@@ -324,41 +351,6 @@ export default {
       this.fetchData()
     }
   },
-  created() {
-    if (this.out != '1' || this.is_activity != '1') {
-      // 跳转至根目录
-      this.$router.push('/')
-      return false
-    }
-    this.$bus.on('cancel', e => {
-      this.isShowChoose = false
-    })
-  },
-  watch: {
-    isShowChooseWorks: function(val) {
-      if (val) {
-        document.querySelector('html').style.overflow = 'hidden'
-      } else {
-        document.querySelector('html').style.overflow = 'auto'
-      }
-    },
-    '$route.params.tableIndex': function(val) {
-      this.reload()
-    },
-    '$route.params.page': function(val) {
-      let lineArray = this.line.split(',')
-
-      lineArray[0] = val
-
-      this.reload(lineArray.join(','))
-    }
-  },
-  filters: {
-    timeParse(v) {
-      var t = new Date(v * 1000)
-      return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
-    }
-  },
   computed: {
     ...mapGetters(['isLogin']),
     isToPaixin() {
@@ -373,7 +365,7 @@ export default {
         return false
       }
 
-      let lineArray = this.line.split(',')
+      const lineArray = this.line.split(',')
 
       if (lineArray[0] == 'end' && lineArray[2] == '1') {
         return false

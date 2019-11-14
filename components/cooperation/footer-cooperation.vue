@@ -1,7 +1,7 @@
 <template>
   <div class="cooperation_container">
     <div class="content">
-      <img v-for="(item,index) in imgList" v-show="currentIndex == index" :key="item.id" :src="require(`${item.url}`)" class="imgItem" @click="gokehu(index)">
+      <img v-for="(item,index) in imgList" v-show="currentIndex == index" :key="index" :src="require(`${item.url}`)" class="imgItem" @click="gokehu(index)">
       <div class="dotted">
         <span v-for="(item,index) in countDotted" :key="item" :class="index == currentIndex ? 'active' : null" @click="select(index)" />
       </div>

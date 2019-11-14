@@ -69,6 +69,9 @@ export default {
     isShowConfirmationDialog() {
       return this.$store.state.confirmationDialog.isShowConfirmationDialog
     },
+    xToken() {
+      return this.$store.state.login.xToken
+    },
     notScroll() {
       return this.isShowLoginDialog ||
         this.isShowRegisterDialog ||
@@ -80,6 +83,15 @@ export default {
         this.isShowConfirmationDialog
     }
   },
+
+  watch: {
+    xToken() {
+      this.$setCookie(this.xToken)
+    }
+  },
+  created() {
+    this.fetchPublic()
+  },
   mounted() {
     window.onresize = () => {
       this.$store.commit('window/onresizeFlag', new Date().getTime())
@@ -88,6 +100,34 @@ export default {
     window.onscroll = e => {
       const pageYOffset = window.pageYOffset
       this.$store.commit('window/winPageYOffset', pageYOffset)
+    }
+  },
+  methods: {
+    async fetchPublic() {
+      // 登录状态
+      const currentUser = this.$axios.userService.currentUser()
+      // 种类列表
+      const categoryList = this.$axios.commonService.categoryList({ 'type': '6' })
+
+      const promises = [currentUser, categoryList]
+
+      const results = await Promise.all(promises)
+      if (results[0].data.out === '1') {
+        // 登录状态
+        this.$store.commit('login/loginUser', results[0].data.data)
+        this.$store.commit('login/isLogin', true)
+
+        this.$bus.emit('loginSuccessful', results[0].data.data)
+
+        if (results[0].data.data.name === '') {
+          this.$store.commit('improveInfo/isShowImproveInfo', true)
+        }
+      }
+
+      if (results[1].data.out === '1') {
+        // 种类列表
+        this.$store.commit('category/categoryList', results[1].data.data)
+      }
     }
   }
 }

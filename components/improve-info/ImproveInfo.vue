@@ -144,7 +144,7 @@ export default {
               const key = infoJson.key
               const url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
-              apiFactory.getUserApi().setAvatar({ 'avatar': url })
+              this.$axios.userService.setAvatar({ 'avatar': url })
                 .then(res => {
                   if (res.data.out === '1') {
                     this.$store.commit('login/loginUser', res.data.data)
@@ -183,7 +183,7 @@ export default {
       const data = {
         nick: this.nick
       }
-      apiFactory.getUserApi().setNick(data)
+      this.$axios.userService.setNick(data)
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg)
@@ -220,11 +220,11 @@ export default {
       const data = {
         name: this.name
       }
-      const res = await apiFactory.getUserApi().userDetail({ name: this.name })
-      if (res.data.out == '1') {
+      const res = await this.$axios.userService.userDetail({ name: this.name })
+      if (res.data.out === '1') {
         this.$toast.warn('该个性域名已被占用')
       } else {
-        apiFactory.getUserApi().setName(data)
+        this.$axios.userService.setName(data)
           .then(res1 => {
             if (res1.data.out === '1') {
               this.$toast.notice(res1.data.msg)

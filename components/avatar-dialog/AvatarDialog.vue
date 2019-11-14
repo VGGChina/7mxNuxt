@@ -64,7 +64,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 import loading from '~/components/loading/Loading'
 
 export default {
@@ -120,14 +119,8 @@ export default {
       const params = { line: '', limit: 3 }
 
       this.isFetching = true
-      // const res = await apiFactory.getMediaApi().originList(rqBody, params)
-      const data = {
-        url: '/api/media/origin_list',
-        data: rqBody,
-        params: params
-      }
-      const res = await this.$axios(data)
-      if (res.data.out == '1') {
+      const res = await this.$axios.mediaService.originList(rqBody, params)
+      if (res.data.out === '1') {
         this.imgList.push(...res.data.data)
       }
       this.isFetching = false
@@ -142,13 +135,13 @@ export default {
         user_id: this.eputUserId
       }
       if (user.is_follow === '1') {
-        apiFactory.getUserApi().unfollow(rqBody).then(res => {
+        this.$axios.userService.unfollow(rqBody).then(res => {
           if (res.data.out == '1') {
             user.is_follow = '0'
           }
         })
       } else {
-        apiFactory.getUserApi().follow(rqBody).then(res => {
+        this.$axios.userService.follow(rqBody).then(res => {
           if (res.data.out == '1') {
             user.is_follow = '1'
           }

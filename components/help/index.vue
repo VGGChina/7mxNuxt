@@ -36,37 +36,49 @@ import apiFactory from '~/api/factory/apiFactory.js'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'helpCenter',
+  name: 'HelpCenter',
   data: () => ({
     indexList: [],
     questionDetail: ''
   }),
+  watch: {
+    show(n, o) {
+      if (n) this.init()
+    }
+  },
+  created() {
+    // 兼容页面一打开就通过路由直接打开帮助中心的情况
+    if (this.show) this.init()
+  },
+  mounted() {
+
+  },
   methods: {
     chooseIndex(i) {
-      this.$store.dispatch('helpShow', { current: { index: i, subIndex: -1 } })
+      this.$store.dispatch('helpShow', { current: { index: i, subIndex: -1 }})
     },
     toQuestion(i) {
-      this.$store.dispatch('helpShow', { current: { index: this.current.index, subIndex: i } })
+      this.$store.dispatch('helpShow', { current: { index: this.current.index, subIndex: i }})
       this.pullQuestionDetail()
     },
     cancel() {
-      this.$store.dispatch('helpShow', {show: false})
+      this.$store.dispatch('helpShow', { show: false })
     },
     async pullHelpList() {
       if (this.indexList.length > 1) return
-      let res = await apiFactory.getCommonApi().getManualList()
+      const res = await apiFactory.getCommonApi().getManualList()
       res.data.data.map((ele, i) => {
-        if (ele.category == '用户') {
+        if (ele.category === '用户') {
           ele.icon = require('./img/user.svg')
         } else if (ele.category == '售图') {
           ele.icon = require('./img/pic.svg')
-        } else if (ele.category == '分成') {
+        } else if (ele.category === '分成') {
           ele.icon = require('./img/rmb.svg')
-        } else if (ele.category == '定制') {
+        } else if (ele.category === '定制') {
           ele.icon = require('./img/cust.svg')
-        } else if (ele.category == '活动') {
+        } else if (ele.category === '活动') {
           ele.icon = require('./img/award.svg')
-        } else if (ele.category == '上传' || ele.category == '关键词') {
+        } else if (ele.category === '上传' || ele.category === '关键词') {
           ele.icon = require('./img/upload.svg')
         } else {
           ele.icon = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
@@ -77,36 +89,24 @@ export default {
     },
     async pullQuestionDetail() {
       if (this.noQusetion()) return
-      let id = this.indexList[this.current.index].data[this.current.subIndex].id
+      const id = this.indexList[this.current.index].data[this.current.subIndex].id
       if (!id) return
-      let res = await apiFactory.getCommonApi().getQuestionDetail({id: id})
+      const res = await apiFactory.getCommonApi().getQuestionDetail({ id: id })
       this.questionDetail = res.data.data.content
     },
     noQusetion() {
       if (
-          !this.show ||
+        !this.show ||
            this.current.subIndex == -1 ||
           !this.indexList[this.current.index] ||
           !this.indexList[this.current.index].data ||
           !this.indexList[this.current.index].data[this.current.subIndex]
-        ) return true
+      ) return true
       return false
     },
     async init() {
       await this.pullHelpList()
       this.pullQuestionDetail()
-    }
-  },
-  created() {
-    // 兼容页面一打开就通过路由直接打开帮助中心的情况
-    if (this.show) this.init()
-  },
-  mounted() {
-
-  },
-  watch: {
-    show(n, o) {
-      if (n) this.init()
     }
   },
   computed: {
@@ -118,9 +118,8 @@ export default {
       if (this.noQusetion()) return
       return this.indexList[this.current.index].data[this.current.subIndex].category
     }
-  },
-  components: {}
-};
+  }
+}
 </script>
 
 <style lang='scss' scoped>
@@ -383,7 +382,6 @@ export default {
 }
 </style>
 
-
 <style lang='scss'>
 
 .questionDetail {
@@ -391,7 +389,7 @@ export default {
   padding-top: 44px;
   a {
     color: #50a3f3;
-    text-decoration: none; 
+    text-decoration: none;
   }
   .subIndex {
     font-size: 20px;

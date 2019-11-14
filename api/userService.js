@@ -6,23 +6,33 @@ export default ({ $axios }) => {
     },
 
     registerByPhone(data) {
-      const url = '/api/user/quick_regist_by_phone'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/quick_regist_by_phone',
+        data
+      }
+      return $axios(httpData)
     },
 
     login(data) {
-      const url = '/api/user/login'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/login',
+        data
+      }
+      return $axios(httpData)
     },
 
-    currentUser(cookie) {
-      const url = '/api/user/current'
-      return $axios(url, {}, {})
+    currentUser() {
+      const httpData = {
+        url: '/api/user/current'
+      }
+      return $axios(httpData)
     },
 
     logout() {
-      const url = '/api/user/logout'
-      return $axios(url, {}, {})
+      const httpData = {
+        url: '/api/user/logout'
+      }
+      return $axios(httpData)
     },
 
     codeLogin(data) {
@@ -60,8 +70,11 @@ export default ({ $axios }) => {
     },
 
     bindPhone(data) {
-      const url = '/api/user/bind_phone'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/bind_phone',
+        data
+      }
+      return $axios(httpData)
     },
 
     getFollow(data, params) {
@@ -75,28 +88,43 @@ export default ({ $axios }) => {
     },
 
     setUserInfo(data) {
-      const url = '/api/user/set_info'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/set_info',
+        data
+      }
+      return $axios(httpData)
     },
 
     setPassword(data) {
-      const url = '/api/user/chpwd'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/chpwd',
+        data
+      }
+      return $axios(httpData)
     },
 
     setAvatar(data) {
-      const url = '/api/user/set_avatar'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/set_avatar',
+        data
+      }
+      return $axios(httpData)
     },
 
     setNick(data) {
-      const url = '/api/user/set_nick'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/set_nick',
+        data
+      }
+      return $axios(httpData)
     },
 
     setName(data) {
-      const url = '/api/user/set_name'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/set_name',
+        data
+      }
+      return $axios(httpData)
     },
 
     setAuthCard(data) {
@@ -125,8 +153,11 @@ export default ({ $axios }) => {
     },
 
     intoOther(data) {
-      const url = '/api/user/into_other'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/into_other',
+        data
+      }
+      return $axios(httpData)
     },
 
     paixinLoginSmcode(data) {
@@ -149,13 +180,21 @@ export default ({ $axios }) => {
     },
 
     risingList(data, params) {
-      const url = '/api/user/rising_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/rising_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     rankingList(data, params) {
-      const url = '/api/user/ranking_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/ranking_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     descList(params) {
@@ -196,8 +235,12 @@ export default ({ $axios }) => {
     // 评论、点赞、关注消息列表
     getactivityList(data, params) {
       // 参数（type，1关注，2点赞，3 评论，4 心愿单 不传 读取所有;unread 0未读消息，1已读消息，不传 读取该类所有）
-      const url = '/api/user/msg_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/msg_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 搜索摄影师

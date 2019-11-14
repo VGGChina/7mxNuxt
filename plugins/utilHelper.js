@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// import JSEncrypt from '~/static/js/jsencrypt.min.js'
 
 var utilHelper = {
   debugTypes: {
@@ -12,6 +13,7 @@ var utilHelper = {
       return ''
     } else {
       const publicKey = '-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCs6vwV3PlvgLqkJ9bjYfbuhvloXKdEtJKHQ0vNLlJZkdKutEVNqsiGy/+iB3CkG9TzSoSVZHU0HVM0vDoYG+ODPi1qzvPhzeFThFUbMW9KhDQlQOL+O/L6DqLQdHGDmwpk6eJcfjlqhM8EKFFQAmlLaYx0WAfNKJAAWjwFJMBjvwIDAQAB-----END PUBLIC KEY-----'
+      // eslint-disable-next-line no-undef
       const rsa = new JSEncrypt()
       rsa.setKey(publicKey)
       return rsa.encrypt(string)

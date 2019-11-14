@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: 'AlbumList',
@@ -67,11 +66,9 @@ export default {
       })
     },
     async deleteAlbum(data) {
-      const res = await apiFactory
-        .getAlbumApi()
-        .deleteAlbum({ album_id: data.album_id })
+      const res = await this.$axios.albumService.deleteAlbum({ album_id: data.album_id })
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',

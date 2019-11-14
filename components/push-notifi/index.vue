@@ -130,7 +130,7 @@ export default {
     },
     // 动态列表
     async activityList() {
-      const res = await apiFactory.getUserApi().getactivityList({}, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({}, { line: this.line })
       // 标识为已读
       apiFactory.getCommonApi().markActivityAsRead()
       apiFactory.getCommonApi().markNeededAsRead()
@@ -139,7 +139,7 @@ export default {
     },
     // 心愿单列表
     async wantToShopList() {
-      const res = await apiFactory.getUserApi().getactivityList({ type: 4, unread: 0 }, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({ type: 4, unread: 0 }, { line: this.line })
       apiFactory.getCommonApi().markNeededAsRead()
       this.afterPull(res)
       this.nothing()
