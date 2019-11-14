@@ -26,6 +26,7 @@
     "nuxt": "^2.0.0",
     "qs": "^6.9.0",
     "scss": "^0.2.4",
+    "vant": "^2.2.13-beta.0",
     "vue-bus": "^1.2.1"
   },
   "devDependencies": {
