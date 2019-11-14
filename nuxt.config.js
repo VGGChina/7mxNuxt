@@ -56,7 +56,9 @@ export default {
     // '~/api/uptokenService',
     '~/api/userService',
 
-    '~/plugins/cookie'
+    '~/plugins/cookie',
+    '~/plugins/scroll'
+
   ],
   /*
   ** Nuxt.js dev-modules

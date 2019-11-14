@@ -26,8 +26,12 @@ export default ({ $axios }) => {
 
     // 获取所有推荐tag
     getRecommentTags(data, params) {
-      const url = 'tag/recommend_media_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/tag/recommend_media_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     /*
@@ -35,20 +39,30 @@ export default ({ $axios }) => {
     * param id
     */
     followTag(data) {
-      const url = 'tag/follow'
-      return $axios(url, data)
+      const httpData = {
+        url: '/api/tag/follow',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 取消关注标签
     unfollowTag(data) {
-      const url = 'tag/drop_follow'
-      return $axios(url, data)
+      const httpData = {
+        url: '/api/tag/drop_follow',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 热门tag
     getHotList(data, params) {
-      const url = 'tag/hot_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/tag/hot_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 参加活动的人
