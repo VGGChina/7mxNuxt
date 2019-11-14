@@ -1,11 +1,14 @@
-import { $axios } from './factory/axiosFactory'
-
-const statisticsService = {
-  // 统计
-  postBannerClickNum(data) {
-    const url = 'tag/click'
-    return $axios(url, data, {})
+export default ({ $axios }) => {
+  const statisticsService = {
+    // 统计
+    postBannerClickNum(data) {
+      const httpData = {
+        url: '/api/tag/click',
+        data
+      }
+      return $axios(httpData)
+    }
   }
+  $axios.statisticsService = statisticsService
 }
 
-export default statisticsService
