@@ -126,9 +126,13 @@ export default ({ $axios }) => {
       return $axios(url, data, {})
     },
 
-    exifUrl(data) {
-      const url = '/media/exif_url'
-      return $axios(url, data, {})
+    exifUrl(data, params) {
+      const httpData = {
+        url: '/api/media/exif_url',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     addIntoCart(data) {

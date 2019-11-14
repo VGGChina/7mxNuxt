@@ -1,18 +1,18 @@
 <template>
-    <div class="img-detail">
-        <div class="detail-container">
-            <center :mediaDetail="mediaDetail" v-on:updateMedia="updateMedia"></center>
-            <!-- <right :mediaDetail="mediaDetail"></right> -->
-        </div>
-        <keywords :mediaDetail="mediaDetail"></keywords>
-        <comments :mediaDetail="mediaDetail" :commentList="commentList"></comments>
+  <div class="img-detail">
+    <div class="detail-container">
+      <center :mediaDetail="mediaDetail" v-on:updateMedia="updateMedia"></center>
+      <!-- <right :mediaDetail="mediaDetail"></right> -->
     </div>
+    <keywords :mediaDetail="mediaDetail"></keywords>
+    <comments :mediaDetail="mediaDetail" :commentList="commentList"></comments>
+  </div>
 </template>
 
 <script>
-// import Right from './right/Right'
+import Right from '~/components/right/Right'
 import Center from './center/Center'
-import Keywords from './keywords/Keywords'
+import Keywords from '~/components/keywords/Keywords'
 import Comments from '~/components/comments/Comments'
 
 export default {
@@ -43,7 +43,11 @@ export default {
       tempCommentList.push(...res_commentList.data.data)
     }
 
-    console.log(tempCommentList)
+    let res_exifUrl = await $axios.mediaService.exifUrl({
+      media_id: tempMediaDetail.id
+    })
+    console.log(res_exifUrl)
+
     return {
       mediaDetail: tempMediaDetail,
       commentList: tempCommentList
@@ -90,7 +94,7 @@ export default {
     }
   },
   components: {
-    // Right,
+    Right,
     Center,
     Keywords,
     Comments
