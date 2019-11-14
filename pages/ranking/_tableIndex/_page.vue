@@ -72,10 +72,6 @@ export default {
       }
 
       return true
-    },
-
-    line() {
-      return this.$store.state.ranking.line
     }
   },
 
@@ -83,11 +79,8 @@ export default {
     const userList = []
     let tableIndex = 0
 
-    if (params.page === '1') {
-      store.commit('ranking/setLine', '1,0,0')
-    }
+    let line = params.page + ',0,0'
 
-    const line = store.state.ranking.line
     const rqBody = {
       withmedias: '1'
     }
@@ -108,11 +101,12 @@ export default {
     if (res.data.out === '1') {
       userList.push(...res.data.data)
     }
-    store.commit('ranking/setLine', res.data.line)
+    line = res.data.line
 
     return {
       userList: userList,
-      tableIndex: tableIndex
+      tableIndex: tableIndex,
+      line: line
     }
   },
 
@@ -122,31 +116,8 @@ export default {
     }
   },
 
-  created() {
-    // try {
-    //   this.line = this.$route.params.page + ',0,0'
-    // } catch (e) {
-    //   console.log(e)
-    // }
-
-    // this.fetchData()
-    // this.$bus.on('updateTableIndex', index => {
-    //   console.log('ranking tableindex', index)
-    //   this.$store.commit('ranking/setLine', '1,0,0')
-    //   this.$router.push({
-    //     name: 'ranking',
-    //     params: {
-    //       tableIndex: index + '',
-    //       page: this.line.split(',')[0]
-    //     }
-    //   })
-    // })
-  },
-
   methods: {
     jumpToPage(line) {
-      // this.$store.commit('ranking/setLine', '1,0,0')
-      console.log('调用了 tump to page')
       this.$router.push({
         name: 'ranking',
         params: {
@@ -155,29 +126,6 @@ export default {
         }
       })
     }
-
-    // tableChanged(index) {
-    //   console.log('ranking tableindex', index)
-    //   this.$store.commit('ranking/setLine', '1,0,0')
-    //   this.$router.push({
-    //     name: 'ranking',
-    //     params: {
-    //       tableIndex: index + '',
-    //       page: this.line.split(',')[0]
-    //     }
-    //   })
-    // }
-    // reload(line = '1,0,0') {
-    //   if (this.isLoading) {
-    //     return
-    //   }
-
-    //   this.userList.splice(0, this.userList.length)
-
-    //   this.line = line
-
-    //   this.fetchData()
-    // }
 
   }
 }
