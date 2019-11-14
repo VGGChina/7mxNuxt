@@ -7,10 +7,10 @@
 
       <ul class="wrap">
         <li>
-          <router-link to="/category/0/0/1">热门图片</router-link>
+          <nuxt-link to="/category/0/0/1">热门图片</nuxt-link>
         </li>
         <li>
-          <router-link :to="'/tag'">热门标签</router-link>
+          <nuxt-link :to="'/tag'">热门标签</nuxt-link>
         </li>
       </ul>
 
@@ -66,7 +66,7 @@ export default {
   ],
   computed: {
     categoryListAll() {
-      return this.$store.state.category.categoryListAll
+      return this.$store.getters['category/categoryListAll']
     }
   }
 }

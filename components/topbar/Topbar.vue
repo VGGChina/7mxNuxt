@@ -6,7 +6,7 @@
       </div>
       <div class="center" style="width: calc(100% / 3)">
         <a href="/" style="margin-left: 0px" :class="{'cl-white': $route.name == 'index'}">首页</a>
-        <a :class="{'cl-white': $route.name == 'user-follow'}" @click="toFollow()">动态</a>
+        <a :class="{'cl-white': $route.name == 'follow'}" @click="toFollow()">动态</a>
         <div @mouseenter="showCategory = true" @mouseleave="showCategory = false">
           <router-link to="/category/全部/0/0/1" :class="{'cl-white': $route.name == 'category'}">探索</router-link>
           <!-- <transition name='category-fade'> -->
@@ -14,7 +14,7 @@
           <!-- </transition> -->
         </div>
         <router-link to="/activity/0" :class="{'cl-white': $route.name == 'activity'}">活动</router-link>
-        <router-link to="/ranking/0/1" :class="{'cl-white': $route.name == 'ranking'}">榜单</router-link>
+        <router-link to="/ranking/0/1" :class="{'cl-white': $route.name == 'ranking-tableIndex-page'}">榜单</router-link>
         <a href="https://v.paixin.com/" target="_blank">商店</a>
         <router-link to="/about" :class="{'cl-white': $route.name == 'about'}">关于</router-link>
       </div>
