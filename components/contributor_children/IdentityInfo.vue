@@ -316,7 +316,7 @@ export default {
       const res = await this.$axios.userService.bindPhone(rqBody)
       if (res.data.out === '1') {
         this.loginUser.phone = this.form.phone
-        this.$store.commit('loginUser', this.loginUser)
+        this.$store.commit('login/loginUser', this.loginUser)
         this.intoOther()
       } else {
         this.$toast.warn(res.data.msg)
@@ -326,7 +326,7 @@ export default {
       const res1 = await this.$axios.userService.intoOther()
       if (res1.data.out === '1') {
         this.loginUser.gaga_id = res1.data.data.gaga_id
-        this.$store.commit('loginUser', this.loginUser)
+        this.$store.commit('login/loginUser', this.loginUser)
         this.updateForm()
       }
     },

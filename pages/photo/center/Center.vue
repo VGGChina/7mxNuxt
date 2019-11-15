@@ -127,7 +127,7 @@ export default {
     likeImg: function(img) {
       if (!this.isLogin) {
         // 弹出登录弹窗
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 

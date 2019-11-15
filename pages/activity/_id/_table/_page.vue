@@ -354,7 +354,7 @@ export default {
   methods: {
     toPublish() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       this.isShowChoose = !this.isShowChoose

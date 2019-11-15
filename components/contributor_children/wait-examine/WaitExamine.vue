@@ -93,13 +93,13 @@ export default {
     async uploadToPaixin() {
       const res = await this.$axios.userService.currentUser()
 
-      if (res.data.out != '1') {
-        this.$store.commit('isShowLoginDialog', true)
+      if (res.data.out !== '1') {
+        this.$store.commit('login/isShowLoginDialog', true)
 
         return
       }
 
-      this.$store.commit('loginUser', res.data.data)
+      this.$store.commit('login/loginUser', res.data.data)
 
       setTimeout(() => {
         if (this.status == '3') {
@@ -115,16 +115,16 @@ export default {
       if (otherRes.data.out == '1') {
         this.loginUser.gaga_id = otherRes.data.data.gaga_id
 
-        this.$store.commit('loginUser', this.loginUser)
+        this.$store.commit('login/loginUser', this.loginUser)
 
-        this.$store.commit('isShowUploadPaixinDialog', true)
+        this.$store.commit('uploadPaixin/isShowUploadPaixinDialog', true)
       } else {
         this.$toast.warn('您的账号信息有问题，请联系客服')
       }
     },
     async getCardDetail() {
       const res = await this.$axios.userService.detailCard()
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.cardDetail = res.data.data
       }
     }

@@ -65,7 +65,7 @@ export default {
           if (res.data.out == '1') {
             // let user = JSON.parse(JSON.stringify(this.loginUser));
             this.loginUser.user_data.card_status = '1'
-            this.$store.commit('loginUser', this.loginUser)
+            this.$store.commit('login/loginUser', this.loginUser)
             this.$emit('updateProgress', {
               nextIndex: 3,
               form: {}
@@ -83,7 +83,7 @@ export default {
           if (res.data.out == '1') {
             // let user = JSON.parse(JSON.stringify(this.loginUser));
             this.loginUser.user_data.company_status = '1'
-            this.$store.commit('loginUser', this.loginUser)
+            this.$store.commit('login/loginUser', this.loginUser)
             this.$emit('updateProgress', {
               nextIndex: 3,
               form: {}
