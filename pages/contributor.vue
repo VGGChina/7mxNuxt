@@ -1,5 +1,5 @@
 <template>
-  <div class="become-contributor">
+  <div class="become-contributor" :style="'background-image:url(' + require('~/assets/img/bg.jpg') + ')'">
     <div class="title">
       成为拍信商业供稿人
     </div>
@@ -140,7 +140,7 @@ export default {
   min-width: 1200px;
   height: 100%;
   min-height: 1300px;
-  background-image: url('/assets/img/bg.jpg');
+  /* background-image: url('/static/img/bg.jpg'); */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

@@ -57,7 +57,6 @@
 </template>
 
 <script>
-/* global QiniuJsSDK */
 import uploadUtil from '~/utils/uploadUtil'
 import getUptoken from '~/api/uptokenService'
 
