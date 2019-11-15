@@ -61,8 +61,8 @@ export default {
         media_id: this.$route.params.id
       }
 
-      const res = await this.$apiFactory.getMediaApi().mediaDetail(rqBody)
-      if (res.data.out == '1') {
+      const res = await this.$axios.mediaService.mediaDetail(rqBody)
+      if (res.data.out === '1') {
         this.mediaDetail = res.data.data
 
         document.title = this.getTitle(this.mediaDetail)

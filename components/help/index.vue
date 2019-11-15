@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 
 import { mapState } from 'vuex'
 
@@ -66,11 +65,11 @@ export default {
     },
     async pullHelpList() {
       if (this.indexList.length > 1) return
-      const res = await apiFactory.getCommonApi().getManualList()
+      const res = await this.$axios.commonService.getManualList()
       res.data.data.map((ele, i) => {
         if (ele.category === '用户') {
           ele.icon = require('./img/user.svg')
-        } else if (ele.category == '售图') {
+        } else if (ele.category === '售图') {
           ele.icon = require('./img/pic.svg')
         } else if (ele.category === '分成') {
           ele.icon = require('./img/rmb.svg')
@@ -91,7 +90,7 @@ export default {
       if (this.noQusetion()) return
       const id = this.indexList[this.current.index].data[this.current.subIndex].id
       if (!id) return
-      const res = await apiFactory.getCommonApi().getQuestionDetail({ id: id })
+      const res = await this.$axios.commonService.getQuestionDetail({ id: id })
       this.questionDetail = res.data.data.content
     },
     noQusetion() {

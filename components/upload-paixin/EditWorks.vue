@@ -65,7 +65,6 @@
 <script>
 import Protocol from './protocol/Protocol'
 import WorkList from './work-list/WorkList'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 const catchHandler = error => ({
   payload: error,
@@ -184,7 +183,7 @@ export default {
         })
       }
 
-      apiFactory.getPaixinApi().debug(rqBody)
+      this.$axios.paixinService.debug(rqBody)
     }
   },
   methods: {
@@ -238,7 +237,7 @@ export default {
           gaga_id: this.loginUser.gaga_id
         }
 
-        promises.push(apiFactory.getMediaApi().intoOther(rqBody))
+        promises.push(this.$axios.mediaService.intoOther(rqBody))
 
         dataArray.push(rqBody)
       })
@@ -271,7 +270,7 @@ export default {
           }
 
           // 发送错误信息
-          apiFactory.getPaixinApi().debug(errorData)
+          this.$axios.paixinService.debug(errorData)
         }
       })
 

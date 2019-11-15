@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data() {
@@ -78,7 +77,7 @@ export default {
         qq: this.qq
       }
 
-      const res = await apiFactory.getMediaApi().needed(rqBody)
+      const res = await this.$axios.mediaService.needed(rqBody)
 
       if (res.data.out == '1') {
         let neededUserList = []

@@ -177,7 +177,6 @@ import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
 import { axiosPost } from '~/api/factory/axiosFactory'
 import Selection from '~/components/selection/Selection'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   components: {
@@ -346,7 +345,7 @@ export default {
             })
           }
 
-          apiFactory.getPaixinApi().debug(rqBody)
+          this.$axios.paixinService.debug(rqBody)
         }
       } else {
         window.onerror = null
@@ -677,7 +676,7 @@ export default {
               })
             }
 
-            apiFactory.getPaixinApi().debug(rqBody)
+            this.$axios.paixinService.debug(rqBody)
           },
           'UploadComplete': () => {
           },
@@ -688,7 +687,6 @@ export default {
       })
     },
     async fetchActivities() {
-      // let res = await apiFactory.tagService.getActivityList({ type: '1' })
       const config = {
         url: '/api/tag/activity_list',
         data: { type: '1' }
@@ -949,9 +947,9 @@ export default {
         is_water_mark: file.isWaterMark ? '1' : '0'
       }
 
-      const res = await apiFactory.getMediaApi().put(data)
+      const res = await this.$axios.mediaService.put(data)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         // 反馈给码隆
         this.feedbackToMaLong(file)
 
@@ -982,7 +980,7 @@ export default {
         }
 
         // 发送错误信息
-        apiFactory.getPaixinApi().debug(rqBody)
+        this.$axios.paixinService.debug(rqBody)
 
         // 继续发布剩下的图片
         this.put()

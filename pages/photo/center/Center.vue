@@ -99,9 +99,9 @@ export default {
       }
 
       this.isFetching = true
-      const res = await this.$apiFactory.getMediaApi().originList(rqBody, query)
+      const res = await this.$axios.mediaService.originList(rqBody, query)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         const array = res.data.data.filter(e => {
           return e.id != this.firstMedia.id
         })
@@ -134,25 +134,19 @@ export default {
       var media = {}
       media.media_id = img.id
       if (img.is_like === '1') {
-        this.$apiFactory
-          .getMediaApi()
-          .dislike(media)
-          .then(res => {
-            if (res.data.out === '1') {
-              img.like_num = res.data.data.like_num
-              img.is_like = res.data.data.is_like
-            }
-          })
+        this.$axios.mediaService.dislike(media).then(res => {
+          if (res.data.out === '1') {
+            img.like_num = res.data.data.like_num
+            img.is_like = res.data.data.is_like
+          }
+        })
       } else {
-        this.$apiFactory
-          .getMediaApi()
-          .like(media)
-          .then(res => {
-            if (res.data.out === '1') {
-              img.like_num = res.data.data.like_num
-              img.is_like = res.data.data.is_like
-            }
-          })
+        this.$axios.mediaService.like(media).then(res => {
+          if (res.data.out === '1') {
+            img.like_num = res.data.data.like_num
+            img.is_like = res.data.data.is_like
+          }
+        })
       }
     },
     front() {
@@ -201,9 +195,9 @@ export default {
         }
 
         this.isFetching = true
-        const res = await this.$apiFactory.getMediaApi().originList(rqBody, query)
+        const res = await this.$axios.mediaService.originList(rqBody, query)
 
-        if (res.data.out == '1') {
+        if (res.data.out === '1') {
           const array = res.data.data.filter(e => {
             return e.id != this.firstMedia.id
           })

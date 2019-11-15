@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
-
 import Lunbo1 from './lunbo1'
 import Lunbo2 from './lunbo2'
 import { setTimeout } from 'timers'
@@ -141,7 +139,7 @@ export default {
       }
     },
     async getImgList() {
-      const result = await apiFactory.getTagApi().getActivityList()
+      const result = await this.$axios.tagService.getActivityList()
       let res = result.data.data.filter(item => {
         return item.id !== '285671'
       })
@@ -160,8 +158,8 @@ export default {
     },
 
     async getLargeImageList(typeId) {
-      const res = await apiFactory
-        .getCommonApi()
+      const res = await this.$axios
+        .commonService
         .getLargeImageList({ type: typeId })
       if (res.data.data.length <= 1) {
         this.isshowArrow = false

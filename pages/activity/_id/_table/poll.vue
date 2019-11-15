@@ -60,10 +60,10 @@ export default {
         tag_id: this.$route.params.id,
         media_id: col.id
       }
-      const res = await this.$apiFactory.getMediaApi().poll(formData)
+      const res = await this.$axios.mediaService.poll(formData)
       const { data } = res
 
-      data.out == '1' ? col['vote_num']++ : this.$toast.warn(data.msg)
+      data.out === '1' ? col['vote_num']++ : this.$toast.warn(data.msg)
     }
   },
   computed: {

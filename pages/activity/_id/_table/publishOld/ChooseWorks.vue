@@ -65,9 +65,9 @@ export default {
         tag_id: this.tagId
       }
 
-      const res = await this.$apiFactory.getMediaApi().notInTagList(reBody)
+      const res = await this.$axios.mediaService.notInTagList(reBody)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.mediaIdList.push(...res.data.data)
 
         this.loadMore()
@@ -95,9 +95,9 @@ export default {
         search: id.substring(0, id.length - 1)
       }
 
-      const res = await this.$apiFactory.getMediaApi().commonList(rqBody)
+      const res = await this.$axios.mediaService.commonList(rqBody)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.mediaList.push(...res.data.data)
 
         this.mediaList.forEach(e => {
@@ -126,7 +126,7 @@ export default {
         media_id: this.getMediaId()
       }
 
-      const res = await this.$apiFactory.getMediaApi().addTag(rqBody)
+      const res = await this.$$axios.mediaService.addTag(rqBody)
 
       if (res.data.out === '1') {
         this.$toast.notice('参加活动成功')

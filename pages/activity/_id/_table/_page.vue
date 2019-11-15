@@ -247,7 +247,6 @@ export default {
     }
   },
   async asyncData({ $axios, params }) {
-    // let { $router, $route, $apiFactory } = this
     const res_detail = await $axios.tagService.getTagDetail({
       tag_id: params.id
     })

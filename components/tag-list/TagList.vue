@@ -60,7 +60,6 @@
 
 <script>
 import noContent from '~/components/no-content/NoContent'
-import apiFactory from '~/api/factory/apiFactory.js'
 import loading from '~/components/loading/Loading'
 
 export default {
@@ -89,7 +88,7 @@ export default {
         this.$store.commit('login/isShowLoginDialog', true)
         return
       }
-      const res = await apiFactory.getTagApi().followTag({ 'tag_id': item.id })
+      const res = await this.$axios.tagService.followTag({ 'tag_id': item.id })
       if (res.data.out > 0) {
         item.is_follow = 1
         this.tags.splice(this.tags.length)
@@ -100,7 +99,7 @@ export default {
         this.$store.commit('login/isShowLoginDialog', true)
         return
       }
-      const res = await apiFactory.getTagApi().unfollowTag({ 'tag_id': item.id })
+      const res = await this.$axios.tagService.unfollowTag({ 'tag_id': item.id })
       if (res.data.out > 0) {
         item.is_follow = 0
         this.tags.splice(this.tags.length)

@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 import noContent from '~/components/no-content/NoContent_2'
 
 export default {
@@ -78,7 +77,7 @@ export default {
         return this.$toast.warn('已经添加过了')
       }
 
-      const res = await apiFactory.getMediaApi().addToAlbum({ album_id: albumId, media_id: this.media_id })
+      const res = await this.$axios.mediaService.addToAlbum({ album_id: albumId, media_id: this.media_id })
 
       if (res.data.out > 0) {
         this.$toast.notice(res.data.msg)

@@ -88,9 +88,9 @@ export default {
         content: this.content
       }
 
-      this.$apiFactory.getMediaApi().comment(reqBody)
+      this.$axios.mediaService.comment(reqBody)
         .then(res => {
-          if (res.data.out == '1') {
+          if (res.data.out === '1') {
             const commentData = {
               content: this.content,
               to_comment: '0',

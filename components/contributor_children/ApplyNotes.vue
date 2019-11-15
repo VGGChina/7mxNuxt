@@ -111,7 +111,7 @@ export default {
         data.name = this.$route.params.name
       }
 
-      const res = await this.$apiFactory.getMediaApi().originList(data, {})
+      const res = await this.$axios.mediaService.originList(data, {})
 
       if (res.data.out === '1') {
         if (res.data.data.length >= 10) {

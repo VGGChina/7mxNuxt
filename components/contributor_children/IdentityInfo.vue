@@ -224,7 +224,7 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 
@@ -238,7 +238,7 @@ export default {
         phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.form.phone + '@' + time),
         scene: 'verify'
       }
-      this.$apiFactory.getCommonApi().smcode(params)
+      this.$axios.commonService.smcode(params)
         .then(res => {
           if (res.data.out === '1') {
             this.isTimer = true
@@ -299,7 +299,7 @@ export default {
     },
     async bindPhone() {
       // 获取服务器时间
-      const timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 

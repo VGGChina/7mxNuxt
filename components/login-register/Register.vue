@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data: () => ({
@@ -110,11 +109,11 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 
-      if (timeRes.data.out == '1') {
+      if (timeRes.data.out === '1') {
         time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
@@ -126,7 +125,7 @@ export default {
           this.phone + '@' + time)
       }
 
-      const res = await apiFactory.getCommonApi().smcode(rqBody)
+      const res = await this.$axios.commonService.smcode(rqBody)
       if (res.data.out === '1') {
         this.isTimer = true
         this.time = 60
@@ -160,7 +159,7 @@ export default {
       this.isRegisting = true
 
       // 获取服务器时间
-      const timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 

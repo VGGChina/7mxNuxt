@@ -106,13 +106,13 @@ export default {
 
       const data = { type: '6' }
 
-      if (this.$route.name == 'user-id') {
+      if (this.$route.name === 'user-id') {
         data.user_id = this.$route.params.id
       } else {
         data.name = this.$route.params.name
       }
 
-      const res = await this.$apiFactory.getMediaApi().originList(data, {})
+      const res = await this.$axios.mediaService.originList(data, {})
 
       if (res.data.out === '1') {
         if (res.data.data.length >= 10) {

@@ -59,7 +59,7 @@ export default {
     },
     loginUser() {
       return this.$store.state.login.loginUser
-    },
+    }
   },
   mounted() {
     const input = document.getElementById('userFollowConmmentInput' + this.index)
@@ -88,7 +88,7 @@ export default {
         content: this.content
       }
 
-      this.$apiFactory.getMediaApi().comment(reqBody)
+      this.$axios.mediaService.comment(reqBody)
         .then(res => {
           if (res.data.out === '1') {
             const commentData = {

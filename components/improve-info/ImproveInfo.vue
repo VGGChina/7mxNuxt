@@ -60,7 +60,6 @@
 /* global QiniuJsSDK */
 import uploadUtil from '~/utils/uploadUtil'
 import getUptoken from '~/api/uptokenService'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   data() {

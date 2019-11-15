@@ -69,6 +69,19 @@ export default {
     isShowAvatarDialog: false,
     currentIndex: -1
   }),
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
+  watch: {
+    // 'mediaDetail': function () {
+    //   this.fetchData();
+    // }
+  },
   methods: {
     onClickReply(index) {
       if (this.replyIndex == index) {
@@ -101,27 +114,24 @@ export default {
         reqBody.to_comment_id = id
       }
 
-      this.$apiFactory
-        .getMediaApi()
-        .comment(reqBody)
-        .then(res => {
-          if (res.data.out == '1') {
-            const commentData = {
-              content: isReply ? this.reply : this.comment,
-              to_comment: isReply ? '1' : '0',
-              to_comment_data: {},
-              user_data: this.loginUser
-            }
-            if (isReply) {
-              commentData.to_comment_data = this.commentList[index]
-            }
-            this.commentList.push(commentData)
-            this.$toast.notice('评论成功')
-            this.comment = ''
-            this.reply = ''
-            this.replyIndex = -1
+      this.$axios.mediaService.comment(reqBody).then(res => {
+        if (res.data.out === '1') {
+          const commentData = {
+            content: isReply ? this.reply : this.comment,
+            to_comment: isReply ? '1' : '0',
+            to_comment_data: {},
+            user_data: this.loginUser
           }
-        })
+          if (isReply) {
+            commentData.to_comment_data = this.commentList[index]
+          }
+          this.commentList.push(commentData)
+          this.$toast.notice('评论成功')
+          this.comment = ''
+          this.reply = ''
+          this.replyIndex = -1
+        }
+      })
     },
     async fetchData() {
       if (this.isFetching || this.line == 'end') {
@@ -131,16 +141,14 @@ export default {
       this.isFetching = true
 
       const rqBody = {
-          media_id: this.mediaDetail.id
-        };
-        let params = {
-          line: this.line
-        }
+        media_id: this.mediaDetail.id
+      }
+      const params = {
+        line: this.line
+      }
 
       try {
-        const res = await this.$apiFactory
-          .getMediaApi()
-          .commentList(rqBody, params)
+        const res = await this.$axios.mediaService.commentList(rqBody, params)
         if (res.data.out == '1') {
           this.commentList.push(...res.data.data)
         }
@@ -160,19 +168,6 @@ export default {
       this.currentIndex = -1
       this.isShowAvatarDialog = false
     }
-  },
-  computed: {
-    isLogin() {
-      return this.$store.state.login.isLogin
-    },
-    loginUser() {
-      return this.$store.state.login.loginUser
-    }
-  },
-  watch: {
-    // 'mediaDetail': function () {
-    //   this.fetchData();
-    // }
   }
 }
 </script>
