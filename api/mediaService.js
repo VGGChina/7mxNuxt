@@ -140,9 +140,13 @@ export default ({ $axios }) => {
       return $axios(url, data, {})
     },
 
-    exifUrl(data) {
-      const url = '/media/exif_url'
-      return $axios(url, data, {})
+    exifUrl(data, params) {
+      const httpData = {
+        url: '/api/media/exif_url',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     addIntoCart(data) {
@@ -214,8 +218,12 @@ export default ({ $axios }) => {
     },
     // 某个tag全部作品列表
     randomInTagList(data, params) {
-      const url = 'media/random_in_tag_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/media/random_in_tag_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 某个tag推荐作品列表
