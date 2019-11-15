@@ -2,14 +2,16 @@
   <div class="good-at">
     <div class="categories">
       <div
+        v-for="(item, index) in categoryList"
+        :key="index"
         class="item"
-        v-for="(item, index) in categoryList" :key="index"
-        :style="{ background: 'url(' + item.img + ')' }">
+        :style="{ background: 'url(' + item.img + ')' }"
+      >
 
         <div class="mask" @click="item.isSelected = !item.isSelected">
           {{ item.name }}
-          <div class="check-box" v-if="item.isSelected">
-            <div class="hook"></div>
+          <div v-if="item.isSelected" class="check-box">
+            <div class="hook" />
           </div>
         </div>
 
@@ -21,18 +23,23 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import categoryList from './categoryList'
 
 export default {
+  props: [
+    'formToal'
+  ],
   data() {
     return {
       categoryList
     }
   },
-  props: [
-    'formToal'
-  ],
+  computed: {
+
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
   methods: {
     async commit() {
       let skill = ''
@@ -45,45 +52,45 @@ export default {
       skill = skill.substring(0, skill.length - 1)
 
       if (skill == '') {
-        this.$toast.warn('请至少选择一个擅长类型');
-        return;
+        this.$toast.warn('请至少选择一个擅长类型')
+        return
       }
 
-      let rqBody = this.getRqBody(this.formToal);
-      rqBody.skill = skill;
+      const rqBody = this.getRqBody(this.formToal)
+      rqBody.skill = skill
 
       if (this.formToal.company == '') {
         try {
-          let res = await this.$apiFactory.getUserApi().setAuthCard(rqBody)
-          if (res.data.out == '1') {
+          const res = await this.$axios.userService.setAuthCard(rqBody)
+          if (res.data.out === '1') {
             // let user = JSON.parse(JSON.stringify(this.loginUser));
-            this.loginUser.user_data.card_status = '1';
-            this.$store.commit('loginUser', this.loginUser);
+            this.loginUser.user_data.card_status = '1'
+            this.$store.commit('loginUser', this.loginUser)
             this.$emit('updateProgress', {
               nextIndex: 3,
               form: {}
-            });
-            this.$toast.notice('提交成功');
+            })
+            this.$toast.notice('提交成功')
           } else {
-            this.$toast.warn('提交失败，请重试');
+            this.$toast.warn('提交失败，请重试')
           }
         } catch (e) {
           console.log(e)
         }
       } else {
         try {
-          let res = await this.$apiFactory.getUserApi().setAuthCardCom(rqBody)
+          const res = await this.$axios.userService.setAuthCardCom(rqBody)
           if (res.data.out == '1') {
             // let user = JSON.parse(JSON.stringify(this.loginUser));
-            this.loginUser.user_data.company_status = '1';
-            this.$store.commit('loginUser', this.loginUser);
+            this.loginUser.user_data.company_status = '1'
+            this.$store.commit('loginUser', this.loginUser)
             this.$emit('updateProgress', {
               nextIndex: 3,
               form: {}
-            });
-            this.$toast.notice('提交成功');
+            })
+            this.$toast.notice('提交成功')
           } else {
-            this.$toast.warn('提交失败，请重试');
+            this.$toast.warn('提交失败，请重试')
           }
         } catch (e) {
           // console.log(e)
@@ -95,19 +102,14 @@ export default {
      * @param {*} formToal nuxt的上下文
      */
     getRqBody(formToal) {
-      let obj = {};
-      for (let p in formToal) {
+      const obj = {}
+      for (const p in formToal) {
         if (formToal[p] != '') {
           obj[p] = formToal[p]
         }
       }
-      return obj;
+      return obj
     }
-  },
-  computed: {
-    ...mapGetters([
-      'loginUser'
-    ])
   }
 }
 </script>
@@ -153,7 +155,6 @@ export default {
   position: relative;
   cursor: pointer;
 }
-
 
 .check-box {
   display: inline-block;

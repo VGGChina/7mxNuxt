@@ -160,7 +160,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 import Comments from './Comments'
 

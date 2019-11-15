@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {

@@ -1,41 +1,41 @@
 <template>
   <div class="apply-notes">
-    <div class='title'>申请须知</div>
+    <div class="title">申请须知</div>
     <div class="rule">· 作品中不可以出现LOGO、商标</div>
     <div class="rule long">· 作品中不可以出现未取得可用于转售用途授权的商业字体</div>
     <div class="rule long">· 作品中可辨认面孔的人物必须拥有正确的人物肖像权协议</div>
     <div class="rule long">· 作品中如涉及物产的图片，必须拥有正确的物产权协议</div>
-    <a class='authDocument' href="/static/pdf/portrait.pdf" target="view_window">《肖像授权书下载》</a>
-    <a class='authDocument' href="/static/pdf/realRight.pdf" target="view_window">《物产权协议下载》</a>
+    <a class="authDocument" href="/static/pdf/portrait.pdf" target="view_window">《肖像授权书下载》</a>
+    <a class="authDocument" href="/static/pdf/realRight.pdf" target="view_window">《物产权协议下载》</a>
 
     <div class="agree">
-      <div class='tip'>· 您是否愿意成为拍信<strong> 定制拍摄接单 </strong>摄影师？</div>
+      <div class="tip">· 您是否愿意成为拍信<strong> 定制拍摄接单 </strong>摄影师？</div>
 
       <div class="agree-custom">
         <div class="check-box" @click="isAgreeCustom = true">
-          <div class="hook" v-if="isAgreeCustom"></div>
+          <div v-if="isAgreeCustom" class="hook" />
         </div>
         <span>是</span>
         <div class="check-box" style="margin-left: 23px" @click="isAgreeCustom = false">
-          <div class="hook" v-if="!isAgreeCustom"></div>
+          <div v-if="!isAgreeCustom" class="hook" />
         </div>
         <span>否</span>
         <a @click="isShowDialog = !isShowDialog">了解定制拍摄</a>
         <transition name="dialog-fade">
-          <div class="dialog" v-if="isShowDialog">
+          <div v-if="isShowDialog" class="dialog">
             <div>
               · 拍信为企业客户提供定制拍摄服务，以满足高级企业用户的特定图片需求<br>
               · 主要拍摄内容：产品图，会议活动拍摄，产品宣传片，公司宣传片等<br>
               · 成为拍信定制拍摄接单摄影师，企业需要拍摄时会与您进行联系<br>
-              · 了解更多定制拍摄详情可 <a href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target="_blank">咨询客服</a>
+              · 了解更多定制拍摄详情可 <a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank">咨询客服</a>
             </div>
           </div>
         </transition>
       </div>
 
       <div class="agree-protocol">
-        <div style='transform: translateY(3px)' class="check-box" @click="isAgreeProtocol = !isAgreeProtocol">
-          <div class="hook" v-if="isAgreeProtocol"></div>
+        <div style="transform: translateY(3px)" class="check-box" @click="isAgreeProtocol = !isAgreeProtocol">
+          <div v-if="isAgreeProtocol" class="hook" />
         </div>
         <span>我已阅读并同意</span>
         <a href="/static/pdf/cpxy.pdf" target="_blank">《版权素材授权委托代理协议》</a>
@@ -43,12 +43,10 @@
     </div>
 
     <div class="sure-button" @click="nextProgress">下一步</div>
-  </div>  
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data() {
     return {
@@ -57,36 +55,69 @@ export default {
       isShowDialog: false
     }
   },
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    cardStatus: function() {
+      try {
+        return this.loginUser.user_data.card_status
+      } catch (e) {
+        return '0'
+      }
+    },
+    companyStatus: function() {
+      try {
+        return this.loginUser.user_data.company_status
+      } catch (e) {
+        return '0'
+      }
+    },
+    status: function() {
+      if (this.cardStatus == '0') {
+        if (this.companyStatus == '0') {
+          return '0'
+        } else {
+          return this.companyStatus
+        }
+      } else {
+        return this.cardStatus
+      }
+    }
+  },
   methods: {
     cancelDialog() {
-      this.isShowDialog = false;
+      this.isShowDialog = false
     },
     async nextProgress() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true);
-        return;
+        this.$store.commit('isShowLoginDialog', true)
+        return
       }
 
       if (this.status == '3') {
-        this.$toast.notice('您已经签约，无需再次签约');
-        return;
+        this.$toast.notice('您已经签约，无需再次签约')
+        return
       }
 
-      let data = { type: '6' };
+      const data = { type: '6' }
 
       if (this.$route.name == 'user-id') {
-        data.user_id = this.$route.params.id;
+        data.user_id = this.$route.params.id
       } else {
         data.name = this.$route.params.name
       }
 
-      let res = await this.$apiFactory.getMediaApi().originList(data, {});
+      const res = await this.$apiFactory.getMediaApi().originList(data, {})
 
       if (res.data.out === '1') {
         if (res.data.data.length >= 10) {
           if (!this.isAgreeProtocol) {
-            this.$toast.warn('您还没有同意供稿人协议');
-            return;
+            this.$toast.warn('您还没有同意供稿人协议')
+            return
           }
 
           this.$emit('updateProgress', {
@@ -94,43 +125,12 @@ export default {
             form: {
               type: this.isAgreeCustom ? '1' : '0'
             }
-          });
+          })
         } else {
           this.$toast.warn('请先上传至少10张作品，才能签约')
         }
       } else {
         this.$toast.warn('请先上传至少10张作品，才能签约')
-      }
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser'
-    ]),
-    cardStatus: function () {
-      try {
-        return this.loginUser.user_data.card_status
-      } catch (e) {
-        return '0'
-      }
-    },
-    companyStatus: function () {
-      try {
-        return this.loginUser.user_data.company_status
-      } catch (e) {
-        return '0'
-      }
-    },
-    status: function () {
-      if (this.cardStatus == '0') {
-        if (this.companyStatus == '0') {
-          return '0';
-        } else {
-          return this.companyStatus;
-        }
-      } else {
-        return this.cardStatus;
       }
     }
   }
@@ -252,18 +252,18 @@ export default {
   background-color: #49bb80;
 }
 .long {
-  text-align: justify;  
-  text-align-last: justify; 
+  text-align: justify;
+  text-align-last: justify;
   width: 410px;
   word-break: keep-all;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 .agree .tip {
   width: 320px;
-  text-align: justify;  
+  text-align: justify;
   text-align-last: justify;
   word-break: keep-all;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 .dialog {

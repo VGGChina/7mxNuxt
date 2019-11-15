@@ -3,19 +3,20 @@
     <div class="left">
       <div class="title">选择作品</div>
       <work-pre
-        :mediaList="mediaList"
-        @selected="handle">
-      </work-pre>
+        :media-list="mediaList"
+        @selected="handle"
+      />
 
       <no-content
-        :isNoContentShow="!isFetching && mediaIdList.length < 1"
-        :content="'Sorry，暂无可以参加活动的历史作品'">
-      </no-content>
+        :is-no-content-show="!isFetching && mediaIdList.length < 1"
+        :content="'Sorry，暂无可以参加活动的历史作品'"
+      />
 
       <div
-        class="more-comments"
         v-if="mediaIdList.length > 0"
-        @click="loadMore">
+        class="more-comments"
+        @click="loadMore"
+      >
         {{ mediaList.length >= mediaIdList.length ? '没有更多' : '加载更多' }}
       </div>
     </div>
@@ -28,11 +29,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import NoContent from '~/components/no-content/NoContent'
 import WorkPre from './work-pre/WorkPre'
 
 export default {
+  components: {
+    WorkPre,
+    NoContent
+  },
+  props: [
+    'tagId',
+    'activityId'
+  ],
   data() {
     return {
       mediaIdList: [],
@@ -40,10 +48,11 @@ export default {
       isFetching: false
     }
   },
-  props: [
-    'tagId',
-    'activityId'
-  ],
+  computed: {
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
   created() {
     this.fetchData()
   },
@@ -51,12 +60,12 @@ export default {
     async fetchData() {
       this.isFetching = true
 
-      let reBody = {
+      const reBody = {
         type: '6',
         tag_id: this.tagId
       }
 
-      let res = await this.$apiFactory.getMediaApi().notInTagList(reBody);
+      const res = await this.$apiFactory.getMediaApi().notInTagList(reBody)
 
       if (res.data.out == '1') {
         this.mediaIdList.push(...res.data.data)
@@ -81,12 +90,12 @@ export default {
         }
       }
 
-      let rqBody = {
+      const rqBody = {
         mode: 'media_id',
         search: id.substring(0, id.length - 1)
       }
 
-      let res = await this.$apiFactory.getMediaApi().commonList(rqBody)
+      const res = await this.$apiFactory.getMediaApi().commonList(rqBody)
 
       if (res.data.out == '1') {
         this.mediaList.push(...res.data.data)
@@ -97,7 +106,7 @@ export default {
       }
     },
     handle(list) {
-      this.mediaList = list;
+      this.mediaList = list
     },
     getMediaId() {
       let mediaId = ''
@@ -112,14 +121,14 @@ export default {
     },
     async commit() {
       // this.$emit('cancleActivityChooseWorksDialog', false)
-      let rqBody = {
+      const rqBody = {
         tag_id: this.activityId,
         media_id: this.getMediaId()
       }
 
-      let res = await this.$apiFactory.getMediaApi().addTag(rqBody)
+      const res = await this.$apiFactory.getMediaApi().addTag(rqBody)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.$toast.notice('参加活动成功')
 
         this.$emit('cancleActivityChooseWorksDialog', false)
@@ -128,15 +137,6 @@ export default {
     noUse() {
       //
     }
-  },
-  computed: {
-    ...mapGetters([
-      'loginUser'
-    ])
-  },
-  components: {
-    WorkPre,
-    NoContent
   }
 }
 </script>
@@ -185,7 +185,6 @@ export default {
   font-size: 14px;
   line-height: 2.5;
 }
-
 
 .next-button {
   width: 100%;

@@ -2,30 +2,34 @@
   <div class="form">
     <!-- 个人或企业选项卡 -->
     <div class="category-options">
-      <div class="slide" :style="slideStyle"></div>
+      <div class="slide" :style="slideStyle" />
       <div
-        class="category-option"
         v-for="(option, index) in categoryOptions"
         :key="index"
-        @click="slide(index)">
+        class="category-option"
+        @click="slide(index)"
+      >
         {{ option }}
       </div>
     </div>
 
     <input
-      v-model="form.company"
       v-if="whichOption == 1"
+      v-model="form.company"
       :class="{ 'border-red': commitCheak && form.company === '' }"
-      placeholder="公司名字"/>
+      placeholder="公司名字"
+    >
 
     <input
       v-model="form.name"
       :class="{ 'border-red': commitCheak && form.name === '' }"
-      :placeholder="whichOption == 0 ? '真实姓名' : '联系人名字'"/>
+      :placeholder="whichOption == 0 ? '真实姓名' : '联系人名字'"
+    >
 
     <div
       v-if="loginUser.phone != ''"
-      class="have-phone">
+      class="have-phone"
+    >
       {{ loginUser.phone }}
     </div>
 
@@ -35,15 +39,17 @@
       :class="{
         'border-red': commitCheak && form.phone == '',
         'border-normal': !(commitCheak && form.phone == '')
-      }">
+      }"
+    >
 
       <span class="add86">+86</span>
-      
+
       <input
         v-model="form.phone"
         class="phone"
-        placeholder="联系方式"/>
-  
+        placeholder="联系方式"
+      >
+
       <span class="code" @click="getCode">{{ timeLeft }}</span>
     </div>
 
@@ -51,58 +57,61 @@
       v-if="loginUser.phone == ''"
       v-model="form.smcode"
       :class="{ 'border-red': commitCheak && form.smcode === '' }"
-      placeholder="验证码"/>
+      placeholder="验证码"
+    >
 
     <input
       v-model="form.address"
       :class="{ 'border-red': commitCheak && form.address === '' }"
-      placeholder="常住城市"/>
+      placeholder="常住城市"
+    >
 
     <input
       v-model="form.cardId"
       :class="{ 'border-red': commitCheak && form.cardId === '' }"
-      :placeholder="whichOption == 0 ? '身份证号码' : '统一社会信用代码'"/>
+      :placeholder="whichOption == 0 ? '身份证号码' : '统一社会信用代码'"
+    >
 
     <div class="upload-card">
       <div id="positive-container" class="h153">
-        <div id="positive" class="card-pick" v-if="positivePre === ''">
+        <div v-if="positivePre === ''" id="positive" class="card-pick">
           <div class="top-row">
-            <div class="top-left"></div>
-            <div class="top-right"></div>
+            <div class="top-left" />
+            <div class="top-right" />
           </div>
           <div class="center-row">
-            <span>{{ whichOption == 0 ? '身份证正面' : '营业执照照片' }}</span> 
+            <span>{{ whichOption == 0 ? '身份证正面' : '营业执照照片' }}</span>
           </div>
           <div class="bottom-row">
-            <div class="bottom-left"></div>
-            <div class="bottom-right"></div>
+            <div class="bottom-left" />
+            <div class="bottom-right" />
           </div>
         </div>
 
-        <div class="card-pre" v-if="positivePre !== ''">
+        <div v-if="positivePre !== ''" class="card-pre">
           <img :src="positivePre" class="card-image" alt="">
-          <div class="card-cover" :style="coverStyle1"></div>
+          <div class="card-cover" :style="coverStyle1" />
         </div>
-      </div> 
-      
-      <div id="negative-container"  class="h153" v-if="whichOption == 0">
-        <div id="negative" class="card-pick" v-if="negativePre === ''">
+      </div>
+
+      <div v-if="whichOption == 0" id="negative-container" class="h153">
+        <div v-if="negativePre === ''" id="negative" class="card-pick">
           <div class="top-row">
-            <div class="top-left"></div>
-            <div class="top-right"></div>
+            <div class="top-left" />
+            <div class="top-right" />
           </div>
           <div class="center-row">
             <span>身份证背面</span>
           </div>
           <div class="bottom-row">
-            <div class="bottom-left"></div>
-            <div class="bottom-right"></div>
+            <div class="bottom-left" />
+            <div class="bottom-right" />
           </div>
         </div>
 
-        <div class="card-pre" v-if="negativePre !== ''">
+        <div v-if="negativePre !== ''" class="card-pre">
           <img :src="negativePre" class="card-image" alt="">
-          <div class="card-cover" :style="coverStyle1"></div>
+          <div class="card-cover" :style="coverStyle1" />
         </div>
       </div>
     </div>
@@ -112,12 +121,13 @@
 </template>
 
 <script>
-/* global QiniuJsSDK */
-import { mapGetters } from 'vuex'
-import getUptoken from '~/api/uptokenService';
+import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
 
 export default {
+  props: [
+    'progressIndex'
+  ],
   data() {
     return {
       categoryOptions: ['个人', '企业'],
@@ -148,76 +158,101 @@ export default {
       isUploading1: 0,
       isUploading2: 0,
       isInitQiniu: false
-    };
+    }
   },
-  props: [
-    'progressIndex'
-  ],
+  computed: {
+
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    timeLeft() {
+      return this.time > 0 ? this.time + 's后重新获取' : '发送验证码'
+    },
+    coverStyle1() {
+      const w = 182 * (100 - this.uploadProgress1) / 100
+      return { width: w + 'px' }
+    },
+    coverStyle2() {
+      const w = 182 * (100 - this.uploadProgress2) / 100
+      return { width: w + 'px' }
+    }
+  },
+  watch: {
+    'progressIndex': function(val) {
+      if (val == 1 && !this.isInitQiniu) {
+        this.$nextTick(() => {
+          this.initQiNiu()
+
+          this.isInitQiniu = true
+        })
+      }
+    }
+  },
   methods: {
     /**
     * 顶部选项卡选中时的动画控制
     * @param index 这个参数是指当前选中的选项卡的索引
     */
     slide(index) {
-      this.whichOption = index;
+      this.whichOption = index
       // 每个选项卡的宽度为228px，滑块宽度为226， 所以需要滑动230
       this.slideStyle = {
         transform: 'translateX(' + index * 230 + 'px)'
       }
 
       // 清空表单
-      for (let p in this.form) {
+      for (const p in this.form) {
         this.form[p] = ''
       }
     },
-    timer: function () {
+    timer: function() {
       if (this.time > 0) {
-        this.time--;
-        setTimeout(this.timer, 1000);
+        this.time--
+        setTimeout(this.timer, 1000)
       } else {
-        this.isTimer = false;
+        this.isTimer = false
       }
     },
     async getCode() {
       if (this.isTimer) {
-        return;
+        return
       }
 
       if (!(/^[0-9]{11}$/.test(this.form.phone))) {
-        this.$toast.warn('请输入正确的手机号码');
-        return;
+        this.$toast.warn('请输入正确的手机号码')
+        return
       }
 
       // 获取服务器时间
-      let timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
       if (timeRes.data.out == '1') {
-        time = timeRes.data.data.time;
+        time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
       }
 
-      let params = {
+      const params = {
         phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.form.phone + '@' + time),
         scene: 'verify'
-      };
+      }
       this.$apiFactory.getCommonApi().smcode(params)
         .then(res => {
           if (res.data.out === '1') {
-            this.isTimer = true;
+            this.isTimer = true
           } else {
             this.$toast.warn(res.data.msg)
           }
-        });
-      this.time = 60;
-      this.timer();
+        })
+      this.time = 60
+      this.timer()
     },
     async commit() {
-      this.commitCheak = true;
+      this.commitCheak = true
 
-      let cheakArray = [];
+      const cheakArray = []
 
       if (this.loginUser.phone != '') {
         cheakArray.push(...['name', 'address', 'cardId'])
@@ -229,74 +264,74 @@ export default {
         cheakArray.push('company')
       }
 
-      let len = cheakArray.length;
+      const len = cheakArray.length
       for (let i = 0; i < len; i++) {
         if (this.form[cheakArray[i]] === '') {
-          this.$toast.warn('您的个人信息未填写完整');
-          return;
+          this.$toast.warn('您的个人信息未填写完整')
+          return
         }
       }
 
       if (this.isUploading1 || this.isUploading2) {
-        this.$toast.warn('图片正在上传中，请稍等');
-        return;
+        this.$toast.warn('图片正在上传中，请稍等')
+        return
       }
 
       if (this.whichOption == '0') {
         if (this.positiveUrl === '' || this.negativeUrl === '') {
-          this.$toast.warn('您还没有上传身份证');
-          return;
+          this.$toast.warn('您还没有上传身份证')
+          return
         }
       } else {
         if (this.positiveUrl === '') {
-          this.$toast.warn('您还没有上传营业执照');
-          return;
+          this.$toast.warn('您还没有上传营业执照')
+          return
         }
       }
 
       if (this.loginUser.phone == '') {
-        this.bindPhone();
+        this.bindPhone()
       } else if (this.loginUser.gaga_id == '') {
-        this.intoOther();
+        this.intoOther()
       } else {
-        this.updateForm();
+        this.updateForm()
       }
     },
     async bindPhone() {
       // 获取服务器时间
-      let timeRes = await this.$apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$apiFactory.getCommonApi().getServerTime()
 
       let time = null
 
       if (timeRes.data.out == '1') {
-        time = timeRes.data.data.time;
+        time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
       }
 
-      let rqBody = {
+      const rqBody = {
         phone: '0086' + this.form.phone,
         smcode: 'test:' + this.$utilHelper.rsa_encrypt(this.form.smcode + '@' + time)
       }
-      let res = await this.$apiFactory.getUserApi().bindPhone(rqBody);
+      const res = await this.$axios.userService.bindPhone(rqBody)
       if (res.data.out == '1') {
-        this.loginUser.phone = this.form.phone;
-        this.$store.commit('loginUser', this.loginUser);
-        this.intoOther();
+        this.loginUser.phone = this.form.phone
+        this.$store.commit('loginUser', this.loginUser)
+        this.intoOther()
       } else {
-        this.$toast.warn(res.data.msg);
+        this.$toast.warn(res.data.msg)
       }
     },
     async intoOther() {
-      let res1 = await this.$apiFactory.getUserApi().intoOther();
+      const res1 = await this.$axios.userService.intoOther()
       if (res1.data.out == '1') {
-        this.loginUser.gaga_id = res1.data.data.gaga_id;
-        this.$store.commit('loginUser', this.loginUser);
-        this.updateForm();
+        this.loginUser.gaga_id = res1.data.data.gaga_id
+        this.$store.commit('loginUser', this.loginUser)
+        this.updateForm()
       }
     },
     updateForm() {
-      let data = {};
+      let data = {}
       if (this.whichOption == '0') {
         data = {
           card_id: this.form.cardId,
@@ -325,32 +360,32 @@ export default {
       this.$emit('updateProgress', {
         nextIndex: 2,
         form: data
-      });
+      })
     },
     initQiNiu() {
-      let qiniu1 = new QiniuJsSDK();
+      const qiniu1 = new QiniuJsSDK()
       this.uploader1 = qiniu1.uploader({
         runtimes: 'html5,flash,html4',
         multi_selection: false,
         browse_button: 'positive',
         uptoken_func: file => {
-          let extension = file.type.split('/')[1] || 'jpeg'
-          let data = uploadUtil.getUploadData('private', 'cards/', extension)
+          const extension = file.type.split('/')[1] || 'jpeg'
+          const data = uploadUtil.getUploadData('private', 'cards/', extension)
           getUptoken(data, request => {
             if (request.status === 200) {
-              let res = JSON.parse(request.responseText);
+              const res = JSON.parse(request.responseText)
               if (res.out === '1') {
-                this.uploadData = res.data;
+                this.uploadData = res.data
               } else {
-                this.$toast.warn(res.msg);
-                this.uploadData = {};
+                this.$toast.warn(res.msg)
+                this.uploadData = {}
               }
             } else {
-              this.$toast.warn('上传失败，请刷新页面后重试');
-              return {};
+              this.$toast.warn('上传失败，请刷新页面后重试')
+              return {}
             }
           })
-          return this.uploadData.uptoken;
+          return this.uploadData.uptoken
         },
         get_new_uptoken: true,
         domain: 'private.gaga.com',
@@ -371,23 +406,23 @@ export default {
         },
         init: {
           'FilesAdded': (up, files) => {
-            let fileItem = files[0].getNative();
-            let url = window.URL || window.webkitURL || window.mozURL;
-            this.positivePre = url.createObjectURL(fileItem);
+            const fileItem = files[0].getNative()
+            const url = window.URL || window.webkitURL || window.mozURL
+            this.positivePre = url.createObjectURL(fileItem)
           },
           // 上传过程中
           'UploadProgress': (up, file, info) => {
-            this.isUploading1 = true;
-            this.uploadProgress1 = file.percent;
+            this.isUploading1 = true
+            this.uploadProgress1 = file.percent
           },
           // 上传完成以后
           'FileUploaded': (up, file, info) => {
-            this.isUploading1 = false;
-            let infoJson = JSON.parse(info);
-            this.positiveUrl = 'http://private.gaga.me/' + infoJson.key;
+            this.isUploading1 = false
+            const infoJson = JSON.parse(info)
+            this.positiveUrl = 'http://private.gaga.me/' + infoJson.key
           },
           'Error': (up, err, errTip) => {
-            this.$toast('上传身份证正面失败，请重试');
+            this.$toast('上传身份证正面失败，请重试')
           },
           'UploadComplete': (up, file, info) => {
           },
@@ -397,32 +432,32 @@ export default {
             return this.uploadData.key
           }
         }
-      });
+      })
 
-      let qiniu2 = new QiniuJsSDK();
+      const qiniu2 = new QiniuJsSDK()
       this.uploader2 = qiniu2.uploader({
         runtimes: 'html5,flash,html4',
         multi_selection: false,
         browse_button: 'negative',
         uptoken_func: file => {
-          let extension = file.type.split('/')[1] || 'jpeg'
-          let data = uploadUtil.getUploadData('private', 'cards/', extension)
+          const extension = file.type.split('/')[1] || 'jpeg'
+          const data = uploadUtil.getUploadData('private', 'cards/', extension)
 
           getUptoken(data, request => {
             if (request.status === 200) {
-              let res = JSON.parse(request.responseText);
+              const res = JSON.parse(request.responseText)
               if (res.out === '1') {
-                this.uploadData = res.data;
+                this.uploadData = res.data
               } else {
-                this.$toast.warn(res.msg);
-                this.uploadData = {};
+                this.$toast.warn(res.msg)
+                this.uploadData = {}
               }
             } else {
-              this.$toast.warn('上传失败，请刷新页面后重试');
-              return {};
+              this.$toast.warn('上传失败，请刷新页面后重试')
+              return {}
             }
           })
-          return this.uploadData.uptoken;
+          return this.uploadData.uptoken
         },
         get_new_uptoken: true,
         domain: 'private.gaga.com',
@@ -443,23 +478,23 @@ export default {
         },
         init: {
           'FilesAdded': (up, files) => {
-            let fileItem = files[0].getNative();
-            let url = window.URL || window.webkitURL || window.mozURL;
-            this.negativePre = url.createObjectURL(fileItem);
+            const fileItem = files[0].getNative()
+            const url = window.URL || window.webkitURL || window.mozURL
+            this.negativePre = url.createObjectURL(fileItem)
           },
           // 上传过程中
           'UploadProgress': (up, file, info) => {
-            this.isUploading2 = true;
-            this.uploadProgress2 = file.percent;
+            this.isUploading2 = true
+            this.uploadProgress2 = file.percent
           },
           // 上传完成以后
           'FileUploaded': (up, file, info) => {
-            this.isUploading2 = false;
-            let infoJson = JSON.parse(info);
-            this.negativeUrl = 'http://private.gaga.me/' + infoJson.key;
+            this.isUploading2 = false
+            const infoJson = JSON.parse(info)
+            this.negativeUrl = 'http://private.gaga.me/' + infoJson.key
           },
           'Error': (up, err, errTip) => {
-            this.$toast('上传身份证背面失败，请重试');
+            this.$toast('上传身份证背面失败，请重试')
           },
           'UploadComplete': (up, file, info) => {
           },
@@ -469,37 +504,10 @@ export default {
             return this.uploadData.key
           }
         }
-      });
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'loginUser'
-    ]),
-    timeLeft() {
-      return this.time > 0 ? this.time + 's后重新获取' : '发送验证码';
-    },
-    coverStyle1() {
-      let w = 182 * (100 - this.uploadProgress1) / 100;
-      return {width: w + 'px'};
-    },
-    coverStyle2() {
-      let w = 182 * (100 - this.uploadProgress2) / 100;
-      return {width: w + 'px'};
-    }
-  },
-  watch: {
-    'progressIndex': function (val) {
-      if (val == 1 && !this.isInitQiniu) {
-        this.$nextTick(() => {
-          this.initQiNiu()
-
-          this.isInitQiniu = true
-        })
-      }
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -601,7 +609,7 @@ input:hover {
   margin-bottom: 24px;
   cursor: not-allowed;
   line-height: 48px;
-  padding-left: 16px; 
+  padding-left: 16px;
   color: rgba(0, 0, 0, 0.5);
 }
 
@@ -681,7 +689,7 @@ input:hover {
   border-radius: 8px;
   background-color: #ffffff;
   border: solid 1px #e9e9e9;
-   padding: 12px 18px; 
+   padding: 12px 18px;
   cursor: pointer;
   display: flex;
   display: -webkit-flex;
@@ -695,7 +703,7 @@ input:hover {
   height: 153px;
   border-radius: 8px;
   border: solid 1px #e9e9e9;
-  padding: 12px 18px; 
+  padding: 12px 18px;
   cursor: pointer;
 }
 

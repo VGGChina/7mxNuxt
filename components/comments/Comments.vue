@@ -1,11 +1,11 @@
 <template>
   <div class="comments-container">
     <div class="comments-editor">
-      <textarea v-model="comment" placeholder="回复楼主..."></textarea>
+      <textarea v-model="comment" placeholder="回复楼主..." />
       <div class="comment-botton" @click="sendComment(false)">发送</div>
     </div>
     <div class="comments-list">
-      <div class="comment-item" v-for="(item, index) in commentList" :key="index">
+      <div v-for="(item, index) in commentList" :key="index" class="comment-item">
         <nuxt-link :to="$utilHelper.toUserPage(item.user_data)">
           <div
             class="avatar"
@@ -20,8 +20,8 @@
             <avatar-dialog
               v-if="isShowAvatarDialog && currentIndex == index"
               class="avatar-dialog"
-              :userData="item.user_data"
-            ></avatar-dialog>
+              :user-data="item.user_data"
+            />
           </div>
         </nuxt-link>
         <div class="comment-detail">
@@ -36,26 +36,29 @@
           </div>
         </div>
         <transition name="reply-fade">
-          <div class="reply-editor" v-if="index == replyIndex">
-            <textarea v-model="reply" :placeholder="'回复' + item.user_data.nick + '...'"></textarea>
+          <div v-if="index == replyIndex" class="reply-editor">
+            <textarea v-model="reply" :placeholder="'回复' + item.user_data.nick + '...'" />
             <div class="reply-botton" @click="sendComment(true, item.id, index)">回复</div>
           </div>
         </transition>
       </div>
     </div>
     <div
-      class="more-comments"
       v-if="commentList.length > 0"
+      class="more-comments"
       @click="fetchData"
     >{{ line == 'end' ? '没有更多' : '加载更多' }}</div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 
 export default {
+  components: {
+    AvatarDialog
+  },
+  props: ['mediaDetail', 'commentList'],
   data: () => ({
     comment: '',
     reply: '',
@@ -66,7 +69,6 @@ export default {
     isShowAvatarDialog: false,
     currentIndex: -1
   }),
-  props: ['mediaDetail', 'commentList'],
   methods: {
     onClickReply(index) {
       if (this.replyIndex == index) {
@@ -90,7 +92,7 @@ export default {
         this.$toast.warn('评论不能为空')
         return
       }
-      let reqBody = {
+      const reqBody = {
         media_id: this.mediaDetail.id,
         content: isReply ? this.reply : this.comment
       }
@@ -104,7 +106,7 @@ export default {
         .comment(reqBody)
         .then(res => {
           if (res.data.out == '1') {
-            let commentData = {
+            const commentData = {
               content: isReply ? this.reply : this.comment,
               to_comment: isReply ? '1' : '0',
               to_comment_data: {},
@@ -128,15 +130,15 @@ export default {
 
       this.isFetching = true
 
-      let rqBody = {
+      const rqBody = {
           media_id: this.mediaDetail.id
-        },
-        params = {
+        };
+        let params = {
           line: this.line
         }
 
       try {
-        let res = await this.$apiFactory
+        const res = await this.$apiFactory
           .getMediaApi()
           .commentList(rqBody, params)
         if (res.data.out == '1') {
@@ -160,15 +162,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogin', 'loginUser'])
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
   },
   watch: {
     // 'mediaDetail': function () {
     //   this.fetchData();
     // }
-  },
-  components: {
-    AvatarDialog
   }
 }
 </script>

@@ -160,11 +160,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 import Comments from './Comments'
 
 export default {
+  components: {
+    AvatarDialog,
+    Comments
+  },
   props: [
     'imgDetail',
     'imgList',
@@ -186,6 +189,37 @@ export default {
       isShowMore: false,
       filterOptions: [],
       selectedOptionId: -1
+    }
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    onresizeFlag() {
+      return this.$store.state.window.onresizeFlag
+    },
+    winPageYOffset() {
+      return this.$store.state.window.winPageYOffset
+    },
+    userRef() {
+      return this.$utilHelper.toUserPage(this.imgDetail.user_data)
+    }
+  },
+  watch: {
+    'onresizeFlag': function(val) {
+      this.init()
+    },
+    'winPageYOffset': function(val) {
+      const h = this.$utilHelper.viewportSize().height
+      const dom = document.getElementById('userFollowItem' + this.imgDetail.id).getBoundingClientRect()
+      if (!this.isFetchCommentData && !this.isFetching && dom.top < h && dom.top > -dom.height) {
+        this.fetchCommentData()
+
+        this.$emit('lookedImage', this.imgDetail)
+      }
     }
   },
   created() {
@@ -420,35 +454,6 @@ export default {
           break
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'isLogin',
-      'loginUser',
-      'onresizeFlag',
-      'winPageYOffset'
-    ]),
-    userRef() {
-      return this.$utilHelper.toUserPage(this.imgDetail.user_data)
-    }
-  },
-  watch: {
-    'onresizeFlag': function(val) {
-      this.init()
-    },
-    'winPageYOffset': function(val) {
-      const h = this.$utilHelper.viewportSize().height
-      const dom = document.getElementById('userFollowItem' + this.imgDetail.id).getBoundingClientRect()
-      if (!this.isFetchCommentData && !this.isFetching && dom.top < h && dom.top > -dom.height) {
-        this.fetchCommentData()
-
-        this.$emit('lookedImage', this.imgDetail)
-      }
-    }
-  },
-  components: {
-    AvatarDialog,
-    Comments
   }
 }
 </script>

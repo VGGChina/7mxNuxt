@@ -5,59 +5,62 @@
     </div>
 
     <div class="progress">
-      <div style="display: inline-block" v-for="(item, index) in progressList" :key="index">
+      <div v-for="(item, index) in progressList" :key="index" style="display: inline-block">
         <span
+          :style="{ color: index == currentIndex ? '#fff' : 'rgba(255, 255, 255, 0.6)' }"
           @click="checkoutProgress(index)"
-          :style="{ color: index == currentIndex ? '#fff' : 'rgba(255, 255, 255, 0.6)' }">
+        >
           {{ item }}
         </span>
-        <div class="dividing" v-if="index != (progressList.length - 1)"></div>
+        <div v-if="index != (progressList.length - 1)" class="dividing" />
       </div>
     </div>
 
     <transition name="tab-fade">
       <apply-notes
+        v-show="currentIndex == 0"
         @updateProgress="handle"
-        v-show="currentIndex == 0">
-      </apply-notes>
+      />
     </transition>
 
     <transition name="tab-fade">
       <identity-info
+        v-show="currentIndex == 1"
+        :progress-index="currentIndex"
         @updateProgress="handle"
-        :progressIndex="currentIndex"
-        v-show="currentIndex == 1">
-      </identity-info>
+      />
     </transition>
 
     <transition name="tab-fade">
       <good-at
-        :formToal="form"
+        v-show="currentIndex == 2"
+        :form-toal="form"
         @updateProgress="handle"
-        v-show="currentIndex == 2">
-      </good-at>
+      />
     </transition>
 
     <transition name="tab-fade">
       <wait-examine
+        v-show="currentIndex == 3"
+        :form-toal="form"
         @updateProgress="handle"
-        :formToal="form"
-        v-show="currentIndex == 3">
-      </wait-examine>
+      />
     </transition>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import IdentityInfo from './children/IdentityInfo'
 import ApplyNotes from './children/ApplyNotes'
 import GoodAt from './children/good-at/GoodAt'
 import WaitExamine from './children/wait-examine/WaitExamine'
 
 export default {
-  beforeCreate() {
-    document.title = '签约 - 7MX 中国领先的视觉创作社区'
+  components: {
+    IdentityInfo,
+    ApplyNotes,
+    GoodAt,
+    WaitExamine
   },
   data: () => ({
     progressList: [
@@ -70,62 +73,59 @@ export default {
     currentIndex: 0,
     form: {}
   }),
+  computed: {
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
+  watch: {
+    'loginUser': function() {
+      // card_status 和 company_status： 0（未提交），1（已提交，待审核或审核中），2（被驳回），3（已审核）
+      this.initProgress()
+    }
+  },
+  beforeCreate() {
+    document.title = '签约 - 7MX 中国领先的视觉创作社区'
+  },
   created() {
-    this.initProgress();
+    this.initProgress()
   },
   methods: {
     handle(data) {
-      this.progressIndex = data.nextIndex;
-      this.currentIndex = data.nextIndex;
-      for (let p in data.form) {
-        this.form[p] = data.form[p];
+      this.progressIndex = data.nextIndex
+      this.currentIndex = data.nextIndex
+      for (const p in data.form) {
+        this.form[p] = data.form[p]
       }
     },
     checkoutProgress(index) {
       if (index > this.progressIndex || this.progressIndex == 3) {
-        return;
+        return
       }
 
-      this.currentIndex = index;
+      this.currentIndex = index
     },
     initProgress() {
       try {
-        let cardStatus = this.loginUser.user_data.card_status;
+        const cardStatus = this.loginUser.user_data.card_status
         if (cardStatus && cardStatus != '0') {
-          this.progressIndex = 3;
-          this.currentIndex = 3;
+          this.progressIndex = 3
+          this.currentIndex = 3
         }
       } catch (e) {
         console.log(e)
       }
 
       try {
-        let companyStatus = this.loginUser.user_data.company_status;
+        const companyStatus = this.loginUser.user_data.company_status
         if (companyStatus && companyStatus != '0') {
-          this.progressIndex = 3;
-          this.currentIndex = 3;
+          this.progressIndex = 3
+          this.currentIndex = 3
         }
       } catch (e) {
         console.log(e)
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'loginUser'
-    ])
-  },
-  watch: {
-    'loginUser': function () {
-      // card_status 和 company_status： 0（未提交），1（已提交，待审核或审核中），2（被驳回），3（已审核）
-      this.initProgress();
-    }
-  },
-  components: {
-    IdentityInfo,
-    ApplyNotes,
-    GoodAt,
-    WaitExamine
   }
 }
 </script>
