@@ -39,7 +39,7 @@
       <div v-if="isLogin&&newMessages" class="newMessage" @click.stop="showNoti">1</div>
     </div>
     <div class="avatar_wrap" @mouseenter="isShowList = true" @mouseleave="isShowList = false">
-      <router-link :to="userRef">
+      <nuxt-link :to="userRef">
         <div
           v-if="isLogin"
           class="avatar"
@@ -49,7 +49,7 @@
                 require('~/assets/img/avatar-default.svg')) + ')'
           }"
         />
-      </router-link>
+      </nuxt-link>
       <avatar-list :is-show-list="isShowList && isLogin" />
     </div>
     <transition name="opacity_transform_bottom">

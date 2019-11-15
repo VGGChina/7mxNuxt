@@ -1,7 +1,7 @@
 <template>
   <div class="more_container">
     <a href="javascript:void(0)" class="btn" @click="gode()">{{ moreText }}</a>
-    <!-- <router-link :to="{name: moreInfo,params: {tableIndex: 0,page: 1}}" tag="a" class="btn">{{moreText}}</router-link> -->
+    <!-- <nuxt-link :to="{name: moreInfo,params: {tableIndex: 0,page: 1}}" tag="a" class="btn">{{moreText}}</nuxt-link> -->
   </div>
 </template>
 

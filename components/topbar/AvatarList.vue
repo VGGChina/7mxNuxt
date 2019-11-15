@@ -8,17 +8,17 @@
 
       <ul>
         <li>
-          <router-link :to="userRef" class="link">我的主页</router-link>
+          <nuxt-link :to="userRef" class="link">我的主页</nuxt-link>
         </li>
         <li>
-          <router-link to="/income" class="link">收益中心</router-link>
+          <nuxt-link to="/income" class="link">收益中心</nuxt-link>
         </li>
         <li @click="uploadToPaixin">上架商品</li>
         <li>
-          <router-link to="/ulike" class="link">喜欢</router-link>
+          <nuxt-link to="/ulike" class="link">喜欢</nuxt-link>
         </li>
         <li @click="toFirends">
-          <router-link :to="'/friends/' + (loginUser&&loginUser.id || '') + '/0'" class="link">好友</router-link>
+          <nuxt-link :to="'/friends/' + (loginUser&&loginUser.id || '') + '/0'" class="link">好友</nuxt-link>
         </li>
         <li @click="$store.commit('setting/isShowSettingDialog', true)">设置</li>
         <div class="loginout" @click="logout">退出</div>

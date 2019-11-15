@@ -68,8 +68,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
-
 export default {
   props: [
     'userList'

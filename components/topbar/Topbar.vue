@@ -8,15 +8,15 @@
         <a href="/" style="margin-left: 0px" :class="{'cl-white': $route.name == 'index'}">首页</a>
         <a :class="{'cl-white': $route.name == 'follow'}" @click="toFollow()">动态</a>
         <div @mouseenter="showCategory = true" @mouseleave="showCategory = false">
-          <router-link to="/category/全部/0/0/1" :class="{'cl-white': $route.name == 'category-category-id-tableIndex-page'}">探索</router-link>
+          <nuxt-link to="/category/全部/0/0/1" :class="{'cl-white': $route.name == 'category-category-id-tableIndex-page'}">探索</nuxt-link>
           <!-- <transition name='category-fade'> -->
           <category v-if="showCategory" :is-topbar="true" class="category" />
           <!-- </transition> -->
         </div>
-        <router-link to="/activity/0" :class="{'cl-white': $route.name == 'activity'}">活动</router-link>
-        <router-link to="/ranking/0/1" :class="{'cl-white': $route.name == 'ranking-tableIndex-page'}">榜单</router-link>
+        <nuxt-link to="/activity/0" :class="{'cl-white': $route.name == 'activity'}">活动</nuxt-link>
+        <nuxt-link to="/ranking/0/1" :class="{'cl-white': $route.name == 'ranking-tableIndex-page'}">榜单</nuxt-link>
         <a href="https://v.paixin.com/" target="_blank">商店</a>
-        <router-link to="/about" :class="{'cl-white': $route.name == 'about'}">关于</router-link>
+        <nuxt-link to="/about" :class="{'cl-white': $route.name == 'about'}">关于</nuxt-link>
       </div>
       <user-action />
     </div>

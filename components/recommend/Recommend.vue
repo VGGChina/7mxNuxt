@@ -42,7 +42,7 @@
           :class="['nav-item',index == isShowBanner ? 'active': null]"
           @click="curentClick(index)"
         >{{ item.text }}</a>
-        <router-link tag="a" class="action" to="/activity/2">申请活动</router-link>
+        <nuxt-link tag="a" class="action" to="/activity/2">申请活动</nuxt-link>
       </div>
     </div>
   </div>

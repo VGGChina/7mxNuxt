@@ -22,7 +22,7 @@
           v-if="index <= 4"
           :key="index"
         >
-          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }}</router-link>
+          <nuxt-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }}</nuxt-link>
         </li>
       </ul>
 
@@ -32,7 +32,7 @@
           v-if="4 < index && index <=9"
           :key="index"
         >
-          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
+          <nuxt-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </nuxt-link>
         </li>
       </ul>
 
@@ -42,7 +42,7 @@
           v-if="9 < index && index <= 14"
           :key="index"
         >
-          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
+          <nuxt-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </nuxt-link>
         </li>
       </ul>
 
@@ -52,7 +52,7 @@
           v-if="14 < index"
           :key="index"
         >
-          <router-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </router-link>
+          <nuxt-link :to="'/category/' + item.name + '/' + item.id + '/0/1'">{{ item.name }} </nuxt-link>
         </li>
       </ul>
     </div>

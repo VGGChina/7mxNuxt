@@ -11,14 +11,14 @@
           {{ item.name }}
         </span>
 
-        <router-link
+        <nuxt-link
           v-if="item.url"
           class="category-list-router"
           :class="{ selected : $route.params.tableIndex == index }"
           :to="item.url ? item.url : ''"
         >
           {{ item.name }}
-        </router-link>
+        </nuxt-link>
       </div>
     </div>
   </div>

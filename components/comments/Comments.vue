@@ -6,7 +6,7 @@
     </div>
     <div class="comments-list">
       <div class="comment-item" v-for="(item, index) in commentList" :key="index">
-        <router-link :to="$utilHelper.toUserPage(item.user_data)">
+        <nuxt-link :to="$utilHelper.toUserPage(item.user_data)">
           <div
             class="avatar"
             :style="{
@@ -23,7 +23,7 @@
               :userData="item.user_data"
             ></avatar-dialog>
           </div>
-        </router-link>
+        </nuxt-link>
         <div class="comment-detail">
           <div class="user-nick">{{ item.user_data.nick }}</div>
           <div class="comment-content">

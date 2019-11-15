@@ -1,7 +1,8 @@
 export default function({ $axios, store, app }) {
   $axios.onRequest((config) => {
-    if (config.method.toLowerCase() !== 'get') {
-      config.method = 'POST'
+    config.method = 'POST'
+    if (config.method.toLowerCase() === 'get') {
+      config.method = 'GET'
     }
     config.headers['Content-Type'] = 'application/json; charset=utf-8;'
     config.headers['no-cookie'] = '1'

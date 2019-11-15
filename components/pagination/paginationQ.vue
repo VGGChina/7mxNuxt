@@ -9,13 +9,13 @@
           'pagination-current': page == currentPage
         }"
       >
-        <router-link
+        <nuxt-link
           v-if="baseUrl && page != '...'"
           class="pagination-page-router"
           :to="baseUrl + page"
         >
           {{ page }}
-        </router-link>
+        </nuxt-link>
 
         <span
           v-if="!baseUrl || page == '...'"
@@ -34,13 +34,13 @@
         下一页
       </div>
 
-      <router-link
+      <nuxt-link
         v-if="baseUrl && currentPage != line.split(',')[1]"
         class="pagination-next"
         :to="baseUrl + (currentPage + 1)"
       >
         下一页
-      </router-link>
+      </nuxt-link>
 
       <div class="pagination-jump">
         到第

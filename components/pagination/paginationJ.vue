@@ -7,11 +7,11 @@
         :class="{
           'pagination-current': page == currentPage
         }">
-        <router-link class="pagination-page-router"
+        <nuxt-link class="pagination-page-router"
           v-if="baseUrl && page != '...'"
           :to="baseUrl + page">
           {{ page }}
-        </router-link>
+        </nuxt-link>
 
         <span class="pagination-page-router"
           v-if="!baseUrl || page == '...'"
@@ -26,11 +26,11 @@
         下一页
       </div>
 
-      <router-link class="pagination-next"
+      <nuxt-link class="pagination-next"
         v-if="baseUrl && currentPage != pageNum"
         :to="baseUrl + (parseInt(currentPage) + 1)">
         下一页
-      </router-link>
+      </nuxt-link>
 
       <div class="pagination-jump">
         到第
