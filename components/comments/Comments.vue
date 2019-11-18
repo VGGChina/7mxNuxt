@@ -134,7 +134,7 @@ export default {
       })
     },
     async fetchData() {
-      if (this.isFetching || this.line == 'end') {
+      if (this.isFetching || this.line === 'end') {
         return
       }
 

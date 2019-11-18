@@ -42,7 +42,6 @@ export default {
   */
   plugins: [
     '~/plugins/bus',
-    // { src: '~/plugins/axios.js', ssr: true }
     '~/plugins/axios',
     '~/plugins/utilHelper',
     '~/plugins/toast',
