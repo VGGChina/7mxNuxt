@@ -13,7 +13,7 @@
           <category v-if="showCategory" :is-topbar="true" class="category" />
           <!-- </transition> -->
         </div>
-        <nuxt-link to="/activity" :class="{'cl-white': $route.name == 'activity'}">活动</nuxt-link>
+        <nuxt-link to="/activity/0" :class="{'cl-white': $route.name == 'activity'}">活动</nuxt-link>
         <nuxt-link to="/ranking/0/1" :class="{'cl-white': $route.name == 'ranking-tableIndex-page'}">榜单</nuxt-link>
         <a href="https://v.paixin.com/" target="_blank">商店</a>
         <nuxt-link to="/about" :class="{'cl-white': $route.name == 'about'}">关于</nuxt-link>

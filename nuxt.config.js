@@ -78,16 +78,16 @@ export default {
     proxy: true
   },
   proxy: {
-    '/api2': {
-      target: 'https://api.paixin.com',
-      pathRewrite: {
-        '^/api2': '/'
-      }
-    },
     '/api': {
       target: 'https://api.7mx.com',
       pathRewrite: {
         '^/api': '/'
+      }
+    },
+    '/api2': {
+      target: 'https://api.paixin.com',
+      pathRewrite: {
+        '^/api2': '/'
       }
     }
   },
