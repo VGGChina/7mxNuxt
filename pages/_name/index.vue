@@ -80,13 +80,10 @@ export default {
   }),
   computed: {
     firstImg() {
-      try {
-        if (this.imgList.length > 0) {
-          return this.imgList[0].image
-        }
-      } catch (e) {
-        return ''
+      if (this.imgList.length > 0) {
+        return this.imgList[0].image
       }
+      return ''
     }
   },
 
