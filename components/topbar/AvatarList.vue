@@ -17,7 +17,7 @@
         <li>
           <nuxt-link to="/ulike" class="link">喜欢</nuxt-link>
         </li>
-        <li @click="toFirends">
+        <li>
           <nuxt-link :to="'/friends/' + (loginUser&&loginUser.id || '') + '/0'" class="link">好友</nuxt-link>
         </li>
         <li @click="$store.commit('setting/isShowSettingDialog', true)">设置</li>
@@ -73,14 +73,6 @@ export default {
         name: 'user-home',
         params: {
           name: this.loginUser.name
-        }
-      })
-    },
-    toFirends() {
-      this.$router.push({
-        name: 'friends',
-        params: {
-          id: this.loginUser && this.loginUser.id
         }
       })
     },
