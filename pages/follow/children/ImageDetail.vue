@@ -120,7 +120,7 @@
             @mouseleave="isEnter = false"
           />
         </a>
-        <img v-lazy="imgDetail.image" :width="imageWidth" alt="">
+        <img :src="imgDetail.image" :width="imageWidth" alt="">
         <transition name="score-fade">
           <div v-if="isEnter" class="score">{{ $utilHelper.score(imgDetail) }}</div>
         </transition>
