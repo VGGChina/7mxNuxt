@@ -72,7 +72,6 @@
 </template>
 
 <script>
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: 'Slide',
@@ -147,9 +146,9 @@ export default {
     },
     async jump(item, from) {
       if (!item.url) return
-      if (item.url == 'http://www.hotspringphoto.com') {
+      if (item.url === 'http://www.hotspringphoto.com') {
         try {
-          await apiFactory.getStatisticsApi().postBannerClickNum({ id: '285671' })
+          await this.$axios.statisticsService.postBannerClickNum({ id: '285671' })
         } catch (error) {
           console.log(error)
         }

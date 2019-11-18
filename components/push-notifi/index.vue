@@ -47,7 +47,6 @@ import noContent from '~/components/no-content/NoContent_2'
 import activityList from './activityList/index'
 import neededList from './neededList/index'
 import noticeList from './noticeList'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: 'PushNotifi',
@@ -132,23 +131,23 @@ export default {
     async activityList() {
       const res = await this.$axios.userService.getactivityList({}, { line: this.line })
       // 标识为已读
-      apiFactory.getCommonApi().markActivityAsRead()
-      apiFactory.getCommonApi().markNeededAsRead()
+      this.$axios.commonService.markActivityAsRead()
+      this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
     },
     // 心愿单列表
     async wantToShopList() {
       const res = await this.$axios.userService.getactivityList({ type: 4, unread: 0 }, { line: this.line })
-      apiFactory.getCommonApi().markNeededAsRead()
+      this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
     },
     // 通知列表
     async noticeList() {
-      const res = await apiFactory.getCommonApi().getNoticeList({}, { line: this.line })
+      const res = await this.$axios.commonService.getNoticeList({}, { line: this.line })
       // 标识为已读
-      apiFactory.getCommonApi().markNoticeAsRead()
+      this.$axios.commonService.markNoticeAsRead()
       this.afterPull(res)
       this.nothing()
     },

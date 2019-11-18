@@ -59,7 +59,7 @@ export default {
     },
     loginUser() {
       return this.$store.state.login.loginUser
-    },
+    }
   },
   mounted() {
     const input = document.getElementById('userFollowConmmentInput' + this.index)
@@ -75,7 +75,7 @@ export default {
     async comment() {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
@@ -88,7 +88,7 @@ export default {
         content: this.content
       }
 
-      this.$apiFactory.getMediaApi().comment(reqBody)
+      this.$axios.mediaService.comment(reqBody)
         .then(res => {
           if (res.data.out === '1') {
             const commentData = {

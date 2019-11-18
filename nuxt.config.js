@@ -42,7 +42,6 @@ export default {
   */
   plugins: [
     '~/plugins/bus',
-    // { src: '~/plugins/axios.js', ssr: true }
     '~/plugins/axios',
     '~/plugins/utilHelper',
     '~/plugins/toast',
@@ -79,16 +78,16 @@ export default {
     proxy: true
   },
   proxy: {
-    '/api': {
-      target: 'https://api.7mx.com',
-      pathRewrite: {
-        '^/api': '/'
-      }
-    },
     '/api2': {
       target: 'https://api.paixin.com',
       pathRewrite: {
         '^/api2': '/'
+      }
+    },
+    '/api': {
+      target: 'https://api.7mx.com',
+      pathRewrite: {
+        '^/api': '/'
       }
     }
   },

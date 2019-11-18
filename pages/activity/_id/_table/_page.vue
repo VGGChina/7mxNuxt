@@ -150,7 +150,6 @@ import ChooseWorks from './publishOld/ChooseWorks'
 import Pagination from '~/components/pagination/paginationQ'
 import TopNav from '~/pages/activity/top-nav'
 import Poll from './poll'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'ActivityDetail',
@@ -159,6 +158,14 @@ export default {
       var t = new Date(v * 1000)
       return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
     }
+  },
+  components: {
+    ImgWaterfall,
+    UserPreview,
+    ChooseWorks,
+    Pagination,
+    Poll,
+    TopNav
   },
   data: () => ({
     activeDetail: {},
@@ -180,6 +187,46 @@ export default {
     out: -1,
     is_activity: -1
   }),
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    isToPaixin() {
+      if (this.currentItem == 2) {
+        return true
+      } else {
+        return false
+      }
+    },
+    isShowPagination() {
+      if (this.line == '1,0,0') {
+        return false
+      }
+
+      const lineArray = this.line.split(',')
+
+      if (lineArray[0] == 'end' && lineArray[2] == '1') {
+        return false
+      }
+
+      return true
+    },
+    // 获取比赛活动的阶段
+    // 投票 | 投票结果 | 获奖名单
+    getEventStage() {
+      let str = null
+
+      if (this.stage == '1') {
+        str = '投票'
+      } else if (this.stage == '2') {
+        str = '投票结果'
+      } else if (this.stage == '3') {
+        str = '获奖名单'
+      }
+
+      return str
+    }
+  },
   watch: {
     isShowChooseWorks: function(val) {
       if (val) {
@@ -200,7 +247,6 @@ export default {
     }
   },
   async asyncData({ $axios, params }) {
-    // let { $router, $route, $apiFactory } = this
     const res_detail = await $axios.tagService.getTagDetail({
       tag_id: params.id
     })
@@ -308,7 +354,7 @@ export default {
   methods: {
     toPublish() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       this.isShowChoose = !this.isShowChoose
@@ -350,52 +396,6 @@ export default {
 
       this.fetchData()
     }
-  },
-  computed: {
-    ...mapGetters(['isLogin']),
-    isToPaixin() {
-      if (this.currentItem == 2) {
-        return true
-      } else {
-        return false
-      }
-    },
-    isShowPagination() {
-      if (this.line == '1,0,0') {
-        return false
-      }
-
-      const lineArray = this.line.split(',')
-
-      if (lineArray[0] == 'end' && lineArray[2] == '1') {
-        return false
-      }
-
-      return true
-    },
-    // 获取比赛活动的阶段
-    // 投票 | 投票结果 | 获奖名单
-    getEventStage() {
-      let str = null
-
-      if (this.stage == '1') {
-        str = '投票'
-      } else if (this.stage == '2') {
-        str = '投票结果'
-      } else if (this.stage == '3') {
-        str = '获奖名单'
-      }
-
-      return str
-    }
-  },
-  components: {
-    ImgWaterfall,
-    UserPreview,
-    ChooseWorks,
-    Pagination,
-    Poll,
-    TopNav
   }
 }
 </script>

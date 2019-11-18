@@ -147,7 +147,6 @@
 
 <script>
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   components: {
@@ -285,11 +284,11 @@ export default {
       }
 
       if (this.img.hasOwnProperty('id')) {
-        const res = await apiFactory
-          .getMediaApi()
+        const res = await this.$axios
+          .mediaService
           .mediaDetail({ media_id: this.eputId })
 
-        if (res.data.out == '1') {
+        if (res.data.out === '1') {
           this.$set(this.img, 'user_data', res.data.data.user_data)
         }
       }
@@ -312,8 +311,8 @@ export default {
       }
 
       if (this.img.is_like == '1') {
-        const res = await apiFactory
-          .getMediaApi()
+        const res = await this.$axios
+          .mediaService
           .dislike({ media_id: this.eputId })
 
         if (res.data.out == '1') {
@@ -322,8 +321,8 @@ export default {
           this.img.is_like = res.data.data.is_like
         }
       } else {
-        const res = await apiFactory
-          .getMediaApi()
+        const res = await this.$axios
+          .mediaService
           .like({ media_id: this.eputId })
 
         if (res.data.out == '1') {
@@ -377,7 +376,7 @@ export default {
           phone: obj.phone,
           qq: obj.qq
         }
-        const res = await apiFactory.getMediaApi().needed(rqBody)
+        const res = await this.$axios.mediaService.needed(rqBody)
 
         if (res.data.out == '1') {
           this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
@@ -451,8 +450,8 @@ export default {
       }
 
       // 删除图片
-      const res = await apiFactory
-        .getMediaApi()
+      const res = await this.$axios
+        .mediaService
         .mediaDrop({ media_id: this.eputId })
 
       if (res.data.out == '1') {
@@ -473,11 +472,9 @@ export default {
     // 从灵感集中删除采集的图片
     async deleteImgFromAlbum(img) {
       // 删除图片
-      const res = await apiFactory
-        .getMediaApi()
-        .dropFromAlbum({ media_id: this.eputId, album_id: this.albumId })
+      const res = await this.$axios.mediaService.dropFromAlbum({ media_id: this.eputId, album_id: this.albumId })
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',

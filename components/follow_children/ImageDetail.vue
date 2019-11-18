@@ -160,7 +160,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
 import Comments from './Comments'
 
@@ -294,7 +293,7 @@ export default {
     },
     async buyImg() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
@@ -342,7 +341,7 @@ export default {
     },
     async likeImg() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
@@ -363,7 +362,7 @@ export default {
     },
     toCollect() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       this.$bus.emit('popup-album', { show: true, media_id: this.imgDetail.id })

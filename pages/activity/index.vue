@@ -120,29 +120,13 @@ export default {
       activities: res.data.data
     }
   },
-  beforeCreate() {
-    // document.title = '活动 - 7MX 中国领先的视觉创作社区'
-  },
-  created() {
-    // this.pullList()
-    // this.judgePage()
-  },
+
   mounted() {},
   methods: {
     tableChanged(index) {
       this.tableIndex = index
     },
-    // async pullList() {
-    //   this.isLoading = true
-    //   let res = await this.$apiFactory.getTagApi().getActivityList()
-    //   if (res.data.out < 1) return
-    //   let result = this.computeTime(res.data.data)
-    //   result = result.filter(item => {
-    //     return item.id !== '285671'
-    //   })
-    //   this.activities.push(...result)
-    //   this.isLoading = false
-    // },
+
     judgePage() {
       this.tableIndex = this.$route.params.page
     }

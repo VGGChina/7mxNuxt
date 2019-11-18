@@ -44,7 +44,6 @@
 
 <script>
 import Selection from '~/components/selection/Selection'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   components: {
@@ -114,7 +113,7 @@ export default {
         })
       }
 
-      apiFactory.getPaixinApi().debug(rqBody)
+      this.$axios.paixinService.debug(rqBody)
     }
   },
   methods: {
@@ -224,9 +223,9 @@ export default {
 
       this.isReleasing = true
 
-      const res = await apiFactory.getMediaApi().modify(rqBody)
+      const res = await this.$axios.mediaService.modify(rqBody)
 
-      if (res.data.out == '1') {
+      if (res.data.out === '1') {
         this.$toast.notice('修改成功')
 
         for (const p in res.data.data) {
@@ -253,7 +252,7 @@ export default {
         }
 
         // 发送错误信息
-        apiFactory.getPaixinApi().debug(errData)
+        this.$axios.paixinService.debug(errData)
       }
 
       this.isReleasing = false

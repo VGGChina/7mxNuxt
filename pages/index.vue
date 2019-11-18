@@ -159,7 +159,7 @@ export default {
 
   async asyncData({ $axios }) {
     // recommend
-    // const result = await apiFactory.getTagApi().getActivityList()
+    // const result = await $axios.tagService.getActivityList()
     // let res = result.data.data.filter(item => {
     //   return item.id !== '285671'
     // })

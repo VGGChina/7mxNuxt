@@ -96,10 +96,8 @@
 </template>
 
 <script>
-/* global QiniuJsSDK */
 import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   name: '',
@@ -224,11 +222,11 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 
-      if (timeRes.data.out == '1') {
+      if (timeRes.data.out === '1') {
         time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
@@ -268,11 +266,11 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await apiFactory.getCommonApi().getServerTime()
+      const timeRes = await this.$axios.commonService.getServerTime()
 
       let time = null
 
-      if (timeRes.data.out == '1') {
+      if (timeRes.data.out === '1') {
         time = timeRes.data.data.time
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
@@ -283,7 +281,7 @@ export default {
         phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.phone + '@' + time)
       }
 
-      const res = await apiFactory.getCommonApi().smcode(rqBody)
+      const res = await this.$axios.commonService.smcode(rqBody)
 
       if (res.data.out === '1') {
         this.isTimer = true

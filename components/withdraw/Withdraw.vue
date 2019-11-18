@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   computed: {
@@ -61,7 +59,7 @@ export default {
       this.$store.commit('withdraw/isShowWithdrawDialog', false)
     },
     commit() {
-      apiFactory.getMediaApi().enchashment()
+      this.$axios.mediaService.enchashment()
         .then(res => {
           if (res.data.out === '1') {
             this.$toast.notice(res.data.msg)

@@ -57,7 +57,6 @@
 <script>
 import WorkList from './work-list/WorkList'
 import NoContent from '~/components/no-content/NoContent'
-import apiFactory from '~/api/factory/apiFactory.js'
 
 export default {
   components: {
@@ -97,7 +96,7 @@ export default {
         line: this.line
       }
 
-      const res = await apiFactory.getMediaApi().originList(reBody, query)
+      const res = await this.$axios.mediaService.originList(reBody, query)
       if (res.data.out == '1') {
         this.worksList.push(...res.data.data)
         this.worksList.map(item => {

@@ -1,7 +1,7 @@
 <template>
   <div id="detial-center">
-    <div class="array left-array" @click="front"></div>
-    <div class="array right-array" @click="next"></div>
+    <div class="array left-array" @click="front" />
+    <div class="array right-array" @click="next" />
     <div id="image-container" :style="'background: ' + 'url(' + mediaDetail.image + ') no-repeat'">
       <!-- <img :src="mediaDetail.image" :alt="imageAlt"> -->
     </div>
@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
 export default {
+  props: ['mediaDetail'],
   data: () => ({
     isShowIcons: false,
     isShowLikeIcon: true,
@@ -25,25 +25,112 @@ export default {
     firstMedia: {},
     isImgOnLoading: false
   }),
-  props: ['mediaDetail'],
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    onresizeFlag() {
+      return this.$store.state.window.onresizeFlag
+    },
+    imageAlt() {
+      try {
+        let alt = ''
+
+        alt += this.mediaDetail.title + ' '
+
+        this.mediaDetail.category_list.forEach(item => {
+          alt += item.name + ' '
+        })
+
+        this.mediaDetail.tag_list.forEach(item => {
+          alt += item.name + ' '
+        })
+
+        return alt.substring(0, alt.length - 1)
+      } catch (e) {
+        return ''
+      }
+    }
+  },
+  watch: {
+    mediaDetail: function(val) {
+      const img = new Image()
+      const vm = this
+      img.onload = function() {
+        vm.isImgOnLoading = false
+      }
+
+      this.isImgOnLoading = true
+      img.src = val.image
+
+      if (this.isFirst) {
+        this.firstMedia = val
+        this.isFirst = false
+        this.$nextTick(() => {
+          this.setCenterImgWidth()
+        })
+        this.fetchOriginData()
+      } else {
+        document.getElementById('image-container').style.background =
+          'url(' + this.mediaDetail.image + ') no-repeat'
+      }
+    },
+    onresizeFlag: function() {
+      if (this.$utilHelper.viewportSize().height <= 680) {
+        return
+      }
+      this.setCenterImgWidth()
+    }
+  },
+  watch: {
+    // mediaDetail: function(val) {
+    //   let img = new Image()
+    //   let vm = this
+    //   img.onload = function() {
+    //     vm.isImgOnLoading = false
+    //   }
+    //   this.isImgOnLoading = true
+    //   img.src = val.image
+    //   if (this.isFirst) {
+    //     this.firstMedia = val
+    //     this.isFirst = false
+    //     this.$nextTick(() => {
+    //       this.setCenterImgWidth()
+    //     })
+    //     this.fetchOriginData()
+    //   } else {
+    //     document.getElementById('image-container').style.background =
+    //       'url(' + this.mediaDetail.image + ') no-repeat'
+    //   }
+    // },
+    // onresizeFlag: function() {
+    //   if (this.$utilHelper.viewportSize().height <= 680) {
+    //     return
+    //   }
+    //   this.setCenterImgWidth()
+    // }
+  },
   methods: {
     async fetchOriginData() {
       if (this.isFetching || this.line == 'end') {
         return
       }
 
-      let rqBody = {
-          user_id: this.mediaDetail.user_data.id
-        },
-        query = {
-          line: this.line
-        }
+      const rqBody = {
+        user_id: this.mediaDetail.user_data.id
+      }
+      const query = {
+        line: this.line
+      }
 
       this.isFetching = true
-      let res = await this.$apiFactory.getMediaApi().originList(rqBody, query)
+      const res = await this.$axios.mediaService.originList(rqBody, query)
 
-      if (res.data.out == '1') {
-        let array = res.data.data.filter(e => {
+      if (res.data.out === '1') {
+        const array = res.data.data.filter(e => {
           return e.id != this.firstMedia.id
         })
         this.originList.push(...array)
@@ -59,32 +146,26 @@ export default {
     likeImg: function(img) {
       if (!this.isLogin) {
         // 弹出登录弹窗
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
       var media = {}
       media.media_id = img.id
       if (img.is_like === '1') {
-        this.$apiFactory
-          .getMediaApi()
-          .dislike(media)
-          .then(res => {
-            if (res.data.out === '1') {
-              img.like_num = res.data.data.like_num
-              img.is_like = res.data.data.is_like
-            }
-          })
+        this.$axios.mediaService.dislike(media).then(res => {
+          if (res.data.out === '1') {
+            img.like_num = res.data.data.like_num
+            img.is_like = res.data.data.is_like
+          }
+        })
       } else {
-        this.$apiFactory
-          .getMediaApi()
-          .like(media)
-          .then(res => {
-            if (res.data.out === '1') {
-              img.like_num = res.data.data.like_num
-              img.is_like = res.data.data.is_like
-            }
-          })
+        this.$axios.mediaService.like(media).then(res => {
+          if (res.data.out === '1') {
+            img.like_num = res.data.data.like_num
+            img.is_like = res.data.data.is_like
+          }
+        })
       }
     },
     front() {
@@ -125,18 +206,18 @@ export default {
         if (this.isFetching) {
           return
         }
-        let rqBody = {
-            user_id: this.mediaDetail.user_data.id
-          },
-          query = {
-            line: this.line
-          }
+        const rqBody = {
+          user_id: this.mediaDetail.user_data.id
+        }
+        const query = {
+          line: this.line
+        }
 
         this.isFetching = true
-        let res = await this.$apiFactory.getMediaApi().originList(rqBody, query)
+        const res = await this.$axios.mediaService.originList(rqBody, query)
 
-        if (res.data.out == '1') {
-          let array = res.data.data.filter(e => {
+        if (res.data.out === '1') {
+          const array = res.data.data.filter(e => {
             return e.id != this.firstMedia.id
           })
           this.originList.push(...array)
@@ -165,34 +246,6 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    // mediaDetail: function(val) {
-    //   let img = new Image()
-    //   let vm = this
-    //   img.onload = function() {
-    //     vm.isImgOnLoading = false
-    //   }
-    //   this.isImgOnLoading = true
-    //   img.src = val.image
-    //   if (this.isFirst) {
-    //     this.firstMedia = val
-    //     this.isFirst = false
-    //     this.$nextTick(() => {
-    //       this.setCenterImgWidth()
-    //     })
-    //     this.fetchOriginData()
-    //   } else {
-    //     document.getElementById('image-container').style.background =
-    //       'url(' + this.mediaDetail.image + ') no-repeat'
-    //   }
-    // },
-    // onresizeFlag: function() {
-    //   if (this.$utilHelper.viewportSize().height <= 680) {
-    //     return
-    //   }
-    //   this.setCenterImgWidth()
-    // }
   },
   computed: {
     ...mapGetters(['isLogin', 'loginUser', 'onresizeFlag']),
