@@ -33,7 +33,11 @@ export default {
     imgList: [],
     line: '',
     isLoading: false,
-    detail: ''
+    detail: {
+      user_data: {
+        id: '-1'
+      }
+    }
   }),
   computed: {
     loginUser() {
@@ -43,20 +47,17 @@ export default {
       return this.$store.state.login.isLogin
     },
     isAlbumAuthor() {
-      try {
-        if (!this.isLogin || this.loginUser.id != this.detail.user_data.id) {
-          return false
-        }
-
-        if (this.loginUser.id == this.detail.user_data.id) {
-          return true
-        }
-      } catch (e) {
-        console.log(e)
+      if (!this.isLogin || this.loginUser.id !== this.detail.user_data.id) {
         return false
       }
+
+      if (this.loginUser.id === this.detail.user_data.id) {
+        return true
+      }
+      return false
     }
   },
+
   created() {
     this.getList()
   },

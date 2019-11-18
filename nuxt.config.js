@@ -56,7 +56,8 @@ export default {
     '~/api/userService',
 
     '~/plugins/cookie',
-    '~/plugins/scroll'
+    '~/plugins/scroll',
+    '~/plugins/ecroll'
   ],
   /*
   ** Nuxt.js dev-modules

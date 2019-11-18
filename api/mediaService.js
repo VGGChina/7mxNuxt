@@ -244,9 +244,11 @@ export default ({ $axios }) => {
 
     // 灵感集内所有图片
     getAlbumPics(data) {
-      // {album_id: ''}
-      const url = 'media/in_album_list'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/media/in_album_list',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 添加media到灵感集（只能创建者可用）
