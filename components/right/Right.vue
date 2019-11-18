@@ -117,7 +117,7 @@ export default {
     follow() {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       let user = {
@@ -143,7 +143,8 @@ export default {
     },
     likeImg() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        console.log(1111111)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
@@ -174,7 +175,7 @@ export default {
     },
     toCollect() {
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
       this.$bus.emit('popup-album', {
@@ -191,7 +192,7 @@ export default {
       }
 
       if (!this.isLogin) {
-        this.$store.commit('isShowLoginDialog', true)
+        this.$store.commit('login/isShowLoginDialog', true)
         return
       }
 
@@ -235,6 +236,7 @@ export default {
   },
   computed: {
     isLogin() {
+      console.log(12122)
       return this.$store.state.login.isLogin
     },
     loginUser() {
