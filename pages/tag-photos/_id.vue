@@ -21,13 +21,13 @@ export default {
   created() {
     this.fetchData()
 
-    // this.getTagDetail()
+    this.getTagDetail()
   },
   methods: {
     async getTagDetail() {
-      let res = await this.$axios
-        .getTagApi()
-        .getTagDetail({ tag_id: this.$route.params.id })
+      let res = await this.$axios.tagService.getTagDetail({
+        tag_id: this.$route.params.id
+      })
 
       if (res.data.out == '1') {
         this.options.push({
