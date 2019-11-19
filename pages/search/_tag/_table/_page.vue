@@ -1,10 +1,6 @@
 <template>
     <div class="category-container">
-        <table-nav
-            :options="options"
-            :isLoading="isLoading"
-            :defaultIndex="parseInt($route.params.tableIndex)"
-        ></table-nav>
+        <table-nav :options="options" :isLoading="isLoading" :defaultIndex="tableIndex"></table-nav>
         <user-preview v-show="tableIndex==2" :userList="userList"></user-preview>
         <img-waterfall
             :imgList="imgList"
