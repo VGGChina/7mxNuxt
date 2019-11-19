@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const _7mxBaseURL = '//api.7mx.com'
-const paixinBaseURL = '//api.paixin.com'
+// const paixinBaseURL = '//api.paixin.com'
 
 // axios.interceptors.request.use(
 //   config => {

@@ -124,26 +124,19 @@ export default {
         user_id: this.mediaDetail.user_data.id
       }
       if (this.mediaDetail.user_data.is_follow === '1') {
-        this.$apiFactory
-          .getUserApi()
-          .unfollow(user)
-          .then(res => {
-            this.mediaDetail.user_data.is_follow = '0'
-            this.mediaDetail.user_data.fan_num--
-          })
+        this.$axios.userService.unfollow(user).then(res => {
+          this.mediaDetail.user_data.is_follow = '0'
+          this.mediaDetail.user_data.fan_num--
+        })
       } else {
-        this.$apiFactory
-          .getUserApi()
-          .follow(user)
-          .then(res => {
-            this.mediaDetail.user_data.is_follow = '1'
-            this.mediaDetail.user_data.fan_num++
-          })
+        this.$axios.userService.follow(user).then(res => {
+          this.mediaDetail.user_data.is_follow = '1'
+          this.mediaDetail.user_data.fan_num++
+        })
       }
     },
     likeImg() {
       if (!this.isLogin) {
-        console.log(1111111)
         this.$store.commit('login/isShowLoginDialog', true)
         return
       }
@@ -152,25 +145,19 @@ export default {
         media_id: this.mediaDetail.id
       }
       if (this.mediaDetail.is_like === '1') {
-        this.$apiFactory
-          .getMediaApi()
-          .dislike(rqBody)
-          .then(res => {
-            if (res.data.out === '1') {
-              this.mediaDetail.like_num = res.data.data.like_num
-              this.mediaDetail.is_like = res.data.data.is_like
-            }
-          })
+        this.$axios.mediaService.dislike(rqBody).then(res => {
+          if (res.data.out === '1') {
+            this.mediaDetail.like_num = res.data.data.like_num
+            this.mediaDetail.is_like = res.data.data.is_like
+          }
+        })
       } else {
-        this.$apiFactory
-          .getMediaApi()
-          .like(rqBody)
-          .then(res => {
-            if (res.data.out === '1') {
-              this.mediaDetail.like_num = res.data.data.like_num
-              this.mediaDetail.is_like = res.data.data.is_like
-            }
-          })
+        this.$axios.mediaService.like(rqBody).then(res => {
+          if (res.data.out === '1') {
+            this.mediaDetail.like_num = res.data.data.like_num
+            this.mediaDetail.is_like = res.data.data.is_like
+          }
+        })
       }
     },
     toCollect() {
@@ -224,7 +211,7 @@ export default {
           qq: obj.qq
         }
 
-        let res = await this.$apiFactory.getMediaApi().needed(rqBody)
+        let res = await this.$axios.mediaService.needed(rqBody)
 
         if (res.data.out == '1') {
           this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
@@ -236,7 +223,6 @@ export default {
   },
   computed: {
     isLogin() {
-      console.log(12122)
       return this.$store.state.login.isLogin
     },
     loginUser() {

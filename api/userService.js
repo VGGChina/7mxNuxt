@@ -245,8 +245,12 @@ export default ({ $axios }) => {
 
     // 搜索摄影师
     getPhotographerByName(data, params) {
-      const url = '/api/user/common_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/common_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     }
 
   }

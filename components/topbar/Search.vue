@@ -2,8 +2,8 @@
   <div class="container">
     <div class="logo">
       <span @click="toIndex">
-        <img :src="require('~/assets/img/m.svg')" alt />
-        <img :src="require('~/assets/img/7MX.svg')" alt />
+        <img :src="require('~/assets/img/m.svg')" alt="">
+        <img :src="require('~/assets/img/7MX.svg')" alt="">
       </span>
     </div>
     <div
@@ -18,7 +18,6 @@
           <i class="search__dropDown_icon"></i>
           <div class="vertical_line"></div>
         </div>
-
         <div class="searchTypeChoose" v-show="isTypeShow">
           <div class="blankB"></div>
           <div class="triangle"></div>
@@ -29,9 +28,8 @@
           </div>
         </div>
       </div>
-
-      <input type="text" v-model="searchInput" placeholder="搜索" @keyup.enter="search" />
-      <img class="searchIcon" src="./img/searchIcon.svg" alt @click="search" />
+      <input type="text" v-model="searchInput" placeholder="搜索" @keyup.enter="search">
+      <img class="searchIcon" src="./img/searchIcon.svg" alt="" @click="search">
     </div>
   </div>
 </template>
@@ -39,9 +37,7 @@
 <script>
 export default {
   name: '',
-  props: [
-    'ifshow'
-  ],
+  props: ['ifshow'],
   data: () => ({
     searchInput: '',
     searchValue: '图 片',
@@ -49,12 +45,12 @@ export default {
     tableIn: 0
   }),
   methods: {
-    search: function () {
+    search: function() {
       this.$router.push({
-        name: 'search',
+        name: 'search-tag-table-page',
         params: {
           tag: this.searchInput,
-          tableIndex: this.tableIn,
+          table: this.tableIn,
           page: 1
         }
       })
@@ -64,10 +60,10 @@ export default {
     }
   },
   watch: {
-    '$route.params.tag': function (val) {
+    '$route.params.tag': function(val) {
       this.searchInput = val
     },
-    '$route.params.tableIndex': function (val) {
+    '$route.params.tableIndex': function(val) {
       if (val == 0) {
         this.searchValue = '图  片'
       }
@@ -78,10 +74,9 @@ export default {
         this.searchValue = '摄影师'
       }
     },
-    '$route.params.page': function (val) {
-    }
+    '$route.params.page': function(val) {}
   }
-};
+}
 </script>
 
 <style scoped lang='scss'>
