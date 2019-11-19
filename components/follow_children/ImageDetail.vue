@@ -317,7 +317,7 @@ export default {
       })
 
       if (!flag) {
-        this.$store.commit('neededData', {
+        this.$store.commit('needed/neededData', {
           isShow: true,
           mediaId: this.imgDetail.id
         })
