@@ -1,8 +1,11 @@
 export default ({ $axios }) => {
   const commonService = {
     smcode(data) {
-      const url = '/api/common/smcode'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/common/smcode',
+        data
+      }
+      return $axios(httpData)
     },
 
     categoryList(data) {

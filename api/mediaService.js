@@ -11,7 +11,7 @@ export default ({ $axios }) => {
     },
 
     mediaDetailOld(data) {
-      const url = '/media/detail_old'
+      const url = '/api/media/detail_old'
       return $axios(url, data, {})
     },
 
@@ -24,7 +24,7 @@ export default ({ $axios }) => {
     },
 
     comment(data) {
-      const url = '/media/comment'
+      const url = '/api/media/comment'
       return $axios(url, data, {})
     },
 
@@ -56,13 +56,13 @@ export default ({ $axios }) => {
 
     // 上传作品
     put(data) {
-      const url = '/media/put'
+      const url = '/api/media/put'
       return $axios(url, data, {})
     },
 
     // 删除作品
     remove(data) {
-      const url = '/media/drop'
+      const url = '/api/media/drop'
       return $axios(url, data, {})
     },
 
@@ -108,12 +108,12 @@ export default ({ $axios }) => {
     },
 
     storeList(data, params) {
-      const url = '/media/origin_list'
+      const url = '/api/media/origin_list'
       return $axios(url, data, params)
     },
 
     examineList(data, params) {
-      const url = '/media/origin_list'
+      const url = '/api/media/origin_list'
       return $axios(url, data, params)
     },
 
@@ -136,57 +136,57 @@ export default ({ $axios }) => {
     },
 
     exif(data) {
-      const url = '/media/exif'
+      const url = '/api/media/exif'
       return $axios(url, data, {})
     },
 
     exifUrl(data) {
-      const url = '/media/exif_url'
+      const url = '/api/media/exif_url'
       return $axios(url, data, {})
     },
 
     addIntoCart(data) {
-      const url = '/media/buy_add'
+      const url = '/api/media/buy_add'
       return $axios(url, data, {})
     },
 
     cartList(data, params) {
-      const url = '/media/buy_list'
+      const url = '/api/media/buy_list'
       return $axios(url, data, params)
     },
 
     shoppingCartDrop(data) {
-      const url = '/media/buy_drop'
+      const url = '/api/media/buy_drop'
       return $axios(url, data, {})
     },
 
     orderAdd(data) {
-      const url = '/media/order_add'
+      const url = '/api/media/order_add'
       return $axios(url, data, {})
     },
 
     orderDetail(data) {
-      const url = '/media/order_detail'
+      const url = '/api/media/order_detail'
       return $axios(url, data, {})
     },
 
     imageStore(data, params) {
-      const url = 'media/order_media_finish_list'
+      const url = '/apimedia/order_media_finish_list'
       return $axios(url, data, params)
     },
 
     walletDetail(cookie) {
-      const url = '/media/wallet_detail'
+      const url = '/api/media/wallet_detail'
       return $axios(url, {}, {})
     },
 
     enchashment(data) {
-      const url = '/media/enchashment'
+      const url = '/api/media/enchashment'
       return $axios(url, data, {})
     },
 
     intoOther(data) {
-      const url = '/media/into_other'
+      const url = '/api/media/into_other'
       return $axios(url, data, {})
     },
 
@@ -199,7 +199,7 @@ export default ({ $axios }) => {
     },
 
     mediaDrop(data) {
-      const url = 'media/drop'
+      const url = '/api/media/drop'
       return $axios(url, data, {})
     },
 
@@ -214,7 +214,7 @@ export default ({ $axios }) => {
     },
     // 某个tag全部作品列表
     randomInTagList(data, params) {
-      const url = 'media/random_in_tag_list'
+      const url = '/api/media/random_in_tag_list'
       return $axios(url, data, params)
     },
 
@@ -238,7 +238,7 @@ export default ({ $axios }) => {
     },
 
     modify(data) {
-      const url = 'media/mod'
+      const url = '/api/media/mod'
       return $axios(url, data, {})
     },
 
@@ -254,17 +254,17 @@ export default ({ $axios }) => {
     // 添加media到灵感集（只能创建者可用）
     addToAlbum(data) {
       // album_id(id required),media_id(media_id required)
-      const url = 'media/add_to_album'
+      const url = '/api/media/add_to_album'
       return $axios(url, data, {})
     },
 
     notInTagList(data) {
-      const url = 'media/not_in_tag_list'
+      const url = '/api/media/not_in_tag_list'
       return $axios(url, data, {})
     },
 
     addTag(data) {
-      const url = 'media/add_tag'
+      const url = '/api/media/add_tag'
       return $axios(url, data, {})
     },
 
@@ -278,13 +278,13 @@ export default ({ $axios }) => {
     },
 
     dynamicDrop(data) {
-      const url = 'media/dynamic_drop'
+      const url = '/api/media/dynamic_drop'
       return $axios(url, data, {})
     },
 
     // 从灵感集中删除图片
     dropFromAlbum(data) {
-      const url = 'media/drop_from_album'
+      const url = '/api/media/drop_from_album'
       return $axios(url, data, {})
     },
 
@@ -298,7 +298,7 @@ export default ({ $axios }) => {
     },
 
     poll(data) {
-      const url = 'media/vote'
+      const url = '/api/media/vote'
       return $axios(url, data, {})
     },
 
