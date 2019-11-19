@@ -34,20 +34,6 @@ export default {
 }
 
 .no-content {
-  /* display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center; */
-  /* letter-spacing: 1px;
-  opacity: .9; */
-  /* position: absolute;
-  left: 50%; */
-  /* top: 140px; */
-  /* transform: translateX(-50%); */
-  /* color: #a0b1c1;
-  padding: 60px 0;
-  text-align: center; */
-
   display: flex;
   align-items: center;
   flex-direction: column;
