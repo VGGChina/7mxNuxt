@@ -1,14 +1,17 @@
 export default ({ $axios }) => {
   const commonService = {
     smcode(data) {
-      const url = '/api/common/smcode'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/common/smcode',
+        data
+      }
+      return $axios(httpData)
     },
 
     categoryList(data) {
       const httpData = {
         url: '/api/common/category_list',
-        data: data
+        data
       }
       return $axios(httpData)
     },
@@ -21,49 +24,77 @@ export default ({ $axios }) => {
     },
 
     protocolList(data) {
-      const url = '/api/common/protocol_list'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/common/protocol_list',
+        data
+      }
+      return $axios(httpData)
     },
 
     getLargeImageList(data) {
-      const url = '/api/common/get_banners'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/common/get_banners',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 获取帮助列表
     getManualList(data) {
-      const url = '/api/common/manual_list'
-      return $axios(url, data)
+      const httpData = {
+        url: '/api/common/manual_list',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 获取某问题详情
     getQuestionDetail(data) {
-      const url = '/api/common/manual_detail'
-      return $axios(url, data)
+      const httpData = {
+        url: '/api/common/manual_detail',
+        data
+      }
+      return $axios(httpData)
     },
 
     // 将通知标记为已读
     markNoticeAsRead(data, params) {
-      const url = '/api/common/notice_check'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/common/notice_check',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
     // 通知列表
     getNoticeList(data, params) {
       // 参数（unread，0 未读，1 已读，不传 读取所有）
-      const url = '/api/common/notice_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/common/notice_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 读动态将通知标记为已读
     markActivityAsRead(data, params) {
-      const url = '/api/common/msg_check'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/common/msg_check',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 将心愿单标识为已读
     markNeededAsRead(data, params) {
-      const url = '/api/common/needed_check'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/common/needed_check',
+        data,
+        params
+      }
+      return $axios(httpData)
     }
   }
   $axios.commonService = commonService

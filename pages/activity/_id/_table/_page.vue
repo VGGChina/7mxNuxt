@@ -360,8 +360,8 @@ export default {
       this.isShowChoose = !this.isShowChoose
     },
     publishNew() {
-      this.$store.commit('isShowUploadDialog', true)
-      this.$store.commit('uploadActivity', this.activeDetail)
+      this.$store.commit('upload/isShowUploadDialog', true)
+      this.$store.commit('upload/uploadActivity', this.activeDetail)
       this.isShowChoose = false
     },
     publishOld() {

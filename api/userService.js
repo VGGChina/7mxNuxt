@@ -1,8 +1,11 @@
 export default ({ $axios }) => {
   const userService = {
     registerByEmail(data) {
-      const url = '/api/user/regist'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/regist',
+        data
+      }
+      return $axios(httpData)
     },
 
     registerByPhone(data) {
@@ -36,21 +39,27 @@ export default ({ $axios }) => {
     },
 
     codeLogin(data) {
-      const url = '/api/user/login_by_smcode'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/login_by_smcode',
+        data
+      }
+      return $axios(httpData)
     },
 
     userDetail(data) {
       const httpdata = {
         url: '/api/user/detail',
-        data: data
+        data
       }
       return $axios(httpdata)
     },
 
     companyDetail(data) {
-      const url = '/api/company/detail'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/company/detail',
+        data
+      }
+      return $axios(httpData)
     },
 
     follow(data) {
@@ -78,13 +87,21 @@ export default ({ $axios }) => {
     },
 
     getFollow(data, params) {
-      const url = '/api/user/follow_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/follow_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     getFan(data, params) {
-      const url = '/api/user/fan_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/fan_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     setUserInfo(data) {
@@ -128,28 +145,43 @@ export default ({ $axios }) => {
     },
 
     setAuthCard(data) {
-      const url = '/api/user/auth_card'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/auth_card',
+        data
+      }
+      return $axios(httpData)
     },
 
     setAuthCardCom(data) {
-      const url = '/api/user/auth_card_com'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/auth_card_com',
+        data
+      }
+      return $axios(httpData)
     },
 
     forgetPasswordByEmail(data) {
-      const url = '/api/user/for_fdpwd_by_email'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/for_fdpwd_by_email',
+        data
+      }
+      return $axios(httpData)
     },
 
     modifyPasswordByEmail(data) {
-      const url = '/api/user/fdpwd_by_email'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/fdpwd_by_email',
+        data
+      }
+      return $axios(httpData)
     },
 
     modifyPasswordByPhone(data) {
-      const url = '/api/user/fdpwd_by_phone'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/fdpwd_by_phone',
+        data
+      }
+      return $axios(httpData)
     },
 
     intoOther(data) {
@@ -161,13 +193,19 @@ export default ({ $axios }) => {
     },
 
     paixinLoginSmcode(data) {
-      const url = '/api/user/gaga_login_smcode'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/gaga_login_smcode',
+        data
+      }
+      return $axios(httpData)
     },
 
     paixinLogin(data) {
-      const url = '/api/user/gaga_login'
-      return $axios(url, data, {})
+      const httpData = {
+        url: '/api/user/gaga_login',
+        data
+      }
+      return $axios(httpData)
     },
 
     recommendUser(data, params) {
@@ -198,19 +236,27 @@ export default ({ $axios }) => {
     },
 
     descList(params) {
-      const url = '/api/user/desc_list'
-      return $axios(url, {}, params)
+      const httpData = {
+        url: '/api/user/desc_list',
+        params
+      }
+      return $axios(httpData)
     },
 
     detailCard() {
-      const url = '/api/user/detail_card'
-      return $axios(url, {}, {})
+      const httpData = {
+        url: '/api/user/detail_card'
+      }
+      return $axios(httpData)
     },
 
     getActivityList(data) {
       // 参数（type，1关注，2点赞，3 评论，不传 读取所有;unread 0未读消息，1已读消息，不传 读取该类所有）
-      const url = '/api/user/msg_list'
-      return $axios(url, data)
+      const httpData = {
+        url: '/api/user/msg_list',
+        data
+      }
+      return $axios(httpData)
     },
 
     /**
@@ -219,8 +265,11 @@ export default ({ $axios }) => {
      */
     getSellNum(data) {
       // (gain收益，product_num作品数，media_num图片数)必须登陆
-      const url = '/api/user/get_stat'
-      return $axios(url, data)
+      const httpData = {
+        url: '/api/user/get_stat',
+        data
+      }
+      return $axios(httpData)
     },
 
     /**
@@ -228,8 +277,12 @@ export default ({ $axios }) => {
      * @param {Object}, data
      */
     getOrderList(data, params) {
-      const url = '/api/user/order_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/order_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     },
 
     // 评论、点赞、关注消息列表
@@ -245,8 +298,12 @@ export default ({ $axios }) => {
 
     // 搜索摄影师
     getPhotographerByName(data, params) {
-      const url = '/api/user/common_list'
-      return $axios(url, data, params)
+      const httpData = {
+        url: '/api/user/common_list',
+        data,
+        params
+      }
+      return $axios(httpData)
     }
 
   }

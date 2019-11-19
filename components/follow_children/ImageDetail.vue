@@ -92,9 +92,9 @@
             <div>选择以下理由减少推荐</div>
 
             <div
-              v-for="item in filterOptions"
+              v-for="(item, index2) in filterOptions"
               v-if="item.content"
-              :key="item.id"
+              :key="index2"
               class="option"
               :style="{
                 color: selectedOptionId == item.id ? '#4cbc82' : '',
@@ -120,7 +120,7 @@
             @mouseleave="isEnter = false"
           />
         </a>
-        <img v-lazy="imgDetail.image" :width="imageWidth" alt="">
+        <img :src="imgDetail.image" :width="imageWidth" alt="">
         <transition name="score-fade">
           <div v-if="isEnter" class="score">{{ $utilHelper.score(imgDetail) }}</div>
         </transition>
@@ -317,7 +317,7 @@ export default {
       })
 
       if (!flag) {
-        this.$store.commit('neededData', {
+        this.$store.commit('needed/neededData', {
           isShow: true,
           mediaId: this.imgDetail.id
         })
