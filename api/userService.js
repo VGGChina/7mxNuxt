@@ -49,7 +49,7 @@ export default ({ $axios }) => {
     userDetail(data) {
       const httpdata = {
         url: '/api/user/detail',
-        data: data
+        data
       }
       return $axios(httpdata)
     },
@@ -279,7 +279,8 @@ export default ({ $axios }) => {
     getOrderList(data, params) {
       const httpData = {
         url: '/api/user/order_list',
-        data
+        data,
+        params
       }
       return $axios(httpData)
     },

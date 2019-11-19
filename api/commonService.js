@@ -11,7 +11,7 @@ export default ({ $axios }) => {
     categoryList(data) {
       const httpData = {
         url: '/api/common/category_list',
-        data: data
+        data
       }
       return $axios(httpData)
     },
