@@ -248,7 +248,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogin', 'loginUser', 'onresizeFlag']),
+    // ...mapGetters(['isLogin', 'loginUser', 'onresizeFlag']),
     onresizeFlag() {
       return this.$store.state.window.onresizeFlag
     },

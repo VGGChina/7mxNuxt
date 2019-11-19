@@ -1,10 +1,6 @@
 <template>
     <div class="category-container">
-        <table-nav
-            :options="options"
-            :isLoading="isLoading"
-            :defaultIndex="parseInt($route.params.tableIndex)"
-        ></table-nav>
+        <table-nav :options="options" :isLoading="isLoading" :defaultIndex="tableIndex"></table-nav>
         <user-preview v-show="tableIndex==2" :userList="userList"></user-preview>
         <img-waterfall
             :imgList="imgList"
@@ -51,8 +47,9 @@ export default {
     if (table != 2) {
       tempLine = (parseInt(page) - 1) * 20
     }
-
-    let url = 'http://free.es.dispatch.paixin.com/7mx/_search/'
+    let tempList = []
+    let tempcount = 0
+    let tempUserList = []
     let rqBody = {
       keyword: params.tag,
       type: '6'
@@ -62,26 +59,51 @@ export default {
       line: tempLine,
       limit: 20
     }
+    if (table == 0 || table == 1) {
+      let url = 'https://free.es.dispatch.paixin.com/7mx/_search/'
 
-    if (table == 1) rqBody.product = 'plus'
+      if (table == 1) rqBody.product = 'plus'
 
-    let temp = { url: url, data: rqBody, params: query }
-    console.log(temp)
-    let res = await $axios(temp)
-    console.log(res)
-    let tempList = []
-    if (res.data.out == '1') {
-      tempList.push(...res.data.data)
-    }
-    if (res.data.end === 'end') {
-      tempLine = 'end'
+      let temp = { url: url, data: rqBody, params: query }
+      console.log(temp)
+      let res = await $axios(temp)
+      console.log(res)
+      if (res.data.out == '1') {
+        tempList.push(...res.data.data)
+      }
+      if (res.data.end === 'end') {
+        tempLine = 'end'
+      } else {
+        tempLine = res.data.line
+      }
+      tempcount = res.data.count
     } else {
-      tempLine = res.data.line
+      tempLine = params.page + ',0,0'
+      let query = {
+        line: tempLine
+      }
+      let res = await $axios.userService.getPhotographerByName(
+        { search: rqBody.keyword, withmedias: '1' },
+        query
+      )
+      if (res.data.out == '1') {
+        tempUserList = []
+        tempUserList.push(...res.data.data)
+      }
+      if (res.data.end === 'end') {
+        tempLine = 'end'
+      } else {
+        tempLine = res.data.line
+      }
+      tempcount = parseInt(res.data.line.split(',')[1]) * 20
     }
+
     return {
       imgList: tempList,
       line: tempLine,
-      count: res.data.count
+      count: tempcount,
+      tableIndex: table,
+      userList: tempUserList
     }
   },
   created() {
@@ -128,10 +150,10 @@ export default {
     },
     jumpToPage(page, line) {
       this.$router.push({
-        name: 'search',
+        name: 'search-tag-table-page',
         params: {
           tag: this.$route.params.tag,
-          tableIndex: this.tableIndex,
+          table: this.tableIndex,
           page: page
         }
       })
@@ -288,9 +310,6 @@ export default {
       }
 
       return true
-    },
-    tableIndex() {
-      return parseInt(this.$route.params.tableIndex)
     },
     options() {
       let options = [

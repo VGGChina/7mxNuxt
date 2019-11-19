@@ -46,10 +46,10 @@ export default {
     search() {
       this.isShowSearch(false)
       this.$router.push({
-        name: 'search',
+        name: 'search-tag-table-page',
         params: {
           tag: this.searchInput,
-          tableIndex: this.searchType,
+          table: this.searchType,
           page: 1
         }
       })
