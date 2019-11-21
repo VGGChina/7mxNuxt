@@ -205,7 +205,7 @@ export default {
       let isRepeat = false
       this.$router.options.routes.forEach(element => {
         const array = element.path.split('/')
-        if (array[1] == this.name) {
+        if (array[1] === this.name) {
           isRepeat = true
         }
       })

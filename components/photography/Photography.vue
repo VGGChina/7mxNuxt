@@ -118,7 +118,7 @@ export default {
       if (!path) {
         path = ''
       }
-      this.$router.push({ path: `/${path}` })
+      this.$router.push({ path: `/user/name/${path}` })
     },
 
     async getAvatars(index = 0) {
