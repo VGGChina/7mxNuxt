@@ -8,7 +8,7 @@
               <!-- v-lazy:background-image.container="$utilHelper.getCompressionUrl(item.medias[0].image)" -->
               <!-- :style="'background-image:url\'' + $utilHelper.getCompressionUrl(item.medias[0].image) + '\')'" -->
               <div
-                :style="{backgroundImage:url($utilHelper.getCompressionUrl(item.medias[0].image))}"
+                :style="'background-image:url\'' + $utilHelper.getCompressionUrl(item.medias[0].image) + '\')'"
                 class="tag-left"
               />
             </a>
