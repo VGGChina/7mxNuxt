@@ -94,9 +94,9 @@ export default {
     if (userinfo.data.out === '1') {
       userInfo = userinfo.data.data
     } else {
-      this.$router.push({
-        name: 'redirectToIndex'
-      })
+      // this.$router.push({
+      //   name: 'redirectToIndex'
+      // })
     }
 
     // 作品

@@ -6,10 +6,7 @@
       :origin-list="imgList"
       :is-loading="isLoading"
     />
-
-    <div
-      class="water-container"
-    >
+    <div class="water-container">
       <!-- :style="{ 'min-height': waterfallMinHeight + 'px'}" -->
       <img-waterfall
         v-if="userHomeNavIndex != 4 && userHomeNavIndex != 5"
@@ -22,28 +19,20 @@
         :is-show-remark="userHomeNavIndex == 2"
         :is-show-exclusive="userHomeNavIndex == 1"
       />
-
-      <album-list v-if="userHomeNavIndex == 4" :album-list="albumList" />
-
-      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags" />
-
-      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'" />
-
+      <album-list v-if="userHomeNavIndex == 4" :album-list="albumList"/>
+      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags"/>
+      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'"/>
       <div v-if="!isLoading && albumList.length < 1 && userHomeNavIndex == 4" class="no_wrap">
-        <no-content :is-no-content-show="true" />
+        <no-content :is-no-content-show="true"/>
       </div>
-
       <div style="padding-bottom: 580px;">
         <div
           v-if="imgList.length > 0 && line != 'end'"
           class="load-more"
           @click="fetchData"
-        >
-          {{ isLoading ? '正在加载...' : '加载更多' }}
-        </div>
+        >{{ isLoading ? '正在加载...' : '加载更多' }}</div>
       </div>
-
-      <index-footer />
+      <index-footer/>
     </div>
   </div>
 </template>
@@ -88,7 +77,7 @@ export default {
   },
 
   watch: {
-    '$route'(to, from) {
+    $route(to, from) {
       location.reload()
     }
   },
@@ -105,9 +94,9 @@ export default {
     if (userinfo.data.out === '1') {
       userInfo = userinfo.data.data
     } else {
-      this.$router.push({
-        name: 'redirectToIndex'
-      })
+      // this.$router.push({
+      //   name: 'redirectToIndex'
+      // })
     }
 
     // 作品
@@ -261,7 +250,9 @@ export default {
     async fetchAlbum() {
       this.isLoading = true
 
-      const res = await this.$axios.albumService.albumList({ user_id: this.userInfo.id || '' })
+      const res = await this.$axios.albumService.albumList({
+        user_id: this.userInfo.id || ''
+      })
 
       if (res.data.out === '1') {
         this.albumList = res.data.data
@@ -274,7 +265,9 @@ export default {
       this.line = res.data.line
     },
     async fetchTag() {
-      const res = await this.$axios.tagService.followList({ user_id: this.userInfo.id })
+      const res = await this.$axios.tagService.followList({
+        user_id: this.userInfo.id
+      })
 
       if (res.data.out === '1') {
         this.tags = res.data.data
@@ -329,5 +322,4 @@ export default {
     color: rgba(0, 0, 0, 0.8);
   }
 }
-
 </style>
