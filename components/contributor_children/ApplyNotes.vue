@@ -5,8 +5,8 @@
     <div class="rule long">· 作品中不可以出现未取得可用于转售用途授权的商业字体</div>
     <div class="rule long">· 作品中可辨认面孔的人物必须拥有正确的人物肖像权协议</div>
     <div class="rule long">· 作品中如涉及物产的图片，必须拥有正确的物产权协议</div>
-    <a class="authDocument" href="/static/pdf/portrait.pdf" target="view_window">《肖像授权书下载》</a>
-    <a class="authDocument" href="/static/pdf/realRight.pdf" target="view_window">《物产权协议下载》</a>
+    <a class="authDocument" href="http://static.7mx.com/portrait.pdf" target="view_window">《肖像授权书下载》</a>
+    <a class="authDocument" href="http://static.7mx.com/realRight.pdf" target="view_window">《物产权协议下载》</a>
 
     <div class="agree">
       <div class="tip">· 您是否愿意成为拍信<strong> 定制拍摄接单 </strong>摄影师？</div>
@@ -38,7 +38,7 @@
           <div v-if="isAgreeProtocol" class="hook" />
         </div>
         <span>我已阅读并同意</span>
-        <a href="/static/pdf/cpxy.pdf" target="_blank">《版权素材授权委托代理协议》</a>
+        <a href="http://static.7mx.com/cpxy.pdf" target="_blank">《版权素材授权委托代理协议》</a>
       </div>
     </div>
 
