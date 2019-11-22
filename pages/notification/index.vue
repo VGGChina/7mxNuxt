@@ -21,9 +21,9 @@
         <div class="list_wrap">
           <activityList v-if="chooseIndex >= 0 && chooseIndex <= 2" :list="list" />
           <noticeList v-if="chooseIndex == 3" :list="list" />
-          <div v-if="line!=&quot;end&quot;&&list.length > 0" class="more" @click="more">查看更多</div>
+          <div v-if="line!='end'&&list.length > 0" class="more" @click="more">查看更多</div>
           <!-- 已加载全部 -->
-          <div v-if="line==&quot;end&quot;&&list.length > 0" class="end">- 7mx -</div>
+          <div v-if="line=='end'&&list.length > 0" class="end">- 7mx -</div>
         </div>
       </div>
     </div>

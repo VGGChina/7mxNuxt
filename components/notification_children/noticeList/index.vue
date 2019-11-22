@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="item in list" :key="item.dateline" class="noticeList list_item">
+    <div v-for="(item, index) in list" :key="index" class="noticeList list_item">
       <!-- <div class="avatar" :style="{ 'backgroundImage' : `url(${require('./img/7mx.jpg')})` }"></div> -->
       <div v-if="item.type == 0 || item.type == 1" class="text">
         <div class="operation">
