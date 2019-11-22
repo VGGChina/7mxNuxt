@@ -23,9 +23,6 @@ export default {
       },
       { src: '/js/plupload.full.min.js',
         async: true
-      },
-      { src: '/js/exif.js',
-        async: true
       }
     ]
   },
@@ -55,7 +52,7 @@ export default {
     '~/api/paixinService',
     '~/api/statisticsService',
     '~/api/tagService',
-    '~/api/uptokenService',
+    // '~/api/uptokenService',
     '~/api/userService',
 
     '~/plugins/cookie',
