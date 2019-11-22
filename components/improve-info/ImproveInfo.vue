@@ -111,7 +111,7 @@ export default {
                 this.$toast.warn('上传失败，请刷新页面后重试')
                 return {}
               }
-            })
+            }, this.$store.state.login.xToken)
             return this.uploadData.uptoken
           },
           get_new_uptoken: true,
@@ -205,7 +205,7 @@ export default {
       let isRepeat = false
       this.$router.options.routes.forEach(element => {
         const array = element.path.split('/')
-        if (array[1] == this.name) {
+        if (array[1] === this.name) {
           isRepeat = true
         }
       })

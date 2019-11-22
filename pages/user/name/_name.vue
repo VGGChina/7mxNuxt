@@ -42,7 +42,7 @@ import UserInfo from '~/components/userinfo/UserInfo'
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
 import AlbumList from '~/components/album-list/index'
 import IndexFooter from '~/components/footer/IndexFooter'
-import NoContent from '~/components/no-content/NoContent'
+import NoContent from '~/components/no-content/NoContent_3'
 import TagList from '~/components/tag-list/TagList'
 import loading from '~/components/loading/Loading'
 
