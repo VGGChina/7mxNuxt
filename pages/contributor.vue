@@ -108,24 +108,16 @@ export default {
       this.currentIndex = index
     },
     initProgress() {
-      try {
-        const cardStatus = this.loginUser.user_data.card_status
-        if (cardStatus && cardStatus != '0') {
-          this.progressIndex = 3
-          this.currentIndex = 3
-        }
-      } catch (e) {
-        console.log(e)
+      const cardStatus = this.loginUser.user_data.card_status
+      if (cardStatus && cardStatus != '0') {
+        this.progressIndex = 3
+        this.currentIndex = 3
       }
 
-      try {
-        const companyStatus = this.loginUser.user_data.company_status
-        if (companyStatus && companyStatus != '0') {
-          this.progressIndex = 3
-          this.currentIndex = 3
-        }
-      } catch (e) {
-        console.log(e)
+      const companyStatus = this.loginUser.user_data.company_status
+      if (companyStatus && companyStatus != '0') {
+        this.progressIndex = 3
+        this.currentIndex = 3
       }
     }
   }

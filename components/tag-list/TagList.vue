@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import noContent from '~/components/no-content/NoContent'
+import noContent from '~/components/no-content/NoContent_3'
 import loading from '~/components/loading/Loading'
 
 export default {

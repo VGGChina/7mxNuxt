@@ -147,7 +147,7 @@ var utilHelper = {
 
     try {
       if (typeof userData.name !== 'undefined' && userData.name != null && userData.name.length > 0) {
-        return '/' + userData.name
+        return '/user/name/' + userData.name
       } else {
         let eputUserId = ''
 
@@ -161,7 +161,7 @@ var utilHelper = {
           eputUserId = userData.id
         }
 
-        return '/user/' + eputUserId
+        return '/user/id/' + eputUserId
       }
     } catch (e) {
       console.log(e)

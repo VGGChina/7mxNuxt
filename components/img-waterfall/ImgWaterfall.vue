@@ -59,7 +59,7 @@
 <script>
 import EditDialog from './edit-dialog/EditDialog'
 import ImgItem from './img-item/ImgItem'
-import NoContent from '~/components/no-content/NoContent'
+import NoContent from '~/components/no-content/NoContent_3'
 import Waterfall from './vue-waterfall/waterfall'
 import WaterfallSlot from './vue-waterfall/waterfall-slot'
 import loading from '~/components/loading/Loading'

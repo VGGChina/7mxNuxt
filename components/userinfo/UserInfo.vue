@@ -141,7 +141,7 @@ export default {
 
       // this.userInfoHeight = document.querySelector('.info-container').offsetHeight
       // return this.userInfoHeight + 'px'
-      return '318px'
+      return '342px'
     },
     userBg() {
       try {
@@ -248,7 +248,7 @@ export default {
     async intoOther() {
       const otherRes = await this.$axios.userService.intoOther()
 
-      if (otherRes.data.out == '1') {
+      if (otherRes.data.out === '1') {
         this.loginUser.gaga_id = otherRes.data.data.gaga_id
 
         this.$store.commit('login/loginUser', this.loginUser)

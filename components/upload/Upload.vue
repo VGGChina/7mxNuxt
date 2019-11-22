@@ -419,7 +419,7 @@ export default {
             upTokenData = res.data
           }
         }
-      })
+      }, this.$store.state.login.xToken)
 
       if (!upTokenData) {
         return
@@ -495,7 +495,7 @@ export default {
               this.$toast.warn('上传失败，请刷新页面后重试')
               return {}
             }
-          })
+          }, this.$store.state.login.xToken)
 
           return this.upTokenData.uptoken
         },
