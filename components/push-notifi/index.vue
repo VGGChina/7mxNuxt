@@ -114,15 +114,17 @@ export default {
     // 清除红点
     clearRedDot(i) {
       if (i == undefined) return
+      let temp = JSON.parse(JSON.stringify(this.loginUser))
       if (i == 0) {
-        this.loginUser.un_comment_num = 0
-        this.loginUser.un_fan_num = 0
-        this.loginUser.un_like_num = 0
+        temp.un_comment_num = 0
+        temp.un_fan_num = 0
+        temp.un_like_num = 0
       } else if (i == 1) {
-        this.loginUser.un_needed_num = 0
+        temp.un_needed_num = 0
       } else if (i == 2) {
-        this.loginUser.un_notice_num = 0
+        temp.un_notice_num = 0
       }
+      this.$store.commit('login/loginUser', temp)
     },
     more() {
       this.select()
