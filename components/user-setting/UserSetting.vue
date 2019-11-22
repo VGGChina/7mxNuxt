@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import getUptoken from '~/api/uptokenService'
+// import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
 
 export default {
@@ -352,20 +352,32 @@ export default {
             const extension = file.type.split('/')[1] || 'jpeg'
             const data = uploadUtil.getUploadData('images', 'photos/', extension)
 
-            getUptoken(data, request => {
-              if (request.status === 200) {
-                const res = JSON.parse(request.responseText)
-                if (res.out === '1') {
-                  this.uploadData = res.data
-                } else {
-                  this.$toast.warn(res.msg)
-                  this.uploadData = {}
-                }
+            this.$axios.uptokenService.uptoken(data).then((res) => {
+              if (res.data.out === '1') {
+                this.uploadData = res.data.data
               } else {
-                this.$toast.warn('上传失败，请刷新页面后重试')
-                return {}
+                this.$toast.warn(res.data.msg)
+                this.uploadData = {}
               }
+            }).catch(() => {
+              this.$toast.warn('上传失败，请刷新页面后重试')
+              return {}
             })
+
+            // getUptoken(data, request => {
+            //   if (request.status === 200) {
+            //     const res = JSON.parse(request.responseText)
+            //     if (res.out === '1') {
+            //       this.uploadData = res.data
+            //     } else {
+            //       this.$toast.warn(res.msg)
+            //       this.uploadData = {}
+            //     }
+            //   } else {
+            //     this.$toast.warn('上传失败，请刷新页面后重试')
+            //     return {}
+            //   }
+            // })
             return this.uploadData.uptoken
           },
           get_new_uptoken: true,

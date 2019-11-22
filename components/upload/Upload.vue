@@ -173,9 +173,9 @@
 /* global QiniuJsSDK */
 /* global EXIF */
 import ImgPre from './img-pre/ImgPre'
-import getUptoken from '~/api/uptokenService'
+// import getUptoken from '~/api/uptokenService'
 import uploadUtil from '~/utils/uploadUtil'
-import { axiosPost } from '~/api/factory/axiosFactory'
+// import { axiosPost } from '~/api/factory/axiosFactory'
 import Selection from '~/components/selection/Selection'
 
 export default {
@@ -406,20 +406,25 @@ export default {
       })
       this.isWaterMark = false
     },
-    put64(file) {
+    async put64(file) {
       const extension = file.type.split('/')[1] || 'jpeg'
       const data = uploadUtil.getUploadData('images', 'photos2/', extension)
       let upTokenData = null
 
-      getUptoken(data, request => {
-        if (request.status === 200) {
-          const res = JSON.parse(request.responseText)
+      const res = await this.$axios.uptokenService.uptoken(data)
+      if (res.data.out === '1') {
+        upTokenData = res.data.data
+      }
 
-          if (res.out == '1') {
-            upTokenData = res.data
-          }
-        }
-      })
+      // getUptoken(data, request => {
+      //   if (request.status === 200) {
+      //     const res = JSON.parse(request.responseText)
+
+      //     if (res.out == '1') {
+      //       upTokenData = res.data
+      //     }
+      //   }
+      // })
 
       if (!upTokenData) {
         return
@@ -451,7 +456,14 @@ export default {
             file.thumbnailUrl = 'http://images.gaga.me/' + res.key
 
             // 自动打标签
-            axiosPost('//ai.dispatch.paixin.com/', { url: file.thumbnailUrl })
+            const data = {
+              url: '//ai.dispatch.paixin.com/',
+              data: {
+                url: file.thumbnailUrl
+              }
+            }
+            // axiosPost('//ai.dispatch.paixin.com/', { url: file.thumbnailUrl })
+            this.$axios(data)
               .then(res => {
                 res.data.data.forEach(e => {
                   this.$set(e, 'isSelected', false)
@@ -481,23 +493,38 @@ export default {
         uptoken_func: file => {
           const extension = file.type.split('/')[1] || 'jpeg'
           const data = uploadUtil.getUploadData('private', 'photos/', extension)
-
-          getUptoken(data, request => {
-            if (request.status === 200) {
-              const res = JSON.parse(request.responseText)
-              if (res.out === '1') {
-                this.upTokenData = res.data
-              } else {
-                this.$toast.warn(res.msg)
-                this.upTokenData = {}
-              }
+          // console.log('this', this)
+          // console.log('this.$axios.uptokenService', this.$axios.uptokenService)
+          // // console.log(this.$axios.uptokenService.uptoken(data))
+          // debugger
+          this.$axios.uptokenService.uptoken(data).then((res) => {
+            if (res.data.out === '1') {
+              this.upTokenData = res.data.data
             } else {
-              this.$toast.warn('上传失败，请刷新页面后重试')
-              return {}
+              this.$toast.warn(res.data.msg)
+              this.upTokenData = {}
             }
+          }).catch(() => {
+            this.$toast.warn('上传失败，请刷新页面后重试')
+            return {}
           })
 
-          return this.upTokenData.uptoken
+          // getUptoken(data, request => {
+          //   if (request.status === 200) {
+          //     const res = JSON.parse(request.responseText)
+          //     if (res.out === '1') {
+          //       this.upTokenData = res.data
+          //     } else {
+          //       this.$toast.warn(res.msg)
+          //       this.upTokenData = {}
+          //     }
+          //   } else {
+          //     this.$toast.warn('上传失败，请刷新页面后重试')
+          //     return {}
+          //   }
+          // })
+
+          return vm.upTokenData.uptoken
         },
         get_new_uptoken: true,
         domain: 'private.gaga.com',
@@ -1037,8 +1064,12 @@ export default {
       }
 
       const url = '//es0.paixin.com/ai/feedback'
-
-      await axiosPost(url, rqBody, {})
+      const data = {
+        url: url,
+        data: rqBody
+      }
+      // await axiosPost(url, rqBody, {})
+      await this.$axios(data)
     }
   }
 }
