@@ -134,7 +134,11 @@ export default {
       this.showPushNotifi = !this.showPushNotifi
     },
     toContributor() {
-      this.$router.push({ name: 'contributor' })
+      if (this.isLogin) {
+        this.$router.push({ name: 'contributor' })
+      } else {
+        this.$store.commit('login/isShowLoginDialog', true)
+      }
     },
     cancelPushNotifi() {
       this.$bus.on('cancel', e => {
