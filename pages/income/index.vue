@@ -1,100 +1,96 @@
 <template>
-  <div class="income">
-    <div class="clear" />
-    <div class="main_menu">
-      <div class="menu_container">
-        <div class="user_info">
-          <div class="clear" />
-          <div
-            class="avartar"
-            :style="{
+    <div class="income">
+        <div class="clear"></div>
+        <div class="main_menu">
+            <div class="menu_container">
+                <div class="user_info">
+                    <div class="clear"></div>
+                    <div
+                        class="avartar"
+                        :style="{
               'backgroundImage': 'url(' + ($utilHelper.getCompressionUrl(loginUser.avatar, 300, 300) ||
-                require('~/assets/img/avatar-default.svg')) + ')'
-            }"
-          />
-          <div class="name">{{ loginUser.nick || loginUser.name }}</div>
-          <div class="num_info">
-            <div class="intro all_pics">
-              <div class="num">{{ sellDataLeft.media_num || 0 }}张</div>
-              <div class="type">全部作品</div>
+              require('~/assets/img/avatar-default.svg')) + ')'
+          }"
+                    ></div>
+                    <div class="name">{{ loginUser.nick || loginUser.name }}</div>
+                    <div class="num_info">
+                        <div class="intro all_pics">
+                            <div class="num">{{ sellDataLeft.media_num || 0 }}张</div>
+                            <div class="type">全部作品</div>
+                        </div>
+                        <div class="intro on_sell">
+                            <div class="num">{{ sellDataLeft.product_num || 0 }}张</div>
+                            <div class="type">上架作品</div>
+                        </div>
+                        <div class="intro income_num">
+                            <div class="num">{{ sellDataLeft.total_gain / 100 || 0 }}元</div>
+                            <div class="type">累计收益</div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="channel_entry">
+                    <div
+                        class="button"
+                        @click="choose(item, i)"
+                        :class="[ currentIndex == i ? 'selected' : '' ]"
+                        v-for="(item, i) in menuList"
+                        :key="item.id"
+                    >{{ item.name }}</div>
+                    <div @click="wantToSell" class="button-green sell-image">我要售图</div>
+                    <div class="contact">
+                        <a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank">
+                            <div class="button">联系客服</div>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="intro on_sell">
-              <div class="num">{{ sellDataLeft.product_num || 0 }}张</div>
-              <div class="type">上架作品</div>
-            </div>
-            <div class="intro income_num">
-              <div class="num">{{ sellDataLeft.total_gain / 100 || 0 }}元</div>
-              <div class="type">累计收益</div>
-            </div>
-            <div class="clear" />
-          </div>
         </div>
-        <div class="channel_entry">
-          <div
-            v-for="(item, i) in menuList"
-            :key="item.id"
-            class="button"
-            :class="[ currentIndex == i ? 'selected' : '' ]"
-            @click="choose(item, i)"
-          >{{ item.name }}</div>
-          <div class="button-green sell-image" @click="wantToSell">我要售图</div>
-          <div class="contact">
-            <a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank">
-              <div class="button">联系客服</div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 订单详情 -->
-    <div v-show="currentIndex != 1" class="detail">
-      <div class="top_bar">
-        <div
-          class="button onSell"
-          :style="{
+        <!-- 订单详情 -->
+        <div class="detail" v-show="currentIndex != 1">
+            <div class="top_bar">
+                <div
+                    @click="onClickSell(0)"
+                    class="button onSell"
+                    :style="{
             background: currentList == 0 ? 'rgba(0,0,0,0.06' : 'rgba(0,0,0,0)'
           }"
-          @click="onClickSell(0)"
-        >已上架</div>
-        <div
-          class="button order"
-          :style="{
+                >已上架</div>
+                <div
+                    @click="onClickSell(1)"
+                    class="button order"
+                    :style="{
             background: currentList == 1 ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0)'
           }"
-          @click="onClickSell(1)"
-        >订单</div>
-      </div>
-      <div v-scroll="fetchData" class="item_wrap">
-        <list :detail-list="detailList" :end="line" />
-        <div v-if="detailList.length < 1">
-          <no-content
-            :is-no-content-show="detailList.length < 1 && !loading && line == 'end'"
-            :content="noContentText"
-          />
+                >订单</div>
+            </div>
+            <div class="item_wrap" v-scroll="fetchData">
+                <list :detailList="detailList" :end="line"></list>
+                <div v-if="detailList.length < 1">
+                    <no-content
+                        :isNoContentShow="detailList.length < 1 && !loading && line == 'end'"
+                        :content="noContentText"
+                    ></no-content>
+                </div>
+            </div>
         </div>
-      </div>
+        <!-- 提现 -->
+        <withdraw v-show="currentIndex == 1" :user="loginUser"></withdraw>
     </div>
-    <!-- 提现 -->
-    <withdraw v-show="currentIndex == 1" :user="loginUser" />
-  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import NoContent from '~/components/no-content/NoContent'
 import list from './list/index'
 import withdraw from './withdraw/index'
 
 export default {
-  name: 'Income',
+  name: 'income',
   head() {
     return {
       title: '收益中心 - 7MX 中国领先的视觉创作社区'
     }
-  },
-  components: {
-    'no-content': NoContent,
-    list: list,
-    withdraw: withdraw
   },
   data: () => ({
     menuList: [
@@ -111,19 +107,6 @@ export default {
     currentList: 0,
     loading: false
   }),
-  computed: {
-    loginUser() {
-      return this.$store.state.login.loginUser
-    },
-    noContentText() {
-      return this.currentList == 0 ? 'Sorry, 没有上架作品' : 'Sorry, 暂无订单'
-    }
-  },
-  watch: {
-    currentList(val) {
-      this.reload()
-    }
-  },
   created() {
     if (!this.$utilHelper.isEmptyObj(this.loginUser)) {
       this.getSellNum()
@@ -165,7 +148,7 @@ export default {
       this.currentList = index
     },
     fetchData() {
-      if (this.line === 'end') return
+      if (this.line == 'end') return
 
       if (this.loading) return
 
@@ -192,26 +175,26 @@ export default {
      * 如何卖图
      */
     showHowToSell() {
-      this.$store.commit('help_show', { current: { index: 1, subIndex: -1 }})
+      this.$store.commit('help_show', { current: { index: 1, subIndex: -1 } })
     },
     /**
      * 图数 售卖数 利润
      */
     async getSellNum() {
-      const res = await this.$axios.userService.getSellNum()
+      let res = await this.$axios.userService.getSellNum()
       this.sellDataLeft = res.data.data
     },
     /**
      * 正在卖的列表
      */
     async getOnSellList() {
-      const params = { line: this.line, limit: 24 }
-      const data = {
-        product: '1',
-        user_id: this.loginUser.gaga_id
-      }
+      let params = { line: this.line, limit: 24 },
+        data = {
+          product: '1',
+          user_id: this.loginUser.gaga_id
+        }
 
-      const res = await this.$axios.mediaService.originList(data, params)
+      let res = await this.$axios.mediaService.originList(data, params)
 
       this.afterListPull(res)
     },
@@ -219,9 +202,9 @@ export default {
      * 订单列表
      */
     async getOrderList() {
-      const params = { line: this.line }
+      let params = { line: this.line }
 
-      const res = await this.$apiFactory.userService.getOrderList({}, params)
+      let res = await this.$apiFactory.userService.getOrderList({}, params)
 
       this.afterListPull(res)
     },
@@ -229,7 +212,7 @@ export default {
      * 获取数据后续处理
      */
     afterListPull(res) {
-      if (res.data.out === '1') {
+      if (res.data.out == '1') {
         this.detailList.push(...res.data.data)
       }
 
@@ -237,6 +220,24 @@ export default {
 
       this.line = res.data.line
     }
+  },
+  watch: {
+    currentList(val) {
+      this.reload()
+    }
+  },
+  computed: {
+    loginUser() {
+      return this.$store.state.login.loginUser
+    },
+    noContentText() {
+      return this.currentList == 0 ? 'Sorry, 没有上架作品' : 'Sorry, 暂无订单'
+    }
+  },
+  components: {
+    'no-content': NoContent,
+    list: list,
+    withdraw: withdraw
   }
 }
 </script>
