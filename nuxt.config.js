@@ -23,6 +23,9 @@ export default {
       },
       { src: '/js/plupload.full.min.js',
         async: true
+      },
+      { src: '/js/exif.js',
+        async: true
       }
     ]
   },
