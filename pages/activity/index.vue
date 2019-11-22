@@ -39,14 +39,12 @@
 <script>
 import TableNav from '~/components/table/TableNav'
 import NoContent from '~/components/no-content/NoContent'
-import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
 
 export default {
   name: 'Activity',
   components: {
     TableNav,
-    'no-content': NoContent,
-    ImgWaterfall
+    'no-content': NoContent
   },
   data: () => ({
     navList: [
@@ -121,7 +119,6 @@ export default {
     }
   },
 
-  mounted() {},
   methods: {
     tableChanged(index) {
       this.tableIndex = index
