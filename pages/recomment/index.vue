@@ -1,22 +1,22 @@
 <template>
-    <div class="recomment">
-        <div class="title">定制您的个性化推荐 ?</div>
-        <div class="recomment_wrap">
-            <transition name="fade_tags_recommend" mode="out-in">
-                <TagList v-if="pageIndex == 0" :tags="tags[0]" key="0"></TagList>
-                <TagList v-if="pageIndex == 1" :tags="tags[1]" key="1"></TagList>
-            </transition>
-        </div>
-        <div v-if="tags.length > 0" class="tip_points">
-            <div
-                v-for="(point, i) in new Array(2)"
-                :key="i"
-                class="point"
-                :style=" { 'background': i==pageIndex ? 'rgba(0,0,0,.2)' : '' } "
-            ></div>
-        </div>
-        <div @click="next" class="next button-green">{{ operation }}</div>
+  <div class="recomment">
+    <div class="title">定制您的个性化推荐 ?</div>
+    <div class="recomment_wrap">
+      <transition name="fade_tags_recommend" mode="out-in">
+        <TagList v-if="pageIndex == 0" :tags="tags[0]" key="0"></TagList>
+        <TagList v-if="pageIndex == 1" :tags="tags[1]" key="1"></TagList>
+      </transition>
     </div>
+    <div v-if="tags.length > 0" class="tip_points">
+      <div
+        v-for="(point, i) in new Array(2)"
+        :key="i"
+        class="point"
+        :style=" { 'background': i==pageIndex ? 'rgba(0,0,0,.2)' : '' } "
+      ></div>
+    </div>
+    <div @click="next" class="next button-green">{{ operation }}</div>
+  </div>
 </template>
 <script>
 import TagList from '~/components/tag-list/TagList'
@@ -54,6 +54,7 @@ export default {
           }
         }
       }
+      console.log(this.tags)
     }
   },
   created() {

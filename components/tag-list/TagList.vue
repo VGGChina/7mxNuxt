@@ -8,7 +8,7 @@
               <!-- v-lazy:background-image.container="$utilHelper.getCompressionUrl(item.medias[0].image)" -->
               <!-- :style="'background-image:url\'' + $utilHelper.getCompressionUrl(item.medias[0].image) + '\')'" -->
               <div
-                :style="'background-image:url\'' + $utilHelper.getCompressionUrl(item.medias[0].image) + '\')'"
+                :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.medias[0].image) + ')'}"
                 class="tag-left"
               />
             </a>
@@ -16,14 +16,14 @@
             <div class="tag-right">
               <a v-if="item.medias[1]" :href="'/photo/' + item.medias[1].id" target="blank">
                 <div
-                  :style="'background-image:url\'' + $utilHelper.getCompressionUrl(item.medias[1].image) + '\')'"
+                  :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.medias[1].image) + ')'}"
                   class="tag-top"
                 />
               </a>
               <div v-else class="tag-top" />
               <a v-if="item.medias[2]" :href="'/photo/' + item.medias[2].id" target="blank">
                 <div
-                  :style="'background-image:url(\'' + $utilHelper.getCompressionUrl(item.medias[2].image) + '\')'"
+                  :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.medias[2].image) + ')'}"
                   class="tag-bottom"
                 />
               </a>
