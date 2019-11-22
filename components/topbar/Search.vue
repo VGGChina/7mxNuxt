@@ -7,20 +7,20 @@
       </span>
     </div>
     <div
+      v-if="ifshow"
       id="topbar-search-container"
       class="search is_index"
-      v-if="ifshow"
       @mouseleave="isTypeShow=false"
     >
       <div @mouseenter="isTypeShow=true">
         <div class="searchTT">
-          <span class="searchType">{{searchValue}}</span>
-          <i class="search__dropDown_icon"></i>
-          <div class="vertical_line"></div>
+          <span class="searchType">{{ searchValue }}</span>
+          <i class="search__dropDown_icon" />
+          <div class="vertical_line" />
         </div>
-        <div class="searchTypeChoose" v-show="isTypeShow">
-          <div class="blankB"></div>
-          <div class="triangle"></div>
+        <div v-show="isTypeShow" class="searchTypeChoose">
+          <div class="blankB" />
+          <div class="triangle" />
           <div class="chooses">
             <div class="onshow" @click="searchValue = '图  片'; isTypeShow=false; tableIn=0">图 片</div>
             <div @click="searchValue = '商  店';isTypeShow=false; tableIn=1">商 店</div>
@@ -28,7 +28,7 @@
           </div>
         </div>
       </div>
-      <input type="text" v-model="searchInput" placeholder="搜索" @keyup.enter="search">
+      <input v-model="searchInput" type="text" placeholder="搜索" @keyup.enter="search">
       <img class="searchIcon" src="./img/searchIcon.svg" alt="" @click="search">
     </div>
   </div>
@@ -44,21 +44,6 @@ export default {
     isTypeShow: false,
     tableIn: 0
   }),
-  methods: {
-    search: function() {
-      this.$router.push({
-        name: 'search-tag-table-page',
-        params: {
-          tag: this.searchInput,
-          table: this.tableIn,
-          page: 1
-        }
-      })
-    },
-    toIndex() {
-      window.location.replace('/')
-    }
-  },
   watch: {
     '$route.params.tag': function(val) {
       this.searchInput = val
@@ -75,6 +60,21 @@ export default {
       }
     },
     '$route.params.page': function(val) {}
+  },
+  methods: {
+    search: function() {
+      this.$router.push({
+        name: 'search-tag-table-page',
+        params: {
+          tag: this.searchInput,
+          table: this.tableIn,
+          page: 1
+        }
+      })
+    },
+    toIndex() {
+      window.location.replace('/')
+    }
   }
 }
 </script>
