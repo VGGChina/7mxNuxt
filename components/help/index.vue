@@ -1,37 +1,52 @@
-<template lang='pug'>
-  transition(name='opacity')
-    .help(v-show='show')
-      .bg(@click='cancel')
-      transition(name='fade_help')
-        .content(v-if='show')
-          .choose
-            .itemSideBar(v-if='item.data&&item.data.length>0' @click ='chooseIndex(i)' v-for='(item, i) in indexList' :class="[current.index == i ? 'currentIndex' : '' ]" )
-              img.icon( :src = 'item.icon' )
-              span.text {{ item.category }}
-              .right-green
-            .contact
-              a(href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank')
-                img( src='./img/qq2.svg' )
-          .context
-            .questionList(v-if='current.subIndex == -1')
-              .clear( style='height:1px')
-              .title( v-if='indexList[current.index]' ) {{ indexList[current.index].category }}相关问题
-              .questions(v-if='indexList[current.index]')
-                .question( @click='toQuestion(i)' v-for='(item, i) in indexList[current.index].data' )
-                  span {{ item.category }}
-                  .openPoint ·
-              .contactTip 您的问题不在此列? &nbsp;
-                a.toQQ( href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank' ) 点此联系客服
-              img.cute0( src='./img/paixin_cute_0.png' )
-              img.cute( src='./img/paixin_cute_1.png' )
-            .questionDetail(v-if='current.subIndex != -1')
-              .subIndex {{ this.articleTitle }}
-              .content_wrap(v-html='questionDetail')
-              .nomore —— & ——
+<template>
+  <transition name='opacity'>
+    <div class="help" v-show='show'>
+      <div class="bg" @click='cancel'>
+        <transition name='fade_help'>
+          <div class="content" v-if='show'>
+            <div class="choose">
+              <div class="itemSideBar" v-if='item.data&&item.data.length>0' @click ='chooseIndex(i)' v-for='(item, i) in indexList' :class="[current.index == i ? 'currentIndex' : '' ]" :key="i">
+                <img class="icon" :src = 'item.icon' />
+                <span class="text"> {{ item.category }}</span>
+                <div class="right-green"></div>
+              </div>
+              <div class="contact">
+                <a href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank' />
+                <img src='./img/qq2.svg' />
+              </div>
+            </div>
+            <div class="context">
+              <div class="questionList" v-if='current.subIndex == -1'>
+                <div class="clear" style='height:1px'></div>
+                <div class="title" v-if='indexList[current.index]'>{{ indexList[current.index].category }}相关问题</div>
+                <div class="questions" v-if='indexList[current.index]'>
+                  <div class="question" @click='toQuestion(i)' v-for='(item, i) in indexList[current.index].data' :key='i'>
+                    <span>{{ item.category }}</span>
+                    <div class="openPoint">·</div>
+                  </div>
+                </div>
+                <div class="contactTip">
+                  您的问题不在此列? &nbsp;
+                  <a class="toQQ" href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank'></a>
+                </div>
+                <img class="cute0" src='./img/paixin_cute_0.png'>
+                <img class="cute" src='./img/paixin_cute_1.png'>
+              </div>
+              <div class="questionDetail" v-if='current.subIndex != -1'>
+                <div class="subIndex">{{ this.articleTitle }}</div>
+                <div class="content_wrap" v-html='questionDetail'></div>
+                <div class="nomore">—— & ——</div>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
+    </div>
+  </transition>
 </template>
 
-<script>
 
+<script>
 import { mapState } from 'vuex'
 
 export default {
@@ -46,18 +61,19 @@ export default {
     }
   },
   created() {
+    console.log(11111)
     // 兼容页面一打开就通过路由直接打开帮助中心的情况
     if (this.show) this.init()
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     chooseIndex(i) {
-      this.$store.dispatch('helpShow', { current: { index: i, subIndex: -1 }})
+      this.$store.dispatch('helpShow', { current: { index: i, subIndex: -1 } })
     },
     toQuestion(i) {
-      this.$store.dispatch('helpShow', { current: { index: this.current.index, subIndex: i }})
+      this.$store.dispatch('helpShow', {
+        current: { index: this.current.index, subIndex: i }
+      })
       this.pullQuestionDetail()
     },
     cancel() {
@@ -80,7 +96,8 @@ export default {
         } else if (ele.category === '上传' || ele.category === '关键词') {
           ele.icon = require('./img/upload.svg')
         } else {
-          ele.icon = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+          ele.icon =
+            'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
         }
         this.indexList.push(ele)
       })
@@ -88,7 +105,8 @@ export default {
     },
     async pullQuestionDetail() {
       if (this.noQusetion()) return
-      const id = this.indexList[this.current.index].data[this.current.subIndex].id
+      const id = this.indexList[this.current.index].data[this.current.subIndex]
+        .id
       if (!id) return
       const res = await this.$axios.commonService.getQuestionDetail({ id: id })
       this.questionDetail = res.data.data.content
@@ -96,11 +114,12 @@ export default {
     noQusetion() {
       if (
         !this.show ||
-           this.current.subIndex == -1 ||
-          !this.indexList[this.current.index] ||
-          !this.indexList[this.current.index].data ||
-          !this.indexList[this.current.index].data[this.current.subIndex]
-      ) return true
+        this.current.subIndex == -1 ||
+        !this.indexList[this.current.index] ||
+        !this.indexList[this.current.index].data ||
+        !this.indexList[this.current.index].data[this.current.subIndex]
+      )
+        return true
       return false
     },
     async init() {
@@ -109,29 +128,31 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      show: state => state.help.show,
-      current: state => state.help.current
-    }),
+    show() {
+      return this.$store.state.help.show
+    },
+    current() {
+      return this.$store.state.help.current
+    },
     articleTitle() {
       if (this.noQusetion()) return
-      return this.indexList[this.current.index].data[this.current.subIndex].category
+      return this.indexList[this.current.index].data[this.current.subIndex]
+        .category
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
-
 .fade_help-enter-active,
 .fade_help-leave-active {
-    transition: all .5s;
+  transition: all 0.5s;
 }
 
 .fade_help-enter,
 .fade_help-leave-active {
-    opacity: 0;
-    transform: translate3d(0, -70px, 0);
+  opacity: 0;
+  transform: translate3d(0, -70px, 0);
 }
 
 .help {
@@ -204,7 +225,7 @@ export default {
     .openPoint {
       line-height: 56px;
       font-size: 2rem;
-      color: rgba(107, 228 ,130, 1);
+      color: rgba(107, 228, 130, 1);
     }
     .index {
       line-height: 60px;
@@ -216,20 +237,20 @@ export default {
 .choose {
   width: 160px;
   height: 100%;
-  background: rgba(242,242,242,.98);
+  background: rgba(242, 242, 242, 0.98);
   padding-top: 40px;
   box-sizing: border-box;
   position: relative;
   border-right: 1px solid rgba(0, 0, 0, 0.06);
-    .contact {
+  .contact {
     position: absolute;
-    width:56px;
+    width: 56px;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     img {
-      transition: all .3s;
-      opacity: .7;
+      transition: all 0.3s;
+      opacity: 0.7;
     }
     &:hover {
       img {
@@ -249,7 +270,7 @@ export default {
     .right-green {
       width: 4px;
       height: 24px;
-      background: rgba(107, 228 ,130, 1);
+      background: rgba(107, 228, 130, 1);
       position: absolute;
       right: 0;
       top: 12px;
@@ -264,14 +285,14 @@ export default {
     img.icon {
       width: 22px;
       opacity: 0.4;
-      transition: all .3s;
+      transition: all 0.3s;
       margin-top: 13px;
       float: left;
     }
     span.text {
       padding-left: 8px;
       color: rgba(0, 0, 0, 0.4);
-      transition: all .3s;
+      transition: all 0.3s;
     }
 
     &:hover {
@@ -300,7 +321,7 @@ export default {
       margin-top: 60px;
       font-size: 1.4rem;
       text-align: center;
-      color: rgba(0,0,0,0.7);
+      color: rgba(0, 0, 0, 0.7);
     }
     .cute0 {
       margin: 0 auto;
@@ -313,11 +334,11 @@ export default {
       display: block;
       width: 100px;
       margin-bottom: 100px;
-      opacity: .8;
+      opacity: 0.8;
     }
   }
   .questions {
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     border-left: 2px solid rgb(83, 228, 135);
     width: 500px;
     margin: 0 auto;
@@ -342,7 +363,7 @@ export default {
         right: 16px;
         top: 0;
         font-size: 2rem;
-        color: rgba(107, 228 ,130, 1);
+        color: rgba(107, 228, 130, 1);
         line-height: 58px;
       }
       &:hover {
@@ -365,7 +386,7 @@ export default {
     margin-top: 40px;
     text-align: center;
     // box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
-    color: rgba(0, 0, 0, .5);
+    color: rgba(0, 0, 0, 0.5);
     a {
       color: #6daaf3;
     }
@@ -376,13 +397,12 @@ export default {
   text-align: center;
   line-height: 100px;
   font-size: 1.2rem;
-  opacity: .2;
+  opacity: 0.2;
   user-select: none;
 }
 </style>
 
 <style lang='scss'>
-
 .questionDetail {
   padding: 60px 30px;
   padding-top: 44px;
@@ -402,10 +422,9 @@ export default {
       max-width: 100%;
       margin: 20px 0;
       margin-bottom: 40px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
       display: block;
     }
   }
 }
-
 </style>

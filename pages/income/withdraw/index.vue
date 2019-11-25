@@ -22,7 +22,6 @@
         </tr>
       </table>
     </div>
-
     <transition name="withdraw-dialog-fade">
       <div class="withdraw-dialog-mask" v-if="isShowDialog" @click.stop="isShowDialog = false">
         <div class="withdraw-dialog" @click.stop>
@@ -38,15 +37,15 @@
           </div>
           <div class="info-item">
             <span>收款人姓名：</span>
-            <input type="text" v-model="name" :placeholder="placeHolders.name" />
+            <input type="text" v-model="name" :placeholder="placeHolders.name">
           </div>
           <div class="info-item">
             <span>银行卡号：</span>
-            <input type="text" v-model="card" :placeholder="placeHolders.card" />
+            <input type="text" v-model="card" :placeholder="placeHolders.card">
           </div>
           <div class="info-item">
             <span>开户行：</span>
-            <input type="text" v-model="bankAddr" :placeholder="placeHolders.bankAddr" />
+            <input type="text" v-model="bankAddr" :placeholder="placeHolders.bankAddr">
           </div>
           <div class="attention">请填写至支行，如工商银行北京支行</div>
           <div class="info-item">
@@ -56,7 +55,7 @@
               autocomplete="new-password"
               v-model="password"
               :placeholder="placeHolders.password"
-            />
+            >
           </div>
           <button class="button-green" @click="commit">提交</button>
         </div>
@@ -71,7 +70,7 @@ export default {
   props: {
     user: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data: () => ({
@@ -96,7 +95,7 @@ export default {
   }),
   methods: {
     async getUserDetail() {
-      let res = await this.$apiFactory.getUserApi().getSellNum()
+      let res = await this.$axios.userService.getSellNum()
 
       if (res.data.out == '1') {
         let user = res.data.data
@@ -109,7 +108,13 @@ export default {
 
         this.incomeData.totalIn = user.total_in || 0
         if (user.bank_card.length > 0) {
-          this.placeHolders.card = `${user.bank_card.slice(0, 4)}****${user.bank_card.slice(user.bank_card.length - 4, user.bank_card.length)}`
+          this.placeHolders.card = `${user.bank_card.slice(
+            0,
+            4
+          )}****${user.bank_card.slice(
+            user.bank_card.length - 4,
+            user.bank_card.length
+          )}`
           this.placeHolders.cardOrgin = user.bank_card
         }
 
@@ -162,9 +167,7 @@ export default {
         bank_addr: this.bankAddr || this.placeHolders.bankAddr
       }
 
-      let res = await this.$apiFactory
-        .getPaixinApi()
-        .cashNeed(data)
+      let res = await this.$apiFactory.getPaixinApi().cashNeed(data)
 
       if (res.data.out == '1') {
         this.$toast.notice('提交成功')
@@ -183,11 +186,9 @@ export default {
       this.getUserDetail()
     }
   },
-  mounted() {
-
-  },
+  mounted() {},
   watch: {
-    'user': function (v) {
+    user: function(v) {
       if (Object.keys(v).length > 0) {
         this.getUserDetail()
       }
@@ -207,9 +208,7 @@ export default {
       return (this.incomeData.totalIn / 100).toFixed(2)
     }
   },
-  components: {
-
-  }
+  components: {}
 }
 </script>
 

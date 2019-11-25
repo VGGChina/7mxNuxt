@@ -1,18 +1,18 @@
 <template>
   <div>
-    <login-register />
-    <upload />
-    <upload-paixin />
-    <user-setting />
-    <improve-info />
-    <needed />
-    <topbar />
-    <!-- <help /> -->
-    <!-- <popup-album /> -->
-    <back-top />
-    <contact />
-    <confirmation-dialog />
-    <nuxt />
+    <login-register/>
+    <upload/>
+    <upload-paixin/>
+    <user-setting/>
+    <improve-info/>
+    <needed/>
+    <topbar/>
+    <help/>
+    <popup-album/>
+    <back-top/>
+    <contact/>
+    <confirmation-dialog/>
+    <nuxt/>
   </div>
 </template>
 <script>
@@ -22,8 +22,8 @@ import Upload from '~/components/upload/Upload'
 import UploadPaixin from '~/components/upload-paixin/UploadPaixin'
 import UserSetting from '~/components/user-setting/UserSetting'
 import ImproveInfo from '~/components/improve-info/ImproveInfo'
-// import PopupAlbum from '~/components/popup-album/index'
-// import Help from '~/components/help/index'
+import PopupAlbum from '~/components/popup-album/index'
+import Help from '~/components/help/index'
 import Needed from '~/components/needed/Needed'
 import BackTop from '~/components/back-top/BackTop'
 import Contact from '~/components/contact/Contact'
@@ -73,7 +73,8 @@ export default {
       return this.$store.state.login.xToken
     },
     notScroll() {
-      return this.isShowLoginDialog ||
+      return (
+        this.isShowLoginDialog ||
         this.isShowRegisterDialog ||
         this.isShowWithdrawDialog ||
         this.isShowUploadDialog ||
@@ -81,6 +82,7 @@ export default {
         this.isShowSettingDialog ||
         this.neededIsShow ||
         this.isShowConfirmationDialog
+      )
     }
   },
 
@@ -107,7 +109,7 @@ export default {
       // 登录状态
       const currentUser = this.$axios.userService.currentUser()
       // 种类列表
-      const categoryList = this.$axios.commonService.categoryList({ 'type': '6' })
+      const categoryList = this.$axios.commonService.categoryList({ type: '6' })
 
       const promises = [currentUser, categoryList]
 
