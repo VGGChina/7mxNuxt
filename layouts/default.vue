@@ -1,18 +1,18 @@
 <template>
   <div>
-    <login-register/>
-    <upload/>
-    <upload-paixin/>
-    <user-setting/>
-    <improve-info/>
-    <needed/>
-    <topbar/>
-    <help/>
-    <popup-album/>
-    <back-top/>
-    <contact/>
-    <confirmation-dialog/>
-    <nuxt/>
+    <login-register />
+    <upload />
+    <upload-paixin />
+    <user-setting />
+    <improve-info />
+    <needed />
+    <topbar />
+    <help />
+    <popup-album />
+    <back-top />
+    <contact />
+    <confirmation-dialog />
+    <nuxt />
   </div>
 </template>
 <script>
@@ -38,7 +38,7 @@ export default {
     UserSetting,
     ImproveInfo,
     // PopupAlbum,
-    // Help,
+    Help,
     Needed,
     BackTop,
     Contact,

@@ -1,40 +1,40 @@
 <template>
-  <transition name='opacity'>
-    <div class="help" v-show='show'>
-      <div class="bg" @click='cancel'>
-        <transition name='fade_help'>
-          <div class="content" v-if='show'>
+  <transition name="opacity">
+    <div v-show="show" class="help">
+      <div class="bg" @click="cancel">
+        <transition name="fade_help">
+          <div v-if="show" class="content">
             <div class="choose">
-              <div class="itemSideBar" v-if='item.data&&item.data.length>0' @click ='chooseIndex(i)' v-for='(item, i) in indexList' :class="[current.index == i ? 'currentIndex' : '' ]" :key="i">
-                <img class="icon" :src = 'item.icon' />
+              <div v-for="(item, i) in indexList" v-if="item.data&&item.data.length>0" class="itemSideBar" :key="i" :class="[current.index == i ? 'currentIndex' : '' ]" @click="chooseIndex(i)">
+                <img class="icon" :src="item.icon">
                 <span class="text"> {{ item.category }}</span>
-                <div class="right-green"></div>
+                <div class="right-green" />
               </div>
               <div class="contact">
-                <a href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank' />
-                <img src='./img/qq2.svg' />
+                <a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank" />
+                <img src="./img/qq2.svg">
               </div>
             </div>
             <div class="context">
-              <div class="questionList" v-if='current.subIndex == -1'>
-                <div class="clear" style='height:1px'></div>
-                <div class="title" v-if='indexList[current.index]'>{{ indexList[current.index].category }}相关问题</div>
-                <div class="questions" v-if='indexList[current.index]'>
-                  <div class="question" @click='toQuestion(i)' v-for='(item, i) in indexList[current.index].data' :key='i'>
+              <div v-if="current.subIndex == -1" class="questionList">
+                <div class="clear" style="height:1px" />
+                <div v-if="indexList[current.index]" class="title">{{ indexList[current.index].category }}相关问题</div>
+                <div v-if="indexList[current.index]" class="questions">
+                  <div v-for="(item, i) in indexList[current.index].data" :key="i" class="question" @click="toQuestion(i)">
                     <span>{{ item.category }}</span>
                     <div class="openPoint">·</div>
                   </div>
                 </div>
                 <div class="contactTip">
                   您的问题不在此列? &nbsp;
-                  <a class="toQQ" href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank'></a>
+                  <a class="toQQ" href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank" />
                 </div>
-                <img class="cute0" src='./img/paixin_cute_0.png'>
-                <img class="cute" src='./img/paixin_cute_1.png'>
+                <img class="cute0" src="./img/paixin_cute_0.png">
+                <img class="cute" src="./img/paixin_cute_1.png">
               </div>
-              <div class="questionDetail" v-if='current.subIndex != -1'>
+              <div v-if="current.subIndex != -1" class="questionDetail">
                 <div class="subIndex">{{ this.articleTitle }}</div>
-                <div class="content_wrap" v-html='questionDetail'></div>
+                <div class="content_wrap" v-html="questionDetail" />
                 <div class="nomore">—— & ——</div>
               </div>
             </div>
@@ -45,9 +45,7 @@
   </transition>
 </template>
 
-
 <script>
-import { mapState } from 'vuex'
 
 export default {
   name: 'HelpCenter',
@@ -55,29 +53,41 @@ export default {
     indexList: [],
     questionDetail: ''
   }),
+  computed: {
+    show() {
+      return this.$store.state.help.show
+    },
+    current() {
+      return this.$store.state.help.current
+    },
+    articleTitle() {
+      if (this.noQusetion()) return
+      return this.indexList[this.current.index].data[this.current.subIndex]
+        .category
+    }
+  },
   watch: {
     show(n, o) {
       if (n) this.init()
     }
   },
   created() {
-    console.log(11111)
     // 兼容页面一打开就通过路由直接打开帮助中心的情况
     if (this.show) this.init()
   },
   mounted() {},
   methods: {
     chooseIndex(i) {
-      this.$store.dispatch('helpShow', { current: { index: i, subIndex: -1 } })
+      this.$store.dispatch('help/help_show', { current: { index: i, subIndex: -1 }})
     },
     toQuestion(i) {
-      this.$store.dispatch('helpShow', {
+      this.$store.dispatch('help/help_show', {
         current: { index: this.current.index, subIndex: i }
       })
       this.pullQuestionDetail()
     },
     cancel() {
-      this.$store.dispatch('helpShow', { show: false })
+      this.$store.dispatch('help/help_show', { show: false })
     },
     async pullHelpList() {
       if (this.indexList.length > 1) return
@@ -118,26 +128,12 @@ export default {
         !this.indexList[this.current.index] ||
         !this.indexList[this.current.index].data ||
         !this.indexList[this.current.index].data[this.current.subIndex]
-      )
-        return true
+      ) { return true }
       return false
     },
     async init() {
       await this.pullHelpList()
       this.pullQuestionDetail()
-    }
-  },
-  computed: {
-    show() {
-      return this.$store.state.help.show
-    },
-    current() {
-      return this.$store.state.help.current
-    },
-    articleTitle() {
-      if (this.noQusetion()) return
-      return this.indexList[this.current.index].data[this.current.subIndex]
-        .category
     }
   }
 }
