@@ -3,6 +3,7 @@
     <table-nav
       :options="options"
       :is-loading="isLoading"
+      :default-index="tableIndex"
       @updateTableIndex="tableChanged"
     />
 

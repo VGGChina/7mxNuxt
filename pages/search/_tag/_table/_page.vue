@@ -1,35 +1,40 @@
 <template>
-    <div class="category-container">
-        <table-nav :options="options" :isLoading="isLoading" :defaultIndex="tableIndex"></table-nav>
-        <user-preview v-show="tableIndex==2" :userList="userList"></user-preview>
-        <img-waterfall
-            :imgList="imgList"
-            :line="line == 'end' ? line: ''"
-            :isToPaixin="isToPaixin"
-            :isLoading="isLoading"
-            :isShowLoading="true"
-            :isShowNoMore="!isShowPagination"
-        ></img-waterfall>
-        <pagination
-            style="margin: 64px 0 160px 0;"
-            v-show="!isLoading && isShowPagination"
-            :limit="limit"
-            :count="count"
-            :currentPage="$route.params.page"
-            :baseUrl="'/search/' + $route.params.tag + '/' + $route.params.table + '/'"
-            @paginationJumpToPage="jumpToPage"
-        ></pagination>
-    </div>
+  <div class="category-container">
+    <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex" />
+    <user-preview v-show="tableIndex==2" :user-list="userList" />
+    <img-waterfall
+      :img-list="imgList"
+      :line="line == 'end' ? line: ''"
+      :is-to-paixin="isToPaixin"
+      :is-loading="isLoading"
+      :is-show-loading="true"
+      :is-show-no-more="!isShowPagination"
+    />
+    <pagination
+      v-show="!isLoading && isShowPagination"
+      style="margin: 64px 0 160px 0;"
+      :limit="limit"
+      :count="count"
+      :current-page="$route.params.page"
+      :base-url="'/search/' + $route.params.tag + '/' + $route.params.table + '/'"
+      @paginationJumpToPage="jumpToPage"
+    />
+  </div>
 </template>
 
 <script>
 import TableNav from '~/components/table/TableNav'
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
-// import { axiosPost } from '~/service/factory/axiosFactory'
 import Pagination from '~/components/pagination/paginationJ'
 import UserPreview from '~/components/user-preview/UserPreview'
 
 export default {
+  components: {
+    ImgWaterfall,
+    TableNav,
+    Pagination,
+    UserPreview
+  },
   data() {
     return {
       userList: [],
@@ -40,34 +45,88 @@ export default {
       imgList: []
     }
   },
+  computed: {
+    isToPaixin() {
+      if (this.tableIndex == 0) {
+        return false
+      }
+
+      if (this.tableIndex == 1) {
+        return true
+      }
+      return false
+    },
+    isShowPagination() {
+      if (this.count == 0 || this.count < this.limit) {
+        return false
+      }
+
+      return true
+    },
+    options() {
+      const options = [
+        {
+          name: '图片搜索',
+          url: ''
+        },
+        {
+          name: '商店内容',
+          url: ''
+        },
+        {
+          name: '摄影师',
+          url: ''
+        }
+      ]
+
+      options.forEach((e, index) => {
+        if (index == 22) {
+          e.url = '/ranking/0/1'
+        } else {
+          e.url = '/search/' + this.$route.params.tag + '/' + index + '/1'
+        }
+      })
+      return options
+    }
+  },
+  watch: {
+    '$route.params.tag': function(val) {
+      document.title = this.$route.params.tag + ' - 7MX 中国领先的视觉创作社区'
+      this.reload()
+    },
+    '$route.params.tableIndex': function(val) {
+      this.reload()
+    },
+    '$route.params.page': function(val) {
+      this.reload()
+    }
+  },
   async asyncData({ $axios, params }) {
-    let table = params.table
-    let page = params.page
+    const table = params.table
+    const page = params.page
     let tempLine
     if (table != 2) {
       tempLine = (parseInt(page) - 1) * 20
     }
-    let tempList = []
+    const tempList = []
     let tempcount = 0
     let tempUserList = []
-    let rqBody = {
+    const rqBody = {
       keyword: params.tag,
       type: '6'
     }
 
-    let query = {
+    const query = {
       line: tempLine,
       limit: 20
     }
     if (table == 0 || table == 1) {
-      let url = 'https://free.es.dispatch.paixin.com/7mx/_search/'
+      const url = 'https://free.es.dispatch.paixin.com/7mx/_search/'
 
       if (table == 1) rqBody.product = 'plus'
 
-      let temp = { url: url, data: rqBody, params: query }
-      console.log(temp)
-      let res = await $axios(temp)
-      console.log(res)
+      const temp = { url: url, data: rqBody, params: query }
+      const res = await $axios(temp)
       if (res.data.out == '1') {
         tempList.push(...res.data.data)
       }
@@ -79,10 +138,10 @@ export default {
       tempcount = res.data.count
     } else {
       tempLine = params.page + ',0,0'
-      let query = {
+      const query = {
         line: tempLine
       }
-      let res = await $axios.userService.getPhotographerByName(
+      const res = await $axios.userService.getPhotographerByName(
         { search: rqBody.keyword, withmedias: '1' },
         query
       )
@@ -196,21 +255,21 @@ export default {
 
       this.isLoading = true
 
-      let url = '//free.es.dispatch.paixin.com/7mx/_search/'
+      const url = '//free.es.dispatch.paixin.com/7mx/_search/'
 
-      let rqBody = {
+      const rqBody = {
         keyword: this.$route.params.tag,
         type: '6'
       }
 
-      let query = {
+      const query = {
         line: this.line,
         limit: this.limit
       }
 
       if (this.tableIndex == 0) {
         try {
-          let res = await axiosPost(url, rqBody, query)
+          const res = await axiosPost(url, rqBody, query)
           this.afterResponse(res)
           return
         } catch (e) {
@@ -228,7 +287,7 @@ export default {
       if (this.tableIndex == 1) {
         rqBody.product = 'plus'
         try {
-          let res = await axiosPost(url, rqBody, query)
+          const res = await axiosPost(url, rqBody, query)
           this.afterResponse(res)
           return
         } catch (e) {
@@ -254,10 +313,10 @@ export default {
           //   this.line = this.$route.params.page + ',0,0'
           // }
           console.log('this.line', this.line)
-          let query = {
+          const query = {
             line: this.line
           }
-          let res = await this.$apiFactory
+          const res = await this.$apiFactory
             .getUserApi()
             .getPhotographerByName(
               { search: rqBody.keyword, withmedias: '1' },
@@ -293,67 +352,6 @@ export default {
         }
       }
     }
-  },
-  computed: {
-    isToPaixin() {
-      if (this.tableIndex == 0) {
-        return false
-      }
-
-      if (this.tableIndex == 1) {
-        return true
-      }
-    },
-    isShowPagination() {
-      if (this.count == 0 || this.count < this.limit) {
-        return false
-      }
-
-      return true
-    },
-    options() {
-      let options = [
-        {
-          name: '图片搜索',
-          url: ''
-        },
-        {
-          name: '商店内容',
-          url: ''
-        },
-        {
-          name: '摄影师',
-          url: ''
-        }
-      ]
-
-      options.forEach((e, index) => {
-        if (index == 22) {
-          e.url = '/ranking/0/1'
-        } else {
-          e.url = '/search/' + this.$route.params.tag + '/' + index + '/1'
-        }
-      })
-      return options
-    }
-  },
-  watch: {
-    '$route.params.tag': function(val) {
-      document.title = this.$route.params.tag + ' - 7MX 中国领先的视觉创作社区'
-      this.reload()
-    },
-    '$route.params.tableIndex': function(val) {
-      this.reload()
-    },
-    '$route.params.page': function(val) {
-      this.reload()
-    }
-  },
-  components: {
-    ImgWaterfall,
-    TableNav,
-    Pagination,
-    UserPreview
   }
 }
 </script>
@@ -366,5 +364,4 @@ export default {
   background: 555;
 }
 </style>
-
 
