@@ -1,52 +1,36 @@
-<template>
-  <transition name="opacity">
-    <div v-show="show" class="help">
-      <div class="bg" @click="cancel">
-        <transition name="fade_help">
-          <div v-if="show" class="content">
-            <div class="choose">
-              <div v-for="(item, i) in indexList" v-if="item.data&&item.data.length>0" class="itemSideBar" :key="i" :class="[current.index == i ? 'currentIndex' : '' ]" @click="chooseIndex(i)">
-                <img class="icon" :src="item.icon">
-                <span class="text"> {{ item.category }}</span>
-                <div class="right-green" />
-              </div>
-              <div class="contact">
-                <a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank" />
-                <img src="./img/qq2.svg">
-              </div>
-            </div>
-            <div class="context">
-              <div v-if="current.subIndex == -1" class="questionList">
-                <div class="clear" style="height:1px" />
-                <div v-if="indexList[current.index]" class="title">{{ indexList[current.index].category }}相关问题</div>
-                <div v-if="indexList[current.index]" class="questions">
-                  <div v-for="(item, i) in indexList[current.index].data" :key="i" class="question" @click="toQuestion(i)">
-                    <span>{{ item.category }}</span>
-                    <div class="openPoint">·</div>
-                  </div>
-                </div>
-                <div class="contactTip">
-                  您的问题不在此列? &nbsp;
-                  <a class="toQQ" href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank" />
-                </div>
-                <img class="cute0" src="./img/paixin_cute_0.png">
-                <img class="cute" src="./img/paixin_cute_1.png">
-              </div>
-              <div v-if="current.subIndex != -1" class="questionDetail">
-                <div class="subIndex">{{ this.articleTitle }}</div>
-                <div class="content_wrap" v-html="questionDetail" />
-                <div class="nomore">—— & ——</div>
-              </div>
-            </div>
-          </div>
-        </transition>
-      </div>
-    </div>
-  </transition>
+<template lang='pug'>
+  transition(name='opacity')
+    .help(v-show='show')
+      .bg(@click='cancel')
+      transition(name='fade_help')
+        .content(v-if='show')
+          .choose
+            .itemSideBar(v-if='item.data&&item.data.length>0' @click ='chooseIndex(i)' v-for='(item, i) in indexList' :class="[current.index == i ? 'currentIndex' : '' ]" )
+              img.icon( :src = 'item.icon' )
+              span.text {{ item.category }}
+              .right-green
+            .contact
+              a(href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank')
+                img( src='./img/qq2.svg' )
+          .context
+            .questionList(v-if='current.subIndex == -1')
+              .clear( style='height:1px')
+              .title( v-if='indexList[current.index]' ) {{ indexList[current.index].category }}相关问题
+              .questions(v-if='indexList[current.index]')
+                .question( @click='toQuestion(i)' v-for='(item, i) in indexList[current.index].data' )
+                  span {{ item.category }}
+                  .openPoint ·
+              .contactTip 您的问题不在此列? &nbsp;
+                a.toQQ( href='//q.url.cn/CDzAE8?_type=wpa&qidian=true' target='_blank' ) 点此联系客服
+              img.cute0( src='./img/paixin_cute_0.png' )
+              img.cute( src='./img/paixin_cute_1.png' )
+            .questionDetail(v-if='current.subIndex != -1')
+              .subIndex {{ this.articleTitle }}
+              .content_wrap(v-html='questionDetail')
+              .nomore —— & ——
 </template>
 
 <script>
-
 export default {
   name: 'HelpCenter',
   data: () => ({
@@ -78,7 +62,9 @@ export default {
   mounted() {},
   methods: {
     chooseIndex(i) {
-      this.$store.dispatch('help/help_show', { current: { index: i, subIndex: -1 }})
+      this.$store.dispatch('help/help_show', {
+        current: { index: i, subIndex: -1 }
+      })
     },
     toQuestion(i) {
       this.$store.dispatch('help/help_show', {
@@ -128,7 +114,9 @@ export default {
         !this.indexList[this.current.index] ||
         !this.indexList[this.current.index].data ||
         !this.indexList[this.current.index].data[this.current.subIndex]
-      ) { return true }
+      ) {
+        return true
+      }
       return false
     },
     async init() {
@@ -377,7 +365,7 @@ export default {
     line-height: 30px;
     border-radius: 100px;
     height: 30px;
-    padding: 10px;
+    // padding: 10px;
     margin: 0 auto;
     margin-top: 40px;
     text-align: center;
