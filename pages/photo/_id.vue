@@ -11,7 +11,7 @@
 
 <script>
 import Right from '~/components/right/Right'
-import Center from './center/Center'
+import Center from '~/components/photo_children/Center'
 import Keywords from '~/components/keywords/Keywords'
 import Comments from '~/components/comments/Comments'
 
