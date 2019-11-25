@@ -1,17 +1,17 @@
 <template>
   <div class="img-detail">
     <div class="detail-container">
-      <center :mediaDetail="mediaDetail" v-on:updateMedia="updateMedia"></center>
-      <right :mediaDetail="mediaDetail" :mediaExifList="mediaExifList"></right>
+      <center :media-detail="mediaDetail" @updateMedia="updateMedia" />
+      <right :media-detail="mediaDetail" :media-exif-list="mediaExifList" />
     </div>
-    <keywords :mediaDetail="mediaDetail"></keywords>
-    <comments :mediaDetail="mediaDetail" :commentList="commentList"></comments>
+    <keywords :media-detail="mediaDetail" />
+    <comments :media-detail="mediaDetail" :comment-list="commentList" />
   </div>
 </template>
 
 <script>
 import Right from '~/components/right/Right'
-import Center from './center/Center'
+import Center from '~/components/photo_children/Center'
 import Keywords from '~/components/keywords/Keywords'
 import Comments from '~/components/comments/Comments'
 
@@ -47,10 +47,9 @@ export default {
       tempCommentList.push(...res_commentList.data.data)
     }
 
-    let res_exifUrl = await $axios.mediaService.exifUrl({
+    const res_exifUrl = await $axios.mediaService.exifUrl({
       media_id: tempMediaDetail.id
     })
-    console.log(res_exifUrl.data)
 
     let tempMediaExifList = [
       {
@@ -104,7 +103,7 @@ export default {
     }
 
     function getMediaExifList(mediaExifList, exifData) {
-      for (let key in exifData) {
+      for (const key in exifData) {
         if (isInArray(mediaExifList, key)) {
           for (let i = 0; i < mediaExifList.length; i++) {
             if (mediaExifList[i].key == key) {
@@ -117,20 +116,19 @@ export default {
     }
 
     if (res_exifUrl.data.out == '1') {
-      let exifUrl = res_exifUrl.data.data.exif_url
+      const exifUrl = res_exifUrl.data.data.exif_url
       let res1
       if (exifUrl.indexOf('https') > -1) {
-        let temp = { url: exifUrl, method: 'GET' }
+        const temp = { url: exifUrl, method: 'GET' }
         res1 = await $axios(temp)
       } else {
-        let temp = { url: exifUrl.replace('http', 'https'), method: 'GET' }
+        const temp = { url: exifUrl.replace('http', 'https'), method: 'GET' }
         res1 = await $axios(temp)
       }
       if (res1.status == '200') {
         tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
       }
     }
-    console.log(tempMediaExifList)
     return {
       mediaDetail: tempMediaDetail,
       commentList: tempCommentList,
@@ -176,12 +174,6 @@ export default {
         return '7MX - 中国领先的视觉创作社区'
       }
     }
-  },
-  components: {
-    Right,
-    Center,
-    Keywords,
-    Comments
   }
 }
 </script>
