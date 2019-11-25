@@ -115,7 +115,9 @@ export default {
 
         this.$store.commit('login/isLogin', true)
 
-        this.$store.commit('login/setXtoken', data['x-token1'])
+        // this.$store.commit('login/setXtoken', data['x-token1'])
+
+        // window.localStorage['xToken'] = data['x-token1']
 
         if (data.name === '' || data.nick === '' || data.avatar === '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)

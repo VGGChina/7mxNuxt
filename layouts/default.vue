@@ -84,11 +84,11 @@ export default {
     }
   },
 
-  watch: {
-    xToken() {
-      this.$setCookie(this.xToken)
-    }
-  },
+  // watch: {
+  //   xToken() {
+  //     this.$setCookie(this.xToken)
+  //   }
+  // },
   created() {
     this.fetchPublic()
   },
@@ -115,9 +115,8 @@ export default {
       if (results[0].data.out === '1') {
         // 登录状态
         this.$store.commit('login/loginUser', results[0].data.data)
+        // this.$
         this.$store.commit('login/isLogin', true)
-
-        this.$bus.emit('loginSuccessful', results[0].data.data)
 
         if (results[0].data.data.name === '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)

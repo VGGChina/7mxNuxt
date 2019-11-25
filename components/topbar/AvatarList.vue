@@ -91,7 +91,8 @@ export default {
         if (res.data.out === '1') {
           this.$store.commit('login/loginUser', {})
           this.$store.commit('login/isLogin', false)
-          this.$store.commit('login/setXtoken', '')
+          window.localStorage.removeItem('xToken')
+          // this.$store.commit('login/setXtoken', '')
           this.$router.push({
             name: 'index'
           })

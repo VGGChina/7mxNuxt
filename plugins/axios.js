@@ -6,8 +6,12 @@ export default function({ $axios, store, app }) {
     }
     config.headers['Content-Type'] = 'application/json; charset=utf-8;'
     config.headers['no-cookie'] = '1'
-    if (app.$cookies.get('token')) {
-      config.headers['x-token'] = app.$cookies.get('token')
+    // if (app.$cookies.get('token')) {
+    // config.headers['x-token'] = app.$cookies.get('token')
+    // }
+    if (process.client) {
+      // window.localStorage['xToken'] = xToken
+      config.headers['x-token'] = window.localStorage['xToken']
     }
     config.withCredentials = true
     config.responseType = 'text'
@@ -16,9 +20,12 @@ export default function({ $axios, store, app }) {
 
   $axios.onResponse((response) => {
     const xToken = response.headers['x-token']
-    if (xToken) {
-      store.commit('login/setXtoken', xToken)
+    if (process.client) {
+      window.localStorage['xToken'] = xToken
     }
+    // if (xToken) {
+    //   store.commit('login/setXtoken', xToken)
+    // }
     return response
   })
 }

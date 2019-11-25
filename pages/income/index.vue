@@ -115,6 +115,9 @@ export default {
     loginUser() {
       return this.$store.state.login.loginUser
     },
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
     noContentText() {
       return this.currentList == 0 ? 'Sorry, 没有上架作品' : 'Sorry, 暂无订单'
     }
@@ -129,11 +132,14 @@ export default {
       this.getSellNum()
       this.fetchData()
     }
-
-    this.$bus.on('loginSuccessful', loginUser => {
+    if (this.isLogin) {
       this.getSellNum()
       this.fetchData()
-    })
+    }
+    // this.$bus.on('loginSuccessful', loginUser => {
+    //   this.getSellNum()
+    //   this.fetchData()
+    // })
   },
   methods: {
     /**
@@ -149,10 +155,10 @@ export default {
      * 切换左侧标签
      */
     choose(item, i) {
-      if (item.name == '如何卖图') {
+      if (item.name === '如何卖图') {
         this.showHowToSell()
         return
-      } else if (item.name == '我要提现') {
+      } else if (item.name === '我要提现') {
         this.giveMeMoney()
       }
       this.currentIndex = i
