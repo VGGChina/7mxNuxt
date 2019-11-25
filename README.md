@@ -1,4 +1,4 @@
-# 7MX_nuxt
+# 7MX
 
 > My kryptonian Nuxt.js project
 

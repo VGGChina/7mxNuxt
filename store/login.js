@@ -37,7 +37,9 @@ const mutations = {
     state.loginUser = user
   },
   setXtoken(state, xtoken) {
+    // console.log('新commit的token', xtoken)
     state.xToken = xtoken
+    this.$cookies.set('token', xtoken, { maxAge: 1000000 })
   },
   isLogin(state, isLogin) {
     state.isLogin = isLogin
