@@ -267,14 +267,22 @@ export default {
 }
 
 .dialog {
-  height: 220px;
+  /* height: 220px;
   background: url('./img/bg.png') no-repeat;
   position: absolute;
   background-size: contain;
   z-index: 10;
   padding: 30px 40px;
   top: -274px;
-  left: 212px;
+  left: 212px; */
+  height: 280px;
+    background: url(/_nuxt/components/contributor_children/img/bg.png) no-repeat;
+    position: absolute;
+    background-size: contain;
+    z-index: 10;
+    padding: 30px 40px;
+    top: -270px;
+    left: 280px;
 }
 
 .dialog div {
