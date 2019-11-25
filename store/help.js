@@ -6,8 +6,9 @@ const state = () => ({
 })
 
 const actions = {
-  helpShow({ commit, state }, info) {
-    commit('help/help_show', info)
+  help_show({ commit, state }, info) {
+    console.log(22)
+    commit('help_show', info)
   }
 }
 

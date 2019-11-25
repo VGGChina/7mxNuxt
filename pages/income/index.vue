@@ -198,7 +198,7 @@ export default {
      * 如何卖图
      */
     showHowToSell() {
-      this.$store.commit('help_show', { current: { index: 1, subIndex: -1 }})
+      this.$store.commit('help/help_show', { current: { index: 1, subIndex: -1 }})
     },
     /**
      * 图数 售卖数 利润

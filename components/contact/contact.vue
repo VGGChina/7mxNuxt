@@ -206,7 +206,7 @@ export default {
     },
     popupHelpCenter() {
       this.contact_menu()
-      this.$store.dispatch('helpShow')
+      this.$store.dispatch('help/help_show')
     },
     toQQ() {
       this.contact_menu()

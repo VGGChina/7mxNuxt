@@ -30,7 +30,12 @@
     "vue-bus": "^1.2.1"
   },
   "devDependencies": {
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.4.1",
     "node-sass": "^4.13.0",
+    "pug": "^2.0.3",
+    "pug-loader": "^2.4.0",
+    "pug-plain-loader": "^1.0.0",
     "sass-loader": "^8.0.0"
   }
 }
