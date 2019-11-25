@@ -87,6 +87,11 @@ export default {
   position: absolute;
   top: -10px;
 }
+
+.chooses{
+  padding-bottom: 12px;
+}
+
 .chooses > div {
   cursor: pointer;
   height: 24px;
