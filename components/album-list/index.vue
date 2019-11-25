@@ -49,7 +49,12 @@ export default {
   },
   methods: {
     toAlbumDetail(id) {
-      this.$router.push({ path: `album/${id}` })
+      this.$router.push({
+        name: 'album-album_id',
+        params: {
+          album_id: id
+        }
+      })
     },
     showDeleteAlbum(id, index) {
       if (!this.isLogin) {
