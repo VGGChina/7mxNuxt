@@ -5,7 +5,7 @@
         <span
           v-if="!item.url"
           class="category-list-router"
-          :class="{ selected : $route.params.tableIndex || defaultIndex == index }"
+          :class="{ selected : ($route.params.tableIndex || defaultIndex) == index }"
           @click="onOptionClicked(index)"
         >
           {{ item.name }}
@@ -14,7 +14,7 @@
         <nuxt-link
           v-if="item.url"
           class="category-list-router"
-          :class="{ selected : $route.params.tableIndex == index }"
+          :class="{ selected : ($route.params.tableIndex || defaultIndex) == index }"
           :to="item.url ? item.url : ''"
         >
           {{ item.name }}

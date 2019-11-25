@@ -95,6 +95,7 @@ export default {
       this.reload()
     },
     '$route.params.tableIndex': function(val) {
+      this.tableIndex = val
       this.reload()
     },
     '$route.params.page': function(val) {
@@ -312,7 +313,6 @@ export default {
           // } else {
           //   this.line = this.$route.params.page + ',0,0'
           // }
-          console.log('this.line', this.line)
           const query = {
             line: this.line
           }
