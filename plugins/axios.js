@@ -20,7 +20,7 @@ export default function({ $axios, store, app }) {
 
   $axios.onResponse((response) => {
     const xToken = response.headers['x-token']
-    if (process.client) {
+    if (process.client && xToken) {
       window.localStorage['xToken'] = xToken
     }
     // if (xToken) {
