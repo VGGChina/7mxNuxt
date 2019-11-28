@@ -26,7 +26,9 @@
       v-if="imgList.length > 0 && line != 'end'"
       class="load-more"
       @click="getMoreData"
-    >{{ isLoading ? '正在加载...' : '更多图片' }}</div>
+    >
+      {{ isLoading ? '正在加载...' : '更多图片' }}
+    </div>
 
     <!--更多合作 -->
     <cooperation-footer />
@@ -177,15 +179,18 @@ export default {
 
     // 热门图片
     const imgList = []
+    let line = '1,0,0'
     const data = { type: '6' }
-    const params = { line: '1,0,0', limit: '40' }
+    const params = { line: line, limit: '40' }
     const res_hotpics = await $axios.mediaService.randomRecommend(data, params)
     imgList.push(...res_hotpics.data.data)
+    line = res_hotpics.data.line
 
     return {
       // smallBannerList: smallBannerList,
       // photography_categoryLis
-      imgList: imgList
+      imgList: imgList,
+      line: line
     }
   },
 
@@ -196,8 +201,8 @@ export default {
         this.$store.commit('login/isShowLoginDialog', true)
         return
       }
-      // this.fetchData()
-      this.isLoading = true
+
+      this.fetchData()
     },
     setStyle(height, pageYOffset) {
       const taopBar = document.getElementById('topbar')
@@ -223,6 +228,15 @@ export default {
 
         taopBar.style.background = 'rgba(26, 26, 26, ' + transparent + ')'
       }
+    },
+    async fetchData() {
+      const data = { type: '6' }
+      const params = { line: this.line, limit: '40' }
+      this.isLoading = true
+      const res_hotpics = await this.$axios.mediaService.randomRecommend(data, params)
+      this.imgList.push(...res_hotpics.data.data)
+      this.line = res_hotpics.data.line
+      this.isLoading = false
     }
   }
 }
