@@ -15,15 +15,12 @@ const actions = {
 
 const mutations = {
   confirmationDialogData(state, data) {
-    console.log('commit data', data)
     state.confirmationDialogData = data
-    state.confirmationDialogData.isShowConfirmationDialog = true
   }
 }
 
 export default {
   state,
-  getters,
   actions,
   mutations
 }
