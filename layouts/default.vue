@@ -1,18 +1,18 @@
 <template>
   <div @click="cancel">
-    <login-register/>
-    <upload/>
-    <upload-paixin/>
-    <user-setting/>
-    <improve-info/>
-    <needed/>
-    <topbar/>
-    <help/>
-    <popup-album/>
-    <back-top/>
-    <contact/>
-    <confirmation-dialog/>
-    <nuxt/>
+    <login-register />
+    <upload />
+    <upload-paixin />
+    <user-setting />
+    <improve-info />
+    <needed />
+    <topbar />
+    <help />
+    <popup-album />
+    <back-top />
+    <contact />
+    <confirmation-dialog />
+    <nuxt />
   </div>
 </template>
 <script>
@@ -67,7 +67,7 @@ export default {
       return this.$store.state.needed.neededIsShow
     },
     isShowConfirmationDialog() {
-      return this.$store.state.confirmationDialog.isShowConfirmationDialog
+      return this.$store.state.confirmationDialog.confirmationDialogData.isShowConfirmationDialog
     },
     xToken() {
       return window.localStorage.xToken

@@ -33,16 +33,16 @@
 export default {
   computed: {
     isShowConfirmationDialog() {
-      return this.$store.state.confirmationDialog.isShowConfirmationDialog
+      return this.$store.state.confirmationDialog.confirmationDialogData.isShowConfirmationDialog
     },
     confirmationDialogTitle() {
-      return this.$store.state.confirmationDialog.confirmationDialogTitle
+      return this.$store.state.confirmationDialog.confirmationDialogData.confirmationDialogTitle
     },
     confirmFunction() {
-      return this.$store.state.confirmationDialog.confirmFunction
+      return this.$store.state.confirmationDialog.confirmationDialogData.confirmFunction
     },
     confirmFunctionParams() {
-      return this.$store.state.confirmationDialog.confirmFunctionParams
+      return this.$store.state.confirmationDialog.confirmationDialogData.confirmFunctionParams
     }
   },
   methods: {

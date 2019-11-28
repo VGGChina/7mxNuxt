@@ -7,13 +7,6 @@ const state = () => ({
   }
 })
 
-const getters = {
-  isShowConfirmationDialog: state => state.confirmationDialogData.isShowConfirmationDialog,
-  confirmationDialogTitle: state => state.confirmationDialogData.confirmationDialogTitle,
-  confirmFunction: state => state.confirmationDialogData.confirmFunction,
-  confirmFunctionParams: state => state.confirmationDialogData.confirmFunctionParams
-}
-
 const actions = {
   confirmationDialogData({ commit, state }, data) {
     commit('confirmationDialogData', data)
@@ -22,7 +15,9 @@ const actions = {
 
 const mutations = {
   confirmationDialogData(state, data) {
+    console.log('commit data', data)
     state.confirmationDialogData = data
+    state.confirmationDialogData.isShowConfirmationDialog = true
   }
 }
 
