@@ -1,18 +1,18 @@
 <template>
-  <div>
-    <login-register />
-    <upload />
-    <upload-paixin />
-    <user-setting />
-    <improve-info />
-    <needed />
-    <topbar />
-    <help />
-    <popup-album />
-    <back-top />
-    <contact />
-    <confirmation-dialog />
-    <nuxt />
+  <div @click="cancel">
+    <login-register/>
+    <upload/>
+    <upload-paixin/>
+    <user-setting/>
+    <improve-info/>
+    <needed/>
+    <topbar/>
+    <help/>
+    <popup-album/>
+    <back-top/>
+    <contact/>
+    <confirmation-dialog/>
+    <nuxt/>
   </div>
 </template>
 <script>
@@ -105,6 +105,10 @@ export default {
     }
   },
   methods: {
+    cancel() {
+      // 关闭通知推送窗口
+      this.$bus.emit('cancel', '')
+    },
     async fetchPublic() {
       // 登录状态
       const currentUser = this.$axios.userService.currentUser()

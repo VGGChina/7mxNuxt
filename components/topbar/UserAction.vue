@@ -53,7 +53,7 @@
       <avatar-list :is-show-list="isShowList && isLogin" />
     </div>
     <transition name="opacity_transform_bottom">
-      <PushNotifi v-show="showPushNotifi" />
+      <PushNotifi v-if="showPushNotifi" />
     </transition>
   </div>
 
