@@ -365,7 +365,7 @@ export default {
                 this.$toast.warn('上传失败，请刷新页面后重试')
                 return {}
               }
-            }, this.$store.state.login.xToken)
+            }, window.localStorage.xToken)
             return this.uploadData.uptoken
           },
           get_new_uptoken: true,
