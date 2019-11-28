@@ -70,7 +70,7 @@ export default {
       return this.$store.state.confirmationDialog.isShowConfirmationDialog
     },
     xToken() {
-      return this.$store.state.login.xToken
+      return window.localStorage.xToken
     },
     notScroll() {
       return (
