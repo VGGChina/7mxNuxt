@@ -17,7 +17,7 @@ export default {
   methods: {
     gode() {
       if (this.istype === 'ishotimg') {
-        const cur = JSON.parse(window.localStorage.getItem('crrentType'))
+        const cur = this.$store.state.category.crrentType
         this.$router.push({ path: `category/${cur.name}/${cur.id}/0/1` })
       } else {
         this.$router.push({ path: 'ranking/0/1' })

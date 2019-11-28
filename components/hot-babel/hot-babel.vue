@@ -53,12 +53,12 @@ export default {
       })
       return true
     })
-    window.localStorage.setItem('crrentType', JSON.stringify(this.categoryList[0]))
+    this.$store.commit('category/setCrrentType', this.categoryList[0])
 
     this.getHotPics()
 
     this.$bus.on('choosebabel', async index => {
-      window.localStorage.setItem('crrentType', JSON.stringify(this.categoryList[index]))
+      this.$store.commit('category/setCrrentType', this.categoryList[index])
       this.getHotPics(index)
     })
   },
