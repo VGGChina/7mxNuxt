@@ -38,7 +38,7 @@
             <a>品牌合作</a>
           </dd>
           <dd>
-            <a href="/static/pdf/xy.pdf">用户协议</a>
+            <a href="http://static.7mx.com/static/pdf/xy.pdf" target="_blank">用户协议</a>
           </dd>
           <dd>
             <span @click="toHelpCenter()">帮助中心</span>
@@ -50,7 +50,7 @@
         <dl>
           <dt>商业</dt>
           <dd>
-            <a href="/contributor" target="_blank">签约创作者</a>
+            <a target="_blank" @click="toContributor()">签约创作者</a>
           </dd>
           <dd>
             <a>提现收益</a>
@@ -117,12 +117,14 @@
 <script>
 export default {
   name: 'IndexFooter',
-  components: {
-
-  },
   data: () => ({
 
   }),
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    }
+  },
   methods: {
     toHelpCenter(to) {
       if (!to) {
@@ -131,6 +133,14 @@ export default {
         this.$store.commit('help/help_show', { current: { index: 4, subIndex: 0 }})
       } else if (to === 'order') {
         this.$store.commit('help/help_show', { current: { index: 2, subIndex: 0 }})
+      }
+    },
+
+    toContributor() {
+      if (this.isLogin) {
+        this.$router.push({ name: 'contributor' })
+      } else {
+        this.$store.commit('login/isShowLoginDialog', true)
       }
     }
   }
