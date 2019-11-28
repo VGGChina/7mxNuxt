@@ -1,4 +1,4 @@
-
+const nuxtPageCache = require('nuxt-page-cache')
 export default {
   mode: 'universal',
   /*
@@ -15,16 +15,20 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     script: [
-      { src: '/js/jsencrypt.min.js',
+      {
+        src: '/js/jsencrypt.min.js',
         async: true
       },
-      { src: '/js/qiniu.min.js',
+      {
+        src: '/js/qiniu.min.js',
         async: true
       },
-      { src: '/js/plupload.full.min.js',
+      {
+        src: '/js/plupload.full.min.js',
         async: true
       },
-      { src: '/js/exif.js',
+      {
+        src: '/js/exif.js',
         async: true
       }
     ]
@@ -121,6 +125,13 @@ export default {
 
   router: {
     // middleware: 'axiosMiddle'
-  }
-
+  },
+  serverMiddleware: [
+    nuxtPageCache.cacheSeconds(1, req => {
+      if (req.query && req.query.pageType) {
+        return req.query.pageType
+      }
+      return false
+    })
+  ]
 }
