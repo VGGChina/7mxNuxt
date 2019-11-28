@@ -46,8 +46,6 @@
 
       <button class="login-button" @click="commit">登录</button>
 
-      <button class="paixin-account" @click="toPxLogin">拍信登录</button>
-
       <div class="to-register" @click="toRegister">没有账号？立即注册</div>
     </div>
   </div>
@@ -134,12 +132,6 @@ export default {
       } else {
         this.$toast.warn(loginRes.data.msg)
       }
-    },
-    toPxLogin() {
-      this.$router.push({
-        name: 'paixin-login'
-      })
-      this.$store.commit('login/isShowLoginDialog', false)
     },
     toRegister() {
       this.$store.commit('login/isShowLoginDialog', false)
