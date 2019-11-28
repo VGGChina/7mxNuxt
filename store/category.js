@@ -1,5 +1,6 @@
 const state = () => ({
-  categoryList: []
+  categoryList: [],
+  crrentType: {}
 })
 
 const getters = {
@@ -24,6 +25,9 @@ const actions = {
 const mutations = {
   categoryList(state, list) {
     state.categoryList = list
+  },
+  setCrrentType(state, crrentType) {
+    state.crrentType = crrentType
   }
 }
 
