@@ -67,7 +67,8 @@ export default {
       return this.$store.state.needed.isShow
     },
     isShowConfirmationDialog() {
-      return this.$store.state.confirmationDialog.isShowConfirmationDialog
+      return this.$store.state.confirmationDialog.confirmationDialogData
+        .isShowConfirmationDialog
     },
     xToken() {
       return window.localStorage.xToken

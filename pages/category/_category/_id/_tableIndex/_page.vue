@@ -17,7 +17,7 @@
     <pagination
       style="margin: 64px 0 160px 0;"
       :line="line"
-      :base-url="'/category/' + $route.params.category + '/' + $route.params.id + '/' + tableIndex + '/'"
+      :base-url="'/category/' + $route.params.category + '/' + $route.params.id + '/' + $route.params.tableIndex + '/'"
       @paginationJumpToPage="jumpToPage"
     />
 
@@ -142,14 +142,24 @@ export default {
 
   methods: {
     jumpToPage(line) {
-      this.$router.push({
-        name: 'category',
-        params: {
-          id: this.$route.params.id,
-          tableIndex: this.tableIndex + '',
-          page: line.split(',')[0]
-        }
+      console.log('params', {
+        id: this.$route.params.id,
+        tableIndex: this.tableIndex + '',
+        page: line.split(',')[0],
+        category: this.$route.params.category
       })
+
+      this.$router.push({ path: `/category/${this.$route.params.category}/${this.$route.params.id}/${this.$route.params.tableIndex}/${line.split(',')[0]}` })
+
+      // this.$router.push({
+      //   name: 'category',
+      //   params: {
+      //     id: this.$route.params.id,
+      //     tableIndex: this.tableIndex + '',
+      //     page: line.split(',')[0],
+      //     category: this.$route.params.category
+      //   }
+      // })
     }
 
   }
