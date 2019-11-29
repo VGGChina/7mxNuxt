@@ -3,10 +3,12 @@ export default function({ $axios, store, app }) {
     config.method = 'POST'
     if (config.method.toLowerCase() === 'get') {
       config.method = 'GET'
+      config.headers['Sec-Fetch-Mode'] = 'cors'
+      config.headers['Sec-Fetch-Site'] = 'cross-site'
     }
     config.headers['Content-Type'] = 'application/json; charset=utf-8;'
     config.headers['no-cookie'] = '1'
-    config.headers['Sec-Fetch-Mode'] = 'cors'
+
     // if (app.$cookies.get('token')) {
     // config.headers['x-token'] = app.$cookies.get('token')
     // }
