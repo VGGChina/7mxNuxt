@@ -166,13 +166,6 @@ export default {
       userList: tempUserList
     }
   },
-  created() {
-    // document.title = this.$route.params.tag + ' - 7MX 中国领先的视觉创作社区'
-    // if (this.$route.params.tableIndex != 2) {
-    //   this.line = this.getLine()
-    // }
-    // this.fetchData()
-  },
   methods: {
     initOptions() {
       this.options.forEach((e, index) => {

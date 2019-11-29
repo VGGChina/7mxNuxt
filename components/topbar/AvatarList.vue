@@ -68,31 +68,12 @@ export default {
     }
   },
   methods: {
-    toUser() {
-      this.$router.push({
-        name: 'user-home',
-        params: {
-          name: this.loginUser.name
-        }
-      })
-    },
-    toUserLike() {
-      this.$router.push({
-        name: 'ulike'
-      })
-    },
-    toContributor() {
-      this.$router.push({
-        name: 'contributor'
-      })
-    },
     logout() {
       this.$axios.userService.logout().then(res => {
         if (res.data.out === '1') {
           this.$store.commit('login/loginUser', {})
           this.$store.commit('login/isLogin', false)
           window.localStorage.removeItem('xToken')
-          // this.$store.commit('login/setXtoken', '')
           this.$router.push({
             name: 'index'
           })

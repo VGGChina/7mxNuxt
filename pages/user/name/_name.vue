@@ -93,24 +93,11 @@ export default {
     const userinfo = await $axios.userService.userDetail(rqBody)
     if (userinfo.data.out === '1') {
       userInfo = userinfo.data.data
-    } else {
-      // this.$router.push({
-      //   name: 'redirectToIndex'
-      // })
     }
 
     // 作品
     const data = { user_id: userInfo.id }
     const params2 = { line: '' }
-
-    // if (this.userHomeNavIndex == 1) {
-    //   data.check = '1'
-    //   data.user_id = this.userInfo.id
-    // }
-
-    // if (this.userHomeNavIndex == 2) {
-    //   data.check = '2,3'
-    // }
 
     const works = await $axios.mediaService.originList(data, params2)
 

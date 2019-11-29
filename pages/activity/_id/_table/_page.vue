@@ -332,7 +332,6 @@ export default {
       out: res_detail.data.out,
       is_activity: res_detail.data.data.is_activity,
       now: !(new Date().getTime() - res_detail.data.data.close_time * 1000 > 0),
-      stage: res_detail.data.data.vote,
       line: tempLine,
       stage: tempStage,
       stageList: tempStageList,

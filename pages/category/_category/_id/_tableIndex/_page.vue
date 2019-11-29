@@ -142,24 +142,7 @@ export default {
 
   methods: {
     jumpToPage(line) {
-      console.log('params', {
-        id: this.$route.params.id,
-        tableIndex: this.tableIndex + '',
-        page: line.split(',')[0],
-        category: this.$route.params.category
-      })
-
       this.$router.push({ path: `/category/${this.$route.params.category}/${this.$route.params.id}/${this.$route.params.tableIndex}/${line.split(',')[0]}` })
-
-      // this.$router.push({
-      //   name: 'category',
-      //   params: {
-      //     id: this.$route.params.id,
-      //     tableIndex: this.tableIndex + '',
-      //     page: line.split(',')[0],
-      //     category: this.$route.params.category
-      //   }
-      // })
     }
 
   }
