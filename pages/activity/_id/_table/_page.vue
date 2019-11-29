@@ -371,10 +371,10 @@ export default {
     },
     jumpToPage(line) {
       this.$router.push({
-        name: 'activityDetail',
+        name: 'activity-id-table-page',
         params: {
           id: this.$route.params.id,
-          tableIndex: this.currentIndex + '',
+          table: this.currentIndex + '',
           page: line.split(',')[0]
         }
       })
