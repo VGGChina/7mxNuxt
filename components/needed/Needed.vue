@@ -55,7 +55,7 @@ export default {
       return this.$store.state.needed.isShow
     },
     neededMediaId() {
-      return this.$store.state.needed.neededMediaId
+      return this.$store.state.needed.mediaId
     }
   },
   methods: {
