@@ -127,8 +127,11 @@ export default {
         temp = { url: exifUrl.replace('http', 'https'), method: 'GET' }
       }
       axios(temp).then(
-        res => {
-          tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
+        res1 => {
+          console.log(res1)
+          if(res1.status == 200) {
+            tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
+          }
         }
       ).catch(
         err => {
