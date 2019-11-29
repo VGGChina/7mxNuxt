@@ -62,7 +62,7 @@ export default {
     '$route.params.page': function(val) {}
   },
   methods: {
-    search: function() {
+    search() {
       this.$router.push({
         name: 'search-tag-table-page',
         params: {

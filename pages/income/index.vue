@@ -37,7 +37,9 @@
             :class="[ currentIndex == i ? 'selected' : '' ]"
             @click="choose(item, i)"
           >{{ item.name }}</div>
-          <div class="button-green sell-image" @click="wantToSell">我要售图</div>
+          <nuxt-link to="contributor">
+            <div class="button-green sell-image">我要售图</div>
+          </nuxt-link>
           <div class="contact">
             <a href="//q.url.cn/CDzAE8?_type=wpa&qidian=true" target="_blank">
               <div class="button">联系客服</div>
@@ -142,12 +144,6 @@ export default {
     // })
   },
   methods: {
-    /**
-     * 我要售图
-     */
-    wantToSell() {
-      this.$router.push({ name: 'contributor' })
-    },
     giveMeMoney() {
       // this.$toast.notice('目前提现请联系客服');
     },

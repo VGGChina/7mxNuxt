@@ -222,7 +222,6 @@ export default {
 
       if (res.data.out === '1') {
         this.$toast.notice('修改密码成功')
-
         this.$router.push({
           name: 'index'
         })
