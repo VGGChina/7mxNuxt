@@ -13,16 +13,19 @@
           <div />
         </div>
 
-        <div
-          class="pic_wrap"
-          :style="{
-            'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.image) + ')'
-          }"
-          @click="toAlbumDetail(item.id)"
-        />
+        <nuxt-link :to="{ name: 'album-album_id', params: { album_id: item.id }}">
+          <div
+            class="pic_wrap"
+            :style="{
+              'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.image) + ')'
+            }"
+          />
+        </nuxt-link>
 
         <div class="desc_wrap">
-          <div class="name" @click="toAlbumDetail(item.id)">{{ item.name }}</div>
+          <nuxt-link :to="{ name: 'album-album_id', params: { album_id: item.id }}">
+            <div class="name">{{ item.name }}</div>
+          </nuxt-link>
           <div class="belong">作者 {{ item.user_data.nick || item.user_data.name }}</div>
         </div>
 
@@ -48,14 +51,6 @@ export default {
     }
   },
   methods: {
-    toAlbumDetail(id) {
-      this.$router.push({
-        name: 'album-album_id',
-        params: {
-          album_id: id
-        }
-      })
-    },
     showDeleteAlbum(id, index) {
       if (!this.isLogin) {
         this.$store.commit('login/isShowLoginDialog', true)
