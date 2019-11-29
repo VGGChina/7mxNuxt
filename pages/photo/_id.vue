@@ -1,7 +1,7 @@
 <template>
   <div class="img-detail">
     <div class="detail-container">
-      <center :media-detail="mediaDetail" :firstMedia="firstMedia" :originList="originList" @updateMedia="updateMedia" />
+      <center :media-detail="mediaDetail" :first-media="firstMedia" :origin-list="originList" @updateMedia="updateMedia" />
       <right :media-detail="mediaDetail" :media-exif-list="mediaExifList" />
     </div>
     <keywords :media-detail="mediaDetail" />
@@ -10,6 +10,9 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+
 import Right from '~/components/right/Right'
 import Center from '~/components/photo_children/Center'
 import Keywords from '~/components/keywords/Keywords'
@@ -37,7 +40,6 @@ export default {
     if (res.data.out === '1') {
       tempMediaDetail = res.data.data
     }
-    console.log(tempMediaDetail)
     const res_commentList = await $axios.mediaService.commentList(
       { media_id: tempMediaDetail.id },
       { line: '' }
@@ -118,39 +120,36 @@ export default {
     if (res_exifUrl.data.out == '1') {
       const exifUrl = res_exifUrl.data.data.exif_url
       let res1
+      let temp
       if (exifUrl.indexOf('https') > -1) {
-        const temp = { url: exifUrl, method: 'GET' }
-        res1 = await $axios(temp)
+        temp = { url: exifUrl, method: 'GET' }
       } else {
-        const temp = { url: exifUrl.replace('http', 'https'), method: 'GET' }
-        res1 = await $axios(temp)
+        temp = { url: exifUrl.replace('http', 'https'), method: 'GET' }
       }
-      if (res1.status == '200') {
-        tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
-      }
+      res1 = await axios(temp)
+
+      tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
     }
 
+    const rqBody_center = {
+      user_id: tempMediaDetail.user_data.id
+    }
+    const query_center = {
+      line: ''
+    }
 
-    let rqBody_center = {
-        user_id: tempMediaDetail.user_data.id
-      }
-      let query_center = {
-        line: ''
-      }
+    const res_center = await $axios.mediaService.originList(rqBody_center, query_center)
 
-     let res_center = await $axios.mediaService.originList(rqBody_center, query_center)
+    const firstMedia = tempMediaDetail
 
-     let firstMedia = tempMediaDetail
-     console.log(firstMedia)
-
-      let originList = []
-     if (res_center.data.out === '1') {
-        const array = res_center.data.data.filter(e => {
-          return e.id != firstMedia.id
-        })
-        originList.push(...array)
-        originList.splice(0, 0, firstMedia)
-      }
+    const originList = []
+    if (res_center.data.out === '1') {
+      const array = res_center.data.data.filter(e => {
+        return e.id != firstMedia.id
+      })
+      originList.push(...array)
+      originList.splice(0, 0, firstMedia)
+    }
 
     return {
       mediaDetail: tempMediaDetail,

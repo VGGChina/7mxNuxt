@@ -59,10 +59,8 @@ export default {
     '~/api/paixinService',
     '~/api/statisticsService',
     '~/api/tagService',
-    // '~/api/uptokenService',
     '~/api/userService',
 
-    '~/plugins/cookie',
     '~/plugins/scroll',
     '~/plugins/ecroll'
   ],
@@ -77,9 +75,7 @@ export default {
 
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
-    'cookie-universal-nuxt',
-    ['cookie-universal-nuxt', { alias: 'cookiz' }]
+    '@nuxtjs/proxy'
   ],
   axios: {
     proxy: true
