@@ -6,6 +6,7 @@ export default function({ $axios, store, app }) {
     }
     config.headers['Content-Type'] = 'application/json; charset=utf-8;'
     config.headers['no-cookie'] = '1'
+    config.headers['Sec-Fetch-Mode'] = 'cors'
     // if (app.$cookies.get('token')) {
     // config.headers['x-token'] = app.$cookies.get('token')
     // }

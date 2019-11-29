@@ -19,11 +19,11 @@
         :is-show-remark="userHomeNavIndex == 2"
         :is-show-exclusive="userHomeNavIndex == 1"
       />
-      <album-list v-if="userHomeNavIndex == 4" :album-list="albumList"/>
-      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags"/>
-      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'"/>
+      <album-list v-if="userHomeNavIndex == 4" :album-list="albumList" />
+      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags" />
+      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'" />
       <div v-if="!isLoading && albumList.length < 1 && userHomeNavIndex == 4" class="no_wrap">
-        <no-content :is-no-content-show="true"/>
+        <no-content :is-no-content-show="true" />
       </div>
       <div style="padding-bottom: 580px;">
         <div
@@ -32,7 +32,7 @@
           @click="fetchData"
         >{{ isLoading ? '正在加载...' : '加载更多' }}</div>
       </div>
-      <index-footer/>
+      <index-footer />
     </div>
   </div>
 </template>
