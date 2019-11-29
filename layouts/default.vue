@@ -5,7 +5,7 @@
     <upload-paixin/>
     <user-setting/>
     <improve-info/>
-    <needed/>
+    <Needed/>
     <topbar/>
     <help/>
     <popup-album/>
@@ -64,7 +64,7 @@ export default {
       return this.$store.state.setting.isShowSettingDialog
     },
     neededIsShow() {
-      return this.$store.state.needed.neededIsShow
+      return this.$store.state.needed.isShow
     },
     isShowConfirmationDialog() {
       return this.$store.state.confirmationDialog.isShowConfirmationDialog

@@ -11,18 +11,16 @@
 <script>
 
 export default {
-  props: ['mediaDetail'],
+  props: ['mediaDetail','firstMedia','originList'],
   data: () => ({
     isShowIcons: false,
     isShowLikeIcon: true,
     naturalWidth: 0,
     naturalHeight: 0,
-    originList: [],
     line: '',
     isFetching: false,
     currentIndex: 0,
-    isFirst: true,
-    firstMedia: {},
+    isFirst: false,
     isImgOnLoading: false
   }),
   computed: {
@@ -69,56 +67,19 @@ export default {
       if (this.isFirst) {
         this.firstMedia = val
         this.isFirst = false
-        this.$nextTick(() => {
-          this.setCenterImgWidth()
-        })
+        
         this.fetchOriginData()
       } else {
         document.getElementById('image-container').style.background =
           'url(' + this.mediaDetail.image + ') no-repeat'
       }
     },
-    onresizeFlag: function() {
-      if (this.$utilHelper.viewportSize().height <= 680) {
-        return
-      }
-      this.setCenterImgWidth()
-    }
-  },
-  watch: {
-    // mediaDetail: function(val) {
-    //   let img = new Image()
-    //   let vm = this
-    //   img.onload = function() {
-    //     vm.isImgOnLoading = false
-    //   }
-    //   this.isImgOnLoading = true
-    //   img.src = val.image
-    //   if (this.isFirst) {
-    //     this.firstMedia = val
-    //     this.isFirst = false
-    //     this.$nextTick(() => {
-    //       this.setCenterImgWidth()
-    //     })
-    //     this.fetchOriginData()
-    //   } else {
-    //     document.getElementById('image-container').style.background =
-    //       'url(' + this.mediaDetail.image + ') no-repeat'
-    //   }
-    // },
-    // onresizeFlag: function() {
-    //   if (this.$utilHelper.viewportSize().height <= 680) {
-    //     return
-    //   }
-    //   this.setCenterImgWidth()
-    // }
   },
   methods: {
     async fetchOriginData() {
       if (this.isFetching || this.line == 'end') {
         return
       }
-
       const rqBody = {
         user_id: this.mediaDetail.user_data.id
       }
@@ -197,8 +158,9 @@ export default {
       if (this.isImgOnLoading) {
         return
       }
-
+      
       if (this.currentIndex == this.originList.length - 1) {
+      
         if (this.line == 'end') {
           this.$toast.warn('已经是最后一张了')
           return
@@ -240,7 +202,7 @@ export default {
 
       this.$emit('updateMedia', this.originList[this.currentIndex])
       this.$router.push({
-        name: 'photo',
+        name: 'photo-id',
         params: {
           id: this.originList[this.currentIndex].id
         }
@@ -314,6 +276,7 @@ export default {
   -o-background-size: contain !important;
   background-size: contain !important;
   opacity: 0.8;
+  z-index: 1000;
 }
 
 .array:hover {
@@ -332,5 +295,6 @@ export default {
   top: calc(50% - 15px);
   top: -moz-calc(50% - 15px);
   top: -webkit-calc(50% - 15px);
+   cursor: pointer;
 }
 </style>

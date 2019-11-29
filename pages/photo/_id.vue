@@ -1,7 +1,7 @@
 <template>
   <div class="img-detail">
     <div class="detail-container">
-      <center :media-detail="mediaDetail" @updateMedia="updateMedia" />
+      <center :media-detail="mediaDetail" :firstMedia="firstMedia" :originList="originList" @updateMedia="updateMedia" />
       <right :media-detail="mediaDetail" :media-exif-list="mediaExifList" />
     </div>
     <keywords :media-detail="mediaDetail" />
@@ -129,14 +129,36 @@ export default {
         tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
       }
     }
+
+
+    let rqBody_center = {
+        user_id: tempMediaDetail.user_data.id
+      }
+      let query_center = {
+        line: ''
+      }
+
+     let res_center = await $axios.mediaService.originList(rqBody_center, query_center)
+
+     let firstMedia = tempMediaDetail
+     console.log(firstMedia)
+
+      let originList = []
+     if (res_center.data.out === '1') {
+        const array = res_center.data.data.filter(e => {
+          return e.id != firstMedia.id
+        })
+        originList.push(...array)
+        originList.splice(0, 0, firstMedia)
+      }
+
     return {
       mediaDetail: tempMediaDetail,
       commentList: tempCommentList,
-      mediaExifList: tempMediaExifList
+      mediaExifList: tempMediaExifList,
+      firstMedia: firstMedia,
+      originList: originList
     }
-  },
-  created() {
-    // this.fetchData()
   },
   methods: {
     async fetchData() {

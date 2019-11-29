@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="dialogpop">
+    <!-- {{neededIsShow}} -->
     <transition name="mask-fade">
       <div v-if="neededIsShow" class="mask" @click="cancel" />
     </transition>
@@ -51,7 +52,7 @@ export default {
       return this.$store.state.login.loginUser
     },
     neededIsShow() {
-      return this.$store.state.needed.neededIsShow
+      return this.$store.state.needed.isShow
     },
     neededMediaId() {
       return this.$store.state.needed.neededMediaId
