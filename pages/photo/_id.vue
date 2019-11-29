@@ -126,7 +126,7 @@ export default {
       } else {
         temp = { url: exifUrl.replace('http', 'https'), method: 'GET' }
       }
-      axios(temp).then(
+      await axios(temp).then(
         res1 => {
           console.log(res1)
           if(res1.status == 200) {
