@@ -1,6 +1,6 @@
 <template>
   <div class="img-edit-container">
-    <input v-model="worksName" placeholder="作品名称">
+    <input v-model="worksName" placeholder="作品名称" class="width300">
 
     <textarea v-model="worksDescription" class="works-description" placeholder="作品描述" />
 
@@ -272,8 +272,7 @@ export default {
 .img-edit-container {
   position: fixed;
   z-index: 30;
-  width: 300px;
-  height: 484px;
+  height: 500px;
   padding: 20px;
   border-radius: 8px;
   background-color: #fff;
@@ -427,6 +426,10 @@ button {
   font-size: 16px;
   color: #ffffff;
   cursor: pointer;
+}
+
+.width300 {
+  width: 300px;
 }
 </style>
 
