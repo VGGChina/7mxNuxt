@@ -8,9 +8,6 @@
 <script>
 export default {
   name: '',
-  components: {
-
-  },
   props: ['moreInfo', 'moreText', 'istype'],
   data: () => ({
   }),

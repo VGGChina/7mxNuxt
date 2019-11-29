@@ -2,9 +2,7 @@
   <div id="detial-center">
     <div class="array left-array" @click="front" />
     <div class="array right-array" @click="next" />
-    <div id="image-container" :style="'background: ' + 'url(' + mediaDetail.image + ') no-repeat'">
-      <!-- <img :src="mediaDetail.image" :alt="imageAlt"> -->
-    </div>
+    <div id="image-container" :style="'background: ' + 'url(' + mediaDetail.image + ') no-repeat'" />
   </div>
 </template>
 
@@ -53,31 +51,6 @@ export default {
       }
     }
   },
-  computed: {
-    // ...mapGetters(['isLogin', 'loginUser', 'onresizeFlag']),
-    onresizeFlag() {
-      return this.$store.state.window.onresizeFlag
-    },
-    imageAlt() {
-      try {
-        let alt = ''
-
-        alt += this.mediaDetail.title + ' '
-
-        this.mediaDetail.category_list.forEach(item => {
-          alt += item.name + ' '
-        })
-
-        this.mediaDetail.tag_list.forEach(item => {
-          alt += item.name + ' '
-        })
-
-        return alt.substring(0, alt.length - 1)
-      } catch (e) {
-        return ''
-      }
-    }
-  },
   watch: {
     mediaDetail: function(val) {
       const img = new Image()
@@ -102,7 +75,7 @@ export default {
   },
   methods: {
     async fetchOriginData() {
-      if (this.isFetching || this.line == 'end') {
+      if (this.isFetching || this.line === 'end') {
         return
       }
       const rqBody = {
@@ -157,23 +130,23 @@ export default {
     async front() {
       const rqBody = {
         user_id: this.mediaDetail.user_data.id,
-        order: 'asc' 
+        order: 'asc'
       }
       const query = {
         line: this.mediaDetail.line
       }
-    const res = await this.$axios.mediaService.nextPage(rqBody, query)
-    if(res.data.out != '0') {
-      this.$router.push({
-        name: 'photo-id',
-        params: {
-          id: res.data.out
-        }
-      })
-    }else{
-      this.$toast.warn('已经是第一张了')
-          return
-    }
+      const res = await this.$axios.mediaService.nextPage(rqBody, query)
+      if (res.data.out != '0') {
+        this.$router.push({
+          name: 'photo-id',
+          params: {
+            id: res.data.out
+          }
+        })
+      } else {
+        this.$toast.warn('已经是第一张了')
+        return
+      }
     },
     async next() {
       const rqBody = {
@@ -182,18 +155,18 @@ export default {
       const query = {
         line: this.mediaDetail.line
       }
-    const res = await this.$axios.mediaService.nextPage(rqBody, query)
-    if(res.data.out != '0') {
-      this.$router.push({
-        name: 'photo-id',
-        params: {
-          id: res.data.out
-        }
-      })
-    }else{
-      this.$toast.warn('已经是最后一张了')
-          return
-    }
+      const res = await this.$axios.mediaService.nextPage(rqBody, query)
+      if (res.data.out != '0') {
+        this.$router.push({
+          name: 'photo-id',
+          params: {
+            id: res.data.out
+          }
+        })
+      } else {
+        this.$toast.warn('已经是最后一张了')
+        return
+      }
     }
   }
 }
