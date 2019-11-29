@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     toUser(name) {
-      window.open(`/${name}`, '_blank')
+      window.open(`/user/name/${name}`, '_blank')
     },
     toPhoto(photoId) {
       if (!photoId) return this.$toast.warn('作品地址已失效')
