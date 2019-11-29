@@ -1,7 +1,7 @@
 <template>
   <div class="img-detail">
     <div class="detail-container">
-      <center :media-detail="mediaDetail" :first-media="firstMedia" />
+      <center :media-detail="mediaDetail" />
       <right :media-detail="mediaDetail" :media-exif-list="mediaExifList" />
     </div>
     <keywords :media-detail="mediaDetail" />
