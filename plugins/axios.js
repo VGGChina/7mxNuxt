@@ -3,17 +3,13 @@ export default function({ $axios, store, app }) {
     config.method = 'POST'
     if (config.method.toLowerCase() === 'get') {
       config.method = 'GET'
-      config.headers['Sec-Fetch-Mode'] = 'cors'
-      config.headers['Sec-Fetch-Site'] = 'cross-site'
+      // config.headers['Sec-Fetch-Mode'] = 'cors'
+      // config.headers['Sec-Fetch-Site'] = 'cross-site'
     }
     config.headers['Content-Type'] = 'application/json; charset=utf-8;'
     config.headers['no-cookie'] = '1'
 
-    // if (app.$cookies.get('token')) {
-    // config.headers['x-token'] = app.$cookies.get('token')
-    // }
     if (process.client) {
-      // window.localStorage['xToken'] = xToken
       config.headers['x-token'] = window.localStorage['xToken']
     }
     config.withCredentials = true
@@ -26,9 +22,7 @@ export default function({ $axios, store, app }) {
     if (process.client && xToken) {
       window.localStorage['xToken'] = xToken
     }
-    // if (xToken) {
-    //   store.commit('login/setXtoken', xToken)
-    // }
+
     return response
   })
 }
