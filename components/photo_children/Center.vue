@@ -11,7 +11,7 @@
 <script>
 
 export default {
-  props: ['mediaDetail','firstMedia','originList'],
+  props: ['mediaDetail'],
   data: () => ({
     isShowIcons: false,
     isShowLikeIcon: true,
@@ -53,6 +53,31 @@ export default {
       }
     }
   },
+  computed: {
+    // ...mapGetters(['isLogin', 'loginUser', 'onresizeFlag']),
+    onresizeFlag() {
+      return this.$store.state.window.onresizeFlag
+    },
+    imageAlt() {
+      try {
+        let alt = ''
+
+        alt += this.mediaDetail.title + ' '
+
+        this.mediaDetail.category_list.forEach(item => {
+          alt += item.name + ' '
+        })
+
+        this.mediaDetail.tag_list.forEach(item => {
+          alt += item.name + ' '
+        })
+
+        return alt.substring(0, alt.length - 1)
+      } catch (e) {
+        return ''
+      }
+    }
+  },
   watch: {
     mediaDetail: function(val) {
       const img = new Image()
@@ -67,13 +92,13 @@ export default {
       if (this.isFirst) {
         this.firstMedia = val
         this.isFirst = false
-        
+
         this.fetchOriginData()
       } else {
         document.getElementById('image-container').style.background =
           'url(' + this.mediaDetail.image + ') no-repeat'
       }
-    },
+    }
   },
   methods: {
     async fetchOriginData() {
@@ -169,31 +194,6 @@ export default {
       this.$toast.warn('已经是最后一张了')
           return
     }
-    }
-  },
-  computed: {
-    // ...mapGetters(['isLogin', 'loginUser', 'onresizeFlag']),
-    onresizeFlag() {
-      return this.$store.state.window.onresizeFlag
-    },
-    imageAlt() {
-      try {
-        let alt = ''
-
-        alt += this.mediaDetail.title + ' '
-
-        this.mediaDetail.category_list.forEach(item => {
-          alt += item.name + ' '
-        })
-
-        this.mediaDetail.tag_list.forEach(item => {
-          alt += item.name + ' '
-        })
-
-        return alt.substring(0, alt.length - 1)
-      } catch (e) {
-        return ''
-      }
     }
   }
 }

@@ -1,11 +1,10 @@
 export default function({ $axios, store, app }) {
   $axios.onRequest((config) => {
+    // if (config.method.toLowerCase() === 'get') {
+    //   config.method = 'GET'
+    // } else {
     config.method = 'POST'
-    if (config.method.toLowerCase() === 'get') {
-      config.method = 'GET'
-      // config.headers['Sec-Fetch-Mode'] = 'cors'
-      // config.headers['Sec-Fetch-Site'] = 'cross-site'
-    }
+    // }
     config.headers['Content-Type'] = 'application/json; charset=utf-8;'
     config.headers['no-cookie'] = '1'
 
