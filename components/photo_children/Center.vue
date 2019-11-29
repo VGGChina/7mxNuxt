@@ -129,84 +129,46 @@ export default {
         })
       }
     },
-    front() {
-      if (this.isImgOnLoading) {
-        return
+    async front() {
+      const rqBody = {
+        user_id: this.mediaDetail.user_data.id,
+        order: 'asc' 
       }
-
-      if (this.currentIndex == 0) {
-        this.$toast.warn('已经是第一张了')
-        return
+      const query = {
+        line: this.mediaDetail.line
       }
-
-      this.currentIndex--
-      if (this.firstId == this.originList[this.currentIndex].id) {
-        if (this.currentIndex > 0) {
-          this.currentIndex--
-        }
-      }
-
-      this.$emit('updateMedia', this.originList[this.currentIndex])
-      this.$router.push({
-        name: 'photo',
-        params: {
-          id: this.originList[this.currentIndex].id
-        }
-      })
-    },
-    async next() {
-      if (this.isImgOnLoading) {
-        return
-      }
-      
-      if (this.currentIndex == this.originList.length - 1) {
-      
-        if (this.line == 'end') {
-          this.$toast.warn('已经是最后一张了')
-          return
-        }
-        if (this.isFetching) {
-          return
-        }
-        const rqBody = {
-          user_id: this.mediaDetail.user_data.id
-        }
-        const query = {
-          line: this.line
-        }
-
-        this.isFetching = true
-        const res = await this.$axios.mediaService.originList(rqBody, query)
-
-        if (res.data.out === '1') {
-          const array = res.data.data.filter(e => {
-            return e.id != this.firstMedia.id
-          })
-          this.originList.push(...array)
-        }
-
-        this.line = res.data.line
-        this.currentIndex++
-        if (this.mediaDetail.id == this.originList[this.currentIndex].id) {
-          this.currentIndex++
-        }
-        setTimeout(() => {
-          this.isFetching = false
-        }, 500)
-      } else {
-        this.currentIndex++
-        if (this.firstId == this.originList[this.currentIndex].id) {
-          this.currentIndex++
-        }
-      }
-
-      this.$emit('updateMedia', this.originList[this.currentIndex])
+    const res = await this.$axios.mediaService.nextPage(rqBody, query)
+    if(res.data.out != '0') {
       this.$router.push({
         name: 'photo-id',
         params: {
-          id: this.originList[this.currentIndex].id
+          id: res.data.out
         }
       })
+    }else{
+      this.$toast.warn('已经是第一张了')
+          return
+    }
+    },
+    async next() {
+      const rqBody = {
+        user_id: this.mediaDetail.user_data.id
+      }
+      const query = {
+        line: this.mediaDetail.line
+      }
+    const res = await this.$axios.mediaService.nextPage(rqBody, query)
+    if(res.data.out != '0') {
+      this.$router.push({
+        name: 'photo-id',
+        params: {
+          id: res.data.out
+        }
+      })
+    }else{
+      this.$toast.warn('已经是最后一张了')
+          return
+    }
     }
   },
   computed: {

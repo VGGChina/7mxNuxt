@@ -120,13 +120,26 @@ export default {
       let res1
       if (exifUrl.indexOf('https') > -1) {
         const temp = { url: exifUrl, method: 'GET' }
-        res1 = await $axios(temp)
+        $axios(temp).then(
+          res1 => {
+            tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
+          }
+        ).catch(
+          err => {
+            console.log(err)
+          }
+        )
       } else {
         const temp = { url: exifUrl.replace('http', 'https'), method: 'GET' }
-        res1 = await $axios(temp)
-      }
-      if (res1.status == '200') {
-        tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
+         $axios(temp).then(
+          res1 => {
+            tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
+          }
+        ).catch(
+          err => {
+            console.log(err)
+          }
+        )
       }
     }
 

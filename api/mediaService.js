@@ -123,6 +123,15 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    nextPage(data, params) {
+      const httpData = {
+        url: '/api/media/page_next',
+        data,
+        params
+      }
+      return $axios(httpData)
+    },
+
     storeList(data, params) {
       const httpData = {
         url: '/api/media/origin_list',
