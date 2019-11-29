@@ -3,8 +3,8 @@
     <div class="title">定制您的个性化推荐 ?</div>
     <div class="recomment_wrap">
       <transition name="fade_tags_recommend" mode="out-in">
-        <TagList v-if="pageIndex == 0" :tags="tags[0]" key="0"></TagList>
-        <TagList v-if="pageIndex == 1" :tags="tags[1]" key="1"></TagList>
+        <TagList v-if="pageIndex == 0" key="0" :tags="tags[0]" />
+        <TagList v-if="pageIndex == 1" key="1" :tags="tags[1]" />
       </transition>
     </div>
     <div v-if="tags.length > 0" class="tip_points">
@@ -13,29 +13,35 @@
         :key="i"
         class="point"
         :style=" { 'background': i==pageIndex ? 'rgba(0,0,0,.2)' : '' } "
-      ></div>
+      />
     </div>
-    <div @click="next" class="next button-green">{{ operation }}</div>
+    <div class="next button-green" @click="next">{{ operation }}</div>
   </div>
 </template>
 <script>
 import TagList from '~/components/tag-list/TagList'
 
 export default {
-  name: 'recomment',
+  name: 'Recomment',
   head() {
     return {
       title: '定制推荐 - 7MX 中国领先的视觉创作社区'
     }
+  },
+  components: {
+    TagList
   },
   data: () => ({
     pageIndex: 0,
     operation: '下一步',
     tags: []
   }),
+  created() {
+    this.getRecommentTags()
+  },
   methods: {
     next() {
-      if (this.operation == '完 成') {
+      if (this.operation === '完 成') {
         return this.$router.push({ name: 'index' })
       }
       this.pageIndex++
@@ -44,7 +50,7 @@ export default {
       }
     },
     async getRecommentTags() {
-      let res = await this.$axios.tagService.getRecommentTags()
+      const res = await this.$axios.tagService.getRecommentTags()
       if (res.data.out > 0) {
         for (let i = 0; i < 3; i++) {
           this.tags.push([])
@@ -54,17 +60,7 @@ export default {
           }
         }
       }
-      console.log(this.tags)
     }
-  },
-  created() {
-    this.getRecommentTags()
-  },
-  mounted() {},
-  watch: {},
-  computed: {},
-  components: {
-    TagList
   }
 }
 </script>
