@@ -1,24 +1,15 @@
 <template>
   <div class="ranking">
-    <table-nav
-      :options="options"
-      :is-loading="isLoading"
-      :default-index="tableIndex"
-    />
-
-    <user-preview :user-list="userList" />
-
+    <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex"/>
+    <user-preview :user-list="userList"/>
     <pagination
       style="margin: 64px 0 160px 0;"
       :line="line"
       :base-url="'/ranking/' + tableIndex + '/'"
       @paginationJumpToPage="jumpToPage"
     />
-
     <!-- <loading :is-loading="isLoading" :loading-color="'#000'" /> -->
-
-    <no-content :is-no-content-show="isNoContent" />
-
+    <no-content :is-no-content-show="isNoContent"/>
     <div v-if="userList.length > 0 && line == 'end'" class="no-more">—— & ——</div>
   </div>
 </template>
@@ -40,16 +31,20 @@ export default {
   data: () => ({
     isLoading: false,
     userList: [],
-    options: [{
-      name: '本周最热',
-      url: '/ranking/0/1'
-    }, {
-      name: '上升最快',
-      url: '/ranking/1/1'
-    }, {
-      name: '总体排行',
-      url: '/ranking/2/1'
-    }]
+    options: [
+      {
+        name: '本周最热',
+        url: '/ranking/0/1'
+      },
+      {
+        name: '上升最快',
+        url: '/ranking/1/1'
+      },
+      {
+        name: '总体排行',
+        url: '/ranking/2/1'
+      }
+    ]
   }),
   computed: {
     isNoContent() {
@@ -119,14 +114,13 @@ export default {
   methods: {
     jumpToPage(line) {
       this.$router.push({
-        name: 'ranking',
+        name: 'ranking-tableIndex-page',
         params: {
           tableIndex: this.tableIndex + '',
           page: line.split(',')[0]
         }
       })
     }
-
   }
 }
 </script>
