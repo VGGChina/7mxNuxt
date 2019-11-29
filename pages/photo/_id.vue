@@ -37,7 +37,7 @@ export default {
     if (res.data.out === '1') {
       tempMediaDetail = res.data.data
     }
-
+    console.log(tempMediaDetail)
     const res_commentList = await $axios.mediaService.commentList(
       { media_id: tempMediaDetail.id },
       { line: '' }

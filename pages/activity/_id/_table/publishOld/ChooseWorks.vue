@@ -2,27 +2,18 @@
   <div class="choose-works" @click.stop="noUse">
     <div class="left">
       <div class="title">选择作品</div>
-      <work-pre
-        :media-list="mediaList"
-        @selected="handle"
-      />
-
+      <work-pre :media-list="mediaList" @selected="handle"/>
       <no-content
         :is-no-content-show="!isFetching && mediaIdList.length < 1"
         :content="'Sorry，暂无可以参加活动的历史作品'"
       />
-
       <div
         v-if="mediaIdList.length > 0"
         class="more-comments"
         @click="loadMore"
-      >
-        {{ mediaList.length >= mediaIdList.length ? '没有更多' : '加载更多' }}
-      </div>
+      >{{ mediaList.length >= mediaIdList.length ? '没有更多' : '加载更多' }}</div>
     </div>
-
-    <div class="right">
-      从左侧个人主页图片中选择图片参加比赛
+    <div class="right">从左侧个人主页图片中选择图片参加比赛
       <div class="next-button" @click="commit">确定</div>
     </div>
   </div>
@@ -37,10 +28,7 @@ export default {
     WorkPre,
     NoContent
   },
-  props: [
-    'tagId',
-    'activityId'
-  ],
+  props: ['tagId', 'activityId'],
   data() {
     return {
       mediaIdList: [],
@@ -126,7 +114,7 @@ export default {
         media_id: this.getMediaId()
       }
 
-      const res = await this.$$axios.mediaService.addTag(rqBody)
+      const res = await this.$axios.mediaService.addTag(rqBody)
 
       if (res.data.out === '1') {
         this.$toast.notice('参加活动成功')
@@ -151,7 +139,7 @@ export default {
   z-index: 30;
   top: 20px;
   left: 20px;
-  background: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .left {
