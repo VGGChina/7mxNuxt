@@ -140,7 +140,8 @@ export default {
     },
     // 心愿单列表
     async wantToShopList() {
-      const res = await this.$axios.userService.getactivityList({ type: 4, unread: 0 }, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({ type: 4 }, { line: this.line })
+      console.log(res)
       this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
