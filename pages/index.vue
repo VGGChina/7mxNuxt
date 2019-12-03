@@ -3,13 +3,14 @@
     <!-- banner展示 -->
     <!-- <recommend :small-banner-list="smallBannerList" /> -->
     <!-- 热门标签 -->
-    <hotBabel title="热门标签" />
+    <hotBabel title="热门标签"/>
     <!-- 推荐摄影师 -->
-    <photography />
+    <photography/>
     <!-- 热门图片 -->
     <div>
       <h3 class="hot-img-title">热门图片</h3>
       <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
+
       <div class="waterfallContainer">
         <img-waterfall
           :img-list="imgList"
@@ -22,18 +23,16 @@
       </div>
     </div>
     <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
+
     <div
       v-if="imgList.length > 0 && line != 'end'"
       class="load-more"
       @click="getMoreData"
-    >
-      {{ isLoading ? '正在加载...' : '更多图片' }}
-    </div>
-
+    >{{ isLoading ? '正在加载...' : '更多图片' }}</div>
     <!--更多合作 -->
-    <cooperation-footer />
+    <cooperation-footer/>
     <!-- 页脚 -->
-    <index-footer />
+    <index-footer/>
   </div>
 </template>
 
@@ -49,7 +48,14 @@ import cooperationFooter from '~/components/cooperation/footer-cooperation'
 // import { setTimeout } from 'timers'
 
 export default {
-  name: '',
+  name: 'index',
+  serverCacheKey() {
+    // Will change every 10 secondes
+    return Math.floor(Date.now() / 10000)
+  },
+  data() {
+    return { date: Date.now() }
+  },
   head() {
     return {
       title: '7MX - 中国领先的视觉创作社区'
@@ -195,7 +201,6 @@ export default {
   },
 
   methods: {
-
     getMoreData() {
       if (!this.isLogin) {
         this.$store.commit('login/isShowLoginDialog', true)
@@ -233,7 +238,10 @@ export default {
       const data = { type: '6' }
       const params = { line: this.line, limit: '40' }
       this.isLoading = true
-      const res_hotpics = await this.$axios.mediaService.randomRecommend(data, params)
+      const res_hotpics = await this.$axios.mediaService.randomRecommend(
+        data,
+        params
+      )
       this.imgList.push(...res_hotpics.data.data)
       this.line = res_hotpics.data.line
       this.isLoading = false

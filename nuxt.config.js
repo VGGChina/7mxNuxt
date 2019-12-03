@@ -1,4 +1,5 @@
 const nuxtPageCache = require('nuxt-page-cache')
+const LRU = require('lru-cache')
 export default {
   mode: 'universal',
   /*
@@ -118,12 +119,19 @@ export default {
       // }
     }
   },
-
+  render: {
+    bundleRenderer: {
+      cache: new LRU({
+        max: 1000,
+        maxAge: 1000 * 60 * 15
+      })
+    }
+  },
   router: {
     // middleware: 'axiosMiddle'
   },
   serverMiddleware: [
-    nuxtPageCache.cacheSeconds(1, req => {
+    nuxtPageCache.cacheSeconds(600, req => {
       if (req.query && req.query.pageType) {
         return req.query.pageType
       }

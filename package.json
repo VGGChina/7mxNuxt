@@ -24,6 +24,7 @@
     "eslint": "^6.6.0",
     "eslint-loader": "^3.0.2",
     "eslint-plugin-vue": "^5.2.3",
+    "lru-cache": "^5.1.1",
     "nuxt": "^2.0.0",
     "nuxt-page-cache": "0.0.5",
     "scss": "^0.2.4",

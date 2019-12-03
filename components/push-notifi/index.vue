@@ -141,11 +141,11 @@ export default {
     // 心愿单列表
     async wantToShopList() {
       const res = await this.$axios.userService.getactivityList({ type: 4 }, { line: this.line })
-      console.log(111,res)
+      // console.log(111,res)
       this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
-                  console.log(this.list)
+      // console.log(22,this.list)
     },
     // 通知列表
     async noticeList() {
