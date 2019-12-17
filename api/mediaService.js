@@ -10,6 +10,16 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    // 动态
+    getDynamicAPI(data) {
+      const httpData = {
+        url: `/api3/dynamics/${data.type}`,
+        params: data.params,
+        method: 'get'
+      }
+      return $axios(httpData)
+    },
+
     mediaDetailOld(data) {
       const httpData = {
         url: '/api/media/detail_old',

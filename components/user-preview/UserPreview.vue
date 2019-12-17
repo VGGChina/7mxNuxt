@@ -23,13 +23,14 @@
           >
             {{ item.is_follow == '0' ? '关注' : '已关注' }}
           </div>
-          <div class="instruction">{{ item.user_data.about || '这个人很懒，什么也没留下~~~' }}</div>
+          <!-- <div class="instruction">{{ item.user_data.about || '这个人很懒，什么也没留下~~~' }}</div> -->
+          <div class="instruction">{{ '这个人很懒，什么也没留下~~~' }}</div>
         </div>
       </div>
 
       <div class="images">
         <a
-          v-for="(img, index) in (!item.medias ? [] : item.medias)"
+          v-for="(img, index) in (!item.mediaList ? [] : item.mediaList)"
           v-if="index < 3"
           :key="index"
           :href="'/photo/' + img.id"
