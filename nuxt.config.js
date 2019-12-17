@@ -85,7 +85,7 @@ export default {
     '/api3': {
       target: 'https://api2.7mx.com',
       pathRewrite: {
-        '^/api': '/'
+        '^/api3': '/'
       }
     },
     '/api2': {
