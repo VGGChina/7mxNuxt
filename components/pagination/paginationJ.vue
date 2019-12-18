@@ -1,40 +1,50 @@
 <template>
-  <div class="pagination-container" v-if="pageList.length > 0">
+  <div v-if="pageList.length > 0" class="pagination-container">
     <div>
-      <div class="pagination-page"
+      <div
         v-for="(page, index) in pageList"
         :key="index"
+        class="pagination-page"
         :class="{
           'pagination-current': page == currentPage
-        }">
-        <nuxt-link class="pagination-page-router"
+        }"
+      >
+        <nuxt-link
           v-if="baseUrl && page != '...'"
-          :to="baseUrl + page">
+          class="pagination-page-router"
+          :to="baseUrl + page"
+        >
           {{ page }}
         </nuxt-link>
 
-        <span class="pagination-page-router"
+        <span
           v-if="!baseUrl || page == '...'"
-          @click="jumpToPage(page)">
-          {{page}}
+          class="pagination-page-router"
+          @click="jumpToPage(page)"
+        >
+          {{ page }}
         </span>
       </div>
 
-      <div class="pagination-next"
+      <div
         v-if="!baseUrl && currentPage != pageNum"
-        @click="jumpToPage(currentPage + 1)">
+        class="pagination-next"
+        @click="jumpToPage(currentPage + 1)"
+      >
         下一页
       </div>
 
-      <nuxt-link class="pagination-next"
+      <nuxt-link
         v-if="baseUrl && currentPage != pageNum"
-        :to="baseUrl + (parseInt(currentPage) + 1)">
+        class="pagination-next"
+        :to="baseUrl + (parseInt(currentPage) + 1)"
+      >
         下一页
       </nuxt-link>
 
       <div class="pagination-jump">
         到第
-        <input v-model="jumpPage" @keyup.enter="jumpToPage(jumpPage)" type="text">
+        <input v-model="jumpPage" type="text" @keyup.enter="jumpToPage(jumpPage)">
         页
         <div @click="jumpToPage(jumpPage)">确定</div>
       </div>
@@ -55,25 +65,6 @@ export default {
       jumpPage: ''
     }
   },
-  methods: {
-    jumpToPage(page) {
-      if (page == parseInt(this.currentPage) || page == '...') {
-        return
-      }
-
-      if (page == '' || page <= 0 || page > this.pageNum) {
-        this.$toast.warn('页码错误！')
-
-        return
-      }
-
-      let line = this.limit * (page - 1)
-
-      this.$emit('paginationJumpToPage', page, line)
-
-      this.jumpPage = ''
-    }
-  },
   computed: {
     pageNum() {
       return Math.floor(this.count / this.limit) +
@@ -84,9 +75,9 @@ export default {
         return []
       }
 
-      let list = []
-      let currentPage = parseInt(this.currentPage)
-      let pageNum = Math.floor(this.count / this.limit) +
+      const list = []
+      const currentPage = parseInt(this.currentPage)
+      const pageNum = Math.floor(this.count / this.limit) +
         (this.count % this.limit == 0 ? 0 : 1)
 
       if (pageNum <= 10) {
@@ -157,10 +148,28 @@ export default {
 
       return list
     }
+  },
+  methods: {
+    jumpToPage(page) {
+      if (page == parseInt(this.currentPage) || page == '...') {
+        return
+      }
+
+      if (page == '' || page <= 0 || page > this.pageNum) {
+        this.$toast.warn('页码错误！')
+
+        return
+      }
+
+      const line = this.limit * (page - 1)
+
+      this.$emit('paginationJumpToPage', page, line)
+
+      this.jumpPage = ''
+    }
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .pagination-container {

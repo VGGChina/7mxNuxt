@@ -61,6 +61,7 @@ export default {
     '~/api/statisticsService',
     '~/api/tagService',
     '~/api/userService',
+    '~/api/billborad',
 
     '~/plugins/scroll',
     '~/plugins/ecroll'

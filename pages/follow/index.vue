@@ -57,7 +57,11 @@ export default {
       url: ''
     }],
     tableIndex: 0,
-    isRefreshing: false
+    isRefreshing: false,
+
+    page: 1,
+    size: 20,
+    sort: 'createdAt,desc'
   }),
   computed: {
     isNoContent: function() {
@@ -107,18 +111,9 @@ export default {
 
       this.isLoading = true
 
-      switch (this.tableIndex) {
-        case 0:
-          this.getDynamicList(isRefresh)
-          break
-        case 1:
-        case 2:
-          this.getFollowList()
-          break
-        default:
-          break
-      }
+      this.getList()
     },
+
     async getDynamicList(isRefresh) {
       const params = { line: this.line, limit: 10 }
 
@@ -140,20 +135,46 @@ export default {
         this.isLoading = false
       }, 500)
     },
-    async getFollowList() {
-      const params = { line: this.line, limit: 10 }
+    // async getFollowList() {
+    //   const params = { line: this.line, limit: 10 }
 
-      const res = await this.$axios.mediaService.followList({}, params)
+    //   const res = await this.$axios.mediaService.followList({}, params)
 
-      if (res.data.out === '1') {
-        this.imgList.push(...res.data.data)
+    //   if (res.data.out === '1') {
+    //     this.imgList.push(...res.data.data)
+    //   }
+
+    //   this.line = res.data.line
+
+    //   setTimeout(() => {
+    //     this.isLoading = false
+    //   }, 500)
+    // },
+    async getList() {
+      const data = {
+        type: 0,
+        params: {
+          page: this.page,
+          size: this.size,
+          sort: this.sort
+        }
       }
 
-      this.line = res.data.line
+      if (this.tableIndex === 0) {
+        data.type = 1
+      } else {
+        data.type = 2
+      }
 
-      setTimeout(() => {
-        this.isLoading = false
-      }, 500)
+      try {
+        const res = await this.$axios.mediaService.getDynamicAPI(data)
+        console.log(res)
+        setTimeout(() => {
+          this.isLoading = false
+        }, 500)
+      } catch (e) {
+        this.$toast.warn(e)
+      }
     }
   }
 }

@@ -10,6 +10,16 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    // 动态
+    getDynamicAPI(data) {
+      const httpData = {
+        url: `/api3/dynamics/${data.type}`,
+        params: data.params,
+        method: 'get'
+      }
+      return $axios(httpData)
+    },
+
     mediaDetailOld(data) {
       const httpData = {
         url: '/api/media/detail_old',
@@ -83,6 +93,24 @@ export default ({ $axios }) => {
         url: '/api/media/random_recommend_list',
         data,
         params
+      }
+      return $axios(httpData)
+    },
+
+    randomRecommend2(data, params) {
+      const httpData = {
+        url: '/api/media/random_recommend_list',
+        data,
+        params
+      }
+      return $axios(httpData)
+    },
+
+    // 探索
+    exploreAPI(data) {
+      const httpData = {
+        url: `/api3/medias/hot/${data.type}/${data.categoryId}`,
+        params: data.params
       }
       return $axios(httpData)
     },
