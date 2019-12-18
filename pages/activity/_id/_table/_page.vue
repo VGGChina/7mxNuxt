@@ -295,13 +295,12 @@ export default {
         )
         if (res_recommendWorks.status == 200) {
           tempImgList.push(...res_recommendWorks.data.content)
-          tempImgList.forEach(
-            v => {
-              v.image_width = v.mediaWidth
-              v.image_height = v.mediaHeight
-              v.user_id = v.userId
-            }
-          )
+          // tempImgList.forEach(
+          //   v => {
+          //     v.image_width = v.mediaWidth
+          //     v.image_height = v.mediaHeight
+          //   }
+          // )
         }
       }
       if (tempIndex == 3) {
