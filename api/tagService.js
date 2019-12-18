@@ -1,11 +1,10 @@
 export default ({ $axios }) => {
   const tagService = {
     // 所有活动(不是tag)
-    getActivityList(data, params) {
+    getActivityList() {
       const httpData = {
-        url: `/api/tag/activity_list`,
-        data,
-        params
+        url: `/api3/activities/list/1`,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -13,9 +12,10 @@ export default ({ $axios }) => {
     // 某活动详情(不是tag)
     getTagDetail(data, params) {
       const httpData = {
-        url: `/api/tag/detail`,
+        url: `/api3/activities/detail/${data.tag_id}`,
         data,
-        params
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -70,7 +70,8 @@ export default ({ $axios }) => {
       const httpData = {
         url: `/api/tag/joiner_list`,
         data,
-        params
+        params,
+        method: 'POST'
       }
       return $axios(httpData)
     },

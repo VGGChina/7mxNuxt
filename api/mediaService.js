@@ -156,7 +156,8 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/media/origin_list',
         data,
-        params
+        params,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -316,7 +317,8 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/media/in_tag_list',
         data,
-        params
+        params,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -333,9 +335,9 @@ export default ({ $axios }) => {
     // 某个tag推荐作品列表
     recommendInTagList(data, params) {
       const httpData = {
-        url: '/api/media/recommend_in_tag_list',
-        data,
-        params
+        url: `/api3/activities/medias/${data.tag_id}`,
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -422,7 +424,8 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/media/in_tag_list',
         data,
-        params
+        params,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -440,7 +443,8 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/media/in_tag_awards_list',
         data,
-        params
+        params,
+        method: 'POST'
       }
       return $axios(httpData)
     }

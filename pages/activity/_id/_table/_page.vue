@@ -49,7 +49,7 @@
                 name: 'activity-id-table-page',
                 params: { id : activeDetail.id, table: '3', page: '1' }
               }"
-            >{{ activeDetail.media_num }} 全部作品</nuxt-link>
+            >{{ activeDetail.mediaNum }} 全部作品</nuxt-link>
           </div>
           <div class="type authors">
             <nuxt-link
@@ -58,7 +58,7 @@
                 name: 'activity-id-table-page',
                 params: { id : activeDetail.id, table: '4', page: '1' }
               }"
-            >{{ activeDetail.user_num }} 人</nuxt-link>
+            >{{ activeDetail.followedNum }} 人</nuxt-link>
           </div>
         </div>
       </div>
@@ -90,11 +90,11 @@
       <div v-if="activeDetail.caution" class="content">
         <span v-html="activeDetail.caution" />
       </div>
-      <div v-if="activeDetail.start_time" class="title">征稿时间</div>
+      <div v-if="activeDetail.activityEnabledAt" class="title">征稿时间</div>
       <div
-        v-if="activeDetail.start_time"
+        v-if="activeDetail.activityEnabledAt"
         class="content"
-      >{{ activeDetail.start_time | timeParse }} ~ {{ activeDetail.close_time | timeParse }}</div>
+      >{{ activeDetail.activityEnabledAt | timeParse }} ~ {{ activeDetail.activityExpiredAt | timeParse }}</div>
       <div v-if="!activeDetail.awards" class="title">奖项设置</div>
       <div v-if="!activeDetail.awards" class="content">
         <div v-for="(item, index) in stageList" :key="index" class="oneAward">
@@ -132,7 +132,7 @@
     <div class="auth_wrap">
       <user-preview v-if="currentIndex == 4" :user-list="userList" />
     </div>
-    <loading :is-loading="isLoading" :loading-color="'#000'" />
+    <!-- <loading :is-loading="isLoading" :loading-color="'#000'" /> -->
     <pagination
       v-show="!isLoading && isShowPagination"
       style="margin: 64px 0 160px 0;"
@@ -155,7 +155,7 @@ export default {
   name: 'ActivityDetail',
   filters: {
     timeParse(v) {
-      var t = new Date(v * 1000)
+      var t = new Date(v)
       return `${t.getFullYear()}年 ${t.getMonth() + 1}月 ${t.getDate()}日`
     }
   },
@@ -251,6 +251,8 @@ export default {
       tag_id: params.id
     })
 
+    console.log(res_detail)
+
     let tempLine = params.page + ',0,0'
 
     const res_win = await $axios.mediaService.getAwardWinningList(
@@ -289,14 +291,17 @@ export default {
       if (tempIndex == 2) {
         const res_recommendWorks = await $axios.mediaService.recommendInTagList(
           { tag_id: params.id },
-          { line: tempLine, limit: '40' }
+          { type: 1 }
         )
-        if (res_recommendWorks.data.out == '1') {
-          tempImgList.push(...res_recommendWorks.data.data)
-          tempLine =
-            res_recommendWorks.data.line !== 'end'
-              ? res_recommendWorks.data.line
-              : params.page + ',0,0'
+        if (res_recommendWorks.status == 200) {
+          tempImgList.push(...res_recommendWorks.data.content)
+          tempImgList.forEach(
+            v => {
+              v.image_width = v.mediaWidth
+              v.image_height = v.mediaHeight
+              v.user_id = v.userId
+            }
+          )
         }
       }
       if (tempIndex == 3) {
@@ -328,10 +333,10 @@ export default {
     }
 
     return {
-      activeDetail: res_detail.data.data,
-      out: res_detail.data.out,
-      is_activity: res_detail.data.data.is_activity,
-      now: !(new Date().getTime() - res_detail.data.data.close_time * 1000 > 0),
+      activeDetail: res_detail.data,
+      out: res_detail.data.id ? '1' : '0',
+      is_activity: res_detail.data.activity ? '1' : '0',
+      now: !(new Date().getTime() - new Date(res_detail.data.activityExpiredAt).getTime() > 0),
       line: tempLine,
       stage: tempStage,
       stageList: tempStageList,
@@ -343,6 +348,7 @@ export default {
   created() {
     if (this.out != '1' || this.is_activity != '1') {
       // 跳转至根目录
+
       this.$router.push('/')
       return false
     }
@@ -400,6 +406,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+
 .activityDetail {
   min-height: 1000px;
 

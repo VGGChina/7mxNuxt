@@ -21,7 +21,7 @@
           <a :href="userRef" target="_blank" @click.stop>
             {{ userData.nick || userData.name }}
           </a>
-          <div>{{ userData.fan_num || '0' }}名追随者</div>
+          <div>{{ userData.followedNum || '0' }}名追随者</div>
         </div>
 
         <div

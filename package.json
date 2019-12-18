@@ -28,6 +28,7 @@
     "nuxt": "^2.0.0",
     "nuxt-page-cache": "0.0.5",
     "scss": "^0.2.4",
+    "scss-loader": "0.0.1",
     "vue-bus": "^1.2.1"
   },
   "devDependencies": {
