@@ -305,10 +305,10 @@ export default ({ $axios }) => {
     // 某个tag全部作品列表
     inTagList(data, params) {
       const httpData = {
-        url: '/api/media/in_tag_list',
-        data,
+        // url: '/api/media/in_tag_list',
+        url: `/api3/activities/medias/${data.tag_id}`,
         params,
-        method: 'POST'
+        method: 'GET'
       }
       return $axios(httpData)
     },

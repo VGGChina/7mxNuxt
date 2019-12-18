@@ -306,14 +306,15 @@ export default {
       if (tempIndex == 3) {
         const res_allWorks = await $axios.mediaService.inTagList(
           { tag_id: params.id },
-          { line: tempLine, limit: '40' }
+          { page: (params.page-1), size: 40,type:  2}
         )
-        if (res_allWorks.data.out == '1') {
-          tempImgList.push(...res_allWorks.data.data)
-          tempLine =
-            res_allWorks.data.line !== 'end'
-              ? res_allWorks.data.line
-              : params.page + ',0,0'
+        if (res_allWorks.status == 200) {
+          tempImgList.push(...res_allWorks.data.content)
+          if(params.page == res_allWorks.data.totalPages) {
+            tempLine = 'end'
+          }else{
+            tempLine = (parseInt(params.page)+ 1) + ',' + res_allWorks.data.totalPages + ',' + params.page
+          }
         }
       }
       if (tempIndex == 4) {
