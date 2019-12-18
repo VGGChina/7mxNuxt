@@ -3,9 +3,9 @@
     <!-- banner展示 -->
     <!-- <recommend :small-banner-list="smallBannerList" /> -->
     <!-- 热门标签 -->
-    <hotBabel title="热门标签"/>
+    <hotBabel title="热门标签" />
     <!-- 推荐摄影师 -->
-    <photography/>
+    <photography />
     <!-- 热门图片 -->
     <div>
       <h3 class="hot-img-title">热门图片</h3>
@@ -30,9 +30,9 @@
       @click="getMoreData"
     >{{ isLoading ? '正在加载...' : '更多图片' }}</div>
     <!--更多合作 -->
-    <cooperation-footer/>
+    <cooperation-footer />
     <!-- 页脚 -->
-    <index-footer/>
+    <index-footer />
   </div>
 </template>
 
@@ -48,18 +48,10 @@ import cooperationFooter from '~/components/cooperation/footer-cooperation'
 // import { setTimeout } from 'timers'
 
 export default {
-  name: 'index',
+  name: 'Index',
   serverCacheKey() {
     // Will change every 10 secondes
     return Math.floor(Date.now() / 10000)
-  },
-  data() {
-    return { date: Date.now() }
-  },
-  head() {
-    return {
-      title: '7MX - 中国领先的视觉创作社区'
-    }
   },
   components: {
     ImgWaterfall,
@@ -71,78 +63,86 @@ export default {
     hotBabel,
     cooperationFooter
   },
-  data: () => ({
-    show_picList: false,
-    bannerSlide: {
-      index: 0,
-      transition: 800,
-      speed: 8000, // 间隔时间
-      anime: '',
-      height: '390px',
-      animating: false // 正在进行切换
-    },
-    banners: [
-      {
-        img: require('~/assets/img/2.jpg'),
-        url: '/activity/285266/3/1',
-        bgOpacity: 1
+  data() {
+    return {
+      date: Date.now(),
+      show_picList: false,
+      bannerSlide: {
+        index: 0,
+        transition: 800,
+        speed: 8000, // 间隔时间
+        anime: '',
+        height: '390px',
+        animating: false // 正在进行切换
       },
-      {
-        img: require('~/assets/img/index-bg.jpg'),
-        url: 'https://v.paixin.com',
-        title: '拍信-中国领先的正版图片交易平台',
-        titleImg: require('~/assets/img/7MX.svg'),
-        titleImgHeight: 50,
-        content: '版权素材免费素材应有尽有',
-        button: '点此访问',
-        bgOpacity: 1
-      },
-      {
-        img: require('~/assets/img/8.jpg'),
-        url: '',
-        title: 'Eput品牌升级为7MX，震撼上线',
-        titleImg: require('~/assets/img/7MX.svg'),
-        titleImgHeight: 50,
-        content: '编辑、分享、发现令人惊喜的照片并出售',
-        bgOpacity: 1
-      },
-      {
-        img: require('~/assets/img/12.jpg'),
-        url: '',
-        title: '最好的照片，由你选择',
-        titleImg: require('~/assets/img/7MX.svg'),
-        titleImgHeight: 50,
-        content: '获得灵感，分享你最好的照片，一起探寻创造难以置信的摄影艺术',
-        bgOpacity: 1
-      },
-      {
-        img: require('~/assets/img/13.jpg'),
-        url: '',
-        title: '成为签约供稿人',
-        titleImg: require('~/assets/img/7MX.svg'),
-        titleImgHeight: 50,
-        content: '自由创作，让您的创意迅速变现',
-        bgOpacity: 1
-      },
-      {
-        img: require('~/assets/img/14.jpg'),
-        url: '',
-        title: '立即注册，开启摄影之旅',
-        titleImg: require('~/assets/img/7MX.svg'),
-        titleImgHeight: 50,
-        content: 'Edit, Share, And Discover Inspiring Photos',
-        bgOpacity: 1
-      }
-    ],
-    currentItem: 1,
-    imgList: [],
-    line: '',
-    isLoading: false,
-    column1: ['摄影社区', '关于7MX', '加入我们', '意见反馈'],
-    column2: ['商业', '售卖图片', '市场合作', '&nbsp;'],
-    column3: ['社群', '微博', '公众号', '&nbsp;'],
-    showSearch: true
-  }),
+      banners: [
+        {
+          img: require('~/assets/img/2.jpg'),
+          url: '/activity/285266/3/1',
+          bgOpacity: 1
+        },
+        {
+          img: require('~/assets/img/index-bg.jpg'),
+          url: 'https://v.paixin.com',
+          title: '拍信-中国领先的正版图片交易平台',
+          titleImg: require('~/assets/img/7MX.svg'),
+          titleImgHeight: 50,
+          content: '版权素材免费素材应有尽有',
+          button: '点此访问',
+          bgOpacity: 1
+        },
+        {
+          img: require('~/assets/img/8.jpg'),
+          url: '',
+          title: 'Eput品牌升级为7MX，震撼上线',
+          titleImg: require('~/assets/img/7MX.svg'),
+          titleImgHeight: 50,
+          content: '编辑、分享、发现令人惊喜的照片并出售',
+          bgOpacity: 1
+        },
+        {
+          img: require('~/assets/img/12.jpg'),
+          url: '',
+          title: '最好的照片，由你选择',
+          titleImg: require('~/assets/img/7MX.svg'),
+          titleImgHeight: 50,
+          content: '获得灵感，分享你最好的照片，一起探寻创造难以置信的摄影艺术',
+          bgOpacity: 1
+        },
+        {
+          img: require('~/assets/img/13.jpg'),
+          url: '',
+          title: '成为签约供稿人',
+          titleImg: require('~/assets/img/7MX.svg'),
+          titleImgHeight: 50,
+          content: '自由创作，让您的创意迅速变现',
+          bgOpacity: 1
+        },
+        {
+          img: require('~/assets/img/14.jpg'),
+          url: '',
+          title: '立即注册，开启摄影之旅',
+          titleImg: require('~/assets/img/7MX.svg'),
+          titleImgHeight: 50,
+          content: 'Edit, Share, And Discover Inspiring Photos',
+          bgOpacity: 1
+        }
+      ],
+      currentItem: 1,
+      imgList: [],
+      line: '',
+      isLoading: false,
+      column1: ['摄影社区', '关于7MX', '加入我们', '意见反馈'],
+      column2: ['商业', '售卖图片', '市场合作', '&nbsp;'],
+      column3: ['社群', '微博', '公众号', '&nbsp;'],
+      showSearch: true
+    }
+  },
+  head() {
+    return {
+      title: '7MX - 中国领先的视觉创作社区'
+    }
+  },
   computed: {
     winPageYOffset() {
       return this.$store.state.window.winPageYOffset

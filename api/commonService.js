@@ -18,7 +18,16 @@ export default ({ $axios }) => {
 
     getServerTime() {
       const httpData = {
-        utl: '/api/common/time'
+        url: '/api/common/time',
+        method: 'get'
+      }
+      return $axios(httpData)
+    },
+
+    getServerTime2() {
+      const httpData = {
+        url: '/api3/common/time',
+        method: 'get'
       }
       return $axios(httpData)
     },

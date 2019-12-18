@@ -128,8 +128,7 @@ export default {
       }
       await axios(temp).then(
         res1 => {
-          console.log(res1)
-          if(res1.status == 200) {
+          if (res1.status === 200) {
             tempMediaExifList = getMediaExifList(tempMediaExifList, res1.data)
           }
         }
@@ -143,7 +142,7 @@ export default {
     return {
       mediaDetail: tempMediaDetail,
       commentList: tempCommentList,
-      mediaExifList: tempMediaExifList,
+      mediaExifList: tempMediaExifList
     }
   },
   methods: {

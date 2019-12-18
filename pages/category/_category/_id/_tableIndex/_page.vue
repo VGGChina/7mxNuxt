@@ -83,49 +83,29 @@ export default {
   },
 
   async asyncData({ params, $axios, store }) {
-    const imgList = []
-    let tableIndex = 0
+    let imgList = []
+    let line = ''
+    const tableIndex = 0
 
-    let line = params.page + ',0,0'
-
-    const rqBody = { type: '6' }
-    const query = {
-      line: line,
-      limit: '40'
+    const data = {
+      categoryId: 6,
+      type: parseInt(params.tableIndex) + 1,
+      params: {
+        page: params.page - 1,
+        size: 40
+      }
     }
-    if (params.id !== '0') {
-      rqBody.category_id = params.id
-    }
-
-    let res = {}
-
+    const res = await $axios.mediaService.exploreAPI(data)
     if (params.tableIndex === '0') {
-      res = await $axios.mediaService.recommendCategory(rqBody, query)
-    }
+      imgList = res.data
+    } else {
+      imgList = res.data.content
 
-    if (params.tableIndex === '1') {
-      tableIndex = 0
-      rqBody.product = '1'
-      if (params.id === '0') {
-        res = await $axios.paixinService.recommendList(rqBody, query)
-      } else {
-        res = await $axios.mediaService.inCategoryList(rqBody, query)
-      }
+      const pageNow = params.page
+      const pageTotal = res.data.totalPages
+      const nextPage = pageNow === pageTotal ? 'end' : parseInt(params.page) + 1
+      line = nextPage + ',' + pageTotal + ',' + pageNow
     }
-
-    if (params.tableIndex === '2') {
-      if (params.id === '0') {
-        rqBody.mode = 'desc'
-        res = await $axios.mediaService.commonList(rqBody, query)
-      } else {
-        res = await $axios.mediaService.inCategoryList(rqBody, query)
-      }
-    }
-
-    if (res.data.out === '1') {
-      imgList.push(...res.data.data)
-    }
-    line = res.data.line
 
     return {
       imgList: imgList,

@@ -19,7 +19,17 @@ export default ({ $axios }) => {
     login(data) {
       const httpData = {
         url: '/api/user/login',
-        data
+        data,
+        method: 'post'
+      }
+      return $axios(httpData)
+    },
+
+    login2(data) {
+      const httpData = {
+        url: '/api3/users/login',
+        data,
+        method: 'post'
       }
       return $axios(httpData)
     },

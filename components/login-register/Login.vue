@@ -85,53 +85,42 @@ export default {
         return
       }
 
+      // 这边进行手机号检查
+
       // 获取服务器时间
-      const timeRes = await this.$axios.commonService.getServerTime()
+      // let timeRes = await this.$axios.commonService.getServerTime2()
 
-      let time = null
-
-      if (timeRes.data.out === '1') {
-        time = timeRes.data.data.time
-      } else {
-        time = (new Date().getTime() / 1000).toFixed(0)
-      }
+      // timeRes = parseInt(timeRes / 1000)
 
       const rqBody = {
-        user: /^[0-9]{11}$/.test(this.user) ? '0086' + this.user : this.user,
-        pass: 'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + time),
-        reme: this.isRemember ? '1' : '0'
+        username: this.user,
+        password: this.password
+        // password: 'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + timeRes)
+        // reme: this.isRemember ? '1' : '0'
       }
 
-      const loginRes = await this.$axios.userService.login(rqBody)
-
-      if (loginRes.data.out === '1') {
-        const data = loginRes.data.data
+      this.$axios.userService.login2(rqBody).then(loginRes => {
+        const data = loginRes.data
 
         this.$store.commit('login/loginUser', data)
-
         this.$store.commit('login/isShowLoginDialog', false)
-
         this.$store.commit('login/isLogin', true)
-
-        // this.$store.commit('login/setXtoken', data['x-token1'])
-
-        // window.localStorage['xToken'] = data['x-token1']
 
         if (data.name === '' || data.nick === '' || data.avatar === '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)
         }
 
         // 如果关联过拍信账号，那么校验一遍，后端要求这样做
-        if (data.gaga_id) {
-          const otherRes = await this.$axios.userService.intoOther()
-          if (otherRes.data.out === '1') {
-            data.gaga_id = otherRes.data.data.gaga_id
-            this.$store.commit('login/loginUser', data)
-          }
-        }
-      } else {
-        this.$toast.warn(loginRes.data.msg)
-      }
+        // if (data.gaga_id) {
+        //   const otherRes = await this.$axios.userService.intoOther()
+        //   if (otherRes.data.out === '1') {
+        //     data.gaga_id = otherRes.data.data.gaga_id
+        //     this.$store.commit('login/loginUser', data)
+        //   }
+        // }
+      }).catch(e => {
+        this.$toast.warn(e)
+      })
     },
     toRegister() {
       this.$store.commit('login/isShowLoginDialog', false)

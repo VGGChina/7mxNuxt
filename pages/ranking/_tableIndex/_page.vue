@@ -1,15 +1,14 @@
 <template>
   <div class="ranking">
-    <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex"/>
-    <user-preview :user-list="userList"/>
+    <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex" />
+    <user-preview :user-list="userList" />
     <pagination
       style="margin: 64px 0 160px 0;"
       :line="line"
       :base-url="'/ranking/' + tableIndex + '/'"
       @paginationJumpToPage="jumpToPage"
     />
-    <!-- <loading :is-loading="isLoading" :loading-color="'#000'" /> -->
-    <no-content :is-no-content-show="isNoContent"/>
+    <no-content :is-no-content-show="isNoContent" />
     <div v-if="userList.length > 0 && line == 'end'" class="no-more">—— & ——</div>
   </div>
 </template>
@@ -71,32 +70,24 @@ export default {
   },
 
   async asyncData({ params, $axios, store }) {
-    const userList = []
-    let tableIndex = 0
+    const tableIndex = parseInt(params.tableIndex)
+    const data = {
+      type: tableIndex + 1,
+      params: {
+        page: parseInt(params.page) - 1,
+        size: 20
+      }
 
-    let line = params.page + ',0,0'
+    }
+    const res = await $axios.billboradService.getTopAPI(data)
 
-    const rqBody = {
-      withmedias: '1'
-    }
+    const userList = res.data.content
 
-    let res = {}
-    if (params.tableIndex === '0') {
-      tableIndex = 0
-      res = await $axios.userService.recommendUser(rqBody, { line: line })
-    }
-    if (params.tableIndex === '1') {
-      tableIndex = 1
-      res = await $axios.userService.risingList(rqBody, { line: line })
-    }
-    if (params.tableIndex === '2') {
-      tableIndex = 2
-      res = await $axios.userService.rankingList(rqBody, { line: line })
-    }
-    if (res.data.out === '1') {
-      userList.push(...res.data.data)
-    }
-    line = res.data.line
+    const pageNow = params.page
+    const pageTotal = res.data.totalPages
+    const nextPage = pageNow === pageTotal ? 'end' : parseInt(params.page) + 1
+
+    const line = nextPage + ',' + pageTotal + ',' + pageNow
 
     return {
       userList: userList,

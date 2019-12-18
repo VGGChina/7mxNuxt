@@ -24,7 +24,7 @@
 
         <!-- 喜欢按钮 -->
         <div
-          v-if="!isImgAuthor"
+          v-if="true || !isImgAuthor"
           class="imgWarterfall-imgItem-like"
           @click.stop="likeImg()"
         >
@@ -36,7 +36,7 @@
             }"
           />
 
-          <div>{{ img.like_num }}</div>
+          <div>{{ img.like }}</div>
         </div>
 
         <!-- 购买按钮 -->
@@ -86,7 +86,7 @@
         v-if="isHover"
         class="imgWarterfall-imgItem-score"
       >
-        {{ $utilHelper.score(img) }}
+        {{ img.score }}
       </div>
     </transition>
 
@@ -191,6 +191,7 @@ export default {
         console.log(e)
         return false
       }
+      return false
     },
     imageAlt() {
       try {
@@ -281,15 +282,13 @@ export default {
         return
       }
 
-      if (this.img.hasOwnProperty('id')) {
-        const res = await this.$axios
-          .mediaService
-          .mediaDetail({ media_id: this.eputId })
+      // if (this.img.hasOwnProperty('id')) {
+      //   const res = await this.$axios.mediaService.mediaDetail({ media_id: this.eputId })
 
-        if (res.data.out === '1') {
-          this.$set(this.img, 'user_data', res.data.data.user_data)
-        }
-      }
+      //   if (res.data.out === '1') {
+      //     this.$set(this.img, 'user_data', res.data.data.user_data)
+      //   }
+      // }
     },
     getImageDetailPage() {
       if (this.isToPaixin) {
