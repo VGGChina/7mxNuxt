@@ -29,7 +29,7 @@
           :class="isFollow ? 'followed' : 'not-follow'"
           @click.stop.prevent="follow(userData)"
         >
-          {{ isFollow == '0' ? '关注' : '已关注' }}
+          {{ isFollow ? '关注' : '已关注' }}
         </div>
       </div>
 
@@ -148,16 +148,16 @@ export default {
       var rqBody = {
         user_id: this.userId
       }
-      if (this.isFollow === '1') {
+      if (this.isFollow) {
         this.$axios.userService.unfollow(rqBody).then(res => {
           if (res.data.out == '1') {
-            this.isFollow = '0'
+            this.isFollow = false
           }
         })
       } else {
         this.$axios.userService.follow(rqBody).then(res => {
           if (res.data.out == '1') {
-            this.isFollow = '1'
+            this.isFollow = true
           }
         })
       }
