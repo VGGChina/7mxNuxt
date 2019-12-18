@@ -23,8 +23,7 @@
           >
             {{ item.is_follow == '0' ? '关注' : '已关注' }}
           </div>
-          <!-- <div class="instruction">{{ item.user_data.about || '这个人很懒，什么也没留下~~~' }}</div> -->
-          <div class="instruction">{{ '这个人很懒，什么也没留下~~~' }}</div>
+          <div class="instruction">{{ item.about || '这个人很懒，什么也没留下~~~' }}</div>
         </div>
       </div>
 
@@ -47,8 +46,8 @@
         </a>
 
         <div
-          v-for="(i, index_1) in new Array(3 - getMediasLength(item.medias))"
-          v-if="getMediasLength(item.medias) > 0"
+          v-for="(i, index_1) in new Array(3 - getMediasLength(item.mediaList))"
+          v-if="getMediasLength(item.mediaList) > 0"
           :key="'images' + index_1"
           class="placeHolder"
           width="242px"
@@ -58,7 +57,7 @@
         </div>
 
         <div
-          v-if="getMediasLength(item.medias) < 1"
+          v-if="getMediasLength(item.mediaList) < 1"
           class="no-images"
         >
           这个人很懒，还没发布过作品~~~
@@ -104,9 +103,9 @@ export default {
           })
       }
     },
-    getMediasLength(medias) {
+    getMediasLength(mediaList) {
       try {
-        return medias.length
+        return mediaList.length
       } catch (e) {
         return 0
       }
