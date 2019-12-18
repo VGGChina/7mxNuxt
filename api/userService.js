@@ -49,7 +49,8 @@ export default ({ $axios }) => {
     userDetail(data) {
       const httpdata = {
         url: '/api/user/detail',
-        data
+        data,
+        method: 'POST'
       }
       return $axios(httpdata)
     },

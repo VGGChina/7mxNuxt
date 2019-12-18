@@ -105,17 +105,17 @@ export default {
   watch: {},
   async asyncData({ $axios }) {
     const res = await $axios.tagService.getActivityList()
-    res.data.data.map(e => {
-      if (new Date().getTime() - e.close_time * 1000 > 0) {
+    res.data.map(e => {
+      if (new Date().getTime() - new Date(e.activityExpiredAt).getTime() > 0) {
         e.time = '此活动已结束'
       } else {
         e.time = `距活动截止还剩 ${-Math.floor(
-          (new Date().getTime() - e.close_time * 1000) / 24 / 60 / 60 / 1000
+          (new Date().getTime() - new Date(e.activityExpiredAt).getTime()) / 24 / 60 / 60 / 1000
         )} 天`
       }
     })
     return {
-      activities: res.data.data
+      activities: res.data
     }
   },
 
