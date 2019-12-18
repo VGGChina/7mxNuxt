@@ -58,9 +58,10 @@ export default ({ $axios }) => {
 
     userDetail(data) {
       const httpdata = {
-        url: '/api/user/detail',
+        // url: '/api/user/detail',
+        url: `/api3/users/desc/${data.user_id}`,
         data,
-        method: 'POST'
+        method: 'GET'
       }
       return $axios(httpdata)
     },

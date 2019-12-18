@@ -293,7 +293,6 @@ export default {
           { tag_id: params.id },
           { type: 1 }
         )
-        console.log(11,res_recommendWorks)
         if (res_recommendWorks.status == 200) {
           tempImgList.push(...res_recommendWorks.data.content)
           tempImgList.forEach(
@@ -301,18 +300,8 @@ export default {
               v.image_width = v.mediaWidth
               v.image_height = v.mediaHeight
               v.user_id = v.userId
-              let temp = {}
-              temp.avatar = v.avatar
-              temp.nick = v.nickname
-              // temp.
-              // v.user_data = temp
             }
           )
-          console.log(22,tempImgList)
-          // tempLine =
-          //   res_recommendWorks.data.line !== 'end'
-          //     ? res_recommendWorks.data.line
-          //     : params.page + ',0,0'
         }
       }
       if (tempIndex == 3) {

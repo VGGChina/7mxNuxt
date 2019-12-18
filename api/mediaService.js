@@ -146,7 +146,8 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/media/origin_list',
         data,
-        params
+        params,
+        method: 'POST'
       }
       return $axios(httpData)
     },
