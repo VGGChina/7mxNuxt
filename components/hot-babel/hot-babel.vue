@@ -39,7 +39,7 @@ export default {
   }),
 
   async created() {
-    // this.getHotTitles()
+    this.getHotTags()
 
     this.categoryList = []
     const res = await this.$axios.commonService.categoryList({ type: '6', category_id: '1' })
@@ -84,19 +84,20 @@ export default {
       this.isLoading = false
     },
 
-    async getHotTitles() {
-      this.categoryList = []
-      const res = await this.$axios.commonService.categoryList({ type: '6', category_id: '1' })
-      const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
-      const obj = res.data.data
-      ArrTemp.filter(item => {
-        obj.forEach(element => {
-          if (element['name'] === item) {
-            this.categoryList.push(element)
-          }
-        })
-        return true
-      })
+    async getHotTags() {
+      // this.categoryList = []
+      const res = await this.$axios.commonService.categoryList2(6)
+      console.log(res)
+      // const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
+      // const obj = res.data.data
+      // ArrTemp.filter(item => {
+      //   obj.forEach(element => {
+      //     if (element['name'] === item) {
+      //       this.categoryList.push(element)
+      //     }
+      //   })
+      //   return true
+      // })
     }
   }
 }
