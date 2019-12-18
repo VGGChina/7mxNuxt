@@ -24,8 +24,8 @@
         <waterfall-slot
           v-for="(img, index) in imgList"
           :key="index"
-          :width="img.image_width || 600"
-          :height="img.image_height || 600"
+          :width="img.mediaWidth || 600"
+          :height="img.mediaHeight || 600"
           :order="index"
           move-class="item-move"
         >

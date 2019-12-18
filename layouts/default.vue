@@ -1,18 +1,18 @@
 <template>
   <div @click="cancel">
-    <login-register/>
-    <upload/>
-    <upload-paixin/>
-    <user-setting/>
-    <improve-info/>
-    <Needed/>
-    <topbar/>
-    <help/>
-    <popup-album/>
-    <back-top/>
-    <contact/>
-    <confirmation-dialog/>
-    <nuxt/>
+    <login-register />
+    <upload />
+    <upload-paixin />
+    <user-setting />
+    <improve-info />
+    <Needed />
+    <topbar />
+    <help />
+    <popup-album />
+    <back-top />
+    <contact />
+    <confirmation-dialog />
+    <nuxt />
   </div>
 </template>
 <script>
@@ -93,7 +93,7 @@ export default {
   //   }
   // },
   created() {
-    this.fetchPublic()
+    // this.fetchPublic()
   },
   mounted() {
     window.onresize = () => {

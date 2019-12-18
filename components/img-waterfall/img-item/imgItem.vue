@@ -40,11 +40,7 @@
         </div>
 
         <!-- 购买按钮 -->
-        <div
-          v-if="!isImgAuthor"
-          class="imgWarterfall-imgItem-buy"
-          @click.stop="buyImg()"
-        >
+        <div v-if="!isImgAuthor" class="imgWarterfall-imgItem-buy" @click.stop="buyImg()">
           <div
             :style="{
               backgroundImage: 'url(' + require('./img/shoppingCart.svg') + ')'
@@ -93,7 +89,7 @@
     <!-- 作者信息 -->
     <transition name="score-fade">
       <div
-        v-if="$route.name != 'user-home' && img.hasOwnProperty('user_data') && isHover"
+        v-if="$route.name != 'user-home' && isHover"
         class="imgWarterfall-imgItem-userInfo"
         @mouseenter="contentMouseenter"
         @mouseleave="contentMouseLeave"
@@ -101,9 +97,9 @@
         <div
           class="imgWarterfall-imgItem-avatar"
           :style="{
-            backgroundImage: 'url(' + (!img.user_data.avatar ?
+            backgroundImage: 'url(' + (!img.avatar ?
               require('~/assets/img/avatar-default.svg') :
-              $utilHelper.getCompressionUrl(img.user_data.avatar, 200, 200)) + ')'
+              $utilHelper.getCompressionUrl(img.avatar, 200, 200)) + ')'
           }"
           @click.stop="toUserHomePage()"
         />
@@ -113,7 +109,7 @@
           target="_blank"
           @click.stop="noUse"
         >
-          {{ img.user_data.nick || img.user_data.name || '7mx摄影师' }}
+          {{ img.nickname || '7mx摄影师' }}
         </a>
 
         <avatar-dialog

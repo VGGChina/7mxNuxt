@@ -10,6 +10,16 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    // 首页热门图片
+    getHomeHotPicsAPI(params) {
+      const httpData = {
+        url: `/api3/medias/hot/index`,
+        params: params,
+        method: 'get'
+      }
+      return $axios(httpData)
+    },
+
     // 动态
     getDynamicAPI(data) {
       const httpData = {
