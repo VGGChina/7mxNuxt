@@ -1,4 +1,4 @@
-export default function ({ $axios, app }) {
+export default function({ $axios, app }) {
   $axios.onRequest((config) => {
     if (config.method.toLowerCase() === 'get') {
       config.method = 'GET'

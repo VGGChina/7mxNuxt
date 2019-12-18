@@ -22,7 +22,7 @@
         />
       </div>
     </div>
-    <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
+    <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" />
 
     <div
       v-if="imgList.length > 0 && line != 'end'"
@@ -38,13 +38,16 @@
 
 <script>
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
-import slide from '~/components/slide/index'
+// import slide from '~/components/slide/index'
 import IndexFooter from '~/components/footer/IndexFooter'
-import Category from '~/components/category/Category'
-import recommend from '~/components/recommend/recommend.vue'
+// import Category from '~/components/category/Category'
+// import recommend from '~/components/recommend/recommend.vue'
 import photography from '~/components/photography/photography.vue'
 import hotBabel from '~/components/hot-babel/hot-babel'
 import cooperationFooter from '~/components/cooperation/footer-cooperation'
+
+import loading from '~/components/loading/Loading'
+
 // import { setTimeout } from 'timers'
 
 export default {
@@ -55,13 +58,14 @@ export default {
   },
   components: {
     ImgWaterfall,
-    slide,
-    Category,
+    // slide,
+    // Category,
     IndexFooter,
-    recommend,
+    // recommend,
     photography,
     hotBabel,
-    cooperationFooter
+    cooperationFooter,
+    loading
   },
   data() {
     return {
@@ -168,48 +172,6 @@ export default {
     }
   },
 
-  async asyncData({ $axios }) {
-    // recommend
-    // const result = await $axios.tagService.getActivityList()
-    // let res = result.data.data.filter(item => {
-    //   return item.id !== '285671'
-    // })
-    // const temp = []
-    // res.forEach(item => {
-    //   if (item.close_time - new Date().getTime() / 1000 > 0) {
-    //     temp.push(item)
-    //   }
-    // })
-    // res = temp.length >= 20 ? temp : res
-    // if (res.length % 2 === 1) {
-    //   res.push(res.slice(0, 1)[0])
-    // }
-    // const smallBannerList = res
-
-    // 热门图片
-    // const data2 = {
-    //   page: 0,
-    //   size: 40
-    // }
-
-    // const res = await $axios.mediaService.getHomeHotPicsAPI(data2)
-    // console.log(res)
-
-    // const imgList = []
-    // let line = '1,0,0'
-    // const data = { type: '6' }
-    // const params = { line: line, limit: '40' }
-    // const res_hotpics = await $axios.mediaService.randomRecommend(data, params)
-    // imgList.push(...res_hotpics.data.data)
-    // line = res_hotpics.data.line
-
-    // return {
-    //   // smallBannerList: smallBannerList,
-    //   // photography_categoryLis
-    //   imgList: imgList,
-    //   line: line
-    // }
-  },
   created() {
     this.fetchData()
   },
@@ -248,16 +210,6 @@ export default {
       }
     },
     async fetchData() {
-      // const data = { type: '6' }
-      // const params = { line: this.line, limit: '40' }
-      // this.isLoading = true
-      // const res_hotpics = await this.$axios.mediaService.randomRecommend(
-      //   data,
-      //   params
-      // )
-      // this.imgList.push(...res_hotpics.data.data)
-      // this.line = res_hotpics.data.line
-
       const data = {
         page: this.page,
         size: this.size

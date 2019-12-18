@@ -20,7 +20,11 @@
         <avatar-dialog
           v-if="isHoverUser && currentHoverUser == 1000000"
           class="imgWarterfall-imgItem-avatarDialog"
-          :user-data="item"
+          :user-avator="img.avatar"
+          :username="img.nickname"
+          :followed-num="img.follow"
+          :is-follow="0"
+          :user-id="img.userId"
         />
       </div>
       <div class="content_right">
@@ -42,7 +46,11 @@
           <avatar-dialog
             v-if="isHoverUser && index == currentHoverUser"
             class="imgWarterfall-imgItem-avatarDialog"
-            :user-data="item"
+            :user-avator="img.avatar"
+            :username="img.nickname"
+            :followed-num="img.follow"
+            :is-follow="0"
+            :user-id="img.userId"
           />
         </div>
       </div>

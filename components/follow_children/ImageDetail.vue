@@ -28,7 +28,11 @@
             <avatar-dialog
               v-if="isShowAvatarDialog"
               class="avatar-dialog"
-              :user-data="imgDetail.user_data"
+              :user-avator="img.avatar"
+              :username="img.nickname"
+              :followed-num="img.follow"
+              :is-follow="0"
+              :user-id="img.userId"
             />
           </div>
         </a>

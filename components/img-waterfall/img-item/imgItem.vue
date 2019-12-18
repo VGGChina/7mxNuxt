@@ -115,7 +115,11 @@
         <avatar-dialog
           v-if="isHoverUser"
           class="imgWarterfall-imgItem-avatarDialog"
-          :user-data="img.user_data"
+          :user-avator="img.avatar"
+          :username="img.nickname"
+          :followed-num="img.follow"
+          :is-follow="0"
+          :user-id="img.userId"
         />
       </div>
     </transition>
@@ -242,9 +246,7 @@ export default {
       return this.$utilHelper.toUserPage(this.img.user_data)
     }
   },
-  created() {
-    this.getUserData()
-  },
+
   methods: {
     // 鼠标进入这个item
     contentMouseenter(index) {
@@ -263,30 +265,10 @@ export default {
       this.isHoverUser = false
       // this.currentHoverUser = 1000000
     },
+
     noUse() {
     },
-    async getUserData() {
-      if (this.img.hasOwnProperty('user_data')) {
-        return
-      }
 
-      if (this.img.hasOwnProperty('userId')) {
-        const res = await this.$axios.userService.userDetail({ user_id: this.img.userId })
-        if (res.status === 200) {
-          this.$set(this.img, 'user_data', res.data)
-        }
-        // console.log(3333,this.img)
-        return
-      }
-
-      // if (this.img.hasOwnProperty('id')) {
-      //   const res = await this.$axios.mediaService.mediaDetail({ media_id: this.eputId })
-
-      //   if (res.data.out === '1') {
-      //     this.$set(this.img, 'user_data', res.data.data.user_data)
-      //   }
-      // }
-    },
     getImageDetailPage() {
       if (this.isToPaixin) {
         return 'https://v.paixin.com/photoplus/' + this.gagaId
