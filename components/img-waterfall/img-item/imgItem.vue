@@ -274,12 +274,12 @@ export default {
         return
       }
 
-      if (this.img.hasOwnProperty('user_id')) {
-        const res = await this.$axios.userService.userDetail({ user_id: this.img.user_id })
+      if (this.img.hasOwnProperty('userId')) {
+        const res = await this.$axios.userService.userDetail({ user_id: this.img.userId })
         if (res.status === 200) {
           this.$set(this.img, 'user_data', res.data)
         }
-        console.log(3333,this.img)
+        // console.log(3333,this.img)
         return
       }
 
