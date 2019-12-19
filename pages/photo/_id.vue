@@ -37,16 +37,28 @@ export default {
     }
     const res = await $axios.mediaService.mediaDetail(rqBody)
     let tempMediaDetail = {}
-    if (res.data.out === '1') {
-      tempMediaDetail = res.data.data
+    if (res.status == 200) {
+      tempMediaDetail = res.data
+      let res_user = await $axios.userService.userDetail({ user_id: tempMediaDetail.userId })
+      if(res_user.status == 200) {
+        tempMediaDetail.user_data = res_user.data
+      }
     }
+    console.log(111,tempMediaDetail)
+    
     const res_commentList = await $axios.mediaService.commentList(
-      { media_id: tempMediaDetail.id },
-      { line: '' }
+      { media_id: tempMediaDetail.id }
     )
     const tempCommentList = []
-    if (res_commentList.data.out === '1') {
-      tempCommentList.push(...res_commentList.data.data)
+    if (res_commentList.status == 200) {
+      tempCommentList.push(...res_commentList.data.content)
+    }
+
+    for(let i of tempCommentList) {
+      let res_temp = await $axios.userService.userDetail({ user_id: i.userId })
+      if(res_temp.status == 200) {
+        i.user_data = res_temp.data
+      }
     }
 
     const res_exifUrl = await $axios.mediaService.exifUrl({

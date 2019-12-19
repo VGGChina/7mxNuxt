@@ -1,11 +1,10 @@
 
 export default ({ $axios }) => {
   const mediaService = {
-    mediaDetail(data, params) {
+    mediaDetail(data) {
       const httpData = {
-        url: '/api/media/detail',
-        data,
-        params
+        url: `/api3/medias/detail/${data.media_id}`,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -54,11 +53,11 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    commentList(data, params) {
+    commentList(params) {
       const httpData = {
-        url: '/api/media/comment_list',
-        data,
-        params
+        url: `/api3/medias/comment`,
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -315,19 +314,20 @@ export default ({ $axios }) => {
     // 某个tag全部作品列表
     inTagList(data, params) {
       const httpData = {
-        url: '/api/media/in_tag_list',
-        data,
+        // url: '/api/media/in_tag_list',
+        url: `/api3/activities/medias/${data.tag_id}`,
         params,
-        method: 'POST'
+        method: 'GET'
       }
       return $axios(httpData)
     },
     // 某个tag全部作品列表
     randomInTagList(data, params) {
       const httpData = {
-        url: '/api/media/random_in_tag_list',
+        url: `/api3/tags/medias/${data.tag_id}`,
         data,
-        params
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },

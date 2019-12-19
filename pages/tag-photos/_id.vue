@@ -1,8 +1,8 @@
 <template>
-    <div v-scroll="fetchData" class="user-like-contanier">
-        <table-nav :options="options" :defaultIndex="defaultIndex"></table-nav>
-        <img-waterfall :imgList="imgList" :line="line" :isLoading="isLoading" :isShowLoading="true"></img-waterfall>
-    </div>
+  <div v-scroll="fetchData" class="user-like-contanier">
+    <table-nav :options="options" :defaultIndex="defaultIndex"></table-nav>
+    <img-waterfall :imgList="imgList" :line="line" :isLoading="isLoading" :isShowLoading="true"></img-waterfall>
+  </div>
 </template>
 
 <script>
@@ -16,7 +16,9 @@ export default {
     imgList: [],
     isLoading: false,
     options: [],
-    defaultIndex: 0
+    defaultIndex: 0,
+    page: 1,
+    maxPage: 1
   }),
   created() {
     this.fetchData()
@@ -29,13 +31,13 @@ export default {
         tag_id: this.$route.params.id
       })
 
-      if (res.data.out == '1') {
+      if (res.status == 200) {
         this.options.push({
-          name: '#' + res.data.data.name + '#',
+          name: '#' + res.data.name + '#',
           url: ''
         })
 
-        document.title = res.data.data.name + ' - 7MX 中国领先的视觉创作社区'
+        document.title = res.data.name + ' - 7MX 中国领先的视觉创作社区'
       } else {
         document.title = '7MX - 中国领先的视觉创作社区'
       }
@@ -45,18 +47,24 @@ export default {
         return
       }
 
+      if (this.page > this.maxPage) {
+        return
+      }
+
       this.isLoading = true
 
       let response = await this.$axios.mediaService.randomInTagList(
-        { tag_id: this.$route.params.id },
-        { line: this.line }
+        {
+          tag_id: this.$route.params.id
+        },
+        { page: this.page - 1 }
       )
-
-      if (response.data.out === '1') {
-        this.imgList = this.imgList.concat(response.data.data)
+      if (response.status == 200) {
+        this.imgList = this.imgList.concat(response.data.content)
+        this.maxPage = response.data.totalPages
       }
 
-      this.line = response.data.line
+      this.page += 1
 
       setTimeout(() => {
         this.isLoading = false

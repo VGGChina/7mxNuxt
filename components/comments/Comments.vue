@@ -10,9 +10,9 @@
           <div
             class="avatar"
             :style="{
-              'backgroundImage': 'url(' + (!item.user_data.avatar ?
+              'backgroundImage': 'url(' + (!item.avatar ?
                 require('~/assets/img/avatar-default.svg') :
-                $utilHelper.getCompressionUrl(item.user_data.avatar, 200, 200)) + ')'
+                $utilHelper.getCompressionUrl(item.avatar, 200, 200)) + ')'
             }"
             @mouseenter="avatarMouseenter(index)"
             @mouseleave="avatarMouseleave"
@@ -29,7 +29,7 @@
           </div>
         </nuxt-link>
         <div class="comment-detail">
-          <div class="user-nick">{{ item.user_data.nick }}</div>
+          <div class="user-nick">{{ item.nickname }}</div>
           <div class="comment-content">
             <span v-if="item.to_comment == '1'">
               回复
@@ -41,7 +41,7 @@
         </div>
         <transition name="reply-fade">
           <div v-if="index == replyIndex" class="reply-editor">
-            <textarea v-model="reply" :placeholder="'回复' + item.user_data.nick + '...'" />
+            <textarea v-model="reply" :placeholder="'回复' + item.nick + '...'" />
             <div class="reply-botton" @click="sendComment(true, item.id, index)">回复</div>
           </div>
         </transition>
@@ -66,7 +66,6 @@ export default {
   data: () => ({
     comment: '',
     reply: '',
-    // commentList: [],
     replyIndex: -1,
     line: '',
     isFetching: false,
@@ -82,11 +81,9 @@ export default {
     }
   },
   watch: {
-    // 'mediaDetail': function () {
-    //   this.fetchData();
-    // }
   },
   methods: {
+    fetchData() {},
     onClickReply(index) {
       if (this.replyIndex == index) {
         this.replyIndex = -1
@@ -136,33 +133,6 @@ export default {
           this.replyIndex = -1
         }
       })
-    },
-    async fetchData() {
-      if (this.isFetching || this.line === 'end') {
-        return
-      }
-
-      this.isFetching = true
-
-      const rqBody = {
-        media_id: this.mediaDetail.id
-      }
-      const params = {
-        line: this.line
-      }
-
-      try {
-        const res = await this.$axios.mediaService.commentList(rqBody, params)
-        if (res.data.out == '1') {
-          this.commentList.push(...res.data.data)
-        }
-        this.line = res.data.line
-        setTimeout(() => {
-          this.isFetching = false
-        }, 500)
-      } catch (e) {
-        console.log(e)
-      }
     },
     avatarMouseenter(index) {
       this.currentIndex = index

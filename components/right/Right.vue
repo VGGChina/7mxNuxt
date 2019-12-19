@@ -33,15 +33,15 @@
       </div>
       <div class="likes">
         <div>
-          {{ mediaDetail.look_num || '0' }}
+          {{ mediaDetail.visit || '0' }}
           <span>浏览</span>
         </div>
         <div>
-          {{ mediaDetail.like_num }}
+          {{ mediaDetail.like }}
           <span>喜欢</span>
         </div>
         <div>
-          {{ mediaDetail.comment_num }}
+          {{ mediaDetail.comment }}
           <span>评论</span>
         </div>
       </div>
@@ -258,14 +258,14 @@ export default {
     },
     fanNum() {
       try {
-        return this.mediaDetail.user_data.fan_num
+        return this.mediaDetail.user_data.userStat.followedNum
       } catch (e) {
         return '0'
       }
     },
     categoryName() {
       try {
-        return this.mediaDetail.category_list[0].name
+        return this.mediaDetail.category
       } catch (e) {
         return ''
       }
@@ -292,7 +292,7 @@ export default {
       }
     },
     score() {
-      return this.$utilHelper.score(this.mediaDetail)
+      return this.mediaDetail.score
     },
     userRef() {
       return this.$utilHelper.toUserPage(this.mediaDetail.user_data)
