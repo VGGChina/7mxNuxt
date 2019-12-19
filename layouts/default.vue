@@ -104,6 +104,8 @@ export default {
       const pageYOffset = window.pageYOffset
       this.$store.commit('window/winPageYOffset', pageYOffset)
     }
+
+    this.getLoginUser()
   },
   methods: {
     cancel() {
@@ -133,6 +135,14 @@ export default {
       if (results[1].data.out === '1') {
         // 种类列表
         this.$store.commit('category/categoryList', results[1].data.data)
+      }
+    },
+
+    // 获取是否已经登录的信息
+    getLoginUser() {
+      if (window.localStorage.loginUser !== undefined) {
+        this.$store.commit('login/loginUser', JSON.parse(window.localStorage.loginUser))
+        this.$store.commit('login/isLogin', true)
       }
     }
   }

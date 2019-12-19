@@ -102,6 +102,8 @@ export default {
       this.$axios.userService.login2(rqBody).then(loginRes => {
         const data = loginRes.data
 
+        window.localStorage.loginUser = JSON.stringify(data)
+
         this.$store.commit('login/loginUser', data)
         this.$store.commit('login/isShowLoginDialog', false)
         this.$store.commit('login/isLogin', true)

@@ -20,10 +20,6 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    // 某活动参赛作品
-    // media/in_tag_list
-    // 在mediaService.js里
-
     // 获取所有推荐tag
     getRecommentTags(data, params) {
       const httpData = {
@@ -81,6 +77,43 @@ export default ({ $axios }) => {
         url: '/api/tag/follow_list',
         data,
         params
+      }
+      return $axios(httpData)
+    },
+
+    // 首页热门标签
+    getIndexHotTagsAPI(params) {
+      const httpData = {
+        url: '/api3/tags/index',
+        params
+      }
+      return $axios(httpData)
+    },
+
+    // 标签图片
+    getTagPicsAPI(data) {
+      const httpData = {
+        url: `/api3/tags/medias/${data.tagId}`,
+        params: data.params
+      }
+      return $axios(httpData)
+    },
+
+    // 推荐摄影师数据
+    getRecommendPhotographersAPI(data) {
+      const httpData = {
+        url: `/api3/users/recommend/${data.categoryId}`,
+        params: data.params,
+        method: 'get'
+      }
+      return $axios(httpData)
+    },
+
+    // 推荐摄影师数据
+    getRecommendPhotographersTagsAPI(type) {
+      const httpData = {
+        url: `/api3/categories/${type}`,
+        method: 'get'
       }
       return $axios(httpData)
     }

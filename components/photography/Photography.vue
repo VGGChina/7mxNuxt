@@ -1,6 +1,8 @@
 <template>
   <div class="photeography_container">
     <sharetitle :title="title" :category-list="categoryList" :identity="1" />
+    <loading :is-loading="isLoading" loading-color="#000" class="loading" />
+
     <div class="content">
       <div
         v-for="(item, index) in firstAvatar"
@@ -63,13 +65,15 @@
 import sharetitle from '~/components/common/share-title.vue'
 import morecategory from '~/components/common/category_more.vue'
 import AvatarDialog from '~/components/avatar-dialog/AvatarDialog'
+import loading from '~/components/loading/Loading'
 
 export default {
   name: '',
   components: {
     sharetitle,
     morecategory,
-    AvatarDialog
+    AvatarDialog,
+    loading
   },
   data: () => ({
     title: '推荐摄影师',
@@ -84,18 +88,11 @@ export default {
     categoryList: [],
     currentAvatars: {},
     firstAvatar: [],
-    avatarList: []
+    avatarList: [],
+    isLoading: false
   }),
   async created() {
-    const res = await this.$axios.commonService.categoryList({ type: '16' })
-    if (res.data.data.length > 0) {
-      for (const item of res.data.data) {
-        const temp = {}
-        temp.id = item.id
-        temp.name = item.name
-        this.categoryList.push(temp)
-      }
-    }
+    await this.getRecommendPhotographers()
 
     this.getAvatars()
 
@@ -130,14 +127,25 @@ export default {
     },
 
     async getAvatars(index = 0) {
-      const rqBody = {
-        category_id: this.categoryList[index].id
+      const data = {
+        categoryId: this.categoryList[index].id,
+        params: {
+          page: 0,
+          size: 7
+        }
       }
-      this.currentAvatars = {}
-      const adv0 = await this.$axios.userService.recommendUser(rqBody, { line: '1,0,0' })
-      const tmpData = adv0.data.data
-      this.firstAvatar = tmpData.splice(0, 1)
-      this.avatarList = tmpData.splice(0, 6)
+      this.firstAvatar = []
+      this.avatarList = []
+      this.isLoading = true
+      const res = await this.$axios.tagService.getRecommendPhotographersAPI(data)
+      this.firstAvatar = res.data.slice(0, 1)
+      this.avatarList = res.data.splice(1, 7)
+      this.isLoading = false
+    },
+
+    async getRecommendPhotographers() {
+      const res = await this.$axios.tagService.getRecommendPhotographersTagsAPI(16)
+      this.categoryList = res.data
     }
   }
 }
