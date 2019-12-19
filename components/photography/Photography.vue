@@ -16,8 +16,8 @@
         <img :src="item.avatar" alt>
         <h3>{{ item.nick }}</h3>
         <p>
-          <span>{{ item.fan_num }}</span>粉丝
-          <span>{{ 100 + item.fan_num * 100 + item.media_liked_num*10 }}</span>人气值
+          <span>{{ item.userStat.followedNum }}</span>粉丝
+          <span>{{ item.userStat.popularity }}</span>人气值
         </p>
         <avatar-dialog
           v-if="isHoverUser && currentHoverUser == 1000000"
@@ -42,8 +42,8 @@
           <img :src="item.avatar" alt class="avatar">
           <h3>{{ item.nickname }}</h3>
           <p>
-            <span>{{ item.fan_num }}</span>粉丝
-            <span>{{ 100 + (item.fan_num * 100)*1 + item.media_liked_num*10 }}</span>人气值
+            <span>{{ item.userStat.followedNum }}</span>粉丝
+            <span>{{ item.userStat.popularity }}</span>人气值
           </p>
           <avatar-dialog
             v-if="isHoverUser && index == currentHoverUser"
