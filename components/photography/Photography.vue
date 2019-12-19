@@ -22,11 +22,11 @@
         <avatar-dialog
           v-if="isHoverUser && currentHoverUser == 1000000"
           class="imgWarterfall-imgItem-avatarDialog"
-          :user-avator="img.avatar"
-          :username="img.nickname"
-          :followed-num="img.follow"
-          :is-follow="0"
-          :user-id="img.userId"
+          :user-avator="item.avatar"
+          :username="item.nickname"
+          :followed-num="item.follow || 0"
+          :is-follow="false"
+          :user-id="item.userId"
         />
       </div>
       <div class="content_right">
@@ -40,7 +40,7 @@
         >
 
           <img :src="item.avatar" alt class="avatar">
-          <h3>{{ item.nick }}</h3>
+          <h3>{{ item.nickname }}</h3>
           <p>
             <span>{{ item.fan_num }}</span>粉丝
             <span>{{ 100 + (item.fan_num * 100)*1 + item.media_liked_num*10 }}</span>人气值
@@ -48,11 +48,11 @@
           <avatar-dialog
             v-if="isHoverUser && index == currentHoverUser"
             class="imgWarterfall-imgItem-avatarDialog"
-            :user-avator="img.avatar"
-            :username="img.nickname"
-            :followed-num="img.follow"
-            :is-follow="0"
-            :user-id="img.userId"
+            :user-avator="item.avatar"
+            :username="item.nickname"
+            :followed-num="item.follow || 0"
+            :is-follow="false"
+            :user-id="item.userId"
           />
         </div>
       </div>
