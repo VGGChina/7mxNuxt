@@ -70,12 +70,17 @@ export default {
       isFetching: false
     }
   },
+  computed: {
+    loginUser() {
+      return this.$store.state.login.loginUser
+    }
+  },
   created() {
     this.fetchData()
   },
   methods: {
     async fetchData() {
-      if (this.isFetching || this.line == 'end') {
+      if (this.isFetching || this.line === 'end') {
         return
       }
 
@@ -113,8 +118,8 @@ export default {
       this.worksList = list
     },
     nextStep() {
-      const list = [];
-        let l = this.worksList.length
+      const list = []
+      const l = this.worksList.length
       for (let i = 0; i < l; i++) {
         if (this.worksList[i].isSelected) {
           this.worksList[i].isSelected = false
@@ -124,15 +129,10 @@ export default {
 
       if (list.length < 1) {
         this.$toast.warn('您还没有选中任何作品')
-        return;
+        return
       }
 
       this.$emit('nextStep', { choosedList: list, isChoosed: true })
-    }
-  },
-  computed: {
-    loginUser() {
-      return this.$store.state.login.loginUser
     }
   }
 }

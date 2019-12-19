@@ -132,7 +132,6 @@ export default {
   min-width: 1200px;
   height: 100%;
   min-height: 1300px;
-  /* background-image: url('/static/img/bg.jpg'); */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

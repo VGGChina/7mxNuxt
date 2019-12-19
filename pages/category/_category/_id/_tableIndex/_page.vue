@@ -96,16 +96,13 @@ export default {
       }
     }
     const res = await $axios.mediaService.exploreAPI(data)
-    if (params.tableIndex === '0') {
-      imgList = res.data
-    } else {
-      imgList = res.data.content
 
-      const pageNow = params.page
-      const pageTotal = res.data.totalPages
-      const nextPage = pageNow === pageTotal ? 'end' : parseInt(params.page) + 1
-      line = nextPage + ',' + pageTotal + ',' + pageNow
-    }
+    imgList = res.data.content
+
+    const pageNow = params.page
+    const pageTotal = res.data.totalPages
+    const nextPage = pageNow === pageTotal ? 'end' : parseInt(params.page) + 1
+    line = nextPage + ',' + pageTotal + ',' + pageNow
 
     return {
       imgList: imgList,

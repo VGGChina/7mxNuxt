@@ -11,13 +11,11 @@
 
 <script>
 import ImgWaterfall from '~/components/img-waterfall/ImgWaterfall'
-import NoContent from '~/components/no-content/NoContent'
 
 export default {
   name: '',
   components: {
-    'img-waterfall': ImgWaterfall,
-    'no-content': NoContent
+    'img-waterfall': ImgWaterfall
   },
   data: () => ({
     line: '',

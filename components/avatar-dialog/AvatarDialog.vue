@@ -12,27 +12,24 @@
           <div
             class="avatar"
             :style="{
-              background: 'url(' + ($utilHelper.getCompressionUrl(userData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
+              background: 'url(' + ($utilHelper.getCompressionUrl(userAvator, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
             }"
           />
         </a>
 
         <div class="name">
           <a :href="userRef" target="_blank" @click.stop>
-            {{ userData.nick || userData.name }}
+            {{ username }}
           </a>
-          <div>{{ userData.followedNum || '0' }}名追随者</div>
+          <div>{{ followedNum || '0' }}名追随者</div>
         </div>
 
         <div
           class="follow"
-          :class="{
-            'followed': userData.is_follow == '1',
-            'not-follow': userData.is_follow == '0'
-          }"
+          :class="isFollow ? 'followed' : 'not-follow'"
           @click.stop.prevent="follow(userData)"
         >
-          {{ userData.is_follow == '0' ? '关注' : '已关注' }}
+          {{ isFollow ? '关注' : '已关注' }}
         </div>
       </div>
 
@@ -70,11 +67,28 @@ export default {
   components: {
     loading
   },
-  props: [
-    'userData',
-    'enter',
-    'leave'
-  ],
+  props: {
+    userAvator: {
+      type: String,
+      default: ''
+    },
+    username: {
+      type: String,
+      default: ''
+    },
+    followedNum: {
+      type: Number,
+      default: 0
+    },
+    isFollow: {
+      type: Boolean,
+      default: false
+    },
+    userId: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       imgList: [],
@@ -85,27 +99,27 @@ export default {
     isLogin() {
       return this.$store.state.login.isLogin
     },
-    eputUserId() {
-      let eputUserId = ''
+    // eputUserId() {
+    //   let eputUserId = ''
 
-      if (typeof this.userData.gaga_id !== 'undefined' && this.userData.gaga_id != null && this.userData.gaga_id.length > 0) {
-        eputUserId = this.userData.id
-      }
+    //   if (typeof this.userData.gaga_id !== 'undefined' && this.userData.gaga_id != null && this.userData.gaga_id.length > 0) {
+    //     eputUserId = this.userData.id
+    //   }
 
-      if (typeof this.userData.eput_id !== 'undefined' && this.userData.eput_id != null && this.userData.eput_id.length > 0) {
-        eputUserId = this.userData.eput_id
-      } else {
-        eputUserId = this.userData.id
-      }
+    //   if (typeof this.userData.eput_id !== 'undefined' && this.userData.eput_id != null && this.userData.eput_id.length > 0) {
+    //     eputUserId = this.userData.eput_id
+    //   } else {
+    //     eputUserId = this.userData.id
+    //   }
 
-      return eputUserId
-    },
+    //   return eputUserId
+    // },
     userRef() {
       return this.$utilHelper.toUserPage(this.userData)
     }
   },
   watch: {
-    'userData': function(val) {
+    'userId': function(val) {
       this.imgList = []
       this.fetchData()
     }
@@ -115,7 +129,7 @@ export default {
   },
   methods: {
     async fetchData() {
-      const rqBody = { type: '6', user_id: this.eputUserId }
+      const rqBody = { type: '6', user_id: this.userId }
       const params = { line: '', limit: 3 }
 
       this.isFetching = true
@@ -132,18 +146,18 @@ export default {
         return
       }
       var rqBody = {
-        user_id: this.eputUserId
+        user_id: this.userId
       }
-      if (user.is_follow === '1') {
+      if (this.isFollow) {
         this.$axios.userService.unfollow(rqBody).then(res => {
           if (res.data.out == '1') {
-            user.is_follow = '0'
+            this.isFollow = false
           }
         })
       } else {
         this.$axios.userService.follow(rqBody).then(res => {
           if (res.data.out == '1') {
-            user.is_follow = '1'
+            this.isFollow = true
           }
         })
       }

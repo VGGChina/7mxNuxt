@@ -12,7 +12,7 @@
                 require('~/assets/img/avatar-default.svg')) + ')'
             }"
           />
-          <div class="name">{{ loginUser.nick || loginUser.name }}</div>
+          <div class="name">{{ loginUser.nickname }}</div>
           <div class="num_info">
             <div class="intro all_pics">
               <div class="num">{{ sellDataLeft.media_num || 0 }}张</div>
@@ -138,10 +138,6 @@ export default {
       this.getSellNum()
       this.fetchData()
     }
-    // this.$bus.on('loginSuccessful', loginUser => {
-    //   this.getSellNum()
-    //   this.fetchData()
-    // })
   },
   methods: {
     giveMeMoney() {

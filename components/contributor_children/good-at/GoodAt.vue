@@ -63,7 +63,6 @@ export default {
         try {
           const res = await this.$axios.userService.setAuthCard(rqBody)
           if (res.data.out === '1') {
-            // let user = JSON.parse(JSON.stringify(this.loginUser));
             this.loginUser.user_data.card_status = '1'
             this.$store.commit('login/loginUser', this.loginUser)
             this.$emit('updateProgress', {
@@ -78,22 +77,17 @@ export default {
           console.log(e)
         }
       } else {
-        try {
-          const res = await this.$axios.userService.setAuthCardCom(rqBody)
-          if (res.data.out == '1') {
-            // let user = JSON.parse(JSON.stringify(this.loginUser));
-            this.loginUser.user_data.company_status = '1'
-            this.$store.commit('login/loginUser', this.loginUser)
-            this.$emit('updateProgress', {
-              nextIndex: 3,
-              form: {}
-            })
-            this.$toast.notice('提交成功')
-          } else {
-            this.$toast.warn('提交失败，请重试')
-          }
-        } catch (e) {
-          // console.log(e)
+        const res = await this.$axios.userService.setAuthCardCom(rqBody)
+        if (res.data.out == '1') {
+          this.loginUser.user_data.company_status = '1'
+          this.$store.commit('login/loginUser', this.loginUser)
+          this.$emit('updateProgress', {
+            nextIndex: 3,
+            form: {}
+          })
+          this.$toast.notice('提交成功')
+        } else {
+          this.$toast.warn('提交失败，请重试')
         }
       }
     },

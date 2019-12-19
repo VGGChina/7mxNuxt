@@ -92,7 +92,7 @@ export default {
     display: flex;
 }
 .content ul li{
-  width: 86px;
+  width: auto;
 }
 .content ul li a{
   color: rgba(0,0,0,.5);

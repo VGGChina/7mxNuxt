@@ -39,26 +39,10 @@ export default {
   }),
 
   async created() {
-    // this.getHotTitles()
-
-    this.categoryList = []
-    const res = await this.$axios.commonService.categoryList({ type: '6', category_id: '1' })
-    const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
-    const obj = res.data.data
-    ArrTemp.filter(item => {
-      obj.forEach(element => {
-        if (element['name'] === item) {
-          this.categoryList.push(element)
-        }
-      })
-      return true
-    })
-    this.$store.commit('category/setCrrentType', this.categoryList[0])
-
+    await this.getHotTags()
     this.getHotPics()
 
     this.$bus.on('choosebabel', async index => {
-      this.$store.commit('category/setCrrentType', this.categoryList[index])
       this.getHotPics(index)
     })
   },
@@ -70,33 +54,29 @@ export default {
 
     async getHotPics(index = 0) {
       const data = {
-        data: { category_id: this.categoryList[index].id, type: 6 },
-        params: { line: '1,0,0' }
+        tagId: this.categoryList[index].id,
+        params: {
+          page: 0,
+          size: 8
+        }
       }
       this.picblocks = []
       this.isLoading = true
-      let res = await this.$axios.mediaService.recommendCategory(data.data, data.params)
-      res = res.data.data
-      res.forEach(item => {
+      const res = await this.$axios.tagService.getTagPicsAPI(data)
+      res.data.content.forEach(item => {
         item.image += '?imageView2/2/w/632/h/389'
       })
-      this.picblocks = res.splice(0, 8)
+      this.picblocks = res.data.content
       this.isLoading = false
     },
 
-    async getHotTitles() {
-      this.categoryList = []
-      const res = await this.$axios.commonService.categoryList({ type: '6', category_id: '1' })
-      const ArrTemp = ['纪实', '人像', '食品', '动物', '风光', '街头', '建筑', '黑白', '插画']
-      const obj = res.data.data
-      ArrTemp.filter(item => {
-        obj.forEach(element => {
-          if (element['name'] === item) {
-            this.categoryList.push(element)
-          }
-        })
-        return true
-      })
+    async getHotTags() {
+      const data = {
+        page: 0,
+        size: 9
+      }
+      const res = await this.$axios.tagService.getIndexHotTagsAPI(data)
+      this.categoryList = res.data
     }
   }
 }

@@ -20,7 +20,11 @@
             <avatar-dialog
               v-if="isShowAvatarDialog && currentIndex == index"
               class="avatar-dialog"
-              :user-data="item.user_data"
+              :user-avator="img.avatar"
+              :username="img.nickname"
+              :followed-num="img.follow"
+              :is-follow="0"
+              :user-id="img.userId"
             />
           </div>
         </nuxt-link>

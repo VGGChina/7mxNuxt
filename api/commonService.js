@@ -16,6 +16,14 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    categoryList2(type) {
+      const httpData = {
+        url: `/api3/categories/${type}`,
+        method: 'get'
+      }
+      return $axios(httpData)
+    },
+
     getServerTime() {
       const httpData = {
         url: '/api/common/time',
