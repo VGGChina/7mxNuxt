@@ -1,8 +1,8 @@
 <template>
-    <div v-scroll="fetchData" class="user-like-contanier">
-        <table-nav :options="options" :defaultIndex="defaultIndex"></table-nav>
-        <img-waterfall :imgList="imgList" :line="line" :isLoading="isLoading" :isShowLoading="true"></img-waterfall>
-    </div>
+  <div v-scroll="fetchData" class="user-like-contanier">
+    <table-nav :options="options" :defaultIndex="defaultIndex"></table-nav>
+    <img-waterfall :imgList="imgList" :line="line" :isLoading="isLoading" :isShowLoading="true"></img-waterfall>
+  </div>
 </template>
 
 <script>
@@ -47,16 +47,15 @@ export default {
 
       this.isLoading = true
 
-      let response = await this.$axios.mediaService.randomInTagList(
-        { tag_id: this.$route.params.id },
-        { line: this.line }
-      )
-
-      if (response.data.out === '1') {
-        this.imgList = this.imgList.concat(response.data.data)
+      let response = await this.$axios.mediaService.randomInTagList({
+        tag_id: this.$route.params.id
+      })
+      console.log(222, response)
+      if (response.status == 200) {
+        this.imgList = this.imgList.concat(response.data.content)
       }
 
-      this.line = response.data.line
+      // this.line = response.data.line
 
       setTimeout(() => {
         this.isLoading = false
