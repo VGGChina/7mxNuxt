@@ -147,7 +147,6 @@ export default {
   },
   mounted() {
     this.nick = this.loginUser.nick
-    // this.about = this.loginUser.user_data.about
   },
   methods: {
     cancel() {
