@@ -72,7 +72,8 @@ export default {
       this.$store.commit('login/loginUser', {})
       this.$store.commit('login/isLogin', false)
       window.localStorage.removeItem('authorization')
-      this.$toast.success('退出登录成功')
+      window.localStorage.removeItem('loginUser')
+      this.$toast.notice('退出登录成功')
       this.$router.push({
         name: 'index'
       })
