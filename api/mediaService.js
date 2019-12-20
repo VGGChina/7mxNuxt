@@ -23,7 +23,7 @@ export default ({ $axios }) => {
     getDynamicAPI(data) {
       const httpData = {
         url: `/api3/dynamics/${data.type}`,
-        params: data.params,
+        // params: data.params,
         method: 'get'
       }
       return $axios(httpData)

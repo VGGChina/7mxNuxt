@@ -68,16 +68,27 @@ export default ({ $axios }) => {
 
     follow(data) {
       const httpData = {
-        url: '/api/user/follow',
-        data
+        url: '/api3/users/follow',
+        data,
+        method: 'post'
       }
       return $axios(httpData)
     },
 
     unfollow(data) {
       const httpData = {
-        url: '/api/user/drop_follow',
-        data
+        url: '/api3/users/cancel-follow',
+        data,
+        method: 'post'
+      }
+      return $axios(httpData)
+    },
+
+    // 是否已关注
+    isFollowAPI(params) {
+      const httpData = {
+        url: '/api3/users/is-follow',
+        params
       }
       return $axios(httpData)
     },

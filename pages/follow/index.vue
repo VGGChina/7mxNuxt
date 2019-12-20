@@ -152,12 +152,12 @@ export default {
     // },
     async getList() {
       const data = {
-        type: 0,
-        params: {
-          page: this.page,
-          size: this.size
-          // sort: this.sort
-        }
+        type: 0
+        // params: {
+        //   page: this.page,
+        //   size: this.size
+        //   // sort: this.sort
+        // }
       }
 
       if (this.tableIndex === 0) {

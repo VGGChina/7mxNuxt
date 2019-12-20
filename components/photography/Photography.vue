@@ -26,7 +26,7 @@
           :username="item.nickname"
           :followed-num="item.follow || 0"
           :is-follow="false"
-          :user-id="item.userId"
+          :user-id="item.id"
         />
       </div>
       <div class="content_right">
@@ -52,7 +52,7 @@
             :username="item.nickname"
             :followed-num="item.follow || 0"
             :is-follow="false"
-            :user-id="item.userId"
+            :user-id="item.id"
           />
         </div>
       </div>

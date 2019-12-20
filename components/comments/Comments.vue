@@ -24,7 +24,7 @@
               :username="item.nickname"
               :followed-num="item.follow"
               :is-follow="0"
-              :user-id="item.userId"
+              :user-id="item.id"
             />
           </div>
         </nuxt-link>

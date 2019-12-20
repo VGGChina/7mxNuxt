@@ -24,12 +24,14 @@
           <div>{{ followedNum || '0' }}名追随者</div>
         </div>
 
+        <div v-show="is_followed_loading" class="follow_loading">加载中</div>
         <div
+          v-show="!is_followed_loading"
           class="follow"
           :class="isFollow ? 'followed' : 'not-follow'"
-          @click.stop.prevent="follow(userData)"
+          @click.stop.prevent="follow()"
         >
-          {{ isFollow ? '关注' : '已关注' }}
+          {{ isFollow ? '已关注' : '关注' }}
         </div>
       </div>
 
@@ -80,10 +82,6 @@ export default {
       type: Number,
       default: 0
     },
-    isFollow: {
-      type: Boolean,
-      default: false
-    },
     userId: {
       type: Number,
       default: 0
@@ -92,28 +90,15 @@ export default {
   data() {
     return {
       imgList: [],
-      isFetching: false
+      isFetching: false,
+      isFollow: false,
+      is_followed_loading: true
     }
   },
   computed: {
     isLogin() {
       return this.$store.state.login.isLogin
     },
-    // eputUserId() {
-    //   let eputUserId = ''
-
-    //   if (typeof this.userData.gaga_id !== 'undefined' && this.userData.gaga_id != null && this.userData.gaga_id.length > 0) {
-    //     eputUserId = this.userData.id
-    //   }
-
-    //   if (typeof this.userData.eput_id !== 'undefined' && this.userData.eput_id != null && this.userData.eput_id.length > 0) {
-    //     eputUserId = this.userData.eput_id
-    //   } else {
-    //     eputUserId = this.userData.id
-    //   }
-
-    //   return eputUserId
-    // },
     userRef() {
       return this.$utilHelper.toUserPage(this.userData)
     }
@@ -126,6 +111,7 @@ export default {
   },
   created() {
     this.fetchData()
+    this.isFollowed()
   },
   methods: {
     async fetchData() {
@@ -139,26 +125,29 @@ export default {
       }
       this.isFetching = false
     },
-    follow(user) {
+    async follow(user) {
+      if (this.userId === 0) return
       if (!this.isLogin) {
-        // 如果没有登录，弹出登录弹窗
         this.$store.commit('login/isShowLoginDialog', true)
         return
       }
-      var rqBody = {
-        user_id: this.userId
+
+      // 关注
+      const data = {
+        to: this.userId
       }
-      if (this.isFollow) {
-        this.$axios.userService.unfollow(rqBody).then(res => {
-          if (res.data.out == '1') {
-            this.isFollow = false
-          }
+      // 关注
+      if (!this.isFollow) {
+        this.$axios.userService.follow(data).then(res => {
+          this.isFollow = !this.isFollow
+        }).catch(e => {
+          this.$toast.warn(e)
         })
-      } else {
-        this.$axios.userService.follow(rqBody).then(res => {
-          if (res.data.out == '1') {
-            this.isFollow = true
-          }
+      } else { // 取消关注
+        this.$axios.userService.unfollow(data).then(res => {
+          this.isFollow = !this.isFollow
+        }).catch(e => {
+          this.$toast.warn(e)
         })
       }
     },
@@ -171,6 +160,16 @@ export default {
       if (this.leave) {
         this.leave()
       }
+    },
+
+    async isFollowed() {
+      const data = {
+        to: this.userId
+      }
+      this.is_followed_loading = true
+      const res = await this.$axios.userService.isFollowAPI(data)
+      this.is_followed_loading = false
+      this.isFollow = res.data
     }
   }
 }
@@ -258,6 +257,20 @@ export default {
   color: #1a1a1a;
   cursor: pointer;
   transition: all .2s;
+}
+
+.follow_loading{
+  display: inline-block;
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 15px;
+  color: rgba(0, 0, 0, .5);
+  cursor: pointer;
 }
 
 .follow:hover {

@@ -119,7 +119,7 @@
           :username="img.nickname"
           :followed-num="img.follow"
           :is-follow="0"
-          :user-id="img.userId"
+          :user-id="img.id"
         />
       </div>
     </transition>
