@@ -426,9 +426,7 @@ export default {
       }
 
       // 删除图片
-      const res = await this.$axios
-        .mediaService
-        .mediaDrop({ media_id: this.eputId })
+      const res = await this.$axios.mediaService.mediaDrop({ media_id: this.eputId })
 
       if (res.data.out == '1') {
         this.$store.commit('confirmationDialog/confirmationDialogData', {

@@ -41,13 +41,6 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    logout() {
-      const httpData = {
-        url: '/api/user/logout'
-      }
-      return $axios(httpData)
-    },
-
     codeLogin(data) {
       const httpData = {
         url: '/api/user/login_by_smcode',
@@ -58,7 +51,6 @@ export default ({ $axios }) => {
 
     userDetail(data) {
       const httpdata = {
-        // url: '/api/user/detail',
         url: `/api3/users/desc/${data.user_id}`,
         data,
         method: 'GET'

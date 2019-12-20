@@ -69,17 +69,12 @@ export default {
   },
   methods: {
     logout() {
-      this.$axios.userService.logout().then(res => {
-        if (res.data.out === '1') {
-          this.$store.commit('login/loginUser', {})
-          this.$store.commit('login/isLogin', false)
-          window.localStorage.removeItem('xToken')
-          this.$router.push({
-            name: 'index'
-          })
-        } else {
-          this.$toast.warn(res.data.msg)
-        }
+      this.$store.commit('login/loginUser', {})
+      this.$store.commit('login/isLogin', false)
+      window.localStorage.removeItem('authorization')
+      this.$toast.success('退出登录成功')
+      this.$router.push({
+        name: 'index'
       })
     },
     async uploadToPaixin() {

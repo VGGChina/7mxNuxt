@@ -4,7 +4,7 @@
     <loading :is-loading="isLoading" loading-color="#000" class="loading" />
     <ul class="content">
       <li v-for="(item, index) in picblocks" :key="index">
-        <a :href="goDetai(item.id)">
+        <a :href="`/photo/${item.id}`">
           <img :src="item.image" alt="" class="imgItem">
         </a>
       </li>
@@ -32,26 +32,25 @@ export default {
       default: ''
     }
   },
-  data: () => ({
-    picblocks: [],
-    isLoading: false,
-    categoryList: []
-  }),
+  data() {
+    return {
+      picblocks: [],
+      isLoading: false,
+      categoryList: []
+    }
+  },
 
   async created() {
     await this.getHotTags()
-    this.getHotPics()
-
-    this.$bus.on('choosebabel', async index => {
+    await this.getHotPics()
+  },
+  mounted() {
+    this.$bus.on('choosebabel', index => {
       this.$store.commit('category/setCrrentType', this.categoryList[index])
       this.getHotPics(index)
     })
   },
   methods: {
-    // 点击跳转
-    goDetai(id) {
-      return `/photo/${id}`
-    },
 
     async getHotPics(index = 0) {
       const data = {
@@ -80,6 +79,12 @@ export default {
       this.categoryList = res.data
       this.$store.commit('category/setCrrentType', this.categoryList[0])
     }
+
+    // choosebabel(index) {
+    //   this.$store.commit('category/setCrrentType', this.categoryList[index])
+    //   this.getHotPics(index)
+    // }
+
   }
 }
 </script>

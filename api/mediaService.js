@@ -29,14 +29,6 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    mediaDetailOld(data) {
-      const httpData = {
-        url: '/api/media/detail_old',
-        data
-      }
-      return $axios(httpData)
-    },
-
     like(data) {
       const httpData = {
         url: '/api/media/like',
@@ -97,56 +89,11 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    randomRecommend(data, params) {
-      const httpData = {
-        url: '/api/media/random_recommend_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    randomRecommend2(data, params) {
-      const httpData = {
-        url: '/api/media/random_recommend_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
     // 探索
     exploreAPI(data) {
       const httpData = {
         url: `/api3/medias/hot/${data.type}/${data.categoryId}`,
         params: data.params
-      }
-      return $axios(httpData)
-    },
-
-    randomCategory(data, params) {
-      const httpData = {
-        url: '/api/media/random_in_category_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    recommendMedia(data, params) {
-      const httpData = {
-        url: '/api/media/recommend_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    recommendCategory(data, params) {
-      const httpData = {
-        url: '/api/media/category_recommend_list',
-        data,
-        params
       }
       return $axios(httpData)
     },
@@ -164,24 +111,6 @@ export default ({ $axios }) => {
     nextPage(data, params) {
       const httpData = {
         url: '/api/media/page_next',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    storeList(data, params) {
-      const httpData = {
-        url: '/api/media/origin_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    examineList(data, params) {
-      const httpData = {
-        url: '/api/media/origin_list',
         data,
         params
       }
@@ -259,22 +188,6 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/media/order_detail',
         data
-      }
-      return $axios(httpData)
-    },
-
-    imageStore(data, params) {
-      const httpData = {
-        url: '/api/media/order_media_finish_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    walletDetail(cookie) {
-      const httpData = {
-        url: '/api/media/wallet_detail'
       }
       return $axios(httpData)
     },

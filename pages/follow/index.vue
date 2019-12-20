@@ -155,8 +155,8 @@ export default {
         type: 0,
         params: {
           page: this.page,
-          size: this.size,
-          sort: this.sort
+          size: this.size
+          // sort: this.sort
         }
       }
 

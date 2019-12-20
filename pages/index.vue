@@ -9,7 +9,7 @@
     <!-- 热门图片 -->
     <div>
       <h3 class="hot-img-title">热门图片</h3>
-      <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
+      <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" />
 
       <div class="waterfallContainer">
         <img-waterfall
@@ -22,7 +22,7 @@
         />
       </div>
     </div>
-    <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" />
+    <!-- <loading v-if="true" :is-loading="isLoading" :loading-color="'#000'" class="loading" /> -->
 
     <div
       v-if="imgList.length > 0 && line != 'end'"
@@ -215,6 +215,7 @@ export default {
         size: this.size
       }
 
+      this.isLoading = true
       const res = await this.$axios.mediaService.getHomeHotPicsAPI(data)
       this.imgList.push(...res.data.content)
       const pageNow = this.page
