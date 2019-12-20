@@ -144,7 +144,7 @@ export default {
     },
 
     async getRecommendPhotographers() {
-      const res = await this.$axios.tagService.getRecommendPhotographersTagsAPI(16)
+      const res = await this.$axios.tagService.getTagsAPI(16)
       this.categoryList = res.data
     }
   }

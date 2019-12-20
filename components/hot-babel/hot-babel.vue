@@ -80,11 +80,6 @@ export default {
       this.$store.commit('category/setCrrentType', this.categoryList[0])
     }
 
-    // choosebabel(index) {
-    //   this.$store.commit('category/setCrrentType', this.categoryList[index])
-    //   this.getHotPics(index)
-    // }
-
   }
 }
 </script>

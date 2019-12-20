@@ -109,8 +109,8 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    // 推荐摄影师数据
-    getRecommendPhotographersTagsAPI(type) {
+    // 获取tags  16-摄影师tag
+    getTagsAPI(type) {
       const httpData = {
         url: `/api3/categories/${type}`,
         method: 'get'

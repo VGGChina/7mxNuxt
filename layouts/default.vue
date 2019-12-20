@@ -93,7 +93,7 @@ export default {
   //   }
   // },
   created() {
-    // this.fetchPublic()
+    this.fetchPublic()
   },
   mounted() {
     window.onresize = () => {
@@ -112,30 +112,13 @@ export default {
       // 关闭通知推送窗口
       this.$bus.emit('cancel', '')
     },
-    async fetchPublic() {
-      // 登录状态
-      const currentUser = this.$axios.userService.currentUser()
+    fetchPublic() {
       // 种类列表
-      const categoryList = this.$axios.commonService.categoryList({ type: '6' })
-
-      const promises = [currentUser, categoryList]
-
-      const results = await Promise.all(promises)
-      if (results[0].data.out === '1') {
-        // 登录状态
-        this.$store.commit('login/loginUser', results[0].data.data)
-        // this.$
-        this.$store.commit('login/isLogin', true)
-
-        if (results[0].data.data.name === '') {
-          this.$store.commit('improveInfo/isShowImproveInfo', true)
-        }
-      }
-
-      if (results[1].data.out === '1') {
-        // 种类列表
-        this.$store.commit('category/categoryList', results[1].data.data)
-      }
+      this.$axios.tagService.getTagsAPI(6).then(res => {
+        this.$store.commit('category/categoryList', res.data)
+      }).catch(e => {
+        this.$toast.notice(e)
+      })
     },
 
     // 获取是否已经登录的信息
