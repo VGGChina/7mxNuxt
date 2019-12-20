@@ -135,29 +135,14 @@ export default {
         this.isLoading = false
       }, 500)
     },
-    // async getFollowList() {
-    //   const params = { line: this.line, limit: 10 }
-
-    //   const res = await this.$axios.mediaService.followList({}, params)
-
-    //   if (res.data.out === '1') {
-    //     this.imgList.push(...res.data.data)
-    //   }
-
-    //   this.line = res.data.line
-
-    //   setTimeout(() => {
-    //     this.isLoading = false
-    //   }, 500)
-    // },
     async getList() {
       const data = {
-        type: 0
-        // params: {
-        //   page: this.page,
-        //   size: this.size
-        //   // sort: this.sort
-        // }
+        type: 0,
+        params: {
+          page: this.page,
+          size: this.size
+          // sort: this.sort
+        }
       }
 
       if (this.tableIndex === 0) {
