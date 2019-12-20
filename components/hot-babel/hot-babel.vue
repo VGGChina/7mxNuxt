@@ -43,6 +43,7 @@ export default {
     this.getHotPics()
 
     this.$bus.on('choosebabel', async index => {
+      this.$store.commit('category/setCrrentType', this.categoryList[index])
       this.getHotPics(index)
     })
   },
@@ -77,6 +78,7 @@ export default {
       }
       const res = await this.$axios.tagService.getIndexHotTagsAPI(data)
       this.categoryList = res.data
+      this.$store.commit('category/setCrrentType', this.categoryList[0])
     }
   }
 }

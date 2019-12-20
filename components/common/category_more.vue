@@ -1,7 +1,7 @@
 <template>
   <div class="more_container">
-    <a href="javascript:void(0)" class="btn" @click="gode()">{{ moreText }}</a>
-    <!-- <nuxt-link :to="{name: moreInfo,params: {tableIndex: 0,page: 1}}" tag="a" class="btn">{{moreText}}</nuxt-link> -->
+    <nuxt-link v-if="istype === 'ishotimg'" :to="`category/${crrentType.name}/${crrentType.id}/0/1`" tag="a" class="btn">{{ moreText }}</nuxt-link>
+    <nuxt-link v-else :to="`ranking/0/1`" tag="a" class="btn">{{ moreText }}</nuxt-link>
   </div>
 </template>
 
@@ -9,16 +9,9 @@
 export default {
   name: '',
   props: ['moreInfo', 'moreText', 'istype'],
-  data: () => ({
-  }),
-  methods: {
-    gode() {
-      if (this.istype === 'ishotimg') {
-        const cur = this.$store.state.category.crrentType
-        this.$router.push({ path: `category/${cur.name}/${cur.id}/0/1` })
-      } else {
-        this.$router.push({ path: 'ranking/0/1' })
-      }
+  computed: {
+    crrentType() {
+      return this.$store.state.category.crrentType
     }
   }
 }
