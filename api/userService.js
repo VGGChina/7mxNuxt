@@ -51,8 +51,17 @@ export default ({ $axios }) => {
 
     userDetail(data) {
       const httpdata = {
-        url: `/api3/users/desc/${data.user_id}`,
-        data,
+        url: `/api3/users/desc/${data.userID}`,
+        method: 'GET'
+      }
+      return $axios(httpdata)
+    },
+
+    // 用户界面数据
+    getUserDatas(data) {
+      const httpdata = {
+        url: `/api3/users/media/${data.type}`,
+        params: data.params,
         method: 'GET'
       }
       return $axios(httpdata)

@@ -4,7 +4,7 @@
     <div class="album_list">
       <div v-for="(item, i) in albumList" :key="i" class="album_item">
         <div
-          v-if="loginUser.id == item.user_data.id"
+          v-if="loginUser.id == item.userId"
           class="delete-album"
           @click="showDeleteAlbum(item.id, i)"
         >
@@ -26,7 +26,7 @@
           <nuxt-link :to="{ name: 'album-album_id', params: { album_id: item.id }}">
             <div class="name">{{ item.name }}</div>
           </nuxt-link>
-          <div class="belong">作者 {{ item.user_data.nick || item.user_data.name }}</div>
+          <div class="belong">作者 {{ item.name }}</div>
         </div>
 
       </div>
@@ -39,9 +39,17 @@
 
 export default {
   name: 'AlbumList',
-  props: [
-    'albumList'
-  ],
+  // props: [
+  //   'albumList'
+  // ],
+  props: {
+    albumList: {
+      type: Object,
+      default() {
+        return []
+      }
+    }
+  },
   computed: {
     isLogin() {
       return this.$store.state.login.isLogin

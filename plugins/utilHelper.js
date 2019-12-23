@@ -144,29 +144,30 @@ var utilHelper = {
   },
   toUserPage(userData) {
     if (typeof userData === 'undefined' || userData == null || typeof userData !== 'object' || Object.keys(userData).length < 1) return ''
+    const eputUserId = userData.id
+    return '/user/id/' + eputUserId
+    // try {
+    //   if (typeof userData.name !== 'undefined' && userData.name != null && userData.name.length > 0) {
+    //     return '/user/name/' + userData.name
+    //   } else {
+    //     let eputUserId = ''
 
-    try {
-      if (typeof userData.name !== 'undefined' && userData.name != null && userData.name.length > 0) {
-        return '/user/name/' + userData.name
-      } else {
-        let eputUserId = ''
+    //     if (typeof userData.gaga_id !== 'undefined' && userData.gaga_id != null && userData.gaga_id.length > 0) {
+    //       eputUserId = userData.id
+    //     }
 
-        if (typeof userData.gaga_id !== 'undefined' && userData.gaga_id != null && userData.gaga_id.length > 0) {
-          eputUserId = userData.id
-        }
+    //     if (typeof userData.eput_id !== 'undefined' && userData.eput_id != null && userData.eput_id.length > 0) {
+    //       eputUserId = userData.eput_id
+    //     } else {
+    //       eputUserId = userData.id
+    //     }
 
-        if (typeof userData.eput_id !== 'undefined' && userData.eput_id != null && userData.eput_id.length > 0) {
-          eputUserId = userData.eput_id
-        } else {
-          eputUserId = userData.id
-        }
-
-        return '/user/id/' + eputUserId
-      }
-    } catch (e) {
-      console.log(e)
-      return ''
-    }
+    //     return '/user/id/' + eputUserId
+    //   }
+    // } catch (e) {
+    //   console.log(e)
+    //   return ''
+    // }
   },
   isEmptyObj(object) {
     if (!object) {

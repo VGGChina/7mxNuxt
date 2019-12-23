@@ -24,7 +24,7 @@
 
         <!-- 喜欢按钮 -->
         <div
-          v-if="true || !isImgAuthor"
+          v-if="!isImgAuthor"
           class="imgWarterfall-imgItem-like"
           @click.stop="likeImg()"
         >
@@ -89,7 +89,7 @@
     <!-- 作者信息 -->
     <transition name="score-fade">
       <div
-        v-if="$route.name != 'user-home' && isHover"
+        v-if="$route.name != 'user-home' && isHover && loginUser.id!==img.userId"
         class="imgWarterfall-imgItem-userInfo"
         @mouseenter="contentMouseenter"
         @mouseleave="contentMouseLeave"
@@ -180,15 +180,13 @@ export default {
     },
     isImgAuthor() {
       try {
-        if (!this.isLogin || this.loginUser.id != this.img.user_data.id) {
+        if (!this.isLogin || this.loginUser.id !== this.img.userId) {
           return false
         }
-
-        if (this.loginUser.id == this.img.user_data.id) {
+        if (this.loginUser.id === this.img.userId) {
           return true
         }
       } catch (e) {
-        console.log(e)
         return false
       }
       return false
@@ -361,7 +359,7 @@ export default {
         }
       }
     },
-    editImg(img, index) {
+    editImg() {
       this.$emit('imgWarterfallImgItemEditImg')
     },
     showDeleteImgDialog(img) {

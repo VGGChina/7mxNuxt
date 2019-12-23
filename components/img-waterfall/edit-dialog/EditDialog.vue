@@ -80,18 +80,21 @@ export default {
     }
   },
   created() {
+    console.log('imgDetail', this.imgDetail)
     this.worksName = this.imgDetail.title
     this.worksDescription = this.imgDetail.text
     this.isWaterMark = this.imgDetail.is_water_mark == '1'
     this.keywordList = this.getKeywordList(this.imgDetail.tag_list)
     this.originKeywordList = this.getKeywordList(this.imgDetail.tag_list)
 
-    if (this.imgDetail.category_list.length > 0) {
-      this.categoryOne = this.imgDetail.category_list[0]
-    }
+    if (this.imgDetail.category_list != null) {
+      if (this.imgDetail.category_list.length > 0) {
+        this.categoryOne = this.imgDetail.category_list[0]
+      }
 
-    if (this.imgDetail.category_list.length > 0) {
-      this.originCategoryOne = this.imgDetail.category_list[0]
+      if (this.imgDetail.category_list.length > 0) {
+        this.originCategoryOne = this.imgDetail.category_list[0]
+      }
     }
 
     window.onerror = (message, source, lineno, colno, error) => {
@@ -258,6 +261,7 @@ export default {
       this.isReleasing = false
     },
     getKeywordList(tagList) {
+      if (tagList == null) return []
       const array = []
       tagList.map(e => {
         array.push(e.name)

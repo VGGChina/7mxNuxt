@@ -110,40 +110,20 @@ export default {
       if (this.$utilHelper.isEmptyObj(val)) {
         return
       }
-
-      this.options[0].num = val.media_num != '0' ? val.media_num : ''
-
-      this.options[1].num = val.product_num != '0' ? val.product_num : ''
-
-      const checkingNum = val.checking_num ? val.checking_num : '0'
-      const denyNum = val.deny_num ? val.deny_num : '0'
-      const sum = parseInt(checkingNum) + parseInt(denyNum)
-
-      this.options[2].num = sum == 0 ? '' : sum
-
-      this.options[3].num = val.media_like_num != '0' ? val.media_like_num : ''
+      this.options[0].num = val.userStat.mediaNum !== 0 ? val.userStat.mediaNum : ''
+      this.options[1].num = val.userStat.mediaNum - val.userStat.freeMediaNum !== 0 ? val.userStat.mediaNum - val.userStat.freeMediaNum : ''
+      this.options[2].num = val.userStat.checkingNum === 0 ? '' : val.userStat.checkingNum
+      this.options[3].num = val.userStat.likeNum !== 0 ? val.userStat.likeNum : ''
     }
   },
   created() {
     if (this.$utilHelper.isEmptyObj(this.userInfo)) {
       return
     }
-
-    this.options[0].num = this.userInfo.media_num != '0' ? this.userInfo.media_num : ''
-
-    this.options[1].num = this.userInfo.product_num != '0' ? this.userInfo.product_num : ''
-
-    const checkingNum = this.userInfo.checking_num ? this.userInfo.checking_num : '0'
-    const denyNum = this.userInfo.deny_num ? this.userInfo.deny_num : '0'
-    const sum = parseInt(checkingNum) + parseInt(denyNum)
-
-    this.options[2].num = sum == 0 ? '' : sum
-
-    this.options[3].num = this.userInfo.media_like_num != '0' ? this.userInfo.media_like_num : ''
   },
   methods: {
     onOptionClicked(index) {
-      if (this.currentIndex == index || this.isLoading) {
+      if (this.currentIndex === index || this.isLoading) {
         return
       }
 

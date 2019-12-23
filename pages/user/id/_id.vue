@@ -19,17 +19,21 @@
         :is-show-remark="userHomeNavIndex == 2"
         :is-show-exclusive="userHomeNavIndex == 1"
       />
-      <album-list v-if="userHomeNavIndex == 4" :album-list="albumList" />
-      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags" />
-      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'" />
-      <div v-if="!isLoading && albumList.length < 1 && userHomeNavIndex == 4" class="no_wrap">
+
+      <album-list v-if="userHomeNavIndex == 4" :album-list="imgList" />
+      <div v-if="!isLoading && imgList.length < 1 && userHomeNavIndex == 4" class="no_wrap">
         <no-content :is-no-content-show="true" />
       </div>
+
+      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags" />
+
+      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'" />
+
       <div style="padding-bottom: 580px;">
         <div
-          v-if="imgList.length > 0 && line != 'end'"
+          v-if="imgList.length > 0 && line.split(',')[0] != 'end'"
           class="load-more"
-          @click="fetchData"
+          @click="getMore"
         >{{ isLoading ? '正在加载...' : '加载更多' }}</div>
       </div>
       <index-footer />
@@ -60,11 +64,22 @@ export default {
     isLoading: false,
     line: '',
     imgList: [],
-    albumList: '',
     tags: [],
     isLarge: false,
-    userHomeNavIndex: 0 // 0为作品，1为商店，2为审核，3为喜欢，4为灵感集，5为标签
-    // waterfallMinHeight: 0
+    userHomeNavIndex: 0, // 0为作品，1为商店，2为审核，3为喜欢，4为灵感集，5为标签
+    // waterfallMinHeight: 0,
+
+    userInfo: {
+      userStat: {
+        mediaNum: 0,
+        freeMediaNum: 0,
+        checkingNum: 0,
+        likeNum: 0
+      }
+    },
+
+    page: 0,
+    size: 20
   }),
   computed: {
     firstImg() {
@@ -75,134 +90,14 @@ export default {
     }
   },
 
-  watch: {
-    $route(to, from) {
-      location.reload()
-    }
-  },
-
-  async asyncData({ $axios, params }) {
-    let userInfo = {}
-    const imgList = []
-    let line = ''
-
-    const rqBody = {
-      user_id: params.id
-    }
-    const userinfo = await $axios.userService.userDetail(rqBody)
-    if (userinfo.data.out === '1') {
-      userInfo = userinfo.data.data
-    }
-
-    // 作品
-    const data = { user_id: userInfo.id }
-    const params2 = { line: '' }
-
-    const works = await $axios.mediaService.originList(data, params2)
-
-    if (works.data.out === '1') {
-      imgList.push(...works.data.data)
-      line = works.data.line
-    }
-
-    return {
-      userInfo: userInfo,
-      imgList: imgList,
-      line: line
-    }
-  },
   async created() {
+    await this.getUserInfo()
+    await this.getUserDatas()
     this.getIsLarge()
 
     this.getUserHomeNavIndex()
   },
   methods: {
-    getTitle(userInfo) {
-      let title = ''
-      try {
-        let userName = ''
-        if (userInfo.nick) {
-          userName = userInfo.nick
-        } else if (userInfo.name) {
-          userName = userInfo.name
-        }
-        title = userName + ' - 7MX.COM'
-        return title
-      } catch (e) {
-        return '7MX - 中国领先的视觉创作社区'
-      }
-    },
-    fetchData() {
-      switch (this.userHomeNavIndex) {
-        case 0:
-        case 1:
-        case 2:
-          this.fetchOrigin()
-          break
-        case 3:
-          this.fetchLike()
-          break
-        case 4:
-          this.fetchAlbum()
-          break
-        case 5:
-          this.fetchTag()
-          break
-        default:
-          break
-      }
-    },
-    async fetchOrigin() {
-      if (this.isLoading || this.line === 'end') {
-        return
-      }
-      this.isLoading = true
-
-      const data = { user_id: this.userInfo.id }
-      const params = { line: this.line }
-
-      if (this.userHomeNavIndex === 1) {
-        data.check = '1'
-        data.user_id = this.userInfo.id
-      }
-
-      if (this.userHomeNavIndex === 2) {
-        data.check = '2,3'
-      }
-
-      const res = await this.$axios.mediaService.originList(data, params)
-
-      if (res.data.out === '1') {
-        this.imgList.push(...res.data.data)
-      }
-
-      this.line = res.data.line
-
-      setTimeout(() => {
-        this.isLoading = false
-      }, 500)
-    },
-    async fetchLike() {
-      if (this.isLoading || this.line === 'end') {
-        return
-      }
-
-      this.isLoading = true
-
-      const data = { user_id: this.userInfo.id }
-      const params = { line: this.line }
-
-      const res = await this.$axios.mediaService.likeList(data, params)
-
-      if (res.data.out == '1') {
-        this.imgList.push(...res.data.data)
-      }
-
-      this.line = res.data.line
-      setTimeout(() => {
-        this.isLoading = false
-      }, 500)
-    },
     reload() {
       if (this.isLoading) {
         return
@@ -214,9 +109,7 @@ export default {
 
       this.tags = []
 
-      this.albumList = []
-
-      this.fetchData()
+      this.getUserDatas()
     },
     getIsLarge() {
       this.$bus.on('user-home-display-mode-is-large', e => {
@@ -226,42 +119,45 @@ export default {
     getUserHomeNavIndex() {
       this.$bus.on('user-home-nav-index', index => {
         this.userHomeNavIndex = index
-
         this.reload()
       })
     },
-    async fetchAlbum() {
-      this.isLoading = true
 
-      const res = await this.$axios.albumService.albumList({
-        user_id: this.userInfo.id || ''
-      })
-
-      if (res.data.out === '1') {
-        this.albumList = res.data.data
+    async getUserInfo() {
+      const data = {
+        userID: this.$route.params.id
       }
-
-      setTimeout(() => {
-        this.isLoading = false
-      }, 500)
-
-      this.line = res.data.line
+      const res = await this.$axios.userService.userDetail(data)
+      this.userInfo = res.data
     },
-    async fetchTag() {
-      const res = await this.$axios.tagService.followList({
-        user_id: this.userInfo.id
-      })
 
-      if (res.data.out === '1') {
-        this.tags = res.data.data
+    // 作品
+    async getUserDatas() {
+      const data = {
+        type: this.userHomeNavIndex + 1,
+        params: {
+          page: this.page,
+          size: this.size
+        }
       }
+      this.isLoading = true
+      const res = await this.$axios.userService.getUserDatas(data)
+      this.imgList.push(...res.data.content)
+      this.isLoading = false
 
-      setTimeout(() => {
-        this.isLoading = false
-      }, 500)
+      const pageNow = this.page + 1
+      const pageTotal = res.data.totalPages
+      const nextPage = pageNow === pageTotal ? 'end' : pageNow + 1
 
-      this.line = res.data.line
+      this.line = nextPage + ',' + pageTotal + ',' + pageNow
+    },
+
+    // 查看等多
+    getMore() {
+      this.page++
+      this.getUserDatas()
     }
+
   }
 }
 </script>

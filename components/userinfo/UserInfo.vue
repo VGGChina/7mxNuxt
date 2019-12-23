@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class>
     <div class="info-container">
       <transition name="show-bg" mode="out-in">
         <div
@@ -22,61 +22,38 @@
               require('~/assets/img/avatar-default.svg')) + ')'}"
         />
 
-        <div class="name">
-          {{ userInfo.nick || userInfo.name || '' }}
-        </div>
+        <div class="name">{{ userInfo.nickname || '' }}</div>
 
         <div class="user-popular">
-          <a
-            class="follow-fan-num"
-            :href="'/friends/' + userInfo.id + '/0'"
-          >
-            {{ userInfo.follow_num }}<span> 关注</span>
+          <a class="follow-fan-num" :href="'/friends/' + userInfo.id + '/0'">
+            {{ userInfo.userStat.followNum }}
+            <span>关注</span>
           </a>
 
           <div class="dividing" />
 
-          <a
-            class="follow-fan-num"
-            :href="'/friends/' + userInfo.id + '/1'"
-          >
-            {{ userInfo.fan_num }}<span> 追随者</span>
+          <a class="follow-fan-num" :href="'/friends/' + userInfo.id + '/1'">
+            {{ userInfo.userStat.followedNum }}
+            <span>追随者</span>
           </a>
 
           <div class="dividing" />
 
           <a class="follow-fan-num">
-            {{ userInfo.fan_num * 100 + userInfo.media_liked_num * 10 }}<span> 人气值</span>
+            {{ userInfo.userStat.popularity }}
+            <span>人气值</span>
           </a>
         </div>
 
-        <div class="instruction">
-          {{ userInfo.user_data ? userInfo.user_data.about : '' }}
-        </div>
+        <div class="instruction">{{ userInfo.user_data ? userInfo.user_data.about : '' }}</div>
 
-        <div
-          v-if="userInfo.id != loginUser.id"
-          class="follow"
-          @click="follow"
-        >
-          {{ followWords }}
-        </div>
+        <div v-if="userInfo.id != loginUser.id" class="follow" @click="follow">{{ followWords }}</div>
 
-        <div
-          v-if="userInfo.id == loginUser.id"
-          class="follow"
-          @click="uploadToPaixin"
-        >
-          上架到拍信
-        </div>
+        <div v-if="userInfo.id == loginUser.id" class="follow" @click="uploadToPaixin">上架到拍信</div>
       </div>
     </div>
 
-    <select-cards
-      :user-info-height="userInfoHeight"
-      :user-info="userInfo"
-      :is-loading="isLoading"
-    />
+    <select-cards :user-info-height="userInfoHeight" :user-info="userInfo" :is-loading="isLoading" />
   </div>
 </template>
 
@@ -87,17 +64,17 @@ export default {
   components: {
     SelectCards
   },
-  // props: [
-  //   // 'firstImg',
-  //   // 'userInfo',
-  //   // 'originList',
-  //   // 'isLoading'
-  // ],
   props: {
     userInfo: {
       type: Object,
       default() {
-        return {}
+        return {
+          userInfo: {
+            userStat: {},
+            user_data: {}
+          }
+
+        }
       }
     },
     originList: {
@@ -151,19 +128,28 @@ export default {
         if (this.userInfo.user_data.image != '') {
           const defUrl = 'http://eput.com/images/default_personal_bg.jpg'
           if (this.userInfo.user_data.image === defUrl) {
-            if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) this.firstImg += '?imageMogr2/blur/10x6'
+            if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) {
+              return this.firstImg + '?imageMogr2/blur/10x6'
+            }
             return this.firstImg
           }
-          if (this.userInfo.user_data.image && !this.userInfo.user_data.image.includes('?imageMogr2/blur/10x6')) {
+          if (
+            this.userInfo.user_data.image &&
+            !this.userInfo.user_data.image.includes('?imageMogr2/blur/10x6')
+          ) {
             this.userInfo.user_data.image += '?imageMogr2/blur/10x6'
           }
           return this.userInfo.user_data.image
         } else {
-          if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) this.firstImg += '?imageMogr2/blur/10x6'
+          if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) {
+            return this.firstImg + '?imageMogr2/blur/10x6'
+          }
           return this.firstImg
         }
       } catch (e) {
-        if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) this.firstImg += '?imageMogr2/blur/10x6'
+        if (this.firstImg && !this.firstImg.includes('?imageMogr2/blur/10x6')) {
+          return this.firstImg + '?imageMogr2/blur/10x6'
+        }
         return this.firstImg
       }
     },
@@ -194,9 +180,6 @@ export default {
     }
   },
   watch: {
-    '$route'(to, from) {
-      this.fetchData()
-    },
     winPageYOffset(val) {
       this.setTopbarStyle(100, val)
     }
@@ -274,7 +257,9 @@ export default {
       } else {
         taopBar.style.position = 'fixed'
 
-        let transparent = (pageYOffset - startHeight) / (this.userInfoHeight - startHeight - 60)
+        let transparent =
+          (pageYOffset - startHeight) /
+          (this.userInfoHeight - startHeight - 60)
 
         if (transparent > 1) {
           transparent = 1
@@ -292,7 +277,7 @@ export default {
 <style scoped>
 .show-bg-enter-active,
 .show-bg-leave-active {
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .show-bg-enter,
@@ -320,7 +305,7 @@ export default {
   position: relative;
   width: 100%;
   z-index: 1;
-  background: rgba(0, 0, 0, .3);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .name {
@@ -353,12 +338,12 @@ export default {
 }
 
 .user-popular span {
-  color: rgba(255, 255, 255, .7)
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .user-popular .dividing {
   height: 24px;
-  border-left: 1px solid rgba(255, 255, 255, .3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .instruction {

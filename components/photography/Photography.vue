@@ -8,7 +8,7 @@
         v-for="(item, index) in firstAvatar"
         :key="index"
         class="content_left"
-        @click.stop="goAvatarDetai(item.name)"
+        @click.stop="goAvatarDetai(item.id)"
         @mouseenter="contentMouseenter(1000000)"
         @mouseleave="contentMouseLeave"
       >
@@ -34,7 +34,7 @@
           v-for="(item,index) in avatarList"
           :key="index"
           class="photo_item"
-          @click.stop="goAvatarDetai(item.name)"
+          @click.stop="goAvatarDetai(item.id)"
           @mouseenter="contentMouseenter(index)"
           @mouseleave="contentMouseLeave(index)"
         >
@@ -123,7 +123,7 @@ export default {
       if (!path) {
         path = ''
       }
-      this.$router.push({ path: `/user/name/${path}` })
+      this.$router.push({ path: `/user/id/${path}` })
     },
 
     async getAvatars(index = 0) {

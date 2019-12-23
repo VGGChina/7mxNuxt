@@ -2,10 +2,10 @@
   <div class="activityList">
     <div class="list">
       <div v-for="(item, i) in list" :key="i" class="list_item">
-        <div class="avatar" :style="{ 'backgroundImage' : `url(${item.avatar || item.user.avatar})` }" @click="toUser(item.user.name)" />
+        <div class="avatar" :style="{ 'backgroundImage' : `url(${item.avatar })` }" @click="toUser(item.id)" />
         <div class="text">
           <div class="operation">
-            <span class="name" @click="toUser(item.user.name)">{{ item.user.nick || item.user.name }}</span>
+            <span class="name" @click="toUser(item.id)">{{ item.user.nickname }}</span>
             <span class="action">&nbsp;{{ actionTip(item.msg_type) }}</span>
             <span v-if="item.media.title" style="cursor: pointer" @click="toPhoto(item.media_id)">&nbsp;&nbsp;《 {{ item.media.title }} 》</span>
           </div>
@@ -40,8 +40,8 @@ export default {
 
   },
   methods: {
-    toUser(name) {
-      window.open(`/user/name/${name}`, '_blank')
+    toUser(id) {
+      window.open(`/user/id/${id}`, '_blank')
     },
     toPhoto(photoId) {
       if (!photoId) return this.$toast.warn('作品地址已失效')

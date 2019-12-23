@@ -12,7 +12,7 @@
         </a>
 
         <div class="user-info">
-          <div class="name">{{ item.nick || item.name }}</div>
+          <div class="name">{{ item.name }}</div>
           <div
             class="follow"
             :class="{
@@ -23,7 +23,7 @@
           >
             {{ item.is_follow == '0' ? '关注' : '已关注' }}
           </div>
-          <div class="instruction">{{ item.about || '这个人很懒，什么也没留下~~~' }}</div>
+          <div class="instruction">{{ item.userInfo.about || '这个人很懒，什么也没留下~~~' }}</div>
         </div>
       </div>
 
