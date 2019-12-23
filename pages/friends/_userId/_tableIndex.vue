@@ -53,7 +53,10 @@ export default {
       }, {
         name: '0 追随者',
         url: ''
-      }]
+      }],
+
+      page: 0,
+      size: 20
     }
   },
   computed: {
@@ -70,7 +73,8 @@ export default {
     }
   },
   created() {
-    this.getUserDetail()
+    // this.getUserDetail()
+    this.getList()
 
     if (this.tableIndex == '0') {
       this.getFollowList()
@@ -106,26 +110,20 @@ export default {
         this.getFansList()
       }
     },
-    async getUserDetail() {
-      if (!this.$route.params.userId) {
-        return
-      }
 
-      const rqBody = {
-        user_id: this.$route.params.userId
+    async getList() {
+      const data = {
+        type: JSON.parse(this.tableIndex) + 1,
+        params: {
+          page: this.page,
+          size: this.size
+        }
       }
-      const res = await this.$axios.userService.userDetail(rqBody)
-
-      if (res.data.out === '1') {
-        this.userDetail = res.data.data
-        document.title = (this.userDetail.nick || this.userDetail.name) + '的人脉 - 7MX 中国领先的视觉创作社区'
-        this.options = [{
-          name: this.userDetail.follow_num + ' 关注',
-          url: '/friends/' + rqBody.user_id + '/0'
-        }, {
-          name: this.userDetail.fan_num + ' 追随者',
-          url: '/friends/' + rqBody.user_id + '/1'
-        }]
+      try {
+        const res = await this.$axios.userService.getFollowOrFan(data)
+        console.log(res)
+      } catch (e) {
+        this.$toast.warn(e)
       }
     },
     async getFollowList() {

@@ -20,6 +20,7 @@
         :is-show-exclusive="userHomeNavIndex == 1"
       />
 
+      <!--  喜欢 -->
       <album-list v-if="userHomeNavIndex == 4" :album-list="imgList" />
       <div v-if="!isLoading && imgList.length < 1 && userHomeNavIndex == 4" class="no_wrap">
         <no-content :is-no-content-show="true" />

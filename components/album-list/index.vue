@@ -4,7 +4,7 @@
     <div class="album_list">
       <div v-for="(item, i) in albumList" :key="i" class="album_item">
         <div
-          v-if="loginUser.id == item.userId"
+          v-if="loginUser.id === item.userId"
           class="delete-album"
           @click="showDeleteAlbum(item.id, i)"
         >
@@ -39,9 +39,6 @@
 
 export default {
   name: 'AlbumList',
-  // props: [
-  //   'albumList'
-  // ],
   props: {
     albumList: {
       type: Object,

@@ -179,18 +179,20 @@ export default {
       return this.$store.state.login.loginUser
     },
     isImgAuthor() {
-      try {
-        if (!this.isLogin || this.loginUser.id !== this.img.userId) {
-          return false
-        }
-        if (this.loginUser.id === this.img.userId) {
-          return true
-        }
-      } catch (e) {
+      // if (!this.isLogin || this.loginUser.id !== this.img.userId) {
+      //   return false
+      // }
+      // if (this.loginUser.id === this.img.userId) {
+      //   return true
+      // }
+      // return false
+      if (this.loginUser.id !== this.img.userId) {
         return false
+      } else {
+        return true
       }
-      return false
     },
+
     imageAlt() {
       try {
         let alt = ''

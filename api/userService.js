@@ -67,6 +67,16 @@ export default ({ $axios }) => {
       return $axios(httpdata)
     },
 
+    // 关注与跟随
+    getFollowOrFan(data) {
+      const httpdata = {
+        url: `/api3/users/follow-list/${data.type}`,
+        params: data.params,
+        method: 'GET'
+      }
+      return $axios(httpdata)
+    },
+
     companyDetail(data) {
       const httpData = {
         url: '/api/company/detail',
