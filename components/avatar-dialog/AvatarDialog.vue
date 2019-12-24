@@ -12,26 +12,24 @@
           <div
             class="avatar"
             :style="{
-              background: 'url(' + ($utilHelper.getCompressionUrl(userAvator, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
+              background: 'url(' + ($utilHelper.getCompressionUrl(userData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
             }"
           />
         </a>
 
         <div class="name">
           <a :href="userRef" target="_blank" @click.stop>
-            {{ username }}
+            {{ userData.name }}
           </a>
-          <div>{{ followedNum || '0' }}名追随者</div>
+          <div>{{ userData.userStat.followNum }}名追随者</div>
         </div>
 
-        <div v-show="is_followed_loading" class="follow_loading">加载中</div>
         <div
-          v-show="!is_followed_loading"
           class="follow"
-          :class="isFollow ? 'followed' : 'not-follow'"
+          :class="userData.followOrNot ? 'followed' : 'not-follow'"
           @click.stop.prevent="follow()"
         >
-          {{ isFollow ? '已关注' : '关注' }}
+          {{ userData.followOrNot ? '已关注' : '关注' }}
         </div>
       </div>
 
@@ -44,13 +42,13 @@
         />
 
         <div
-          v-if="!isFetching && mediaList.length < 1"
+          v-if="!isFetching && userData.mediaList.length < 1"
           class="no-works"
         >
           这个人很懒，还没上传过作品 ~
         </div>
 
-        <a v-for="(img, index) in mediaList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
+        <a v-for="(img, index) in userData.mediaList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
           <div
             :style="{
               background: 'url(' + img.image + ') no-repeat'
@@ -70,24 +68,11 @@ export default {
     loading
   },
   props: {
-    userAvator: {
-      type: String,
-      default: ''
-    },
-    username: {
-      type: String,
-      default: ''
-    },
-    followedNum: {
-      type: Number,
-      default: 0
-    },
-    userId: {
-      type: Number,
-      default: 0
-    },
-    mediaList: {
-      type: Array
+    userData: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
@@ -113,15 +98,12 @@ export default {
     // }
   },
   created() {
-    this.fetchData()
-    this.isFollowed()
+    // this.fetchData()
     // this.fetchData()
   },
   methods: {
-    async fetchData() {
-      const rqBody = { type: '6', user_id: this.userId }
-      const params = { line: '', limit: 3 }
 
+    async getMediaList() {
       this.isFetching = true
       const res = await this.$axios.mediaService.originList(rqBody, params)
       if (res.data.out === '1') {
@@ -129,6 +111,7 @@ export default {
       }
       this.isFetching = false
     },
+
     async follow(user) {
       if (this.userId === 0) return
       if (!this.isLogin) {
@@ -155,25 +138,17 @@ export default {
         })
       }
     },
+
     onMouseEnter() {
       if (this.enter) {
         this.enter()
       }
     },
+
     onMouseLeave() {
       if (this.leave) {
         this.leave()
       }
-    },
-
-    async isFollowed() {
-      const data = {
-        to: this.userId
-      }
-      this.is_followed_loading = true
-      const res = await this.$axios.userService.isFollowAPI(data)
-      this.is_followed_loading = false
-      this.isFollow = res.data
     }
   }
 }
