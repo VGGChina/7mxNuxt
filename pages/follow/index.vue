@@ -137,7 +137,6 @@ export default {
     },
     async getList() {
       const data = {
-        type: 0,
         params: {
           page: this.page,
           size: this.size
@@ -153,6 +152,7 @@ export default {
 
       try {
         const res = await this.$axios.mediaService.getDynamicAPI(data)
+        this.imgList = res.data.content
         console.log(res)
         setTimeout(() => {
           this.isLoading = false

@@ -147,9 +147,10 @@ export default {
         this.$toast.warn(e)
       }
     },
+
     async commit() {
       this.commitCheck = true
-      if (this.phone == '' || this.password == '' || this.smcode == '') {
+      if (this.phone === '' || this.password === '' || this.smcode === '') {
         return
       }
 
@@ -171,51 +172,29 @@ export default {
 
       this.isRegisting = true
 
-      // 获取服务器时间
-      const timeRes = await this.$axios.commonService.getServerTime()
-
-      let time = null
-
-      if (timeRes.data.out == '1') {
-        time = timeRes.data.data.time
-      } else {
-        time = (new Date().getTime() / 1000).toFixed(0)
-      }
-
       const data = {
-        phone: '0086' + this.phone,
-        smcode: this.smcode,
-        password: 'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + time),
-        info: '1'
+        phone: this.phone,
+        password: this.password,
+        code: this.smcode
       }
 
-      const registerRes = await this.$axios.userService.registerByPhone(data)
-
-      if (registerRes.data.out === '1') {
+      try {
+        const res = await this.$axios.userService.register(data)
         this.$toast.notice('注册成功')
-
-        const resData = registerRes.data.data
-
+        const resData = res.data
         // 改变登录状态
         this.$store.commit('login/loginUser', resData)
-
         this.$store.commit('register/isShowRegisterDialog', false)
-
-        if (resData.name == '' || resData.nick == '' || resData.avatar == '') {
+        if (resData.name == null || resData.nickname == null || resData.avatar == null) {
           this.$store.commit('improveInfo/isShowImproveInfo', true)
         }
-
         // 打开推荐页面
         this.$router.push({ name: 'recomment' })
-      } else {
-        if (registerRes.data.msg === 'phone必须是唯一的') {
-          this.$toast.warn('该手机号已注册，请直接登录')
-        } else {
-          this.$toast.warn(registerRes.data.msg)
-        }
+      } catch (e) {
+        this.$toast.warn(e)
+      } finally {
+        this.isRegisting = false
       }
-
-      this.isRegisting = false
     }
   }
 }

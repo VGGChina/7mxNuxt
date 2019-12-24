@@ -1,12 +1,5 @@
 export default ({ $axios }) => {
   const userService = {
-    registerByEmail(data) {
-      const httpData = {
-        url: '/api/user/regist',
-        data
-      }
-      return $axios(httpData)
-    },
 
     registerByPhone(data) {
       const httpData = {
@@ -21,6 +14,15 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api3/users/code',
         params
+      }
+      return $axios(httpData)
+    },
+
+    register(data) {
+      const httpData = {
+        url: '/api3/users/register',
+        data,
+        method: 'post'
       }
       return $axios(httpData)
     },
