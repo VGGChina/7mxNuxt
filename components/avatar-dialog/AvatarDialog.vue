@@ -42,13 +42,13 @@
         />
 
         <div
-          v-if="!isFetching && imgList.length < 1"
+          v-if="!isFetching && mediaList.length < 1"
           class="no-works"
         >
           这个人很懒，还没上传过作品 ~
         </div>
 
-        <a v-for="(img, index) in imgList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
+        <a v-for="(img, index) in mediaList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
           <div
             :style="{
               background: 'url(' + img.image + ') no-repeat'
@@ -87,6 +87,9 @@ export default {
     userId: {
       type: Number,
       default: 0
+    },
+    mediaList: {
+      type: Array
     }
   },
   data() {
@@ -119,13 +122,13 @@ export default {
     }
   },
   watch: {
-    'userId': function(val) {
-      this.imgList = []
-      this.fetchData()
-    }
+    // 'userId': function(val) {
+    //   this.imgList = []
+    //   this.fetchData()
+    // }
   },
   created() {
-    this.fetchData()
+    // this.fetchData()
   },
   methods: {
     async fetchData() {
