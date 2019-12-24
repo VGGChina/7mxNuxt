@@ -62,7 +62,7 @@ export default ({ $axios }) => {
     // 用户界面数据
     getUserDatas(data) {
       const httpdata = {
-        url: `/api3/users/media/${data.type}`,
+        url: `/api3/users/media/${data.userID}/${data.type}`,
         params: data.params,
         method: 'GET'
       }
@@ -72,7 +72,7 @@ export default ({ $axios }) => {
     // 关注与跟随
     getFollowOrFan(data) {
       const httpdata = {
-        url: `/api3/users/follow-list/${data.type}`,
+        url: `/api3/users/follow-list/${data.userID}/${data.type}`,
         params: data.params,
         method: 'GET'
       }

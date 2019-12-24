@@ -113,6 +113,7 @@ export default {
 
     async getList() {
       const data = {
+        userID: this.$route.params.userId,
         type: JSON.parse(this.tableIndex) + 1,
         params: {
           page: this.page,
@@ -121,7 +122,7 @@ export default {
       }
       try {
         const res = await this.$axios.userService.getFollowOrFan(data)
-        console.log(res)
+        this.userList.push(...res.data.content)
       } catch (e) {
         this.$toast.warn(e)
       }

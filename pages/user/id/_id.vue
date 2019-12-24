@@ -134,23 +134,40 @@ export default {
 
     // 作品
     async getUserDatas() {
-      const data = {
-        type: this.userHomeNavIndex + 1,
-        params: {
-          page: this.page,
-          size: this.size
+      try {
+        const data = {
+          type: this.userHomeNavIndex + 1,
+          userID: this.$route.params.id,
+          params: {
+            page: this.page,
+            size: this.size
+          }
         }
+        this.isLoading = true
+        const res = await this.$axios.userService.getUserDatas(data)
+        if (this.userHomeNavIndex === 3) {
+          if (res.data.length === 0) {
+            this.line = 'end, 0, 0'
+            return
+          }
+          this.imgList.push(...res.data)
+        } else if (res.data.length === 5) {
+          this.tags.push(...res.data.content)
+          const pageNow = this.page + 1
+          const pageTotal = res.data.totalPages
+          const nextPage = pageNow === pageTotal ? 'end' : pageNow + 1
+          this.line = nextPage + ',' + pageTotal + ',' + pageNow
+        } else {
+          this.imgList.push(...res.data.content)
+          const pageNow = this.page + 1
+          const pageTotal = res.data.totalPages
+          const nextPage = pageNow === pageTotal ? 'end' : pageNow + 1
+          this.line = nextPage + ',' + pageTotal + ',' + pageNow
+        }
+        this.isLoading = false
+      } catch (e) {
+        this.$toast.warn(e)
       }
-      this.isLoading = true
-      const res = await this.$axios.userService.getUserDatas(data)
-      this.imgList.push(...res.data.content)
-      this.isLoading = false
-
-      const pageNow = this.page + 1
-      const pageTotal = res.data.totalPages
-      const nextPage = pageNow === pageTotal ? 'end' : pageNow + 1
-
-      this.line = nextPage + ',' + pageTotal + ',' + pageNow
     },
 
     // 查看等多
