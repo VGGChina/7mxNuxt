@@ -54,6 +54,8 @@ export default {
       tempCommentList.push(...res_commentList.data.content)
     }
 
+    console.log(22,res_commentList)
+
     for(let i of tempCommentList) {
       let res_temp = await $axios.userService.userDetail({ user_id: i.userId })
       if(res_temp.status == 200) {
