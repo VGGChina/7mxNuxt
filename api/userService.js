@@ -16,11 +16,11 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    login(data) {
+    // 注册获取的验证码
+    getRegisterCode(params) {
       const httpData = {
-        url: '/api/user/login',
-        data,
-        method: 'post'
+        url: '/api3/users/code',
+        params
       }
       return $axios(httpData)
     },

@@ -108,30 +108,43 @@ export default {
         return
       }
 
-      // 获取服务器时间
-      const timeRes = await this.$axios.commonService.getServerTime()
+      // // 获取服务器时间
+      // const timeRes = await this.$axios.commonService.getServerTime()
 
-      let time = null
+      // let time = null
 
-      if (timeRes.data.out === '1') {
-        time = timeRes.data.data.time
-      } else {
-        time = (new Date().getTime() / 1000).toFixed(0)
+      // if (timeRes.data.out === '1') {
+      //   time = timeRes.data.data.time
+      // } else {
+      //   time = (new Date().getTime() / 1000).toFixed(0)
+      // }
+
+      // const rqBody = {
+      //   scene: 'regist',
+      //   phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' +
+      //     this.phone + '@' + time)
+      // }
+
+      // const res = await this.$axios.commonService.smcode(rqBody)
+      // if (res.data.out === '1') {
+      //   this.isTimer = true
+      //   this.time = 60
+      //   this.timer()
+      // } else {
+      //   this.$toast.warn(res.data.msg)
+      // }
+
+      const data = {
+        phone: this.phone
       }
 
-      const rqBody = {
-        scene: 'regist',
-        phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' +
-          this.phone + '@' + time)
-      }
-
-      const res = await this.$axios.commonService.smcode(rqBody)
-      if (res.data.out === '1') {
+      try {
+        await this.$axios.userService.getRegisterCode(data)
         this.isTimer = true
         this.time = 60
         this.timer()
-      } else {
-        this.$toast.warn(res.data.msg)
+      } catch (e) {
+        this.$toast.warn(e)
       }
     },
     async commit() {
