@@ -12,24 +12,24 @@
           <div
             class="avatar"
             :style="{
-              background: 'url(' + ($utilHelper.getCompressionUrl(userData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
+              background: 'url(' + ($utilHelper.getCompressionUrl(myUserData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
             }"
           />
         </a>
 
         <div class="name">
           <a :href="userRef" target="_blank" @click.stop>
-            {{ userData.name }}
+            {{ myUserData.name }}
           </a>
-          <div>{{ userData.userStat.followNum }}名追随者</div>
+          <div>{{ myUserData.userStat.followNum }}名追随者</div>
         </div>
 
         <div
           class="follow"
-          :class="userData.followOrNot ? 'followed' : 'not-follow'"
+          :class="myUserData.followOrNot ? 'followed' : 'not-follow'"
           @click.stop.prevent="follow()"
         >
-          {{ userData.followOrNot ? '已关注' : '关注' }}
+          {{ myUserData.followOrNot ? '已关注' : '关注' }}
         </div>
       </div>
 
@@ -42,13 +42,13 @@
         />
 
         <div
-          v-if="!isFetching && userData.mediaList.length < 1"
+          v-if="!isFetching && mediaList.length < 1"
           class="no-works"
         >
           这个人很懒，还没上传过作品 ~
         </div>
 
-        <a v-for="(img, index) in userData.mediaList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
+        <a v-for="(img, index) in mediaList" :key="index" :href="'/photo/' + img.id" target="_blank" @click.stop>
           <div
             :style="{
               background: 'url(' + img.image + ') no-repeat'
@@ -77,10 +77,10 @@ export default {
   },
   data() {
     return {
-      imgList: [],
       isFetching: false,
       isFollow: false,
-      is_followed_loading: true
+      mediaList: [],
+      myUserData: {}
     }
   },
   computed: {
@@ -88,27 +88,27 @@ export default {
       return this.$store.state.login.isLogin
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.userData)
+      return this.$utilHelper.toUserPage(this.myUserData)
     }
   },
-  watch: {
-    // 'userId': function(val) {
-    //   this.imgList = []
-    //   this.fetchData()
-    // }
-  },
+
   created() {
-    // this.fetchData()
-    // this.fetchData()
+    this.myUserData = JSON.parse(JSON.stringify(this.userData))
   },
+
+  mounted() {
+    this.getMediaList()
+  },
+
   methods: {
 
     async getMediaList() {
-      this.isFetching = true
-      const res = await this.$axios.mediaService.originList(rqBody, params)
-      if (res.data.out === '1') {
-        this.imgList.push(...res.data.data)
+      const data = {
+        userId: this.myUserData.id
       }
+      this.isFetching = true
+      const res = await this.$axios.userService.userDetail(data)
+      this.mediaList = res.data.mediaList
       this.isFetching = false
     },
 
@@ -121,18 +121,18 @@ export default {
 
       // 关注
       const data = {
-        to: this.userId
+        to: this.myUserData.id
       }
       // 关注
-      if (!this.isFollow) {
+      if (!this.myUserData.followOrNot) {
         this.$axios.userService.follow(data).then(res => {
-          this.isFollow = !this.isFollow
+          this.myUserData.followOrNot = !this.myUserData.followOrNot
         }).catch(e => {
           this.$toast.warn(e)
         })
       } else { // 取消关注
         this.$axios.userService.unfollow(data).then(res => {
-          this.isFollow = !this.isFollow
+          this.myUserData.followOrNot = !this.myUserData.followOrNot
         }).catch(e => {
           this.$toast.warn(e)
         })

@@ -18,7 +18,7 @@
             class="avatar"
             :style="{
               background: 'url(' +
-                ($utilHelper.getCompressionUrl(imgDetail.user_data.avatar, 200, 200) ||
+                ($utilHelper.getCompressionUrl(imgDetail.avatar, 200, 200) ||
                   require('~/assets/img/avatar-default.svg')) + ') no-repeat'
             }"
             @mouseenter="isShowAvatarDialog = true"
@@ -40,7 +40,7 @@
             @mouseenter="isShowAvatarDialog = true"
             @mouseleave="isShowAvatarDialog = false"
           >
-            {{ imgDetail.user_data.nick || imgDetail.user_data.name || '7mx摄影师' }}
+            {{ imgDetail.nickname || '7mx摄影师' }}
           </a>
 
           <!-- <div class="time">发布于{{ $utilHelper.getOldTime(imgDetail.dateline) }}</div> -->
@@ -239,15 +239,16 @@ export default {
       tag: this.getFollowTag()
     }, {
       id: 1,
-      content: '屏蔽作者：' + (this.imgDetail.user_data.nick || this.imgDetail.user_data.name || '7mx摄影师')
+      content: '屏蔽作者：' + (this.imgDetail.nickname || '7mx摄影师')
     }, {
       id: 2,
       content: '内容太水/重复'
     }])
-  },
-  mounted() {
     this.init()
   },
+  // mounted() {
+  //   this.init()
+  // },
   methods: {
     stopCilck() {
       // no use

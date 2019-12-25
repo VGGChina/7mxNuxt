@@ -39,13 +39,12 @@ export default {
     let tempMediaDetail = {}
     if (res.status == 200) {
       tempMediaDetail = res.data
-      let res_user = await $axios.userService.userDetail({ user_id: tempMediaDetail.userId })
-      if(res_user.status == 200) {
+      const res_user = await $axios.userService.userDetail({ user_id: tempMediaDetail.userId })
+      if (res_user.status == 200) {
         tempMediaDetail.user_data = res_user.data
       }
     }
-    console.log(111,tempMediaDetail)
-    
+
     const res_commentList = await $axios.mediaService.commentList(
       { media_id: tempMediaDetail.id }
     )
@@ -54,11 +53,9 @@ export default {
       tempCommentList.push(...res_commentList.data.content)
     }
 
-    console.log(22,res_commentList)
-
-    for(let i of tempCommentList) {
-      let res_temp = await $axios.userService.userDetail({ user_id: i.userId })
-      if(res_temp.status == 200) {
+    for (const i of tempCommentList) {
+      const res_temp = await $axios.userService.userDetail({ user_id: i.userId })
+      if (res_temp.status == 200) {
         i.user_data = res_temp.data
       }
     }

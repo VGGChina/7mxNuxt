@@ -53,7 +53,7 @@ export default ({ $axios }) => {
 
     userDetail(data) {
       const httpdata = {
-        url: `/api3/users/desc/${data.userID}`,
+        url: `/api3/users/desc/${data.userId}`,
         method: 'GET'
       }
       return $axios(httpdata)
