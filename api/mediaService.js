@@ -255,11 +255,12 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    inCategoryList(data, params) {
+    // 搜索
+    search(data) {
       const httpData = {
-        url: '/api/media/in_category_list',
-        data,
-        params
+        url: `/api3/search/${data.type}`,
+        method: 'GET',
+        params: data.params
       }
       return $axios(httpData)
     },

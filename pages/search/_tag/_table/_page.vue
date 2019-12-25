@@ -1,6 +1,6 @@
 <template>
   <div class="category-container">
-    <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex" />
+    <!-- <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex" />
     <user-preview v-show="tableIndex==2" :user-list="userList" />
     <img-waterfall
       :img-list="imgList"
@@ -18,7 +18,7 @@
       :current-page="$route.params.page"
       :base-url="'/search/' + $route.params.tag + '/' + $route.params.table + '/'"
       @paginationJumpToPage="jumpToPage"
-    />
+    /> -->
   </div>
 </template>
 
@@ -89,81 +89,96 @@ export default {
       return options
     }
   },
-  watch: {
-    '$route.params.tag': function(val) {
-      document.title = this.$route.params.tag + ' - 7MX 中国领先的视觉创作社区'
-      this.reload()
-    },
-    '$route.params.tableIndex': function(val) {
-      this.tableIndex = val
-      this.reload()
-    },
-    '$route.params.page': function(val) {
-      this.reload()
-    }
-  },
+
+  // watch: {
+  //   '$route.params.tag': function(val) {
+  //     document.title = this.$route.params.tag + ' - 7MX 中国领先的视觉创作社区'
+  //     this.reload()
+  //   },
+  //   '$route.params.tableIndex': function(val) {
+  //     this.tableIndex = val
+  //     this.reload()
+  //   },
+  //   '$route.params.page': function(val) {
+  //     this.reload()
+  //   }
+  // },
+
   async asyncData({ $axios, params }) {
-    const table = params.table
-    const page = params.page
-    let tempLine
-    if (table != 2) {
-      tempLine = (parseInt(page) - 1) * 20
-    }
-    const tempList = []
-    let tempcount = 0
-    let tempUserList = []
-    const rqBody = {
-      keyword: params.tag,
-      type: '6'
+    // const table = params.table
+    // const page = params.page
+    // let tempLine
+    // if (table != 2) {
+    //   tempLine = (parseInt(page) - 1) * 20
+    // }
+    // const tempList = []
+    // let tempcount = 0
+    // let tempUserList = []
+    // const rqBody = {
+    //   keyword: params.tag,
+    //   type: '6'
+    // }
+
+    // const query = {
+    //   line: tempLine,
+    //   limit: 20
+    // }
+    // if (table == 0 || table == 1) {
+    //   const url = 'https://free.es.dispatch.paixin.com/7mx/_search/'
+
+    //   if (table == 1) rqBody.product = 'plus'
+
+    //   const temp = { url: url, data: rqBody, params: query }
+    //   const res = await $axios(temp)
+    //   if (res.data.out == '1') {
+    //     tempList.push(...res.data.data)
+    //   }
+    //   if (res.data.end === 'end') {
+    //     tempLine = 'end'
+    //   } else {
+    //     tempLine = res.data.line
+    //   }
+    //   tempcount = res.data.count
+    // } else {
+    //   tempLine = params.page + ',0,0'
+    //   const query = {
+    //     line: tempLine
+    //   }
+    //   const res = await $axios.userService.getPhotographerByName(
+    //     { search: rqBody.keyword, withmedias: '1' },
+    //     query
+    //   )
+    //   if (res.data.out == '1') {
+    //     tempUserList = []
+    //     tempUserList.push(...res.data.data)
+    //   }
+    //   if (res.data.end === 'end') {
+    //     tempLine = 'end'
+    //   } else {
+    //     tempLine = res.data.line
+    //   }
+    //   tempcount = parseInt(res.data.line.split(',')[1]) * 20
+    // }
+
+    // ////////////////
+    const data = {
+      type: parseInt(params.table) + 1,
+      params: {
+        page: parseInt(params.page) - 1,
+        size: 20,
+        word: params.tag
+      }
     }
 
-    const query = {
-      line: tempLine,
-      limit: 20
-    }
-    if (table == 0 || table == 1) {
-      const url = 'https://free.es.dispatch.paixin.com/7mx/_search/'
-
-      if (table == 1) rqBody.product = 'plus'
-
-      const temp = { url: url, data: rqBody, params: query }
-      const res = await $axios(temp)
-      if (res.data.out == '1') {
-        tempList.push(...res.data.data)
-      }
-      if (res.data.end === 'end') {
-        tempLine = 'end'
-      } else {
-        tempLine = res.data.line
-      }
-      tempcount = res.data.count
-    } else {
-      tempLine = params.page + ',0,0'
-      const query = {
-        line: tempLine
-      }
-      const res = await $axios.userService.getPhotographerByName(
-        { search: rqBody.keyword, withmedias: '1' },
-        query
-      )
-      if (res.data.out == '1') {
-        tempUserList = []
-        tempUserList.push(...res.data.data)
-      }
-      if (res.data.end === 'end') {
-        tempLine = 'end'
-      } else {
-        tempLine = res.data.line
-      }
-      tempcount = parseInt(res.data.line.split(',')[1]) * 20
-    }
+    const res = await $axios.mediaService.search(data)
+    console.log(res.data)
 
     return {
-      imgList: tempList,
-      line: tempLine,
-      count: tempcount,
-      tableIndex: table,
-      userList: tempUserList
+      imgList: [],
+      line: '1,0,0',
+      count: 0,
+      tableIndex: 0,
+      userList: []
     }
   },
   methods: {

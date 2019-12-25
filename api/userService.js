@@ -214,14 +214,6 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    modifyPasswordByEmail(data) {
-      const httpData = {
-        url: '/api/user/fdpwd_by_email',
-        data
-      }
-      return $axios(httpData)
-    },
-
     modifyPasswordByPhone(data) {
       const httpData = {
         url: '/api/user/fdpwd_by_phone',
@@ -238,52 +230,10 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    paixinLoginSmcode(data) {
-      const httpData = {
-        url: '/api/user/gaga_login_smcode',
-        data
-      }
-      return $axios(httpData)
-    },
-
-    paixinLogin(data) {
-      const httpData = {
-        url: '/api/user/gaga_login',
-        data
-      }
-      return $axios(httpData)
-    },
-
     recommendUser(data, params) {
       const httpData = {
         url: `/api/user/recommend_list`,
         data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    risingList(data, params) {
-      const httpData = {
-        url: '/api/user/rising_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    rankingList(data, params) {
-      const httpData = {
-        url: '/api/user/ranking_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    descList(params) {
-      const httpData = {
-        url: '/api/user/desc_list',
         params
       }
       return $axios(httpData)
