@@ -126,7 +126,7 @@ export default {
 
     async getUserInfo() {
       const data = {
-        userID: this.$route.params.id
+        userId: this.$route.params.id
       }
       const res = await this.$axios.userService.userDetail(data)
       this.userInfo = res.data
@@ -137,7 +137,7 @@ export default {
       try {
         const data = {
           type: this.userHomeNavIndex + 1,
-          userID: this.$route.params.id,
+          userId: this.$route.params.id,
           params: {
             page: this.page,
             size: this.size
@@ -151,12 +151,12 @@ export default {
             return
           }
           this.imgList.push(...res.data)
-        } else if (res.data.length === 5) {
-          this.tags.push(...res.data.content)
-          const pageNow = this.page + 1
-          const pageTotal = res.data.totalPages
-          const nextPage = pageNow === pageTotal ? 'end' : pageNow + 1
-          this.line = nextPage + ',' + pageTotal + ',' + pageNow
+        } else if (this.userHomeNavIndex === 5) {
+          if (res.data.length === 0) {
+            this.line = 'end, 0, 0'
+            return
+          }
+          this.tags.push(...res.data)
         } else {
           this.imgList.push(...res.data.content)
           const pageNow = this.page + 1

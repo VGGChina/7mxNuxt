@@ -62,7 +62,7 @@ export default ({ $axios }) => {
     // 用户界面数据
     getUserDatas(data) {
       const httpdata = {
-        url: `/api3/users/media/${data.userID}/${data.type}`,
+        url: `/api3/users/media/${data.userId}/${data.type}`,
         params: data.params,
         method: 'GET'
       }
@@ -75,6 +75,16 @@ export default ({ $axios }) => {
         url: `/api3/users/follow-list/${data.userID}/${data.type}`,
         params: data.params,
         method: 'GET'
+      }
+      return $axios(httpdata)
+    },
+
+    // 评论
+    setComment(data) {
+      const httpdata = {
+        url: `/api3/medias/comment`,
+        data: data,
+        method: 'post'
       }
       return $axios(httpdata)
     },

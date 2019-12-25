@@ -4,26 +4,24 @@
       <div v-for="(item, i) in tags" :key="i" class="tag-recommentTag">
         <div class="tag-hover_area">
           <div class="tag-pics_wrap">
-            <a v-if="item.medias[0]" :href="'/photo/' + item.medias[0].id" target="blank">
-              <!-- v-lazy:background-image.container="$utilHelper.getCompressionUrl(item.medias[0].image)" -->
-              <!-- :style="'background-image:url\'' + $utilHelper.getCompressionUrl(item.medias[0].image) + '\')'" -->
+            <a v-if="item.mediaList[0]" :href="'/photo/' + item.mediaList[0].id" target="blank">
               <div
-                :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.medias[0].image) + ')'}"
+                :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.mediaList[0].image) + ')'}"
                 class="tag-left"
               />
             </a>
             <div v-else class="tag-left" />
             <div class="tag-right">
-              <a v-if="item.medias[1]" :href="'/photo/' + item.medias[1].id" target="blank">
+              <a v-if="item.mediaList[1]" :href="'/photo/' + item.mediaList[1].id" target="blank">
                 <div
-                  :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.medias[1].image) + ')'}"
+                  :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.mediaList[1].image) + ')'}"
                   class="tag-top"
                 />
               </a>
               <div v-else class="tag-top" />
-              <a v-if="item.medias[2]" :href="'/photo/' + item.medias[2].id" target="blank">
+              <a v-if="item.mediaList[2]" :href="'/photo/' + item.mediaList[2].id" target="blank">
                 <div
-                  :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.medias[2].image) + ')'}"
+                  :style="{'backgroundImage': 'url(' + $utilHelper.getCompressionUrl(item.mediaList[2].image) + ')'}"
                   class="tag-bottom"
                 />
               </a>
@@ -51,9 +49,9 @@
       </div>
       <div class="clear" />
     </div>
-    <div v-if="end!='end'">
+    <!-- <div v-if="end!='end'">
       <loading style="padding-top: 100px;" :is-loading="true" :loading-color="'#000'" />
-    </div>
+    </div> -->
     <div v-if="end=='end'&&tags.length < 1" style="position:relative;">
       <noContent :is-no-content-show="true" />
     </div>

@@ -72,6 +72,7 @@ export default {
     }
   },
   methods: {
+    // 评论
     async comment() {
       if (!this.isLogin) {
         // 如果没有登录，弹出登录弹窗
@@ -79,31 +80,53 @@ export default {
         return
       }
 
-      if (this.content == '') {
+      if (this.content === '') {
         this.$toast.warn('评论不能为空')
         return
       }
-      const reqBody = {
-        media_id: this.imgDetail.id,
+      // const reqBody = {
+      //   media_id: this.imgDetail.id,
+      //   content: this.content
+      // }
+
+      // this.$axios.mediaService.comment(reqBody)
+      //   .then(res => {
+      //     if (res.data.out === '1') {
+      //       const commentData = {
+      //         content: this.content,
+      //         to_comment: '0',
+      //         to_comment_data: {},
+      //         user_data: this.loginUser
+      //       }
+      //       this.commentList.push(commentData)
+      //       this.$toast.notice('评论成功')
+      //       this.content = ''
+      //       this.isFocus = false
+      //       this.imgDetail.comment_num++
+      //     }
+      //   })
+
+      const data = {
+        mediaId: this.imgDetail.id,
         content: this.content
       }
 
-      this.$axios.mediaService.comment(reqBody)
-        .then(res => {
-          if (res.data.out === '1') {
-            const commentData = {
-              content: this.content,
-              to_comment: '0',
-              to_comment_data: {},
-              user_data: this.loginUser
-            }
-            this.commentList.push(commentData)
-            this.$toast.notice('评论成功')
-            this.content = ''
-            this.isFocus = false
-            this.imgDetail.comment_num++
-          }
-        })
+      try {
+        await this.$axios.userService.setComment(data)
+        const commentData = {
+          content: this.content,
+          to_comment: '0',
+          to_comment_data: {},
+          user_data: this.loginUser
+        }
+        this.commentList.push(commentData)
+        this.$toast.notice('评论成功')
+        this.content = ''
+        this.isFocus = false
+        this.imgDetail.comment_num++
+      } catch (e) {
+        this.$toast.warn(e)
+      }
     }
   }
 }
