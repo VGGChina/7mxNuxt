@@ -217,6 +217,14 @@ export default {
 
       this.isLoading = true
       const res = await this.$axios.mediaService.getHomeHotPicsAPI(data)
+      for (const i in res.data.content) {
+        res.data.content[i].userStat = {
+          followedNum: res.data.content[i].followedNum,
+          popularity: res.data.content[i].popularity,
+          userId: res.data.content[i].userId
+        }
+        res.data.content[i].name = res.data.content[i].nickname
+      }
       this.imgList.push(...res.data.content)
       const pageNow = this.page
       const pageTotal = res.data.totalPages

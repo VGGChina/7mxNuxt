@@ -131,6 +131,15 @@ export default {
       try {
         const res = await this.$axios.mediaService.getDynamicAPI(data)
         this.imgList = res.data.content
+
+        for (const i in res.data.content) {
+          res.data.content[i].userStat = {
+            followedNum: res.data.content[i].followedNum,
+            popularity: res.data.content[i].popularity,
+            userId: res.data.content[i].userId
+          }
+          res.data.content[i].name = res.data.content[i].nickname
+        }
         console.log(res)
         setTimeout(() => {
           this.isLoading = false

@@ -145,19 +145,32 @@ export default {
         }
         this.isLoading = true
         const res = await this.$axios.userService.getUserDatas(data)
+
         if (this.userHomeNavIndex === 3) {
           if (res.data.length === 0) {
             this.line = 'end, 0, 0'
             return
           }
+          for (const i in res.data) {
+            res.data[i].userStat = {
+              followedNum: res.data[i].followedNum,
+              popularity: res.data[i].popularity,
+              userId: res.data[i].userId
+            }
+            res.data[i].name = res.data[i].nickname
+          }
           this.imgList.push(...res.data)
         } else if (this.userHomeNavIndex === 5) {
-          if (res.data.length === 0) {
-            this.line = 'end, 0, 0'
-            return
-          }
           this.tags.push(...res.data)
         } else {
+          for (const i in res.data.content) {
+            res.data.content[i].userStat = {
+              followedNum: res.data.content[i].followedNum,
+              popularity: res.data.content[i].popularity,
+              userId: res.data.content[i].userId
+            }
+            res.data.content[i].name = res.data.content[i].nickname
+          }
           this.imgList.push(...res.data.content)
           const pageNow = this.page + 1
           const pageTotal = res.data.totalPages

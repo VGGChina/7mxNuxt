@@ -28,7 +28,7 @@
             <avatar-dialog
               v-if="isShowAvatarDialog"
               class="avatar-dialog"
-              :user-data="img"
+              :user-data="imgDetail"
             />
           </div>
         </a>
@@ -246,9 +246,6 @@ export default {
     }])
     this.init()
   },
-  // mounted() {
-  //   this.init()
-  // },
   methods: {
     stopCilck() {
       // no use

@@ -34,10 +34,10 @@
                 <span @click="toTagPage(item.id)"> {{ item.name }} </span>
               </div>
               <div class="tag-bottom">
-                <span class="tag-pic_num">{{ item.media_num }} 张图片</span>
+                <span class="tag-pic_num">{{ item.mediaNum }} 张图片</span>
                   &nbsp;
                 <!-- 应该用fan_num,但现在数据太少,用user_num代替 -->
-                <span class="tag-people_num">{{ item.user_num }} 人关注</span>
+                <span class="tag-people_num">{{ item.followedNum }} 人关注</span>
               </div>
             </div>
             <div class="tag-right">

@@ -21,7 +21,7 @@
           <a :href="userRef" target="_blank" @click.stop>
             {{ myUserData.name }}
           </a>
-          <div>{{ myUserData.userStat.followNum }}名追随者</div>
+          <div>{{ myUserData.userStat.followedNum }}名追随者</div>
         </div>
 
         <div
@@ -104,7 +104,7 @@ export default {
 
     async getMediaList() {
       const data = {
-        userId: this.myUserData.id
+        userId: this.myUserData.userStat.userId
       }
       this.isFetching = true
       const res = await this.$axios.userService.userDetail(data)
@@ -121,7 +121,7 @@ export default {
 
       // 关注
       const data = {
-        to: this.myUserData.id
+        to: this.myUserData.userStat.userId
       }
       // 关注
       if (!this.myUserData.followOrNot) {
