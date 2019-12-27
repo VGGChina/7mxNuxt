@@ -151,47 +151,6 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    addIntoCart(data) {
-      const httpData = {
-        url: '/api/media/buy_add',
-        data
-      }
-      return $axios(httpData)
-    },
-
-    cartList(data, params) {
-      const httpData = {
-        url: '/api/media/buy_list',
-        data,
-        params
-      }
-      return $axios(httpData)
-    },
-
-    shoppingCartDrop(data) {
-      const httpData = {
-        url: '/api/media/buy_drop',
-        data
-      }
-      return $axios(httpData)
-    },
-
-    orderAdd(data) {
-      const httpData = {
-        url: '/api/media/order_add',
-        data
-      }
-      return $axios(httpData)
-    },
-
-    orderDetail(data) {
-      const httpData = {
-        url: '/api/media/order_detail',
-        data
-      }
-      return $axios(httpData)
-    },
-
     enchashment(data) {
       const httpData = {
         url: '/api/media/enchashment',
@@ -227,7 +186,6 @@ export default ({ $axios }) => {
     // 某个tag全部作品列表
     inTagList(data, params) {
       const httpData = {
-        // url: '/api/media/in_tag_list',
         url: `/api3/activities/medias/${data.tag_id}`,
         params,
         method: 'GET'
@@ -304,15 +262,6 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/media/add_tag',
         data
-      }
-      return $axios(httpData)
-    },
-
-    dynamicList(data, params) {
-      const httpData = {
-        url: '/api/media/dynamic_list',
-        data,
-        params
       }
       return $axios(httpData)
     },

@@ -40,14 +40,6 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    protocolList(data) {
-      const httpData = {
-        url: '/api/common/protocol_list',
-        data
-      }
-      return $axios(httpData)
-    },
-
     getLargeImageList(data) {
       const httpData = {
         url: '/api/common/get_banners',

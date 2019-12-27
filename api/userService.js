@@ -1,14 +1,6 @@
 export default ({ $axios }) => {
   const userService = {
 
-    registerByPhone(data) {
-      const httpData = {
-        url: '/api/user/quick_regist_by_phone',
-        data
-      }
-      return $axios(httpData)
-    },
-
     // 注册获取的验证码
     getRegisterCode(params) {
       const httpData = {
@@ -39,14 +31,6 @@ export default ({ $axios }) => {
     currentUser() {
       const httpData = {
         url: '/api/user/current'
-      }
-      return $axios(httpData)
-    },
-
-    codeLogin(data) {
-      const httpData = {
-        url: '/api/user/login_by_smcode',
-        data
       }
       return $axios(httpData)
     },
@@ -87,14 +71,6 @@ export default ({ $axios }) => {
         method: 'post'
       }
       return $axios(httpdata)
-    },
-
-    companyDetail(data) {
-      const httpData = {
-        url: '/api/company/detail',
-        data
-      }
-      return $axios(httpData)
     },
 
     follow(data) {
@@ -226,15 +202,6 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/user/into_other',
         data
-      }
-      return $axios(httpData)
-    },
-
-    recommendUser(data, params) {
-      const httpData = {
-        url: `/api/user/recommend_list`,
-        data,
-        params
       }
       return $axios(httpData)
     },
