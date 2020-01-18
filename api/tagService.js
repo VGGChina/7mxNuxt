@@ -64,10 +64,10 @@ export default ({ $axios }) => {
     // 参加活动的人
     getJoinUser(data, params) {
       const httpData = {
-        url: `/api/tag/joiner_list`,
-        data,
+        // url: `/api/tag/joiner_list`,
+        url: `/api3/activities/users/${data.tag_id}`,
         params,
-        method: 'POST'
+        method: 'GET'
       }
       return $axios(httpData)
     },

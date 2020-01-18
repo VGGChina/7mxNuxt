@@ -38,8 +38,9 @@ export default {
     const res = await $axios.mediaService.mediaDetail(rqBody)
     let tempMediaDetail = {}
     if (res.status == 200) {
+      console.log(111,res.data)
       tempMediaDetail = res.data
-      const res_user = await $axios.userService.userDetail({ user_id: tempMediaDetail.userId })
+      const res_user = await $axios.userService.userDetail({ userId: tempMediaDetail.userId })
       if (res_user.status == 200) {
         tempMediaDetail.user_data = res_user.data
       }
@@ -54,7 +55,7 @@ export default {
     }
 
     for (const i of tempCommentList) {
-      const res_temp = await $axios.userService.userDetail({ user_id: i.userId })
+      const res_temp = await $axios.userService.userDetail({ userId: i.userId })
       if (res_temp.status == 200) {
         i.user_data = res_temp.data
       }

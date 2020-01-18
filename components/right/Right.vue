@@ -142,20 +142,20 @@ export default {
       }
 
       let rqBody = {
-        media_id: this.mediaDetail.id
+        mediaId: this.mediaDetail.id
       }
-      if (this.mediaDetail.is_like === '1') {
+      if (this.mediaDetail.likeOrNot) {
         this.$axios.mediaService.dislike(rqBody).then(res => {
-          if (res.data.out === '1') {
-            this.mediaDetail.like_num = res.data.data.like_num
-            this.mediaDetail.is_like = res.data.data.is_like
+          if (res.status == 200) {
+            this.mediaDetail.like--
+            this.mediaDetail.likeOrNot = false
           }
         })
       } else {
         this.$axios.mediaService.like(rqBody).then(res => {
-          if (res.data.out === '1') {
-            this.mediaDetail.like_num = res.data.data.like_num
-            this.mediaDetail.is_like = res.data.data.is_like
+          if (res.status == 200) {
+            this.mediaDetail.like++
+            this.mediaDetail.likeOrNot = true
           }
         })
       }

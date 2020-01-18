@@ -110,19 +110,19 @@ export default {
       }
 
       var media = {}
-      media.media_id = img.id
-      if (img.is_like === '1') {
+      media.mediaId = img.id
+      if (img.likeOrNot) {
         this.$axios.mediaService.dislike(media).then(res => {
-          if (res.data.out === '1') {
-            img.like_num = res.data.data.like_num
-            img.is_like = res.data.data.is_like
+          if (res.status == 200) {
+            img.like--
+            img.likeOrNot = false
           }
         })
       } else {
         this.$axios.mediaService.like(media).then(res => {
-          if (res.data.out === '1') {
-            img.like_num = res.data.data.like_num
-            img.is_like = res.data.data.is_like
+          if (res.status == 200) {
+            img.like++
+            img.likeOrNot = true
           }
         })
       }

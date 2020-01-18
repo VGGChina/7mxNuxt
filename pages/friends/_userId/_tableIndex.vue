@@ -1,30 +1,10 @@
 <template>
-  <div
-    v-scroll="getMore"
-    style="position: relative"
-  >
-    <table-nav
-      :options="options"
-      :default-index="tableIndex"
-      :is-loading="isLoading"
-    />
-
-    <user-preview :user-list="userList" />
-
-    <loading
-      :is-loading="isLoading"
-      :loading-color="'#000'"
-      class="loading"
-    />
-
-    <no-content :is-no-content-show="userList.length < 1 && line == 'end' && !isLoading" />
-
-    <div
-      v-if="userList.length > 0 && line == 'end' && !isLoading"
-      class="no-more"
-    >
-      —— & ——
-    </div>
+  <div v-scroll="getList" style="position: relative">
+    <table-nav :options="options" :default-index="tableIndex" :is-loading="isLoading"/>
+    <user-preview :user-list="userList"/>
+    <loading :is-loading="isLoading" :loading-color="'#000'" class="loading"/>
+    <no-content :is-no-content-show="userList.length < 1 && !isLoading"/>
+    <div v-if="userList.length > 0 && page >= totalPages" class="no-more">—— & ——</div>
   </div>
 </template>
 
@@ -47,16 +27,20 @@ export default {
       userList: [],
       line: '',
       isLoading: false,
-      options: [{
-        name: '0 关注',
-        url: ''
-      }, {
-        name: '0 追随者',
-        url: ''
-      }],
+      options: [
+        {
+          name: '0 关注',
+          url: ''
+        },
+        {
+          name: '0 追随者',
+          url: ''
+        }
+      ],
 
       page: 0,
-      size: 20
+      size: 20,
+      totalPages: 1
     }
   },
   computed: {
@@ -73,16 +57,25 @@ export default {
     }
   },
   created() {
-    // this.getUserDetail()
+    this.options[0].url = '/friends/' + this.$route.params.userId + '/0'
+    this.options[1].url = '/friends/' + this.$route.params.userId + '/1'
+    this.getUserDetail()
     this.getList()
 
-    if (this.tableIndex == '0') {
-      this.getFollowList()
-    } else if (this.tableIndex == '1') {
-      this.getFansList()
-    }
+    // if (this.tableIndex == '0') {
+    //   this.getFollowList()
+    // } else if (this.tableIndex == '1') {
+    //   this.getFansList()
+    // }
   },
   methods: {
+    async getUserDetail() {
+      let res = await this.$axios.userService.getUserDetail()
+      if (res.status == 200) {
+        this.options[0].name = res.data.userStat.followNum + ' 关注'
+        this.options[1].name = res.data.userStat.followedNum + ' 追随者'
+      }
+    },
     reload() {
       if (this.isLoading) {
         return
@@ -99,7 +92,8 @@ export default {
             tableIndex: '0'
           }
         })
-        this.getFollowList()
+        // this.getFollowList()
+        this.getList()
       } else if (this.tableIndex == 1) {
         this.$router.push({
           name: 'friends',
@@ -107,11 +101,16 @@ export default {
             tableIndex: '1'
           }
         })
-        this.getFansList()
+        // this.getFansList()
+        this.getList()
       }
     },
 
     async getList() {
+      if (this.page >= this.totalPages) {
+        return
+      }
+      this.isLoading = true
       const data = {
         userID: this.$route.params.userId,
         type: JSON.parse(this.tableIndex) + 1,
@@ -122,10 +121,15 @@ export default {
       }
       try {
         const res = await this.$axios.userService.getFollowOrFan(data)
-        this.userList.push(...res.data.content)
+        this.totalPages = res.data.totalPages
+        this.page++
+        for (let i of res.data.content) {
+          this.userList.push(i.user)
+        }
       } catch (e) {
         this.$toast.warn(e)
       }
+      this.isLoading = false
     },
     async getFollowList() {
       if (this.isLoading || this.line === 'end') {
@@ -165,13 +169,13 @@ export default {
         this.isLoading = false
       }, 500)
     },
-    getMore() {
-      if (this.tableIndex == 0) {
-        this.getFollowList()
-      } else if (this.tableIndex == 1) {
-        this.getFansList()
-      }
-    },
+    // getMore() {
+    //   if (this.tableIndex == 0) {
+    //     this.getFollowList()
+    //   } else if (this.tableIndex == 1) {
+    //     this.getFansList()
+    //   }
+    // },
     showFan() {
       this.isFollow = !this.isFollow
       if (!this.isFollow && this.fansList.length < 1) {
@@ -217,39 +221,39 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
   background: #000;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   &:hover {
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
-      // transform: translateY(-2px);
-      .avatarBg {
-          transform: translate3d(0,0,0) scale(1.1);
-      }
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    // transform: translateY(-2px);
+    .avatarBg {
+      transform: translate3d(0, 0, 0) scale(1.1);
+    }
   }
 }
 
 .avatarBg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    opacity: .6;
-    transform: translate3d(0,0,0);
-    transition: all 4s cubic-bezier(0.11, 0.38, 0.25, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+  transform: translate3d(0, 0, 0);
+  transition: all 4s cubic-bezier(0.11, 0.38, 0.25, 1);
 }
 
 .fansInfo .fansAvatars {
-  border: 5px solid rgba(255,255,255,.95);
+  border: 5px solid rgba(255, 255, 255, 0.95);
   border-radius: 50%;
   width: 90px;
   height: 90px;
   margin: 50px auto 10px;
-  background: rgba(255,255,255,.95);
+  background: rgba(255, 255, 255, 0.95);
   position: relative;
   z-index: 1;
 }
@@ -294,7 +298,7 @@ export default {
   text-align: center;
   line-height: 80px;
   font-size: 1.2rem;
-  opacity: .2;
+  opacity: 0.2;
   user-select: none;
 }
 </style>

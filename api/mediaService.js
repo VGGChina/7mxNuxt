@@ -23,16 +23,16 @@ export default ({ $axios }) => {
     getDynamicAPI(data) {
       const httpData = {
         url: `/api3/dynamics/${data.type}`,
-        // params: data.params,
-        method: 'get'
+        method: 'GET'
       }
       return $axios(httpData)
     },
 
     like(data) {
       const httpData = {
-        url: '/api/media/like',
-        data
+        url: '/api3/medias/like',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -56,8 +56,9 @@ export default ({ $axios }) => {
 
     dislike(data) {
       const httpData = {
-        url: '/api/media/drop_like',
-        data
+        url: '/api3/medias/cancel-like',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -117,10 +118,9 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    likeList(data, params) {
+    likeList(params) {
       const httpData = {
-        url: '/api/media/like_list',
-        data,
+        url: '/api3/medias/like-medias',
         params
       }
       return $axios(httpData)
@@ -169,8 +169,9 @@ export default ({ $axios }) => {
 
     needed(data) {
       const httpData = {
-        url: '/api/media/needed',
-        data
+        url: '/api3/medias/require',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },

@@ -19,17 +19,13 @@
         :is-show-remark="userHomeNavIndex == 2"
         :is-show-exclusive="userHomeNavIndex == 1"
       />
-
       <!--  喜欢 -->
-      <album-list v-if="userHomeNavIndex == 4" :album-list="imgList" />
+      <album-list v-if="userHomeNavIndex == 4" :album-list="imgList"/>
       <div v-if="!isLoading && imgList.length < 1 && userHomeNavIndex == 4" class="no_wrap">
-        <no-content :is-no-content-show="true" />
+        <no-content :is-no-content-show="true"/>
       </div>
-
-      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags" />
-
-      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'" />
-
+      <tag-list v-if="userHomeNavIndex == 5" key="0" :end="line" :tags="tags"/>
+      <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'"/>
       <div style="padding-bottom: 580px;">
         <div
           v-if="imgList.length > 0 && line.split(',')[0] != 'end'"
@@ -37,7 +33,7 @@
           @click="getMore"
         >{{ isLoading ? '正在加载...' : '加载更多' }}</div>
       </div>
-      <index-footer />
+      <index-footer/>
     </div>
   </div>
 </template>
@@ -145,6 +141,7 @@ export default {
         }
         this.isLoading = true
         const res = await this.$axios.userService.getUserDatas(data)
+        console.log('getUserDatas', res)
 
         if (this.userHomeNavIndex === 3) {
           if (res.data.length === 0) {
@@ -188,7 +185,6 @@ export default {
       this.page++
       this.getUserDatas()
     }
-
   }
 }
 </script>

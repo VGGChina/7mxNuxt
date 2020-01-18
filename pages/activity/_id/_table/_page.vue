@@ -58,7 +58,7 @@
                 name: 'activity-id-table-page',
                 params: { id : activeDetail.id, table: '4', page: '1' }
               }"
-            >{{ activeDetail.followedNum }} 人</nuxt-link>
+            >{{ activeDetail.userNum }} 人</nuxt-link>
           </div>
         </div>
       </div>
@@ -320,14 +320,16 @@ export default {
       if (tempIndex == 4) {
         const res_authors = await $axios.tagService.getJoinUser(
           { tag_id: params.id },
-          { line: tempLine, limit: '40' }
+          { page: (params.page-1), size: 20 }
         )
-        if (res_authors.data.out == '1') {
-          tempUserList.push(...res_authors.data.data)
-          tempLine =
-            res_authors.data.line !== 'end'
-              ? res_authors.data.line
-              : params.page + ',0,0'
+        console.log('tempUserList',res_authors.data)
+        if (res_authors.status == 200) {
+          tempUserList.push(...res_authors.data.content)
+          if(params.page == res_authors.data.totalPages) {
+            tempLine = 'end'
+          }else{
+            tempLine = (parseInt(params.page)+ 1) + ',' + res_authors.data.totalPages + ',' + params.page
+          }
         }
       }
     }

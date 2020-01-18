@@ -4,7 +4,7 @@
       :img-list="imgList"
       :line="line"
       :is-loading="isLoading"
-      :is-show-loading="true"
+      :is-show-loading="ifShowLoading"
     />
   </div>
 </template>
@@ -20,7 +20,9 @@ export default {
   data: () => ({
     line: '',
     imgList: [],
-    isLoading: false
+    isLoading: false,
+    currentPage: 0,
+    totalPages: 1
   }),
   head() {
     return {
@@ -30,31 +32,44 @@ export default {
   created() {
     this.fetchData()
   },
+  computed: {
+    ifShowLoading() {
+      return this.currentPage < this.totalPages
+    }
+  },
   methods: {
     fetchData: function() {
-      if (this.isLoading || this.line === 'end') {
+      if (this.isLoading) {
+        return
+      }
+
+      if (this.currentPage >= this.totalPages) {
         return
       }
 
       this.isLoading = true
 
-      const params = { line: this.line }
-      this.$axios.mediaService.likeList({}, params)
-        .then((response) => {
-          if (response.data.out === '1') {
-            this.imgList = this.imgList.concat(response.data.data)
-          }
-          this.line = response.data.line
-          setTimeout(() => {
-            this.isLoading = false
-          }, 500)
-        })
-    },
-    reload: function() {
-      this.line = ''
-      this.imgList = []
-      this.fetchData()
+      const params = { page: this.currentPage }
+      this.$axios.mediaService.likeList({}, params).then(response => {
+        if (response.status == 200) {
+          this.imgList = this.imgList.concat(response.data.content)
+          this.imgList.map(i => {
+            i.likeOrNot = true
+            i.like++
+          })
+          this.totalPages = response.data.totalPages
+          this.currentPage++
+        }
+        setTimeout(() => {
+          this.isLoading = false
+        }, 500)
+      })
     }
+    // reload: function() {
+    //   this.line = ''
+    //   this.imgList = []
+    //   this.fetchData()
+    // }
   }
 }
 </script>

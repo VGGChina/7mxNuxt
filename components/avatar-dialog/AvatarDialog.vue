@@ -12,24 +12,24 @@
           <div
             class="avatar"
             :style="{
-              background: 'url(' + ($utilHelper.getCompressionUrl(myUserData.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
+              background: 'url(' + ($utilHelper.getCompressionUrl(userDetail.avatar, 200, 200) || require('~/assets/img/avatar-default.svg')) + ') no-repeat'
             }"
           />
         </a>
 
         <div class="name">
           <a :href="userRef" target="_blank" @click.stop>
-            {{ myUserData.name }}
+            {{ userDetail.nickname || userDetail.name }}
           </a>
-          <div>{{ myUserData.userStat.followedNum }}名追随者</div>
+          <div>{{ userDetail.userStat.followedNum }}名追随者</div>
         </div>
 
         <div
           class="follow"
-          :class="myUserData.followOrNot ? 'followed' : 'not-follow'"
+          :class="userDetail.followOrNot ? 'followed' : 'not-follow'"
           @click.stop.prevent="follow()"
         >
-          {{ myUserData.followOrNot ? '已关注' : '关注' }}
+          {{ userDetail.followOrNot ? '已关注' : '关注' }}
         </div>
       </div>
 
@@ -80,7 +80,12 @@ export default {
       isFetching: false,
       isFollow: false,
       mediaList: [],
-      myUserData: {}
+      myUserData: {},
+      userDetail: {
+        userStat: {
+          followedNum: 0
+        }
+      }
     }
   },
   computed: {
@@ -88,7 +93,7 @@ export default {
       return this.$store.state.login.isLogin
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.myUserData)
+      return this.$utilHelper.toUserPage(this.userDetail)
     }
   },
 
@@ -104,16 +109,17 @@ export default {
 
     async getMediaList() {
       const data = {
-        userId: this.myUserData.userStat.userId
+        userId: this.myUserData.userId || this.myUserData.userStat.userId
       }
       this.isFetching = true
       const res = await this.$axios.userService.userDetail(data)
       this.mediaList = res.data.mediaList
+      this.userDetail = res.data
       this.isFetching = false
     },
 
     async follow(user) {
-      if (this.userId === 0) return
+      // if (this.userId === 0) return
       if (!this.isLogin) {
         this.$store.commit('login/isShowLoginDialog', true)
         return
@@ -121,18 +127,18 @@ export default {
 
       // 关注
       const data = {
-        to: this.myUserData.userStat.userId
+        to: this.userDetail.userStat.userId
       }
       // 关注
-      if (!this.myUserData.followOrNot) {
+      if (!this.userDetail.followOrNot) {
         this.$axios.userService.follow(data).then(res => {
-          this.myUserData.followOrNot = !this.myUserData.followOrNot
+          this.userDetail.followOrNot = !this.userDetail.followOrNot
         }).catch(e => {
           this.$toast.warn(e)
         })
       } else { // 取消关注
         this.$axios.userService.unfollow(data).then(res => {
-          this.myUserData.followOrNot = !this.myUserData.followOrNot
+          this.userDetail.followOrNot = !this.userDetail.followOrNot
         }).catch(e => {
           this.$toast.warn(e)
         })

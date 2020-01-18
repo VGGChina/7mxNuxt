@@ -5,29 +5,26 @@
         v-for="item in tagList"
         :key="item.id"
         :href="'/tag-photos/' + item.id"
-        target="_blank">
-        {{ item.name }}
-      </a>
+        target="_blank"
+      >{{ item.name }}</a>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: [
-    'mediaDetail'
-  ],
+  props: ['mediaDetail'],
   computed: {
-    tagList: function () {
+    tagList: function() {
       try {
-        return this.mediaDetail.tag_list;
+        return this.mediaDetail.tags
       } catch (e) {
-        return [];
+        return []
       }
     }
   },
   components: {}
-};
+}
 </script>
 
 <style scoped>
@@ -51,18 +48,18 @@ export default {
 .words-container a {
   font-size: 16px;
   color: #000;
-  opacity: .5;
+  opacity: 0.5;
   margin: 20px 16px 0 0;
   border-radius: 14px;
   border: 1px solid #dfdfdf;
   padding: 5px 12px;
   cursor: pointer;
   text-decoration: none;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 .words-container a:hover {
   opacity: 1;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 </style>

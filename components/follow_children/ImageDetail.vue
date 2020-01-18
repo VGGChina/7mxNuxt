@@ -343,18 +343,18 @@ export default {
         return
       }
 
-      const reBody = { media_id: this.imgDetail.id }
-      if (this.imgDetail.is_like === '1') {
+      const reBody = { mediaId: this.imgDetail.id }
+      if (this.imgDetail.likeOrNot) {
         const res = await this.$axios.mediaService.dislike(reBody)
-        if (res.data.out === '1') {
-          this.imgDetail.like_num = res.data.data.like_num
-          this.imgDetail.is_like = res.data.data.is_like
+        if (res.status == 200) {
+          this.imgDetail.like--
+          this.imgDetail.likeOrNot = false
         }
       } else {
         const res = await this.$axios.mediaService.like(reBody)
-        if (res.data.out === '1') {
-          this.imgDetail.like_num = res.data.data.like_num
-          this.imgDetail.is_like = res.data.data.is_like
+        if (res.status == 200) {
+          this.imgDetail.like++
+          this.imgDetail.likeOrNot = true
         }
       }
     },

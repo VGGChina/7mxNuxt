@@ -16,14 +16,15 @@
           <div
             class="follow"
             :class="{
-              'followed': item.is_follow == '1',
-              'not-follow': item.is_follow == '0'
+              'followed': item.followOrNot,
+              'not-follow': !item.followOrNot
             }"
             @click="follow(item)"
           >
-            {{ item.is_follow == '0' ? '关注' : '已关注' }}
+            {{ !item.followOrNot ? '关注' : '已关注' }}
           </div>
-          <div class="instruction">{{ item.userInfo.about || '这个人很懒，什么也没留下~~~' }}</div>
+          <div class="instruction" v-if="item.userInfo">{{ item.userInfo.about }}</div>
+          <div class="instruction" v-else>{{ '这个人很懒，什么也没留下~~~' }}</div>
         </div>
       </div>
 
@@ -85,20 +86,20 @@ export default {
         return
       }
       var rqBody = {
-        user_id: user.id
+        to: user.id
       }
-      if (user.is_follow === '1') {
+      if (user.followOrNot) {
         this.$axios.userService.unfollow(rqBody)
           .then(res => {
-            if (res.data.out === '1') {
-              user.is_follow = '0'
+            if (res.status == 200) {
+              user.followOrNot = false
             }
           })
       } else {
         this.$axios.userService.follow(rqBody)
           .then(res => {
-            if (res.data.out === '1') {
-              user.is_follow = '1'
+            if (res.status == 200) {
+              user.followOrNot = true
             }
           })
       }

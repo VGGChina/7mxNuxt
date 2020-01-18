@@ -1,8 +1,7 @@
 <template>
   <div class="photeography_container">
-    <sharetitle :title="title" :category-list="categoryList" :identity="1" />
-    <loading :is-loading="isLoading" loading-color="#000" class="loading" />
-
+    <sharetitle :title="title" :category-list="categoryList" :identity="1"/>
+    <loading :is-loading="isLoading" loading-color="#000" class="loading"/>
     <div class="content">
       <div
         v-for="(item, index) in firstAvatar"
@@ -12,8 +11,7 @@
         @mouseenter="contentMouseenter(1000000)"
         @mouseleave="contentMouseLeave"
       >
-
-        <img :src="item.avatar" alt>
+        <img :src="item.avatar" alt="">
         <h3>{{ item.nick }}</h3>
         <p>
           <span>{{ item.userStat.followedNum }}</span>粉丝
@@ -34,24 +32,21 @@
           @mouseenter="contentMouseenter(index)"
           @mouseleave="contentMouseLeave(index)"
         >
-
-          <img :src="item.avatar" alt class="avatar">
+          <img :src="item.avatar" alt="" class="avatar">
           <h3>{{ item.nickname }}</h3>
           <p>
             <span>{{ item.userStat.followedNum }}</span>粉丝
             <span>{{ item.userStat.popularity }}</span>人气值
           </p>
-
           <avatar-dialog
             v-if="isHoverUser && index == currentHoverUser"
             class="imgWarterfall-imgItem-avatarDialog"
             :user-data="item"
           />
-
         </div>
       </div>
     </div>
-    <morecategory :more-info="moreInfo" :more-text="moreText" />
+    <morecategory :more-info="moreInfo" :more-text="moreText"/>
   </div>
 </template>
 
@@ -94,7 +89,7 @@ export default {
       this.getAvatars(index)
     })
   },
-  mounted() { },
+  mounted() {},
   methods: {
     // 鼠标进入这个item
     contentMouseenter(index) {
@@ -131,7 +126,10 @@ export default {
       this.firstAvatar = []
       this.avatarList = []
       this.isLoading = true
-      const res = await this.$axios.tagService.getRecommendPhotographersAPI(data)
+      const res = await this.$axios.tagService.getRecommendPhotographersAPI(
+        data
+      )
+      console.log('getAvatars', res)
       this.firstAvatar = res.data.slice(0, 1)
       this.avatarList = res.data.splice(1, 7)
       this.isLoading = false

@@ -229,10 +229,21 @@ export default ({ $axios }) => {
     getSellNum(data) {
       // (gain收益，product_num作品数，media_num图片数)必须登陆
       const httpData = {
-        url: '/api/user/get_stat',
-        data
+        // url: '/api/user/get_stat',
+        url: '/api3/users/income-stat',
+        data,
+        method: 'GET'
       }
       return $axios(httpData)
+    },
+
+    //获取用户数据
+    getUserDetail() {
+      const httpdata = {
+        url: `/api3/users/stat`,
+        method: 'GET'
+      }
+      return $axios(httpdata)
     },
 
     /**

@@ -108,13 +108,14 @@ export default {
       this.currentIndex = index
     },
     initProgress() {
-      const cardStatus = this.loginUser.user_data.card_status
+      console.log(111,this.loginUser)
+      let cardStatus = this.loginUser.user_data.card_status
       if (cardStatus && cardStatus != '0') {
         this.progressIndex = 3
         this.currentIndex = 3
       }
 
-      const companyStatus = this.loginUser.user_data.company_status
+      let companyStatus = this.loginUser.user_data.company_status
       if (companyStatus && companyStatus != '0') {
         this.progressIndex = 3
         this.currentIndex = 3

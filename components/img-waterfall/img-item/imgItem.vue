@@ -30,7 +30,7 @@
         >
           <div
             :style="{
-              backgroundImage: 'url(' + (img.is_like == '1' ?
+              backgroundImage: 'url(' + (img.likeOrNot ?
                 require('./img/likeRed.svg') :
                 require('./img/like.svg')) + ')'
             }"
@@ -89,7 +89,7 @@
     <!-- 作者信息 -->
     <transition name="score-fade">
       <div
-        v-if="$route.name != 'user-home' && isHover && loginUser.id!==img.userId"
+        v-if="$route.name != 'user-id-id' && isHover && loginUser.id!==img.userId"
         class="imgWarterfall-imgItem-userInfo"
         @mouseenter="contentMouseenter"
         @mouseleave="contentMouseLeave"
@@ -282,25 +282,25 @@ export default {
         return
       }
 
-      if (this.img.is_like == '1') {
+      if (this.img.likeOrNot) {
         const res = await this.$axios
           .mediaService
-          .dislike({ media_id: this.eputId })
+          .dislike({ mediaId: this.eputId })
 
-        if (res.data.out == '1') {
-          this.img.like_num = res.data.data.like_num
+        if (res.status == 200) {
+          this.img.like--
 
-          this.img.is_like = res.data.data.is_like
+          this.img.likeOrNot = false
         }
       } else {
         const res = await this.$axios
           .mediaService
-          .like({ media_id: this.eputId })
+          .like({ mediaId: this.eputId })
 
-        if (res.data.out == '1') {
-          this.img.like_num = res.data.data.like_num
+        if (res.status == 200) {
+          this.img.like++
 
-          this.img.is_like = res.data.data.is_like
+          this.img.likeOrNot = true
         }
       }
     },
@@ -311,8 +311,8 @@ export default {
         return
       }
 
-      if (this.img.product == '1' || this.img.product == 'plus') {
-        window.open('https://v.paixin.com/photoplus/' + this.gagaId)
+      if (this.img.status == '1' || this.img.free == false) {
+        window.open('https://v.paixin.com/photoplus/' + this.plusMediaId)
 
         return
       }
@@ -343,14 +343,14 @@ export default {
       } else {
         const obj = neededUserList[index]
         const rqBody = {
-          media_id: this.eputId,
+          mediaId: this.eputId,
           name: obj.name,
           phone: obj.phone,
           qq: obj.qq
         }
         const res = await this.$axios.mediaService.needed(rqBody)
 
-        if (res.data.out == '1') {
+        if (res.status == 200) {
           this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
         } else {
           this.$toast.warn(res.data.msg)
