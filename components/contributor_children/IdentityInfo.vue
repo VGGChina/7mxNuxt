@@ -334,26 +334,26 @@ export default {
       let data = {}
       if (this.whichOption == '0') {
         data = {
-          card_id: this.form.cardId,
+          card_identity: this.form.cardId,
           card_name: this.form.name,
-          card_image_front: this.positiveUrl,
-          card_image_back: this.negativeUrl,
-          company_uscc: '',
-          company: '',
-          company_contact: '',
-          company_bl_image: '',
+          card_front: this.positiveUrl,
+          card_back: this.negativeUrl,
+          // company_uscc: '',
+          // company: '',
+          // company_contact: '',
+          // company_bl_image: '',
           address: this.form.address
         }
       } else {
         data = {
-          card_id: '',
-          card_name: '',
-          card_image_front: '',
-          card_image_back: '',
-          company_uscc: this.form.cardId,
+          // card_id: '',
+          // card_name: '',
+          // card_front: '',
+          // card_back: '',
+          uscc: this.form.cardId,
           company: this.form.company,
-          company_contact: this.form.name,
-          company_bl_image: this.positiveUrl,
+          contact: this.form.name,
+          business_license_image: this.positiveUrl,
           address: this.form.address
         }
       }

@@ -104,7 +104,10 @@ export default {
   },
   watch: {},
   async asyncData({ $axios }) {
-    const res = await $axios.tagService.getActivityList()
+    let data = {
+      type: 1
+    }
+    const res = await $axios.tagService.getActivityList(data)
     res.data.map(e => {
       if (new Date().getTime() - new Date(e.activityExpiredAt).getTime() > 0) {
         e.time = '此活动已结束'

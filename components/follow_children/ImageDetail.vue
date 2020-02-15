@@ -322,7 +322,7 @@ export default {
       } else {
         const obj = neededUserList[index]
         const rqBody = {
-          media_id: this.imgDetail.id,
+          mediaId: this.imgDetail.id,
           name: obj.name,
           phone: obj.phone,
           qq: obj.qq
@@ -330,7 +330,7 @@ export default {
 
         const res = await this.$axios.mediaService.needed(rqBody)
 
-        if (res.data.out === '1') {
+        if (res.status == 200) {
           this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
         } else {
           this.$toast.warn(res.data.msg)

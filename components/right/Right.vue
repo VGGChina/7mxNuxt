@@ -121,7 +121,7 @@ export default {
         return
       }
       let user = {
-        user_id: this.mediaDetail.user_data.id
+        userId: this.mediaDetail.user_data.id
       }
       if (this.mediaDetail.user_data.is_follow === '1') {
         this.$axios.userService.unfollow(user).then(res => {
@@ -205,7 +205,7 @@ export default {
       } else {
         let obj = neededUserList[index]
         let rqBody = {
-          media_id: this.mediaDetail.id,
+          mediaId: this.mediaDetail.id,
           name: obj.name,
           phone: obj.phone,
           qq: obj.qq
@@ -213,7 +213,7 @@ export default {
 
         let res = await this.$axios.mediaService.needed(rqBody)
 
-        if (res.data.out == '1') {
+        if (res.status == 200) {
           this.$toast.notice('已经收到您的购买意向，我们将尽快联系作者')
         } else {
           this.$toast.warn(res.data.msg)
@@ -279,7 +279,7 @@ export default {
     },
     isLiked() {
       try {
-        return this.mediaDetail.is_like == '1'
+        return this.mediaDetail.likeOrNot
       } catch (e) {
         return false
       }

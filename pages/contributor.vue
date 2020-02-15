@@ -107,8 +107,13 @@ export default {
 
       this.currentIndex = index
     },
-    initProgress() {
+    async initProgress() {
       console.log(111,this.loginUser)
+      let res = await this.$axios.userService.getUserAuth()
+      console.log('auth',res)
+      if(res.status != 200) {
+        return
+      }
       let cardStatus = this.loginUser.user_data.card_status
       if (cardStatus && cardStatus != '0') {
         this.progressIndex = 3

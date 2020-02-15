@@ -103,16 +103,16 @@ export default {
         return
       }
       const reqBody = {
-        media_id: this.mediaDetail.id,
+        mediaId: this.mediaDetail.id,
         content: isReply ? this.reply : this.comment
       }
 
       if (isReply) {
-        reqBody.to_comment_id = id
+        reqBody.toCommentId = id
       }
 
       this.$axios.mediaService.comment(reqBody).then(res => {
-        if (res.data.out === '1') {
+        if (res.status == 200) {
           const commentData = {
             content: isReply ? this.reply : this.comment,
             to_comment: isReply ? '1' : '0',

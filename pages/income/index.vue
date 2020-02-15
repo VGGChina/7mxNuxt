@@ -131,11 +131,11 @@ export default {
   },
   created() {
     if (!this.$utilHelper.isEmptyObj(this.loginUser)) {
-      this.getSellNum()
+      // this.getSellNum()
       this.fetchData()
     }
     if (this.isLogin) {
-      this.getSellNum()
+      // this.getSellNum()
       this.fetchData()
     }
   },
@@ -203,23 +203,26 @@ export default {
      * 正在卖的列表
      */
     async getOnSellList() {
-      const params = { line: this.line, limit: 24 }
-      const data = {
-        product: '1',
-        user_id: this.loginUser.gaga_id
-      }
-
-      const res = await this.$axios.mediaService.originList(data, params)
-
+      // const params = { line: this.line, limit: 24 }
+      // const data = {
+      //   product: '1',
+      //   user_id: this.loginUser.gaga_id
+      // }
+      let data = {}
+      data.userId = this.loginUser.id
+      data.type = 1
+      let res = await this.$axios.userService.getUserDatas(data)
       this.afterListPull(res)
     },
     /**
      * 订单列表
      */
     async getOrderList() {
-      const params = { line: this.line }
+      // const params = { line: this.line }
 
-      const res = await this.$apiFactory.userService.getOrderList({}, params)
+      // const res = await this.$apiFactory.userService.getOrderList({}, params)
+
+      const res = await this.$axios.userService.getSellNum()
 
       this.afterListPull(res)
     },
@@ -227,13 +230,13 @@ export default {
      * 获取数据后续处理
      */
     afterListPull(res) {
-      if (res.data.out === '1') {
-        this.detailList.push(...res.data.data)
+      if (res.status === 200) {
+        this.detailList.push(...res.data.content)
       }
 
       this.loading = false
 
-      this.line = res.data.line
+      // this.line = res.data.line
     }
   }
 }

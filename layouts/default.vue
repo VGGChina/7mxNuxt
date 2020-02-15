@@ -1,18 +1,18 @@
 <template>
   <div @click="cancel">
-    <login-register />
-    <upload />
-    <upload-paixin />
-    <user-setting />
-    <improve-info />
-    <Needed />
-    <topbar />
-    <help />
-    <popup-album />
-    <back-top />
-    <contact />
-    <confirmation-dialog />
-    <nuxt />
+    <login-register/>
+    <upload/>
+    <upload-paixin/>
+    <user-setting/>
+    <improve-info/>
+    <Needed/>
+    <topbar/>
+    <help/>
+    <popup-album/>
+    <back-top/>
+    <contact/>
+    <confirmation-dialog/>
+    <nuxt/>
   </div>
 </template>
 <script>
@@ -114,17 +114,23 @@ export default {
     },
     fetchPublic() {
       // 种类列表
-      this.$axios.tagService.getTagsAPI(6).then(res => {
-        this.$store.commit('category/categoryList', res.data)
-      }).catch(e => {
-        this.$toast.notice(e)
-      })
+      this.$axios.tagService
+        .getTagsAPI(6)
+        .then(res => {
+          this.$store.commit('category/categoryList', res.data)
+        })
+        .catch(e => {
+          this.$toast.notice(e)
+        })
     },
 
     // 获取是否已经登录的信息
     getLoginUser() {
       if (window.localStorage.loginUser !== undefined) {
-        this.$store.commit('login/loginUser', JSON.parse(window.localStorage.loginUser))
+        this.$store.commit(
+          'login/loginUser',
+          JSON.parse(window.localStorage.loginUser)
+        )
         this.$store.commit('login/isLogin', true)
       }
     }

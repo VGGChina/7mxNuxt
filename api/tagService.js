@@ -1,9 +1,9 @@
 export default ({ $axios }) => {
   const tagService = {
     // 所有活动(不是tag)
-    getActivityList() {
+    getActivityList(data) {
       const httpData = {
-        url: `/api3/activities/list/1`,
+        url: `/api3/activities/list/${data.type}`,
         method: 'GET'
       }
       return $axios(httpData)

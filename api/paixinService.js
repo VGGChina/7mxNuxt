@@ -35,8 +35,9 @@ export default ({ $axios }) => {
 
     cashNeed(data) {
       const httpData = {
-        url: '/api2/user/cash_need',
-        data
+        url: '/api3/users/withdraw',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     }

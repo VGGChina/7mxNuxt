@@ -168,8 +168,9 @@ export default ({ $axios }) => {
 
     setAuthCard(data) {
       const httpData = {
-        url: '/api/user/auth_card',
-        data
+        url: '/api3/users/auth',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -218,6 +219,15 @@ export default ({ $axios }) => {
       const httpData = {
         url: '/api/user/msg_list',
         data
+      }
+      return $axios(httpData)
+    },
+
+    getUserAuth(data) {
+      const httpData = {
+        url: '/api3/users/auth',
+        data,
+        method: 'GET'
       }
       return $axios(httpData)
     },

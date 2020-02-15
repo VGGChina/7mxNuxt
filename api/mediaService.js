@@ -39,8 +39,9 @@ export default ({ $axios }) => {
 
     comment(data) {
       const httpData = {
-        url: '/api/media/comment',
-        data
+        url: '/api3/medias/comment',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -75,8 +76,9 @@ export default ({ $axios }) => {
     // 上传作品
     put(data) {
       const httpData = {
-        url: '/api/media/put',
-        data
+        url: '/api3/medias/upload',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },

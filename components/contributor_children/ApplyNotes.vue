@@ -103,18 +103,22 @@ export default {
         return
       }
 
-      const data = { type: '6' }
-
-      if (this.$route.name == 'user-id') {
-        data.user_id = this.$route.params.id
-      } else {
-        data.name = this.$route.params.name
+      let data = {
+        userId: this.loginUser.id,
+        type: 1
       }
 
-      const res = await this.$axios.mediaService.originList(data, {})
+      // if (this.$route.name == 'user-id') {
+      //   data.user_id = this.$route.params.id
+      // } else {
+      //   data.name = this.$route.params.name
+      // }
 
-      if (res.data.out === '1') {
-        if (res.data.data.length >= 10) {
+      // const res = await this.$axios.mediaService.originList(data, {})
+      let res = await this.$axios.userService.getUserDatas(data)
+
+      if (res.status == 200) {
+        if (res.data.content.length >= 10) {
           if (!this.isAgreeProtocol) {
             this.$toast.warn('您还没有同意供稿人协议')
             return

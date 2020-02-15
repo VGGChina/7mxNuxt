@@ -57,12 +57,13 @@ export default {
       }
 
       const rqBody = this.getRqBody(this.formToal)
-      rqBody.skill = skill
+      rqBody.skills = skill
 
       if (this.formToal.company == '') {
         try {
+          rqBody.type = 2
           const res = await this.$axios.userService.setAuthCard(rqBody)
-          if (res.data.out === '1') {
+          if (res.status == 200) {
             this.loginUser.user_data.card_status = '1'
             this.$store.commit('login/loginUser', this.loginUser)
             this.$emit('updateProgress', {
@@ -77,8 +78,10 @@ export default {
           console.log(e)
         }
       } else {
-        const res = await this.$axios.userService.setAuthCardCom(rqBody)
-        if (res.data.out == '1') {
+        // const res = await this.$axios.userService.setAuthCardCom(rqBody)
+        rqBody.type = 2
+        const res = await this.$axios.userService.setAuthCard(rqBody)
+        if (res.status == 200) {
           this.loginUser.user_data.company_status = '1'
           this.$store.commit('login/loginUser', this.loginUser)
           this.$emit('updateProgress', {

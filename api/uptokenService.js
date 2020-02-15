@@ -1,9 +1,10 @@
 export default function getUptoken(data, callback, xToken) {
-  const url = '//api.7mx.com/thirdpart/qiniu'
+  // const url = '//api.7mx.com/thirdpart/qiniu'
+  const url = '//api2.7mx.com/upload-token'
 
   const request = new XMLHttpRequest()
 
-  request.open('POST', url, false)
+  request.open('GET', url, false)
 
   request.withCredentials = true
 

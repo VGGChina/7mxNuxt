@@ -1,7 +1,7 @@
 <template>
   <div class="category-container">
-    <!-- <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex" />
-    <user-preview v-show="tableIndex==2" :user-list="userList" />
+    <table-nav :options="options" :is-loading="isLoading" :default-index="tableIndex"/>
+    <user-preview v-show="tableIndex==2" :user-list="userList"/>
     <img-waterfall
       :img-list="imgList"
       :line="line == 'end' ? line: ''"
@@ -18,7 +18,7 @@
       :current-page="$route.params.page"
       :base-url="'/search/' + $route.params.tag + '/' + $route.params.table + '/'"
       @paginationJumpToPage="jumpToPage"
-    /> -->
+    />
   </div>
 </template>
 
@@ -170,11 +170,16 @@ export default {
       }
     }
 
+    let tempList = []
+
     const res = await $axios.mediaService.search(data)
     console.log(res.data)
+    if (res.status == 200) {
+      tempList = res.data.content
+    }
 
     return {
-      imgList: [],
+      imgList: tempList,
       line: '1,0,0',
       count: 0,
       tableIndex: 0,

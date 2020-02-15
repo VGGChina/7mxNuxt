@@ -97,7 +97,7 @@ export default {
     async getUserDetail() {
       let res = await this.$axios.userService.getSellNum()
 
-      if (res.data.out == '1') {
+      if (res.status == 200) {
         let user = res.data.data
 
         this.incomeData.gain = user.gain || 0
@@ -159,22 +159,22 @@ export default {
       }
 
       let data = {
-        eput_id: this.user.id,
-        paixin_id: this.user.gaga_id,
+        userId: this.user.id,
+        // paixin_id: this.user.gaga_id,
         password: this.password,
-        bank_payee: this.name || this.placeHolders.name,
-        bank_card: this.card || this.placeHolders.cardOrgin,
-        bank_addr: this.bankAddr || this.placeHolders.bankAddr
+        name: this.name || this.placeHolders.name,
+        card: this.card || this.placeHolders.cardOrgin,
+        bank: this.bankAddr || this.placeHolders.bankAddr
       }
 
-      let res = await this.$apiFactory.getPaixinApi().cashNeed(data)
+      let res = await this.$axios.paixinService.cashNeed(data)
 
-      if (res.data.out == '1') {
+      if (res.status == 200) {
         this.$toast.notice('提交成功')
 
         this.isShowDialog = false
       } else {
-        this.$toast.warn('提交失败，请检查密码是否正确或联系')
+        this.$toast.warn('提交失败，请检查密码是否正确或联系客服')
       }
     },
     show() {

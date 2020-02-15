@@ -139,7 +139,10 @@ export default {
       }
     },
     async getImgList() {
-      const result = await this.$axios.tagService.getActivityList()
+      let data = {
+        type: 1
+      }
+      const result = await this.$axios.tagService.getActivityList(data)
       let res = result.data.data.filter(item => {
         return item.id !== '285671'
       })

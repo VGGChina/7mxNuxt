@@ -12,7 +12,7 @@
   },
   "config": {
     "nuxt": {
-      "port": "8080"
+      "port": "2422"
     }
   },
   "dependencies": {

@@ -415,8 +415,14 @@ export default {
         if (request.status === 200) {
           const res = JSON.parse(request.responseText)
 
-          if (res.out == '1') {
-            upTokenData = res.data
+          // if (res.out == '1') {
+          //   upTokenData = res.data
+          // }
+          if (res) {
+            upTokenData = res
+            upTokenData.uptoken = res.token
+            upTokenData.bucket = "gaga-private"
+            upTokenData.base_url ="http://private.gaga.me/"
           }
         }
       }, window.localStorage.xToken)
@@ -485,8 +491,19 @@ export default {
           getUptoken(data, request => {
             if (request.status === 200) {
               const res = JSON.parse(request.responseText)
-              if (res.out === '1') {
-                this.upTokenData = res.data
+              // if (res.out === '1') {
+              //   this.upTokenData = res.data
+              // } else {
+              //   this.$toast.warn(res.msg)
+              //   this.upTokenData = {}
+              // }
+              console.log('res',res)
+              if (res) {
+                this.upTokenData = res
+                this.upTokenData.uptoken = res.token
+                this.upTokenData.bucket = "gaga-private"
+                this.upTokenData.base_url ="http://private.gaga.me/"
+                console.log(1111,this.upTokenData.uptoken)
               } else {
                 this.$toast.warn(res.msg)
                 this.upTokenData = {}
@@ -687,15 +704,21 @@ export default {
       })
     },
     async fetchActivities() {
-      const config = {
-        url: '/api/tag/activity_list',
-        data: { type: '1' }
-      }
-      let res = await this.$axios(config)
+      // const config = {
+      //   url: '/api/tag/activity_list',
+      //   data: { type: '1' }
+      // }
+      // let res = await this.$axios(config)
 
-      if (res.data.out === '1') {
+      let data = {
+        type: 2
+      }
+      let res = await this.$axios.tagService.getActivityList(data)
+
+      if (res.status === 200) {
+        console.log('upload',res)
         this.activities.push({ id: 0, name: '暂不参加' })
-        res = res.data.data.filter(item => {
+        res = res.data.filter(item => {
           return item.name !== '2019年中海汤泉——全国摄影邀请赛'
         })
         this.activities.push(...res)
@@ -933,23 +956,48 @@ export default {
         return
       }
 
-      const data = {
-        type: '6',
-        image: file.source,
-        source: file.source,
-        width: file.width,
-        height: file.height,
-        size: file.size,
-        title: file.title,
-        text: file.text,
-        tag: this.getTags(file),
-        category_id: file.category.id,
-        is_water_mark: file.isWaterMark ? '1' : '0'
+      // const data = {
+      //   type: '6',
+      //   image: file.source,
+      //   source: file.source,
+      //   width: file.width,
+      //   height: file.height,
+      //   size: file.size,
+      //   title: file.title,
+      //   text: file.text,
+      //   tag: this.getTags(file),
+      //   category_id: file.category.id,
+      //   is_water_mark: file.isWaterMark ? '1' : '0'
+      // }
+
+      // const res = await this.$axios.mediaService.put(data)
+
+      let tempList = []
+      for(let i of file.tagList) {
+        tempList.push(i.label)
       }
 
-      const res = await this.$axios.mediaService.put(data)
+      const data = {
+        // type: '6',
+        title: file.title,
+        description: file.text,
+        image: file.source,
+        mediaWidth: file.width,
+        mediaHeight: file.height,
+        sourceFile: file.source,
+        categoryId: file.category.id,
+        watermarked: file.isWaterMark,
+        tagList: tempList,
+        sourcePreview: ''
+        // size: file.size,
+      }
+      let temp = []
+      temp.push(data)
 
-      if (res.data.out === '1') {
+      const res = await this.$axios.mediaService.put(temp)
+      console.log('put',res)
+
+      if (res.status === 200) {
         // 反馈给码隆
         this.feedbackToMaLong(file)
 

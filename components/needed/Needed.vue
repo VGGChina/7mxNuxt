@@ -72,7 +72,7 @@ export default {
       }
 
       const rqBody = {
-        media_id: this.neededMediaId,
+        mediaId: this.neededMediaId,
         name: this.name,
         phone: this.phone,
         qq: this.qq
@@ -80,7 +80,7 @@ export default {
 
       const res = await this.$axios.mediaService.needed(rqBody)
 
-      if (res.data.out == '1') {
+      if (res.status == 200) {
         let neededUserList = []
         const storage = localStorage.getItem('neededUserList')
         if (storage != null) {
