@@ -121,17 +121,17 @@ export default {
         return
       }
       let user = {
-        userId: this.mediaDetail.user_data.id
+        to: this.mediaDetail.user_data.id
       }
-      if (this.mediaDetail.user_data.is_follow === '1') {
+      if (this.mediaDetail.followOrNot) {
         this.$axios.userService.unfollow(user).then(res => {
-          this.mediaDetail.user_data.is_follow = '0'
-          this.mediaDetail.user_data.fan_num--
+          this.mediaDetail.followOrNot = false
+          this.mediaDetail.followedNum--
         })
       } else {
         this.$axios.userService.follow(user).then(res => {
-          this.mediaDetail.user_data.is_follow = '1'
-          this.mediaDetail.user_data.fan_num++
+          this.mediaDetail.followOrNot = true
+          this.mediaDetail.followedNum++
         })
       }
     },
@@ -167,7 +167,8 @@ export default {
       }
       this.$bus.emit('popup-album', {
         show: true,
-        media_id: this.mediaDetail.id
+        media_id: this.mediaDetail.id,
+        userId: this.loginUser.id
       })
     },
     async buyImg() {
@@ -258,7 +259,7 @@ export default {
     },
     fanNum() {
       try {
-        return this.mediaDetail.user_data.userStat.followedNum
+        return this.mediaDetail.followedNum
       } catch (e) {
         return '0'
       }
@@ -272,7 +273,7 @@ export default {
     },
     isFollowed() {
       try {
-        return this.mediaDetail.user_data.is_follow == '1'
+        return this.mediaDetail.followOrNot
       } catch (e) {
         return false
       }

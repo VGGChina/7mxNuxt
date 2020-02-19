@@ -4,8 +4,9 @@ export default ({ $axios }) => {
     albumList(data) {
       // 参数:user_id(某个人的), 缺省是自己的
       const httpData = {
-        url: '/api/album/list_by_user',
-        data
+        url: `/api3/favorites/${data.userId}`,
+        data,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -22,8 +23,9 @@ export default ({ $axios }) => {
     // 创建灵感集
     createAlbum(data) {
       const httpData = {
-        url: '/api/album/add',
-        data
+        url: '/api3/favorites',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },

@@ -190,7 +190,7 @@ export default {
         return
       }
       var user = {
-        user_id: this.userInfo.id
+        to: this.userInfo.id
       }
       if (this.userInfo.is_follow === '1') {
         this.$axios.userService.unfollow(user).then(res => {
@@ -204,15 +204,16 @@ export default {
     },
 
     async uploadToPaixin() {
-      const res = await this.$axios.userService.currentUser()
+      let res = await this.$axios.userService.getUserAuth()
+      console.log('auth',res)
 
-      if (res.data.out !== '1') {
+      if (res.status != 200) {
         this.$store.commit('login/isShowLoginDialog', true)
 
         return
       }
 
-      this.$store.commit('login/loginUser', res.data.data)
+      // this.$store.commit('login/loginUser', res.data.data)
 
       setTimeout(() => {
         if (this.status == '3') {

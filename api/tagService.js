@@ -45,8 +45,9 @@ export default ({ $axios }) => {
     // 取消关注标签
     unfollowTag(data) {
       const httpData = {
-        url: '/api/tag/drop_follow',
-        data
+        url: `/api3/tags/follow/${data.tagId}`,
+        data,
+        method: 'DELETE'
       }
       return $axios(httpData)
     },
@@ -57,6 +58,15 @@ export default ({ $axios }) => {
         url: '/api/tag/hot_list',
         data,
         params
+      }
+      return $axios(httpData)
+    },
+
+    //获取用户tag
+    getUserTag(data) {
+      const httpData = {
+        url: `/api3/tags/${data.id}`,
+        method: 'GET'
       }
       return $axios(httpData)
     },

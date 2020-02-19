@@ -247,8 +247,9 @@ export default ({ $axios }) => {
     addToAlbum(data) {
       // album_id(id required),media_id(media_id required)
       const httpData = {
-        url: '/api/media/add_to_album',
-        data
+        url: '/api3/favorites/media',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -271,8 +272,9 @@ export default ({ $axios }) => {
 
     dynamicDrop(data) {
       const httpData = {
-        url: '/api/media/dynamic_drop',
-        data
+        url: '/api3/dynamic/black/mediais',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },

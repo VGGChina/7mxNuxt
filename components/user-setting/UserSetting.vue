@@ -39,14 +39,14 @@
             v-model="nick"
             type="text"
             autocomplete="off"
-            :placeholder="loginUser.nick == '' ? '昵称' : loginUser.nick"
+            :placeholder="loginUser.nickname == '' ? '昵称' : loginUser.nickname"
           >
 
           <textarea
             v-model="about"
             type="text"
             autocomplete="off"
-            :placeholder="loginUser.user_data.about == '' ? '简介' : loginUser.user_data.about"
+            :placeholder="loginUser.userInfo&&loginUser.userInfo.about ? loginUser.userInfo.about : '简介'"
           />
         </div>
 
@@ -141,6 +141,7 @@ export default {
   watch: {
     isShowSettingDialog(val, oldVal) {
       if (val) {
+        console.log(111,val)
         this.initQiNiu()
       }
     }

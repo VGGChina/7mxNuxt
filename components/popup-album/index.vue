@@ -12,7 +12,7 @@
                 no-content( :isNoContentShow='true' :content='"您尚未创建灵感集"' )
               .list_item( v-for='item in list' )
                 .item {{ item.name }}
-                .num {{ item.media_num }} 件作品
+                .num {{ item.media_num || 0 }} 件作品
                 .save.button( @click='addToAlbum(item.id, item.is_favor)' ) {{item.is_favor > 0 ? '已添加' : '添加'}}
             //- 创建灵感集的选项
             .create_wrap(v-if='switchMode==1')
@@ -52,14 +52,13 @@ export default {
   created() {
     this.ifShow()
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     ifShow() {
       this.$bus.on('popup-album', e => {
         this.show = e.show
         this.media_id = e.media_id
+        this.userId = e.userId
       })
     },
     hide() {
@@ -77,10 +76,13 @@ export default {
         return this.$toast.warn('已经添加过了')
       }
 
-      const res = await this.$axios.mediaService.addToAlbum({ album_id: albumId, media_id: this.media_id })
+      const res = await this.$axios.mediaService.addToAlbum({
+        favoriteId: albumId,
+        mediaId: this.media_id
+      })
 
-      if (res.data.out > 0) {
-        this.$toast.notice(res.data.msg)
+      if (res.status == 200) {
+        this.$toast.notice('添加成功')
         this.$bus.emit('popup-album', { show: false, media_id: '' })
       } else {
         this.$toast.warn(res.data.msg)
@@ -94,9 +96,11 @@ export default {
         this.$toast.warn('您尚未输入任何名称')
         return
       }
-      const res = await this.$axios.albumService.createAlbum({ name: this.submitName })
-      if (res.data.out > 0) {
-        this.$toast.notice(res.data.msg)
+      const res = await this.$axios.albumService.createAlbum({
+        name: this.submitName
+      })
+      if (res.status == 200) {
+        this.$toast.notice('创建成功')
         setTimeout(() => {
           this.switchMode = 0
           this.getAlbumList()
@@ -108,9 +112,12 @@ export default {
     // 获取灵感集列表
     async getAlbumList() {
       this.switchMode = 0
-      const res = await this.$axios.albumService.albumList({ media_id: this.media_id })
-      if (res.data.out > 0) {
-        this.list = res.data.data
+      console.log(123123)
+      const res = await this.$axios.albumService.albumList({
+        userId: this.userId
+      })
+      if (res.status == 200) {
+        this.list = res.data.content
       }
       setTimeout(() => {
         this.isLoading = false
@@ -121,14 +128,13 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-
 .popup-album {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -163,7 +169,7 @@ export default {
           margin-bottom: 10px;
           position: relative;
           &:hover {
-            background: rgba(0,0,0,0.02);
+            background: rgba(0, 0, 0, 0.02);
             border-radius: 10px;
           }
           .item {
@@ -175,8 +181,8 @@ export default {
             bottom: 8px;
             line-height: 20px;
             left: 20px;
-            opacity: .6;
-            font-size: .8rem;
+            opacity: 0.6;
+            font-size: 0.8rem;
             letter-spacing: 1px;
           }
           .save {
@@ -185,11 +191,11 @@ export default {
             top: 8px;
             cursor: pointer;
             display: block;
-            color: rgba(0,0,0,0.7);
-            border: 1px solid rgba(0,0,0,0.1);
+            color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             &:hover {
-              background: rgba(0,0,0,0.05);
-              color: rgba(0,0,0,0.9);
+              background: rgba(0, 0, 0, 0.05);
+              color: rgba(0, 0, 0, 0.9);
             }
           }
         }
@@ -233,5 +239,4 @@ export default {
     }
   }
 }
-
 </style>

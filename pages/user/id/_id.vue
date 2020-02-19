@@ -130,6 +130,22 @@ export default {
 
     // 作品
     async getUserDatas() {
+      if (this.userHomeNavIndex == 4) {
+        let res = await this.$axios.albumService.albumList({
+          userId: this.$route.params.id
+        })
+        console.log('albumList', res)
+        this.imgList.push(...res.data.content)
+        return
+      }
+      if (this.userHomeNavIndex == 5) {
+        let res = await this.$axios.tagService.getUserTag({
+          id: this.$route.params.id
+        })
+        console.log('albumList', res)
+        this.tags.push(...res.data.content)
+        return
+      }
       try {
         const data = {
           type: this.userHomeNavIndex + 1,

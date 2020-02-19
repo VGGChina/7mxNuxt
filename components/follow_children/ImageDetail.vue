@@ -51,18 +51,18 @@
         <div
           class="buttons like"
           :style="{
-            background: imgDetail.is_like == '0' ? '#fff' : '#F24C4C'
+            background: !imgDetail.likeOrNot ? '#fff' : '#F24C4C'
           }"
           @click="likeImg"
         >
           <img
-            :src="imgDetail.is_like == '0' ?
+            :src="!imgDetail.likeOrNot ?
               require('./img/likeRed.svg') :
               require('./img/like.svg')"
             width="24px"
             alt=""
           >
-          <span :style="{ color: imgDetail.is_like == '0' ? 'rgba(26,26,26, .6)' : '#fff' }">{{ imgDetail.like_num }}</span>
+          <span :style="{ color: !imgDetail.likeOrNot ? 'rgba(26,26,26, .6)' : '#fff' }">{{ imgDetail.like_num }}</span>
         </div>
 
         <div class="buttons buy" @click="buyImg">
@@ -414,22 +414,22 @@ export default {
         return
       }
 
-      const res = await this.$axios.tagService.unfollowTag({ 'tag_id': tag.id })
-      if (res.data.out > 0) {
+      const res = await this.$axios.tagService.unfollowTag({ 'tagId': tag.id })
+      if (res.status == 200) {
         location.reload()
       }
     },
     async unfollowUser() {
-      const res = await this.$axios.userService.unfollow({ user_id: this.imgDetail.user_data.id })
+      const res = await this.$axios.userService.unfollow({ to: this.imgDetail.userStat.userId })
 
-      if (res.data.out > 0) {
+      if (res.status == 200) {
         location.reload()
       }
     },
     async dynamicDropMedia() {
-      const res = await this.$axios.mediaService.dynamicDrop({ media_id: this.imgDetail.id })
+      const res = await this.$axios.mediaService.dynamicDrop({ mediaId: this.imgDetail.id })
 
-      if (res.data.out > 0) {
+      if (res.status == 200) {
         this.isShowMore = false
 
         this.selectedOptionId = -1

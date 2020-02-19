@@ -38,7 +38,7 @@ export default {
     const res = await $axios.mediaService.mediaDetail(rqBody)
     let tempMediaDetail = {}
     if (res.status == 200) {
-      console.log(111,res.data)
+      console.log(22,res.data)
       tempMediaDetail = res.data
       const res_user = await $axios.userService.userDetail({ userId: tempMediaDetail.userId })
       if (res_user.status == 200) {
