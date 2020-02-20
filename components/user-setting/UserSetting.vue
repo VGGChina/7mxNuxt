@@ -147,7 +147,7 @@ export default {
     }
   },
   mounted() {
-    this.nick = this.loginUser.nick
+    this.nick = this.loginUser.nickname
   },
   methods: {
     cancel() {
@@ -166,11 +166,11 @@ export default {
       const data = {
         about: this.about
       }
-      this.$axios.userService.setUserInfo(data)
+      this.$axios.userService.updateUser(data)
         .then(res => {
-          if (res.data.out === '1') {
+          if (res.status == 200) {
             this.$toast.notice('个人简介设置成功')
-            this.$store.commit('login/loginUser', res.data.data)
+            this.$store.commit('login/loginUser', res.data)
           }
         })
     },
@@ -183,13 +183,13 @@ export default {
         }
 
         const data = {
-          nick: this.nick || this.loginUser.nick
+          nickname: this.nick || this.loginUser.nickname
         }
 
-        const res = await this.$axios.userService.setNick(data)
-        if (res.data.out === '1') {
+        const res = await this.$axios.userService.updateUser(data)
+        if (res.status == 200) {
           this.$toast.notice('昵称设置成功')
-          this.$store.commit('login/loginUser', res.data.data)
+          this.$store.commit('login/loginUser', res.data)
           this.cancel()
         }
       }
@@ -309,16 +309,16 @@ export default {
       }
 
       const data = {
-        oldpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.oldPassword),
-        newpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.newPassword)
+        old_password: 'test:' + this.$utilHelper.rsa_encrypt(this.oldPassword),
+        password: 'test:' + this.$utilHelper.rsa_encrypt(this.newPassword)
       }
-      this.$axios.userService.setPassword(data)
+      this.$axios.userService.updateUser(data)
         .then(res => {
-          if (res.data.out === '1') {
-            this.$toast.notice(res.data.msg)
+          if (res.status == 200) {
+            this.$toast.notice(res.data)
             this.cancel()
           } else {
-            this.$toast.warn(res.data.msg)
+            this.$toast.warn(res.data)
           }
         })
     },
@@ -396,9 +396,9 @@ export default {
               const key = infoJson.key
               const url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
-              this.$axios.userService.setAvatar({ 'avatar': url })
+              this.$axios.userService.updateUser({ 'avatar': url })
                 .then(res => {
-                  if (res.data.out === '1') {
+                  if (res.status == 200) {
                     this.$store.commit('login/loginUser', res.data.data)
                     this.$toast.notice('头像修改成功')
                   }

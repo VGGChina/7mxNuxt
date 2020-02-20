@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pageList.length > 0" class="pagination-container">
+  <div v-if="pageList.length > 1" class="pagination-container">
     <div>
       <div
         v-for="(page, index) in pageList"
@@ -13,35 +13,23 @@
           v-if="baseUrl && page != '...'"
           class="pagination-page-router"
           :to="baseUrl + page"
-        >
-          {{ page }}
-        </nuxt-link>
-
+        >{{ page }}</nuxt-link>
         <span
           v-if="!baseUrl || page == '...'"
           class="pagination-page-router"
           @click="jumpToPage(page)"
-        >
-          {{ page }}
-        </span>
+        >{{ page }}</span>
       </div>
-
       <div
         v-if="!baseUrl && currentPage != pageNum"
         class="pagination-next"
         @click="jumpToPage(currentPage + 1)"
-      >
-        下一页
-      </div>
-
+      >下一页</div>
       <nuxt-link
         v-if="baseUrl && currentPage != pageNum"
         class="pagination-next"
         :to="baseUrl + (parseInt(currentPage) + 1)"
-      >
-        下一页
-      </nuxt-link>
-
+      >下一页</nuxt-link>
       <div class="pagination-jump">
         到第
         <input v-model="jumpPage" type="text" @keyup.enter="jumpToPage(jumpPage)">
@@ -54,12 +42,7 @@
 
 <script>
 export default {
-  props: [
-    'limit',
-    'count',
-    'currentPage',
-    'baseUrl'
-  ],
+  props: ['limit', 'count', 'currentPage', 'baseUrl'],
   data() {
     return {
       jumpPage: ''
@@ -67,8 +50,10 @@ export default {
   },
   computed: {
     pageNum() {
-      return Math.floor(this.count / this.limit) +
+      return (
+        Math.floor(this.count / this.limit) +
         (this.count % this.limit == 0 ? 0 : 1)
+      )
     },
     pageList() {
       if (!this.count) {
@@ -77,7 +62,8 @@ export default {
 
       const list = []
       const currentPage = parseInt(this.currentPage)
-      const pageNum = Math.floor(this.count / this.limit) +
+      const pageNum =
+        Math.floor(this.count / this.limit) +
         (this.count % this.limit == 0 ? 0 : 1)
 
       if (pageNum <= 10) {
@@ -185,7 +171,7 @@ export default {
   margin-right: 6px;
   text-align: center;
   cursor: pointer;
-  transition: all .1s;
+  transition: all 0.1s;
   font-size: 0.9em;
 
   .pagination-page-router {

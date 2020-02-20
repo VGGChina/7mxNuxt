@@ -166,6 +166,16 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    updateUser(data) {
+      const httpData = {
+        url: '/api3/users/update',
+        data,
+        method: 'PUT'
+      }
+      return $axios(httpData)
+    },
+
+
     setAuthCard(data) {
       const httpData = {
         url: '/api3/users/auth',

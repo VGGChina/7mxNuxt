@@ -171,19 +171,26 @@ export default {
     }
 
     let tempList = []
+    let tempUserList = []
+    let tempCount = 0
 
-    const res = await $axios.mediaService.search(data)
+    let res = await $axios.mediaService.search(data)
     console.log(res.data)
     if (res.status == 200) {
-      tempList = res.data.content
+      if (params.table == 2) {
+        tempUserList = res.data.content
+      } else {
+        tempList = res.data.content
+      }
+      tempCount = res.data.numberOfElements
     }
 
     return {
       imgList: tempList,
       line: '1,0,0',
-      count: 0,
-      tableIndex: 0,
-      userList: []
+      count: tempCount,
+      tableIndex: params.table,
+      userList: tempUserList
     }
   },
   methods: {
