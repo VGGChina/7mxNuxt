@@ -2,7 +2,7 @@
   <div class="photographers">
     <div v-for="(item, index) in userList" :key="index" class="photographer-item">
       <div class="user">
-        <a :href="$utilHelper.toUserPage(item)" style="height: 148px;">
+        <a :href="$utilHelper.toUserPage(item.id)" style="height: 148px;">
           <div
             class="avatar"
             :style="{

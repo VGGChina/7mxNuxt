@@ -12,7 +12,7 @@
                 no-content( :isNoContentShow='true' :content='"您尚未创建灵感集"' )
               .list_item( v-for='item in list' )
                 .item {{ item.name }}
-                .num {{ item.media_num || 0 }} 件作品
+                .num {{ item.imageNum || 0 }} 件作品
                 .save.button( @click='addToAlbum(item.id, item.is_favor)' ) {{item.is_favor > 0 ? '已添加' : '添加'}}
             //- 创建灵感集的选项
             .create_wrap(v-if='switchMode==1')
@@ -88,7 +88,7 @@ export default {
         this.$toast.warn(res.data.msg)
       }
 
-      this.getAlbumList()
+      // this.getAlbumList()
     },
     // 创建灵感集
     async confirm() {

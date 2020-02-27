@@ -93,7 +93,7 @@ export default {
       return this.$store.state.login.isLogin
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.userDetail)
+      return this.$utilHelper.toUserPage(this.userDetail.id)
     }
   },
 

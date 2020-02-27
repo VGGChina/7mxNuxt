@@ -1,9 +1,10 @@
 export default ({ $axios }) => {
   const commonService = {
-    smcode(data) {
+    smcode(params) {
       const httpData = {
-        url: '/api/common/smcode',
-        data
+        url: '/api3/users/code',
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -26,7 +27,7 @@ export default ({ $axios }) => {
 
     getServerTime() {
       const httpData = {
-        url: '/api/common/time',
+        url: '/api3/common/time',
         method: 'get'
       }
       return $axios(httpData)

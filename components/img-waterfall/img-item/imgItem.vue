@@ -211,13 +211,18 @@ export default {
     gagaId() {
       let gagaId = ''
 
-      if (typeof this.img.eput_id === 'undefined' || this.img.eput_id == null || this.img.eput_id.length < 1) {
-        gagaId = this.img.id
-      }
+      // if (typeof this.img.eput_id === 'undefined' || this.img.eput_id == null || this.img.eput_id.length < 1) {
+      //   gagaId = this.img.id
+      // }
 
-      if (typeof this.img.gaga_id !== 'undefined' && this.img.gaga_id != null && this.img.gaga_id.length > 0) {
-        gagaId = this.img.gaga_id
-      } else {
+      // if (typeof this.img.gaga_id !== 'undefined' && this.img.gaga_id != null && this.img.gaga_id.length > 0) {
+      //   gagaId = this.img.gaga_id
+      // } else {
+      //   gagaId = this.img.id
+      // }
+      if(typeof this.img.plusMediaId !== 'undefined' && this.img.plusMediaId !=0) {
+        gagaId = this.img.plusMediaId
+      }else{
         gagaId = this.img.id
       }
 
@@ -239,7 +244,7 @@ export default {
       return eputId
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.img.user_data)
+      return this.$utilHelper.toUserPage(this.img.userId)
     }
   },
 

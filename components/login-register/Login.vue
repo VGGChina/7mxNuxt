@@ -92,8 +92,21 @@ export default {
 
       // timeRes = parseInt(timeRes / 1000)
 
+      // 获取服务器时间
+      const timeRes = await this.$axios.commonService.getServerTime()
+
+      let time = null
+
+      if (timeRes.status == 200) {
+        time = (timeRes.data / 1000).toFixed(0)
+      } else {
+        time = (new Date().getTime() / 1000).toFixed(0)
+      }
+
       const rqBody = {
         username: this.user,
+        // password:
+        //   'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + time)
         password: this.password
         // password: 'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + timeRes)
         // reme: this.isRemember ? '1' : '0'

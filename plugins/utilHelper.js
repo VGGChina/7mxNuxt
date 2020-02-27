@@ -143,9 +143,22 @@ var utilHelper = {
     return false
   },
   toUserPage(userData) {
-    if (typeof userData === 'undefined' || userData == null || typeof userData !== 'object' || Object.keys(userData).length < 1) return ''
-    const eputUserId = userData.id
-    return '/user/id/' + eputUserId
+    // if (typeof userData === 'undefined' || userData == null || typeof userData !== 'object' || Object.keys(userData).length < 1) return ''
+    // const eputUserId = userData.id
+    // return '/user/id/' + eputUserId
+
+    try {
+      if (typeof userData === 'object' && userData.id) {
+        return '/user/id/' + userData.id
+      } else if (typeof userData !== 'undefined' && userData !== 0) {
+        return '/user/id/' + userData
+      }
+    } catch (e) {
+      console.log(e)
+      return ''
+    }
+
+
     // try {
     //   if (typeof userData.name !== 'undefined' && userData.name != null && userData.name.length > 0) {
     //     return '/user/name/' + userData.name

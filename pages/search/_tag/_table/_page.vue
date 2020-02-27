@@ -182,7 +182,7 @@ export default {
       } else {
         tempList = res.data.content
       }
-      tempCount = res.data.numberOfElements
+      tempCount = res.data.totalElements
     }
 
     return {

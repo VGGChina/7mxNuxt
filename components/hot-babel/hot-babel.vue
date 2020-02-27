@@ -1,7 +1,7 @@
 <template>
   <div class="hot-babel-container">
-    <sharetitle :title="title" :category-list="categoryList" :identity="2" />
-    <loading :is-loading="isLoading" loading-color="#000" class="loading" />
+    <sharetitle :title="title" :category-list="categoryList" :identity="2"/>
+    <loading :is-loading="isLoading" loading-color="#000" class="loading"/>
     <ul class="content">
       <li v-for="(item, index) in picblocks" :key="index">
         <a :href="`/photo/${item.id}`">
@@ -9,8 +9,7 @@
         </a>
       </li>
     </ul>
-
-    <caregeorymore more-info="ranking" more-text="更多图片" istype="ishotimg" />
+    <caregeorymore more-info="ranking" more-text="更多图片" istype="ishotimg"/>
   </div>
 </template>
 
@@ -51,7 +50,6 @@ export default {
     })
   },
   methods: {
-
     async getHotPics(index = 0) {
       const data = {
         tagId: this.categoryList[index].id,
@@ -79,7 +77,6 @@ export default {
       this.categoryList = res.data
       this.$store.commit('category/setCrrentType', this.categoryList[0])
     }
-
   }
 }
 </script>
@@ -107,21 +104,21 @@ li {
       background: rgba(197, 197, 197, 1);
       border-radius: 4px;
       margin-bottom: 14px;
-      a{
+      a {
         display: block;
         width: 316px;
         height: 189px;
         overflow: hidden;
-      .imgItem {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: all .3s ease;
-        &:hover{
-          transform: scale(1.2,1.2)
+        .imgItem {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: all 0.3s ease;
+          &:hover {
+            transform: scale(1.2, 1.2);
+          }
         }
-       }
       }
     }
   }

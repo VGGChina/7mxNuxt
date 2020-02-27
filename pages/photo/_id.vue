@@ -5,7 +5,7 @@
       <right :media-detail="mediaDetail" :media-exif-list="mediaExifList" />
     </div>
     <keywords :media-detail="mediaDetail" />
-    <comments :media-detail="mediaDetail" :comment-list="commentList" />
+    <comments :media-detail="mediaDetail" :comment-list="commentList" :commentPage="commentPage"/>
   </div>
 </template>
 
@@ -31,7 +31,11 @@ export default {
       commentList: []
     }
   },
+  created() {
+    this.fetchData()
+  },
   async asyncData({ $axios, params }) {
+    console.log(222)
     const rqBody = {
       media_id: params.id
     }
@@ -47,11 +51,14 @@ export default {
     }
 
     const res_commentList = await $axios.mediaService.commentList(
-      { media_id: tempMediaDetail.id }
+      { media_id: params.id }
     )
+    console.log(22,res_commentList.data)
     const tempCommentList = []
+    let commentPage = 0
     if (res_commentList.status == 200) {
       tempCommentList.push(...res_commentList.data.content)
+      commentPage = res_commentList.data.totalPages
     }
 
     for (const i of tempCommentList) {
@@ -62,7 +69,7 @@ export default {
     }
 
     const res_exifUrl = await $axios.mediaService.exifUrl({
-      media_id: tempMediaDetail.id
+      media_id: params.id
     })
 
     let tempMediaExifList = [
@@ -154,7 +161,8 @@ export default {
     return {
       mediaDetail: tempMediaDetail,
       commentList: tempCommentList,
-      mediaExifList: tempMediaExifList
+      mediaExifList: tempMediaExifList,
+      commentPage: commentPage
     }
   },
   methods: {
@@ -162,16 +170,11 @@ export default {
       const rqBody = {
         media_id: this.$route.params.id
       }
-
       const res = await this.$axios.mediaService.mediaDetail(rqBody)
-      if (res.data.out === '1') {
-        this.mediaDetail = res.data.data
-
-        document.title = this.getTitle(this.mediaDetail)
-      } else {
-        this.$router.push({
-          name: 'redirectToIndex'
-        })
+      if (res.status == 200) {
+        let temp = this.mediaDetail
+        this.mediaDetail.likeOrNot = res.data.likeOrNot
+        this.mediaDetail.followOrNot = res.data.followOrNot
       }
     },
     updateMedia(mediaDetail) {

@@ -205,7 +205,7 @@ export default {
       return this.$store.state.window.winPageYOffset
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.imgDetail.user_data)
+      return this.$utilHelper.toUserPage(this.imgDetail.userId)
     }
   },
   watch: {

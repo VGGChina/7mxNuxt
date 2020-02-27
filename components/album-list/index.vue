@@ -26,7 +26,7 @@
           <nuxt-link :to="{ name: 'album-album_id', params: { album_id: item.id }}">
             <div class="name">{{ item.name }}</div>
           </nuxt-link>
-          <div class="belong">作者 {{ item.name }}</div>
+          <div class="belong">作者 {{ item.nickname }}</div>
         </div>
 
       </div>

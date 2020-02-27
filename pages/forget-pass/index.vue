@@ -8,20 +8,9 @@
         'border-normal': !(user === '' && commitCheck)
       }"
     >
-      <input
-        v-model="user"
-        placeholder="手机号/邮箱"
-        type="text"
-      >
-
-      <span
-        v-if="step == 2"
-        @click="getCode"
-      >
-        {{ timeLeft }}
-      </span>
+      <input v-model="user" placeholder="手机号/邮箱" type="text">
+      <span v-if="step == 2" @click="getCode">{{ timeLeft }}</span>
     </div>
-
     <input
       v-if="step == 2"
       v-model="smcode"
@@ -32,7 +21,6 @@
         'border-normal': !(smcode === '' && commitCheck)
       }"
     >
-
     <input
       v-if="step == 2"
       v-model="password"
@@ -44,7 +32,6 @@
         'border-normal': !(smcode === '' && commitCheck)
       }"
     >
-
     <input
       v-if="step == 2"
       v-model="passwordRepeat"
@@ -56,23 +43,16 @@
         'border-normal': !(smcode === '' && commitCheck)
       }"
     >
-
     <button v-if="step == 0 || step == 2" @click="nextStep(step)">{{ step == 0 ? '下一步' : '确定' }}</button>
-
     <a
       v-if="step == 0"
       href="//q.url.cn/CDzAE8?_type=wpa&qidian=true"
       target="_blank"
       class="find-account"
-    >
-      Eput用户找回账号
-    </a>
-
-    <div
-      v-if="step == 1"
-      class="tips"
-    >
-      修改密码的邮件已经发送到您指定的邮箱 <span>{{ this.user }}</span>，邮件有效期为3天，请及时前往查收！
+    >Eput用户找回账号</a>
+    <div v-if="step == 1" class="tips">
+      修改密码的邮件已经发送到您指定的邮箱
+      <span>{{ this.user }}</span>，邮件有效期为3天，请及时前往查收！
     </div>
   </div>
 </template>
@@ -138,7 +118,8 @@ export default {
         return
       }
 
-      this.$axios.userService.forgetPasswordByEmail({ email: this.user })
+      this.$axios.userService
+        .forgetPasswordByEmail({ email: this.user })
         .then(res => {
           if (res.data.out === '1') {
             this.step = true
@@ -161,24 +142,31 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await this.$axios.commonService.getServerTime()
+      // const timeRes = await this.$axios.commonService.getServerTime()
+      // let time = null
+      // if (timeRes.status == 200) {
+      //   time = (timeRes.data / 1000).toFixed(0)
+      // } else {
+      //   time = (new Date().getTime() / 1000).toFixed(0)
+      // }
 
-      let time = null
+      // const rqBody = {
+      //   scene: 'verify',
+      //   phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' +
+      //     this.user + '@' + time)
+      // }
+      const regPhone = /^[0-9]{11}$/
 
-      if (timeRes.data.out === '1') {
-        time = timeRes.data.data.time
-      } else {
-        time = (new Date().getTime() / 1000).toFixed(0)
+      if (!regPhone.test(this.user)) {
+        this.$toast.warn('请输入正确的手机号或者邮箱')
       }
 
-      const rqBody = {
-        scene: 'verify',
-        phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' +
-          this.user + '@' + time)
+      let rqBody = {
+        phone: this.user
       }
 
       const res = await this.$axios.commonService.smcode(rqBody)
-      if (res.data.out === '1') {
+      if (res.status == 200) {
         this.isTimer = true
         this.time = 60
         this.timer()
@@ -206,21 +194,23 @@ export default {
 
       let time = null
 
-      if (timeRes.data.out === '1') {
-        time = timeRes.data.data.time
+      if (timeRes.status == 200) {
+        time = (timeRes.data / 1000).toFixed(0)
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
       }
 
       const rqBody = {
-        phone: '0086' + this.user,
-        smcode: this.smcode,
-        newpwd: 'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + time)
+        phone: this.user,
+        code: this.smcode,
+        password: this.password
+        // password:
+        //   'test:' + this.$utilHelper.rsa_encrypt(this.password + '@' + time)
       }
 
       const res = await this.$axios.userService.modifyPasswordByPhone(rqBody)
 
-      if (res.data.out === '1') {
+      if (res.status == 200) {
         this.$toast.notice('修改密码成功')
         this.$router.push({
           name: 'index'
@@ -254,11 +244,11 @@ export default {
   display: flex;
   align-items: center;
   padding-right: 4px;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     border: solid 1px #888;
-    transition: border .3s;
+    transition: border 0.3s;
   }
 
   input {
@@ -296,7 +286,7 @@ input {
 
 input:hover {
   border: solid 1px #888;
-  transition: border .5s;
+  transition: border 0.5s;
 }
 
 .border-red {
@@ -334,7 +324,7 @@ span {
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.06);
   color: rgba(0, 0, 0, 0.7);
-  transition: all .2s;
+  transition: all 0.2s;
   width: 400px;
   height: 48px;
   text-align: center;

@@ -296,7 +296,7 @@ export default {
       return this.mediaDetail.score
     },
     userRef() {
-      return this.$utilHelper.toUserPage(this.mediaDetail.user_data)
+      return this.$utilHelper.toUserPage(this.mediaDetail.userId)
     }
   },
   watch: {}

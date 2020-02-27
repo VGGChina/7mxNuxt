@@ -21,11 +21,11 @@ export default ({ $axios }) => {
     },
 
     // 获取所有推荐tag
-    getRecommentTags(data, params) {
+    getRecommentTags(params) {
       const httpData = {
-        url: '/api/tag/recommend_media_list',
-        data,
-        params
+        url: '/api3/tags/recommend',
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },
@@ -36,8 +36,8 @@ export default ({ $axios }) => {
     */
     followTag(data) {
       const httpData = {
-        url: '/api/tag/follow',
-        data
+        url: `/api3/tags/follow/${data.tagId}`,
+        method: 'POST'
       }
       return $axios(httpData)
     },
@@ -53,11 +53,11 @@ export default ({ $axios }) => {
     },
 
     // 热门tag
-    getHotList(data, params) {
+    getHotList(params) {
       const httpData = {
-        url: '/api/tag/hot_list',
-        data,
-        params
+        url: '/api3/tags/hot',
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },

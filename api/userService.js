@@ -196,15 +196,17 @@ export default ({ $axios }) => {
     forgetPasswordByEmail(data) {
       const httpData = {
         url: '/api/user/for_fdpwd_by_email',
-        data
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },
 
     modifyPasswordByPhone(data) {
       const httpData = {
-        url: '/api/user/fdpwd_by_phone',
-        data
+        url: '/api3/users/password',
+        data,
+        method: 'POST'
       }
       return $axios(httpData)
     },

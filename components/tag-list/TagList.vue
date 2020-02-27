@@ -41,7 +41,7 @@
               </div>
             </div>
             <div class="tag-right">
-              <div v-if="item.is_follow==1" class="tag-button button-grey" @click="unfollow(item)">已关注</div>
+              <div v-if="item.followOrNot" class="tag-button button-grey" @click="unfollow(item)">已关注</div>
               <div v-else class="tag-button button-green" @click="follow(item)">关注</div>
             </div>
           </div>
@@ -88,9 +88,9 @@ export default {
         this.$store.commit('login/isShowLoginDialog', true)
         return
       }
-      const res = await this.$axios.tagService.followTag({ 'tag_id': item.id })
-      if (res.data.out > 0) {
-        item.is_follow = 1
+      const res = await this.$axios.tagService.followTag({ 'tagId': item.id })
+      if (res.status == 200) {
+        item.followOrNot = true
         this.tags.splice(this.tags.length)
       }
     },
@@ -99,9 +99,9 @@ export default {
         this.$store.commit('login/isShowLoginDialog', true)
         return
       }
-      const res = await this.$axios.tagService.unfollowTag({ 'tag_id': item.id })
-      if (res.data.out > 0) {
-        item.is_follow = 0
+      const res = await this.$axios.tagService.unfollowTag({ 'tagId': item.id })
+      if (res.status == 200) {
+        item.followOrNot = false
         this.tags.splice(this.tags.length)
       }
     }

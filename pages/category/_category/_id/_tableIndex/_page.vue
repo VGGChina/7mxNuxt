@@ -99,6 +99,7 @@ export default {
       }
     }
     const res = await $axios.mediaService.exploreAPI(data)
+    console.log('11', res)
 
     imgList = res.data.content
 

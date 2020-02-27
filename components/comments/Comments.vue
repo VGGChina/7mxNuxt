@@ -29,7 +29,7 @@
           <div class="comment-content">
             <span v-if="item.to_comment == '1'">
               回复
-              <span class="comment-other">{{ item.to_comment_data.user_data.nick }}</span>:
+              <span class="comment-other">{{ item.to_comment_data.user_data.nickname }}</span>:
             </span>
             {{ item.content }}
             <span class="reply" @click="onClickReply(index)">回复</span>
@@ -47,7 +47,7 @@
       v-if="commentList.length > 0"
       class="more-comments"
       @click="fetchData"
-    >{{ line == 'end' ? '没有更多' : '加载更多' }}</div>
+    >{{ commentPage > (currentPage+1) ? '加载更多' : '没有更多' }}</div>
   </div>
 </template>
 
@@ -58,15 +58,15 @@ export default {
   components: {
     AvatarDialog
   },
-  props: ['mediaDetail', 'commentList'],
+  props: ['mediaDetail', 'commentList', 'commentPage'],
   data: () => ({
     comment: '',
     reply: '',
     replyIndex: -1,
-    line: '',
     isFetching: false,
     isShowAvatarDialog: false,
-    currentIndex: -1
+    currentIndex: -1,
+    currentPage: 0
   }),
   computed: {
     isLogin() {
@@ -79,7 +79,16 @@ export default {
   watch: {
   },
   methods: {
-    fetchData() {},
+    async fetchData() {
+      if(this.commentPage <= (this.currentPage+1)) return
+      let res_commentList = await this.$axios.mediaService.commentList(
+        { media_id: this.mediaDetail.id,page: (this.currentPage+1)}
+      )
+      if(res_commentList.status == 200) {
+        this.currentPage++
+        this.commentList.push(res_commentList.data.content)
+      }
+    },
     onClickReply(index) {
       if (this.replyIndex == index) {
         this.replyIndex = -1
@@ -329,6 +338,7 @@ export default {
   border-radius: 20px;
   cursor: pointer;
   background-color: #f7f7f7;
+  margin-bottom: 20px;
 }
 </style>
 
