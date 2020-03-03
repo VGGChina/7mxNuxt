@@ -15,15 +15,15 @@
           <div class="name">{{ loginUser.nickname }}</div>
           <div class="num_info">
             <div class="intro all_pics">
-              <div class="num">{{ sellDataLeft.media_num || 0 }}张</div>
+              <div class="num">{{ sellDataLeft.allMediaNum || 0 }}张</div>
               <div class="type">全部作品</div>
             </div>
             <div class="intro on_sell">
-              <div class="num">{{ sellDataLeft.product_num || 0 }}张</div>
+              <div class="num">{{ sellDataLeft.groundMediaNum || 0 }}张</div>
               <div class="type">上架作品</div>
             </div>
             <div class="intro income_num">
-              <div class="num">{{ sellDataLeft.total_gain / 100 || 0 }}元</div>
+              <div class="num">{{ sellDataLeft.total || 0 }}元</div>
               <div class="type">累计收益</div>
             </div>
             <div class="clear" />
@@ -70,7 +70,7 @@
         <list :detail-list="detailList" :end="line" />
         <div v-if="detailList.length < 1">
           <no-content
-            :is-no-content-show="detailList.length < 1 && !loading && line == 'end'"
+            :is-no-content-show="detailList.length < 1 && !loading"
             :content="noContentText"
           />
         </div>
@@ -131,11 +131,11 @@ export default {
   },
   created() {
     if (!this.$utilHelper.isEmptyObj(this.loginUser)) {
-      // this.getSellNum()
+      this.getSellNum()
       this.fetchData()
     }
     if (this.isLogin) {
-      // this.getSellNum()
+      this.getSellNum()
       this.fetchData()
     }
   },
@@ -168,12 +168,7 @@ export default {
       if (this.loading) return
 
       this.loading = true
-
-      if (this.currentList == 0) {
-        this.getOnSellList()
-      } else if (this.currentList == 1) {
-        this.getOrderList()
-      }
+      this.fetchIncomeList()
     },
     reload() {
       if (this.loading) {
@@ -197,47 +192,28 @@ export default {
      */
     async getSellNum() {
       const res = await this.$axios.userService.getSellNum()
-      this.sellDataLeft = res.data.data
+      this.sellDataLeft = res.data
     },
     /**
      * 正在卖的列表
      */
-    async getOnSellList() {
-      // const params = { line: this.line, limit: 24 }
-      // const data = {
-      //   product: '1',
-      //   user_id: this.loginUser.gaga_id
-      // }
-      let data = {}
-      data.userId = this.loginUser.id
-      data.type = 1
-      let res = await this.$axios.userService.getUserDatas(data)
-      this.afterListPull(res)
-    },
-    /**
-     * 订单列表
-     */
-    async getOrderList() {
-      // const params = { line: this.line }
-
-      // const res = await this.$apiFactory.userService.getOrderList({}, params)
-
-      const res = await this.$axios.userService.getSellNum()
-
-      this.afterListPull(res)
-    },
-    /**
-     * 获取数据后续处理
-     */
-    afterListPull(res) {
-      if (res.status === 200) {
+    async fetchIncomeList() {
+      let data = {
+        type: 1
+      }
+      if(this.currentList == 1) {
+        data.type = 2
+      }
+      
+      let res = await this.$axios.userService.getIncomeList(data)
+      console.log(res)
+      if (res.status === 200 && res.data.content) {
         this.detailList.push(...res.data.content)
       }
 
       this.loading = false
+    },
 
-      // this.line = res.data.line
-    }
   }
 }
 </script>

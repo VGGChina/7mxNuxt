@@ -14,8 +14,9 @@ export default ({ $axios }) => {
     // 某灵感集详情
     getAlbumDetail(data) {
       const httpData = {
-        url: '/api/album/detail',
-        data
+        url: `/api3/favorites/medias/${data.favoriteId}`,
+        data,
+        method: 'GET'
       }
       return $axios(httpData)
     },

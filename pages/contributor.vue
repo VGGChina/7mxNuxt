@@ -114,17 +114,23 @@ export default {
       if(res.status != 200) {
         return
       }
-      let cardStatus = this.loginUser.user_data.card_status
-      if (cardStatus && cardStatus != '0') {
-        this.progressIndex = 3
-        this.currentIndex = 3
+      if(res.status == 200) {
+        if(res.data.status == 1) {
+          this.progressIndex = 3
+          this.currentIndex = 3
+        }
       }
+      // let cardStatus = this.loginUser.user_data.card_status
+      // if (cardStatus && cardStatus != '0') {
+      //   this.progressIndex = 3
+      //   this.currentIndex = 3
+      // }
 
-      let companyStatus = this.loginUser.user_data.company_status
-      if (companyStatus && companyStatus != '0') {
-        this.progressIndex = 3
-        this.currentIndex = 3
-      }
+      // let companyStatus = this.loginUser.user_data.company_status
+      // if (companyStatus && companyStatus != '0') {
+      //   this.progressIndex = 3
+      //   this.currentIndex = 3
+      // }
     }
   }
 }

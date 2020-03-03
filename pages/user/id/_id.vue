@@ -28,7 +28,7 @@
       <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'"/>
       <div style="padding-bottom: 580px;">
         <div
-          v-if="imgList.length > 0 && line.split(',')[0] != 'end'"
+          v-if="imgList.length > 0 && line.split(',')[0] != 'end' && userHomeNavIndex != 4 && userHomeNavIndex != 5"
           class="load-more"
           @click="getMore"
         >{{ isLoading ? '正在加载...' : '加载更多' }}</div>
@@ -87,9 +87,9 @@ export default {
     }
   },
 
-  async created() {
-    await this.getUserInfo()
-    await this.getUserDatas()
+  created() {
+    this.getUserInfo()
+    this.getUserDatas()
     this.getIsLarge()
 
     this.getUserHomeNavIndex()
@@ -126,6 +126,10 @@ export default {
       }
       const res = await this.$axios.userService.userDetail(data)
       this.userInfo = res.data
+      let user = {
+        userId: this.$route.params.id
+      }
+      sessionStorage.setItem('homePage', JSON.stringify(user))
     },
 
     // 作品
@@ -134,7 +138,6 @@ export default {
         let res = await this.$axios.albumService.albumList({
           userId: this.$route.params.id
         })
-        console.log('albumList', res)
         this.imgList.push(...res.data.content)
         return
       }
@@ -142,7 +145,6 @@ export default {
         let res = await this.$axios.tagService.getUserTag({
           id: this.$route.params.id
         })
-        console.log('albumList', res)
         this.tags.push(...res.data.content)
         return
       }
@@ -164,17 +166,17 @@ export default {
             this.line = 'end, 0, 0'
             return
           }
-          for (const i in res.data) {
-            res.data[i].userStat = {
-              followedNum: res.data[i].followedNum,
-              popularity: res.data[i].popularity,
-              userId: res.data[i].userId
-            }
-            res.data[i].name = res.data[i].nickname
-          }
-          this.imgList.push(...res.data)
+          // for (const i in res.data.content) {
+          //   res.data[i].userStat = {
+          //     followedNum: res.data[i].followedNum,
+          //     popularity: res.data[i].popularity,
+          //     userId: res.data[i].userId
+          //   }
+          //   res.data[i].name = res.data[i].nickname
+          // }
+          this.imgList.push(...res.data.content)
         } else if (this.userHomeNavIndex === 5) {
-          this.tags.push(...res.data)
+          this.tags.push(...res.data.content)
         } else {
           for (const i in res.data.content) {
             res.data.content[i].userStat = {

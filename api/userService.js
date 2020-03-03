@@ -244,6 +244,16 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    //获取收益中心，已上架type=1，订单type=2
+    getIncomeList(data) {
+      const httpData = {
+        url: `/api3/users/income-list/${data.type}`,
+        data,
+        method: 'GET'
+      }
+      return $axios(httpData)
+    },
+
     /**
      * 销售额, 上架商品数
      * @param {Object}, data

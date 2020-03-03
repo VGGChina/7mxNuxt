@@ -59,12 +59,13 @@ export default {
       const rqBody = this.getRqBody(this.formToal)
       rqBody.skills = skill
 
-      if (this.formToal.company == '') {
+      if (this.formToal.company) {
         try {
           rqBody.type = 2
           const res = await this.$axios.userService.setAuthCard(rqBody)
           if (res.status == 200) {
-            this.loginUser.user_data.card_status = '1'
+            // this.loginUser.user_data.card_status = '1'
+            this.loginUser.company_status = '1'
             this.$store.commit('login/loginUser', this.loginUser)
             this.$emit('updateProgress', {
               nextIndex: 3,
@@ -78,11 +79,11 @@ export default {
           console.log(e)
         }
       } else {
-        // const res = await this.$axios.userService.setAuthCardCom(rqBody)
-        rqBody.type = 2
+        rqBody.type = 1
         const res = await this.$axios.userService.setAuthCard(rqBody)
         if (res.status == 200) {
-          this.loginUser.user_data.company_status = '1'
+          this.loginUser.card_status = '1'
+          // this.loginUser.user_data.company_status = '1'
           this.$store.commit('login/loginUser', this.loginUser)
           this.$emit('updateProgress', {
             nextIndex: 3,
@@ -99,11 +100,12 @@ export default {
      * @param {*} formToal nuxt的上下文
      */
     getRqBody(formToal) {
+      console.log('formToal',formToal)
       const obj = {}
       for (const p in formToal) {
-        if (formToal[p] != '') {
+        // if (formToal[p] != '') {
           obj[p] = formToal[p]
-        }
+        // }
       }
       return obj
     }

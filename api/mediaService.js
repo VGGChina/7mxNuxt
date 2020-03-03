@@ -237,8 +237,9 @@ export default ({ $axios }) => {
     // 灵感集内所有图片
     getAlbumPics(data) {
       const httpData = {
-        url: '/api/media/in_album_list',
-        data
+        url: `/api3/favorites/medias/${data.favoriteId}`,
+        data,
+        method: 'GET'
       }
       return $axios(httpData)
     },

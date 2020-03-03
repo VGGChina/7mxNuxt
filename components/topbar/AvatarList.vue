@@ -79,16 +79,20 @@ export default {
       })
     },
     async uploadToPaixin() {
-      const res = await this.$axios.userService.currentUser()
+      // const res = await this.$axios.userService.currentUser()
 
-      if (res.data.out !== '1') {
+      // if (res.data.out !== '1') {
+      //   this.$store.commit('login/isShowLoginDialog', true)
+
+      //   return
+      // }
+
+      // this.$store.commit('login/loginUser', res.data.data)
+
+      if(!this.loginUser) {
         this.$store.commit('login/isShowLoginDialog', true)
-
         return
       }
-
-      this.$store.commit('login/loginUser', res.data.data)
-
       setTimeout(() => {
         if (this.status == '3') {
           this.intoOther()

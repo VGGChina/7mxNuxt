@@ -2,7 +2,8 @@
   <div class="album">
     <div class="detail">
       <div class="name">
-        灵感集 - <span style="font-weight: 800;">{{ detail.name }}</span>
+        灵感集 -
+        <span style="font-weight: 800;">{{ favorName }}</span>
       </div>
     </div>
     <div v-ecroll="getList" :style="{ 'min-height': waterfallMinHeight + 'px' }">
@@ -13,11 +14,10 @@
         :is-show-loading="false"
         :is-to-paixin="false"
         :is-album-author="isAlbumAuthor"
-        :album-id="detail.id"
+        :album-id="albumID"
       />
     </div>
   </div>
-
 </template>
 
 <script>
@@ -33,11 +33,13 @@ export default {
     imgList: [],
     line: '',
     isLoading: false,
-    detail: {
-      user_data: {
-        id: '-1'
-      }
-    }
+    // detail: {
+    //   user_data: {
+    //     id: '-1'
+    //   }
+    // },
+    favorUserID: 0,
+    favorName: ''
   }),
   computed: {
     loginUser() {
@@ -47,18 +49,27 @@ export default {
       return this.$store.state.login.isLogin
     },
     isAlbumAuthor() {
-      if (!this.isLogin || this.loginUser.id !== this.detail.user_data.id) {
+      if (!this.isLogin || this.loginUser.id != this.favorUserID) {
         return false
       }
 
-      if (this.loginUser.id === this.detail.user_data.id) {
+      if (this.loginUser.id == this.favorUserID) {
         return true
       }
       return false
+    },
+    albumID() {
+      return this.$route.params.album_id.toString()
     }
   },
 
   created() {
+    try {
+      let user = JSON.parse(sessionStorage.getItem('homePage'))
+      this.favorUserID = user.userId
+    } catch (e) {
+      console.log(e)
+    }
     this.getList()
   },
   mounted() {
@@ -67,7 +78,6 @@ export default {
   head() {
     return {
       title: '灵感集 - 7MX 中国领先的视觉创作社区'
-
     }
   },
   methods: {
@@ -75,28 +85,45 @@ export default {
       if (this.isLoading || this.line === 'end') {
         return
       }
-      const detail = await this.$axios.albumService.getAlbumDetail({ album_id: this.$route.params.album_id || 0 })
-      if (detail.data.out > 0) {
-        this.detail = detail.data.data
+
+      //获取灵感集名称
+      if (this.favorUserID != 0) {
+        let res = await this.$axios.albumService.albumList({
+          userId: this.favorUserID
+        })
+        if (res.status == 200) {
+          for (let i of res.data.content) {
+            if (i.id == this.$route.params.album_id) {
+              this.favorName = i.name
+            }
+          }
+        }
       }
-      const res = await this.$axios.mediaService.getAlbumPics({ album_id: this.$route.params.album_id || 0 })
-      if (res.data.out > 0) {
-        this.imgList = res.data.data
+      // const detail = await this.$axios.albumService.getAlbumDetail({
+      //   favoriteId: this.$route.params.album_id || 0
+      // })
+      // console.log(detail)
+      // if (detail.status == 200) {
+      //   this.detail = detail.data.data
+      // }
+      let res = await this.$axios.mediaService.getAlbumPics({
+        favoriteId: this.$route.params.album_id || 0
+      })
+      if (res.status == 200) {
+        this.imgList = res.data.content
       }
-      this.line = res.data.line
+      this.line = 'end'
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
-
 .detail {
   height: 70px;
   line-height: 70px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding-left: 20px;
   font-size: 1.1rem;
 }
-
 </style>

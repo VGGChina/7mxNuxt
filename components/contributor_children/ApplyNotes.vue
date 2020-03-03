@@ -280,7 +280,7 @@ export default {
   top: -274px;
   left: 212px; */
   height: 280px;
-    background: url(/_nuxt/components/contributor_children/img/bg.png) no-repeat;
+    background: url('./img/bg.png') no-repeat;
     position: absolute;
     background-size: contain;
     z-index: 10;

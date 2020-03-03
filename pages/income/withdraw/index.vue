@@ -77,8 +77,8 @@ export default {
     incomeData: {
       gain: 0,
       totalGain: 0,
-      ins: 0,
-      totalIn: 0
+      ins: 0
+      // totalIn: 0
     },
     isShowDialog: false,
     name: '',
@@ -98,15 +98,15 @@ export default {
       let res = await this.$axios.userService.getSellNum()
 
       if (res.status == 200) {
-        let user = res.data.data
+        let user = res.data
 
-        this.incomeData.gain = user.gain || 0
+        this.incomeData.gain = user.total || 0
 
-        this.incomeData.totalGain = user.total_gain || 0
+        this.incomeData.totalGain = user.has || 0
 
-        this.incomeData.ins = user.ins || 0
+        this.incomeData.ins = user.can || 0
 
-        this.incomeData.totalIn = user.total_in || 0
+        // this.incomeData.totalIn = user.total_in || 0
         if (user.bank_card.length > 0) {
           this.placeHolders.card = `${user.bank_card.slice(
             0,
@@ -183,30 +183,33 @@ export default {
   },
   created() {
     if (Object.keys(this.user).length > 0) {
-      this.getUserDetail()
+      // this.getUserDetail()
     }
   },
   mounted() {},
   watch: {
     user: function(v) {
       if (Object.keys(v).length > 0) {
-        this.getUserDetail()
+        // this.getUserDetail()
       }
     }
   },
   computed: {
     gain() {
-      return (this.incomeData.gain / 100).toFixed(2)
+      return this.incomeData.gain
+      // return (this.incomeData.gain / 100).toFixed(2)
     },
     totalGain() {
-      return (this.incomeData.totalGain / 100).toFixed(2)
+      return this.incomeData.totalGain
+      // return (this.incomeData.totalGain / 100).toFixed(2)
     },
     ins() {
-      return (this.incomeData.ins / 100).toFixed(2)
-    },
-    totalIn() {
-      return (this.incomeData.totalIn / 100).toFixed(2)
+      return this.incomeData.ins
+      // return (this.incomeData.ins / 100).toFixed(2)
     }
+    // totalIn() {
+    //   return (this.incomeData.totalIn / 100).toFixed(2)
+    // }
   },
   components: {}
 }

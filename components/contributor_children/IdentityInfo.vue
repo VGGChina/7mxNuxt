@@ -342,7 +342,8 @@ export default {
           // company: '',
           // company_contact: '',
           // company_bl_image: '',
-          address: this.form.address
+          address: this.form.address,
+          role: 0
         }
       } else {
         data = {
@@ -354,7 +355,8 @@ export default {
           company: this.form.company,
           contact: this.form.name,
           business_license_image: this.positiveUrl,
-          address: this.form.address
+          address: this.form.address,
+          role: 0
         }
       }
       this.$emit('updateProgress', {
@@ -374,8 +376,18 @@ export default {
           getUptoken(data, request => {
             if (request.status === 200) {
               const res = JSON.parse(request.responseText)
-              if (res.out === '1') {
-                this.uploadData = res.data
+              // if (res.out === '1') {
+              //   this.uploadData = res.data
+              // } else {
+              //   this.$toast.warn(res.msg)
+              //   this.uploadData = {}
+              // }
+              if (res) {
+                this.uploadData = res
+                this.uploadData.uptoken = res.token
+                this.uploadData.bucket = "gaga-private"
+                this.uploadData.base_url ="http://private.gaga.me/"
+                console.log(1111,this.uploadData.uptoken)
               } else {
                 this.$toast.warn(res.msg)
                 this.uploadData = {}
@@ -446,8 +458,18 @@ export default {
           getUptoken(data, request => {
             if (request.status === 200) {
               const res = JSON.parse(request.responseText)
-              if (res.out === '1') {
-                this.uploadData = res.data
+              // if (res.out === '1') {
+              //   this.uploadData = res.data
+              // } else {
+              //   this.$toast.warn(res.msg)
+              //   this.uploadData = {}
+              // }
+              if (res) {
+                this.uploadData = res
+                this.uploadData.uptoken = res.token
+                this.uploadData.bucket = "gaga-private"
+                this.uploadData.base_url ="http://private.gaga.me/"
+                console.log(1111,this.uploadData.uptoken)
               } else {
                 this.$toast.warn(res.msg)
                 this.uploadData = {}
