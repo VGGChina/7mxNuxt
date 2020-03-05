@@ -50,7 +50,9 @@ export default {
     chooseIndex: 0,
     // 通知列表
     list: [],
-    line: ''
+    line: '',
+    currentPage: 0,
+    totalPages: 1
   }),
   head() {
     return {
@@ -86,25 +88,25 @@ export default {
     },
     // 评论列表
     async getCommentList() {
-      const res = await this.$axios.userService.getactivityList({ type: 3 }, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({ type: 1 }, { page: this.currentPage })
       this.afterPull(res)
       this.nothing()
     },
     // 喜欢列表
     async getLikeList() {
-      const res = await this.$axios.userService.getactivityList({ type: 2 }, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({ type: 2 }, { page: this.currentPage })
       this.afterPull(res)
       this.nothing()
     },
     // 关注列表
     async getFollowList() {
-      const res = await this.$axios.userService.getactivityList({ type: 1 }, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({ type: 3 }, { page: this.currentPage })
       this.afterPull(res)
       this.nothing()
     },
     // 愿望单列表
     async wantToShopList() {
-      const res = await this.$axios.userService.getactivityList({ type: 4 }, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({ type: 4 }, { page: this.currentPage })
       this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
@@ -126,8 +128,12 @@ export default {
       this.isNoContent = false
     },
     afterPull(res) {
-      this.list.push(...res.data.data)
-      this.line = res.data.line
+      if(res.status == 200) {
+        this.list.push(...res.data.content)
+        this.totalPages = res.data.totalPages
+        this.currentPage++
+        // this.line = res.data.line
+      }
     },
     // 当没有返回结果时
     nothing() {

@@ -229,19 +229,20 @@ export default {
       return gagaId
     },
     eputId() {
-      let eputId = ''
+      // let eputId = ''
 
-      if (typeof this.img.gaga_id === 'undefined' || this.img.gaga_id == null || this.img.gaga_id.length < 1) {
-        eputId = this.img.id
-      }
+      // if (typeof this.img.gaga_id === 'undefined' || this.img.gaga_id == null || this.img.gaga_id.length < 1) {
+      //   eputId = this.img.id
+      // }
 
-      if (typeof this.img.eput_id !== 'undefined' && this.img.eput_id != null && this.img.eput_id.length > 0) {
-        eputId = this.img.eput_id
-      } else {
-        eputId = this.img.id
-      }
+      // if (typeof this.img.eput_id !== 'undefined' && this.img.eput_id != null && this.img.eput_id.length > 0) {
+      //   eputId = this.img.eput_id
+      // } else {
+      //   eputId = this.img.id
+      // }
 
-      return eputId
+      // return eputId
+      return this.img.id
     },
     userRef() {
       return this.$utilHelper.toUserPage(this.img.userId)
@@ -316,8 +317,8 @@ export default {
         return
       }
 
-      if (this.img.status == '1' || this.img.free == false) {
-        window.open('https://v.paixin.com/photoplus/' + this.plusMediaId)
+      if (typeof this.img.plusMediaId !== 'undefined' && this.img.plusMediaId !=0) {
+        window.open('https://v.paixin.com/photoplus/' + this.img.plusMediaId)
 
         return
       }
@@ -447,9 +448,9 @@ export default {
     // 从灵感集中删除采集的图片
     async deleteImgFromAlbum(img) {
       // 删除图片
-      const res = await this.$axios.mediaService.dropFromAlbum({ media_id: this.eputId, album_id: this.albumId })
+      const res = await this.$axios.mediaService.dropFromAlbum({ mediaId: this.eputId, favoriteId: this.albumId })
 
-      if (res.data.out === '1') {
+      if (res.status == 200) {
         this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',
@@ -461,7 +462,7 @@ export default {
 
         this.imgList.splice(this.index, 1)
       } else {
-        this.$toast.warn(res.data.msg)
+        this.$toast.warn(res.data)
       }
     },
     getRemark(img) {

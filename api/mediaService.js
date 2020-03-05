@@ -283,8 +283,9 @@ export default ({ $axios }) => {
     // 从灵感集中删除图片
     dropFromAlbum(data) {
       const httpData = {
-        url: '/api/media/drop_from_album',
-        data
+        url: `/api3/favorites/media/${data.favoriteId}/${data.mediaId}`,
+        data,
+        method: 'DELETE'
       }
       return $axios(httpData)
     },

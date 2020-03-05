@@ -34,8 +34,9 @@ export default ({ $axios }) => {
     // 删除灵感集（只能创建者可用）
     deleteAlbum(data) {
       const httpData = {
-        url: '/api/album/drop',
-        data
+        url: `/api3/favorites/${data.favoriteId}`,
+        data,
+        method: 'DELETE'
       }
       return $axios(httpData)
     }

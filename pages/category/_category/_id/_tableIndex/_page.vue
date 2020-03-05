@@ -34,7 +34,7 @@ export default {
   }),
   computed: {
     isToPaixin() {
-      if (this.tableIndex === 1) {
+      if (this.$route.params.tableIndex == 1) {
         return true
       } else {
         return false

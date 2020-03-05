@@ -293,11 +293,12 @@ export default ({ $axios }) => {
 
     // 评论、点赞、关注消息列表
     getactivityList(data, params) {
-      // 参数（type，1关注，2点赞，3 评论，4 心愿单 不传 读取所有;unread 0未读消息，1已读消息，不传 读取该类所有）
+      // 参数（type，1关注，2点赞，3 评论，4 心愿单 不传 读取所有;unread 0未读消息，1已读消息，不传 读取该类所有）(老参数，先保留，暂时不用)
+      //type 1.评论 2.点赞 3.关注 4.心愿单（最新的接口遵守这个）
       const httpData = {
-        url: '/api/user/msg_list',
-        data,
-        params
+        url: `/api3/messages/${data.type}`,
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },

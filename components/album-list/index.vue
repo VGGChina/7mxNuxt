@@ -71,9 +71,9 @@ export default {
       })
     },
     async deleteAlbum(data) {
-      const res = await this.$axios.albumService.deleteAlbum({ album_id: data.album_id })
+      const res = await this.$axios.albumService.deleteAlbum({ favoriteId: data.album_id })
 
-      if (res.data.out === '1') {
+      if (res.status == 200) {
         this.$store.commit('confirmationDialog/confirmationDialogData', {
           isShowConfirmationDialog: false,
           confirmationDialogTitle: '是否确定删除？',
@@ -85,7 +85,7 @@ export default {
 
         this.albumList.splice(data.index, 1)
       } else {
-        this.$toast.warn(res.data.msg)
+        this.$toast.warn(res.data)
       }
     }
   }

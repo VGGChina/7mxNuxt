@@ -1,7 +1,11 @@
-export default function({ $axios, app }) {
+export default function ({ $axios, app }) {
   $axios.onRequest((config) => {
     if (config.method.toLowerCase() === 'get') {
       config.method = 'GET'
+    } else if (config.method.toLowerCase() === 'delete') {
+      config.method = 'DELETE'
+    } else if (config.method.toLowerCase() === 'put') {
+      config.method = 'PUT'
     } else {
       config.method = 'POST'
     }

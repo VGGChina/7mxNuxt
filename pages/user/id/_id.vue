@@ -28,7 +28,7 @@
       <loading v-if="isLoading && imgList.length == 0" :is-loading="true" :loading-color="'#000'"/>
       <div style="padding-bottom: 580px;">
         <div
-          v-if="imgList.length > 0 && line.split(',')[0] != 'end' && userHomeNavIndex != 4 && userHomeNavIndex != 5"
+          v-if="imgList.length > 0 && currentPage < totalPages && userHomeNavIndex != 4 && userHomeNavIndex != 5"
           class="load-more"
           @click="getMore"
         >{{ isLoading ? '正在加载...' : '加载更多' }}</div>
@@ -75,8 +75,8 @@ export default {
       }
     },
 
-    page: 0,
-    size: 20
+    currentPage: 0,
+    totalPages: 1
   }),
   computed: {
     firstImg() {
@@ -88,11 +88,28 @@ export default {
   },
 
   created() {
+    //获取用户信息
     this.getUserInfo()
+    //获取用户作品
     this.getUserDatas()
-    this.getIsLarge()
 
+    this.getIsLarge()
     this.getUserHomeNavIndex()
+  },
+  computed: {
+    line() {
+      if (this.currentPage >= this.totalPages) {
+        return 'end'
+      } else {
+        return (
+          this.currentPage +
+          ',' +
+          this.totalPages +
+          ',' +
+          (this.currentPage - 1)
+        )
+      }
+    }
   },
   methods: {
     reload() {
@@ -100,7 +117,8 @@ export default {
         return
       }
 
-      this.line = ''
+      this.currentPage = 0
+      this.totalPages = 1
 
       this.imgList = []
 
@@ -149,12 +167,12 @@ export default {
         return
       }
       try {
+        if (this.currentPage >= this.totalPages) return
         const data = {
           type: this.userHomeNavIndex + 1,
           userId: this.$route.params.id,
           params: {
-            page: this.page,
-            size: this.size
+            page: this.currentPage
           }
         }
         this.isLoading = true
@@ -162,23 +180,11 @@ export default {
         console.log('getUserDatas', res)
 
         if (this.userHomeNavIndex === 3) {
-          if (res.data.length === 0) {
-            this.line = 'end, 0, 0'
-            return
-          }
-          // for (const i in res.data.content) {
-          //   res.data[i].userStat = {
-          //     followedNum: res.data[i].followedNum,
-          //     popularity: res.data[i].popularity,
-          //     userId: res.data[i].userId
-          //   }
-          //   res.data[i].name = res.data[i].nickname
-          // }
           this.imgList.push(...res.data.content)
-        } else if (this.userHomeNavIndex === 5) {
-          this.tags.push(...res.data.content)
+          this.totalPages = res.data.totalPages
+          this.currentPage++
         } else {
-          for (const i in res.data.content) {
+          for (let i in res.data.content) {
             res.data.content[i].userStat = {
               followedNum: res.data.content[i].followedNum,
               popularity: res.data.content[i].popularity,
@@ -187,10 +193,12 @@ export default {
             res.data.content[i].name = res.data.content[i].nickname
           }
           this.imgList.push(...res.data.content)
-          const pageNow = this.page + 1
-          const pageTotal = res.data.totalPages
-          const nextPage = pageNow === pageTotal ? 'end' : pageNow + 1
-          this.line = nextPage + ',' + pageTotal + ',' + pageNow
+          // const pageNow = this.currentPage + 1
+          // const pageTotal = res.data.totalPages
+          // const nextPage = pageNow === pageTotal ? 'end' : pageNow + 1
+          // this.line = nextPage + ',' + pageTotal + ',' + pageNow
+          this.totalPages = res.data.totalPages
+          this.currentPage++
         }
         this.isLoading = false
       } catch (e) {
@@ -200,7 +208,6 @@ export default {
 
     // 查看等多
     getMore() {
-      this.page++
       this.getUserDatas()
     }
   }
