@@ -7,7 +7,7 @@
           <div class="operation">
             <span class="name" @click="toUser(item.id)">{{ item.nickname }}</span>
             <span class="action">&nbsp;{{ actionTip(item.msg_type) }}</span>
-            <span v-if="item.media.title" style="cursor: pointer" @click="toPhoto(item.mediaId)">&nbsp;&nbsp;《 {{ item.media.title }} 》</span>
+            <!-- <span v-if="item.media.title" style="cursor: pointer" @click="toPhoto(item.mediaId)">&nbsp;&nbsp;《 {{ item.media.title }} 》</span> -->
           </div>
           <div v-if="item.mediaId" class="photo" :style="{ 'backgroundImage' : `url(${item.image})` }" @click="toPhoto(item.mediaId)" />
         </div>
