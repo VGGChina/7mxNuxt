@@ -216,7 +216,7 @@ export default {
           name: 'index'
         })
       } else {
-        this.$toast.warn(res.data.msg)
+        this.$toast.warn(res.data)
       }
     }
   }
