@@ -2,16 +2,16 @@
   <div class="activityList">
     <div class="list">
       <div v-for="(item, i) in list" :key="i" class="list_item">
-        <div class="avatar" :style="{ 'backgroundImage' : `url(${item.user.avatar})` }" @click="toUser(item.user.name)" />
+        <div v-if="item.avatar" class="avatar" :style="{ 'backgroundImage' : `url(${item.avatar})` }" @click="toUser(item.name)" />
         <div class="text">
           <div class="operation">
-            <span class="name" @click="toUser(item.user.name)">{{ item.user.nick || item.user.name }}</span>
-            <span class="action">&nbsp;{{ actionTip(item.msg_type) }}</span>
+            <span class="name" @click="toUser(item.user_id)">{{ item.nickname }}</span>
+            <span class="action">&nbsp;{{ actionTip(item.type) }}</span>
           </div>
           <div v-if="item.media_id">
-            <span class="title" @click="toPhoto(item.media_id)">《 {{ item.media.title }} 》</span>
+            <span class="title" @click="toPhoto(item.media_id)">《 {{ item.title }} 》</span>
           </div>
-          <div v-if="item.media_id" class="photo" :style="{ 'backgroundImage' : `url(${item.media.image})` }" @click="toPhoto(item.media_id)" />
+          <div v-if="item.media_id" class="photo" :style="{ 'backgroundImage' : `url(${item.image})` }" @click="toPhoto(item.media_id)" />
         </div>
       </div>
     </div>
@@ -27,8 +27,8 @@ export default {
   data: () => ({
   }),
   methods: {
-    toUser(name) {
-      window.open(`/user/name/${name}`, '_blank')
+    toUser(id) {
+      window.open(`/user/id/${id}`, '_blank')
     },
     toPhoto(photoId) {
       if (!photoId) return this.$toast.warn('作品地址已失效')

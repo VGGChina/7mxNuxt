@@ -2,12 +2,12 @@
   <div class="activityList">
     <div class="list">
       <div v-for="(item, i) in list" :key="i" class="list_item">
-        <div class="avatar" :style="{ 'backgroundImage' : `url(${item.avatar })` }" @click="toUser(item.id)" />
+        <div v-if="item.avatar" class="avatar" :style="{ 'backgroundImage' : `url(${item.avatar })` }" @click="toUser(item.id)" />
         <div class="text">
           <div class="operation">
             <span class="name" @click="toUser(item.id)">{{ item.nickname }}</span>
-            <span class="action">&nbsp;{{ actionTip(item.msg_type) }}</span>
-            <!-- <span v-if="item.media.title" style="cursor: pointer" @click="toPhoto(item.mediaId)">&nbsp;&nbsp;《 {{ item.media.title }} 》</span> -->
+            <span class="action">&nbsp;{{ actionTip(item.type) }}</span>
+            <span v-if="item.title" style="cursor: pointer" @click="toPhoto(item.mediaId)">&nbsp;&nbsp;《 {{ item.title }} 》</span>
           </div>
           <div v-if="item.mediaId" class="photo" :style="{ 'backgroundImage' : `url(${item.image})` }" @click="toPhoto(item.mediaId)" />
         </div>

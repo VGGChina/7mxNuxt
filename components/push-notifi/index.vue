@@ -32,9 +32,9 @@
       <!-- 通知 -->
       <notice-list v-if="selectedIndex==2" :list="list" />
 
-      <div v-if="line!=&quot;end&quot;&&list.length > 0" class="more" @click="more">查看更多</div>
+      <div v-if="currentPage < totalPages&&list.length > 0" class="more" @click="more">查看更多</div>
       <!-- 已加载全部 -->
-      <div v-if="line==&quot;end&quot;&&list.length > 0" class="end">- 7mx -</div>
+      <div v-if="currentPage >= totalPages&&list.length > 0" class="end">- 7mx -</div>
     </div>
     <div class="to_all">
       <span @click="toAll">查看全部</span>
@@ -60,7 +60,9 @@ export default {
     selectedIndex: 0,
     isNoContent: false,
     line: '',
-    list: []
+    list: [],
+    currentPage: 0,
+    totalPages: 1
   }),
   computed: {
     loginUser() {
@@ -108,6 +110,8 @@ export default {
       if (i != undefined) {
         this.list = []
         this.line = ''
+        this.currentPage = 0
+        this.totalPages = 1
       }
       this.isNoContent = false
     },
@@ -127,37 +131,50 @@ export default {
       this.$store.commit('login/loginUser', temp)
     },
     more() {
+      if(this.currentPage >= this.totalPages) return
       this.select()
     },
     // 动态列表
     async activityList() {
-      const res = await this.$axios.userService.getactivityList({}, { line: this.line })
+      const res = await this.$axios.userService.getNoticeAll({ page: this.currentPage })
       // 标识为已读
-      this.$axios.commonService.markActivityAsRead()
-      this.$axios.commonService.markNeededAsRead()
+      // this.$axios.commonService.markActivityAsRead()
+      // this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
     },
     // 心愿单列表
     async wantToShopList() {
-      const res = await this.$axios.userService.getactivityList({ type: 4 }, { line: this.line })
+      const res = await this.$axios.userService.getactivityList({ type: 4 }, { page: this.currentPage })
       // console.log(111,res)
-      this.$axios.commonService.markNeededAsRead()
+      // this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
       // console.log(22,this.list)
     },
     // 通知列表
     async noticeList() {
-      const res = await this.$axios.commonService.getNoticeList({}, { line: this.line })
+      const res = await this.$axios.commonService.getNoticeList({ page: this.currentPage })
       // 标识为已读
-      this.$axios.commonService.markNoticeAsRead()
+      // this.$axios.commonService.markNoticeAsRead()
       this.afterPull(res)
       this.nothing()
     },
     afterPull(res) {
-      this.list.push(...res.data.data)
-      this.line = res.data.line
+      if(res.status == 200) {
+        this.list.push(...res.data.content)
+        for(let i of this.list) {
+          if(this.chooseIndex == 0) {
+            i.type = '3'
+          }else if (this.chooseIndex == 1) {
+            i.type = '2'
+          }else if (this.chooseIndex == 2) {
+            i.type = '1'
+          }
+        }
+        this.totalPages = res.data.totalPages
+        this.currentPage++
+      }
     },
     // 当没有返回结果时
     nothing() {

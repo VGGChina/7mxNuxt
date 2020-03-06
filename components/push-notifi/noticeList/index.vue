@@ -88,7 +88,8 @@ export default {
     font-size: 0.95rem;
     margin-left: 10px;
     .operation {
-      width: 230px;
+      // width: 230px;
+      width: 320px;
       float: left;
       .name {
         max-width: 180px;

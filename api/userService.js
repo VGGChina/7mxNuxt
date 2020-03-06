@@ -303,6 +303,15 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    getNoticeAll(params) {
+      const httpData = {
+        url: `/api3/messages/all`,
+        params,
+        method: 'GET'
+      }
+      return $axios(httpData)
+    },
+
     // 搜索摄影师
     getPhotographerByName(data, params) {
       const httpData = {

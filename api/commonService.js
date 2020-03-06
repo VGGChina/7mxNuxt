@@ -77,12 +77,12 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
     // 通知列表
-    getNoticeList(data, params) {
+    getNoticeList(params) {
       // 参数（unread，0 未读，1 已读，不传 读取所有）
       const httpData = {
-        url: '/api/common/notice_list',
-        data,
-        params
+        url: '/api3/notifications',
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },

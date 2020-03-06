@@ -21,9 +21,9 @@
         <div class="list_wrap">
           <activityList v-if="chooseIndex >= 0 && chooseIndex <= 2" :list="list" />
           <noticeList v-if="chooseIndex == 3" :list="list" />
-          <div v-if="line!='end'&&list.length > 0" class="more" @click="more">查看更多</div>
+          <div v-if="currentPage < totalPages&&list.length > 0" class="more" @click="more">查看更多</div>
           <!-- 已加载全部 -->
-          <div v-if="line=='end'&&list.length > 0" class="end">- 7mx -</div>
+          <div v-if="currentPage >= totalPages&&list.length > 0" class="end">- 7mx -</div>
         </div>
       </div>
     </div>
@@ -84,6 +84,7 @@ export default {
       }
     },
     more() {
+      if(this.currentPage >= this.totalPages) return
       this.choose()
     },
     // 评论列表
@@ -107,15 +108,15 @@ export default {
     // 愿望单列表
     async wantToShopList() {
       const res = await this.$axios.userService.getactivityList({ type: 4 }, { page: this.currentPage })
-      this.$axios.commonService.markNeededAsRead()
+      // this.$axios.commonService.markNeededAsRead()
       this.afterPull(res)
       this.nothing()
     },
     // 通知列表
     async getNoticeList() {
-      const res = await this.$axios.commonService.getNoticeList({}, { line: this.line })
+      const res = await this.$axios.commonService.getNoticeList({ page: this.currentPage })
       // 标识为已读
-      this.$axios.commonService.markNoticeAsRead()
+      // this.$axios.commonService.markNoticeAsRead()
       this.afterPull(res)
       this.nothing()
     },
@@ -124,12 +125,23 @@ export default {
       if (i != undefined) {
         this.list = []
         this.line = ''
+        this.currentPage = 0
+        this.totalPages = 1
       }
       this.isNoContent = false
     },
     afterPull(res) {
       if(res.status == 200) {
         this.list.push(...res.data.content)
+        for(let i of this.list) {
+          if(this.chooseIndex == 0) {
+            i.type = '3'
+          }else if (this.chooseIndex == 1) {
+            i.type = '2'
+          }else if (this.chooseIndex == 2) {
+            i.type = '1'
+          }
+        }
         this.totalPages = res.data.totalPages
         this.currentPage++
         // this.line = res.data.line
