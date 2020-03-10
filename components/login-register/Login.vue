@@ -102,6 +102,7 @@ export default {
       } else {
         time = (new Date().getTime() / 1000).toFixed(0)
       }
+      console.log(time)
 
       const rqBody = {
         username: this.user,
@@ -121,7 +122,7 @@ export default {
         this.$store.commit('login/isShowLoginDialog', false)
         this.$store.commit('login/isLogin', true)
 
-        if (data.name === '' || data.nick === '' || data.avatar === '') {
+        if (data.name === '' || data.nickname === '' || data.avatar === '') {
           this.$store.commit('improveInfo/isShowImproveInfo', true)
         }
 

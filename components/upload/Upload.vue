@@ -421,8 +421,8 @@ export default {
           if (res) {
             upTokenData = res
             upTokenData.uptoken = res.token
-            upTokenData.bucket = "gaga-private"
-            upTokenData.base_url ="http://private.gaga.me/"
+            upTokenData.bucket = 'gaga-private'
+            upTokenData.base_url = 'http://private.gaga.me/'
           }
         }
       }, window.localStorage.xToken)
@@ -497,13 +497,13 @@ export default {
               //   this.$toast.warn(res.msg)
               //   this.upTokenData = {}
               // }
-              console.log('res',res)
+              console.log('res', res)
               if (res) {
                 this.upTokenData = res
                 this.upTokenData.uptoken = res.token
-                this.upTokenData.bucket = "gaga-private"
-                this.upTokenData.base_url ="http://private.gaga.me/"
-                console.log(1111,this.upTokenData.uptoken)
+                this.upTokenData.bucket = 'gaga-private'
+                this.upTokenData.base_url = 'http://private.gaga.me/'
+                console.log(1111, this.upTokenData.uptoken)
               } else {
                 this.$toast.warn(res.msg)
                 this.upTokenData = {}
@@ -710,13 +710,13 @@ export default {
       // }
       // let res = await this.$axios(config)
 
-      let data = {
+      const data = {
         type: 2
       }
       let res = await this.$axios.tagService.getActivityList(data)
 
       if (res.status === 200) {
-        console.log('upload',res)
+        console.log('upload', res)
         this.activities.push({ id: 0, name: '暂不参加' })
         res = res.data.filter(item => {
           return item.name !== '2019年中海汤泉——全国摄影邀请赛'
@@ -972,8 +972,8 @@ export default {
 
       // const res = await this.$axios.mediaService.put(data)
 
-      let tempList = []
-      for(let i of file.tagList) {
+      const tempList = []
+      for (const i of file.tagList) {
         tempList.push(i.label)
       }
 
@@ -991,11 +991,11 @@ export default {
         sourcePreview: ''
         // size: file.size,
       }
-      let temp = []
+      const temp = []
       temp.push(data)
 
       const res = await this.$axios.mediaService.put(temp)
-      console.log('put',res)
+      console.log('put', res)
 
       if (res.status === 200) {
         // 反馈给码隆
@@ -1062,6 +1062,7 @@ export default {
       const removeTags = []
 
       file.tagList.forEach(e => {
+        // eslint-disable-next-line no-prototype-builtins
         if (!e.hasOwnProperty('puid')) {
           addTags.push({
             category: e.label

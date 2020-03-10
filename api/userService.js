@@ -43,6 +43,15 @@ export default ({ $axios }) => {
       return $axios(httpdata)
     },
 
+    ifExist(params) {
+      const httpdata = {
+        url: `/api3/users/exist`,
+        params,
+        method: 'GET'
+      }
+      return $axios(httpdata)
+    },
+
     // 用户界面数据
     getUserDatas(data) {
       const httpdata = {
@@ -166,6 +175,15 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
+    completeUserInfo(data) {
+      const httpData = {
+        url: '/api3/users/info',
+        data,
+        method: 'PUT'
+      }
+      return $axios(httpData)
+    },
+
     updateUser(data) {
       const httpData = {
         url: '/api3/users/update',
@@ -174,7 +192,6 @@ export default ({ $axios }) => {
       }
       return $axios(httpData)
     },
-
 
     setAuthCard(data) {
       const httpData = {
@@ -244,7 +261,7 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    //获取收益中心，已上架type=1，订单type=2
+    // 获取收益中心，已上架type=1，订单type=2
     getIncomeList(data) {
       const httpData = {
         url: `/api3/users/income-list/${data.type}`,
@@ -269,7 +286,7 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    //获取用户数据
+    // 获取用户数据
     getUserDetail() {
       const httpdata = {
         url: `/api3/users/stat`,
@@ -294,7 +311,7 @@ export default ({ $axios }) => {
     // 评论、点赞、关注消息列表
     getactivityList(data, params) {
       // 参数（type，1关注，2点赞，3 评论，4 心愿单 不传 读取所有;unread 0未读消息，1已读消息，不传 读取该类所有）(老参数，先保留，暂时不用)
-      //type 1.评论 2.点赞 3.关注 4.心愿单（最新的接口遵守这个）
+      // type 1.评论 2.点赞 3.关注 4.心愿单（最新的接口遵守这个）
       const httpData = {
         url: `/api3/messages/${data.type}`,
         params,

@@ -62,7 +62,7 @@ export default ({ $axios }) => {
       return $axios(httpData)
     },
 
-    //获取用户tag
+    // 获取用户tag
     getUserTag(data) {
       const httpData = {
         url: `/api3/tags/${data.id}`,

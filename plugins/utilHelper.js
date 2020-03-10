@@ -12,7 +12,8 @@ var utilHelper = {
     if (string === '') {
       return ''
     } else {
-      const publicKey = '-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCs6vwV3PlvgLqkJ9bjYfbuhvloXKdEtJKHQ0vNLlJZkdKutEVNqsiGy/+iB3CkG9TzSoSVZHU0HVM0vDoYG+ODPi1qzvPhzeFThFUbMW9KhDQlQOL+O/L6DqLQdHGDmwpk6eJcfjlqhM8EKFFQAmlLaYx0WAfNKJAAWjwFJMBjvwIDAQAB-----END PUBLIC KEY-----'
+      const publicKey =
+        '-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCs6vwV3PlvgLqkJ9bjYfbuhvloXKdEtJKHQ0vNLlJZkdKutEVNqsiGy/+iB3CkG9TzSoSVZHU0HVM0vDoYG+ODPi1qzvPhzeFThFUbMW9KhDQlQOL+O/L6DqLQdHGDmwpk6eJcfjlqhM8EKFFQAmlLaYx0WAfNKJAAWjwFJMBjvwIDAQAB-----END PUBLIC KEY-----'
       // eslint-disable-next-line no-undef
       const rsa = new JSEncrypt()
       rsa.setKey(publicKey)
@@ -52,16 +53,30 @@ var utilHelper = {
     var userAgent = navigator.userAgent
     var isOpera = userAgent.indexOf('Opera') > -1
     var isMaxthon = userAgent.indexOf('Maxthon') > -1
-    var isIE = userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1 && !isOpera
+    var isIE =
+      userAgent.indexOf('compatible') > -1 &&
+      userAgent.indexOf('MSIE') > -1 &&
+      !isOpera
     var isFF = userAgent.indexOf('Firefox') > -1
-    var isSafari = userAgent.indexOf('Safari') > -1 && userAgent.indexOf('Chrome') < 1
+    var isSafari =
+      userAgent.indexOf('Safari') > -1 && userAgent.indexOf('Chrome') < 1
     var isChrome = userAgent.indexOf('Chrome') > -1
 
-    if (isFF) { return 'Firefox' }
-    if (isMaxthon) { return 'Opera-webkit' }
-    if (isOpera) { return 'Opera' }
-    if (isSafari) { return 'Safari' }
-    if (isChrome) { return 'Chrome' }
+    if (isFF) {
+      return 'Firefox'
+    }
+    if (isMaxthon) {
+      return 'Opera-webkit'
+    }
+    if (isOpera) {
+      return 'Opera'
+    }
+    if (isSafari) {
+      return 'Safari'
+    }
+    if (isChrome) {
+      return 'Chrome'
+    }
     if (isIE) {
       var reIE = new RegExp('MSIE (\\d+\\.\\d+);')
       reIE.test(userAgent)
@@ -85,7 +100,7 @@ var utilHelper = {
     return 'unknow'
   },
   time(x = 0) {
-    return ((Date.parse(new Date()) + x) / 1000)
+    return (Date.parse(new Date()) + x) / 1000
   },
   score(media) {
     if (this.isEmptyObj(media)) {
@@ -103,9 +118,16 @@ var utilHelper = {
         product = 1
       }
 
-      const x = 0.9 + lookNum / 10 + likeNum * 2 + commentNum * 2 + product * 50 + recommend * 50
+      const x =
+        0.9 +
+        lookNum / 10 +
+        likeNum * 2 +
+        commentNum * 2 +
+        product * 50 +
+        recommend * 50
 
-      const score = 70 + Math.log(600 * (1 - 1 / (x / 500 + 1))) / Math.log(10) * 10
+      const score =
+        70 + (Math.log(600 * (1 - 1 / (x / 500 + 1))) / Math.log(10)) * 10
 
       return score.toFixed(2)
     } catch (e) {
@@ -158,7 +180,6 @@ var utilHelper = {
       return ''
     }
 
-
     // try {
     //   if (typeof userData.name !== 'undefined' && userData.name != null && userData.name.length > 0) {
     //     return '/user/name/' + userData.name
@@ -197,12 +218,17 @@ var utilHelper = {
       return ''
     }
 
-    if (imgUrl.indexOf('private.gaga.me') >= 0 || imgUrl.indexOf('imageView2') >= 0) {
+    if (
+      imgUrl.indexOf('private.gaga.me') >= 0 ||
+      imgUrl.indexOf('imageView2') >= 0
+    ) {
       return imgUrl
     }
 
     if (imgUrl.indexOf('?') >= 0) {
-      return imgUrl + '|imageView2/2/w/' + width + '/h/' + height + '|imageslim'
+      return (
+        imgUrl + '|imageView2/2/w/' + width + '/h/' + height + '|imageslim'
+      )
     }
 
     return imgUrl + '?imageView2/2/w/' + width + '/h/' + height + '|imageslim'

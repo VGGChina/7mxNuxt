@@ -8,7 +8,7 @@
       <div v-if="isShowImproveInfo" class="dialog">
         <h2>完善您的信息</h2>
 
-        <div
+        <!-- <div
           id="improve-info-avatar-container"
           class="avatar"
           :style="{
@@ -16,6 +16,11 @@
               ? 'url(' + require('~/assets/img/avatar-default.svg') + ')'
               : 'url(' + $utilHelper.getCompressionUrl(loginUser.avatar, 300, 300) + ')'
           }"
+        > -->
+        <div
+          id="improve-info-avatar-container"
+          class="avatar"
+          :style="{'background-image': userAvatar}"
         >
           <div
             id="improve-info-avatar"
@@ -33,7 +38,7 @@
         <input
           v-model="nick"
           type="text"
-          :placeholder="!loginUser.nick ? '昵称' : loginUser.nick"
+          :placeholder="!loginUser.nickname ? '昵称' : loginUser.nickname"
         >
 
         <div class="improveInfo-domainName">
@@ -65,6 +70,7 @@ export default {
     return {
       name: '',
       nick: '',
+      avatar: '',
       commitCheak: false
     }
   },
@@ -74,6 +80,15 @@ export default {
     },
     loginUser() {
       return this.$store.state.login.loginUser
+    },
+    userAvatar() {
+      if (this.avatar) {
+        return 'url(' + this.$utilHelper.getCompressionUrl(this.avatar, 300, 300) + ')'
+      } else if (this.loginUser.avatar) {
+        return 'url(' + this.$utilHelper.getCompressionUrl(this.loginUser.avatar, 300, 300) + ')'
+      } else {
+        return 'url(' + require('~/assets/img/avatar-default.svg') + ')'
+      }
     }
   },
   watch: {
@@ -89,6 +104,7 @@ export default {
     },
     initQiNiu() {
       this.$nextTick(() => {
+        // eslint-disable-next-line no-undef
         const qiniu = new QiniuJsSDK()
         this.uploader = qiniu.uploader({
           runtimes: 'html5,flash,html4',
@@ -101,8 +117,18 @@ export default {
             getUptoken(data, request => {
               if (request.status === 200) {
                 const res = JSON.parse(request.responseText)
-                if (res.out === '1') {
-                  this.uploadData = res.data
+                // if (res.out === '1') {
+                //   this.uploadData = res.data
+                // } else {
+                //   this.$toast.warn(res.msg)
+                //   this.uploadData = {}
+                // }
+                if (res) {
+                  this.uploadData = res
+                  this.uploadData.uptoken = res.token
+                  this.uploadData.bucket = 'gaga-images'
+                  this.uploadData.base_url = 'http://images.gaga.me/'
+                  // console.log(1111, this.upTokenData.uptoken)
                 } else {
                   this.$toast.warn(res.msg)
                   this.uploadData = {}
@@ -141,14 +167,16 @@ export default {
               const infoJson = JSON.parse(info)
               const key = infoJson.key
               const url = 'http://images.gaga.me/' + key
+              console.log(111, url)
               // 发送修改头像的请求
-              this.$axios.userService.setAvatar({ 'avatar': url })
-                .then(res => {
-                  if (res.data.out === '1') {
-                    this.$store.commit('login/loginUser', res.data.data)
-                    this.$toast.notice('头像修改成功')
-                  }
-                })
+              // this.$axios.userService.setAvatar({ 'avatar': url })
+              //   .then(res => {
+              //     if (res.data.out === '1') {
+              //       this.$store.commit('login/loginUser', res.data.data)
+              //       this.$toast.notice('头像修改成功')
+              //     }
+              //   })
+              this.avatar = url
             },
             'Error': (up, err, errTip) => {
               if (err.code == -600) {
@@ -167,29 +195,29 @@ export default {
         })
       })
     },
-    setNick() {
-      if (this.nick == '') {
-        return
-      }
+    // setNick() {
+    //   if (this.nick == '') {
+    //     return
+    //   }
 
-      const reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/
-      if (!reg1.test(this.nick)) {
-        this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!')
-        return
-      }
+    //   const reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/
+    //   if (!reg1.test(this.nick)) {
+    //     this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!')
+    //     return
+    //   }
 
-      const data = {
-        nick: this.nick
-      }
-      this.$axios.userService.setNick(data)
-        .then(res => {
-          if (res.data.out === '1') {
-            this.$toast.notice(res.data.msg)
-            this.$store.commit('login/loginUser', res.data.data)
-            this.cancel()
-          }
-        })
-    },
+    //   const data = {
+    //     nick: this.nick
+    //   }
+    //   this.$axios.userService.setNick(data)
+    //     .then(res => {
+    //       if (res.data.out === '1') {
+    //         this.$toast.notice(res.data.msg)
+    //         this.$store.commit('login/loginUser', res.data.data)
+    //         this.cancel()
+    //       }
+    //     })
+    // },
     async setName() {
       if (this.name == '') {
         return
@@ -233,17 +261,66 @@ export default {
       }
     },
     async commit() {
-      if (this.name == '' && this.nick == '') {
+      const data = {}
+      if (this.name == '' && this.nick == '' && this.avatar == '') {
         this.$toast.warn('您还没有填写任何信息')
         return
       }
 
       if (this.nick != '') {
-        this.setNick()
+        const reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/
+        if (!reg1.test(this.nick)) {
+          this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!')
+          return
+        }
+        data.nickname = this.nick
+      } else {
+        data.nickname = this.loginUser.nickname
       }
 
       if (this.name != '') {
-        this.setName()
+        const reg2 = /^[a-zA-Z]\w{3,23}$/
+        if (!reg2.test(this.name)) {
+          this.$toast.warn('个性域名应为4~24位字母数字组合,且不能以数字开头!')
+          return
+        }
+        // 检验个性域名是否和路由冲突
+        let isRepeat = false
+        this.$router.options.routes.forEach(element => {
+          const array = element.path.split('/')
+          if (array[1] === this.name) {
+            isRepeat = true
+          }
+        })
+
+        if (isRepeat) {
+          this.$toast.warn('该个性域名已被占用')
+          return
+        }
+
+        const res = await this.$axios.userService.ifExist({ name: this.name })
+        if (res.status == 200) {
+          if (res.data) {
+            this.$toast.warn('该个性域名已被占用')
+          } else {
+            data.name = this.name
+          }
+        }
+      } else {
+        data.name = this.loginUser.name
+      }
+
+      if (this.avatar != '') {
+        data.avatar = this.avatar
+      } else {
+        data.avatar = this.loginUser.avatar
+      }
+      const res = await this.$axios.userService.completeUserInfo(data)
+      console.log(res)
+      if (res.status == 200) {
+        this.$toast.notice('修改成功')
+        this.$store.commit('login/loginUser', res.data)
+        this.cancel()
       }
     }
   }
