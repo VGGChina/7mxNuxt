@@ -5,7 +5,8 @@ export default ({ $axios }) => {
     getRegisterCode(params) {
       const httpData = {
         url: '/api3/users/code',
-        params
+        params,
+        method: 'GET'
       }
       return $axios(httpData)
     },

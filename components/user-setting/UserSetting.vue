@@ -16,7 +16,7 @@
         </div>
 
         <div v-show="selectedOptionIndex === 0" class="option">
-          <div
+          <!-- <div
             id="pick-avatar-container"
             class="avatar"
             :style="{
@@ -24,6 +24,12 @@
                 ? 'url(' + $utilHelper.getCompressionUrl(loginUser.avatar, 300, 300) + ')'
                 : 'url(' + require('~/assets/img/avatar-default.svg') + ')'
             }"
+          > -->
+          <div
+            id="pick-avatar-container"
+            class="avatar"
+            :style="{
+              'background-image': userAvatar}"
           >
             <div id="pick-avatar" class="avatar-cover">
               <div
@@ -124,7 +130,8 @@ export default {
         'border-color': 'red'
       },
       time: 0,
-      isTimer: false
+      isTimer: false,
+      avatar: ''
     }
   },
   computed: {
@@ -136,12 +143,20 @@ export default {
     },
     timeLeft() {
       return this.time > 0 ? this.time + 's后重新获取' : '发送验证码'
+    },
+    userAvatar() {
+      if (this.avatar) {
+        return 'url(' + this.$utilHelper.getCompressionUrl(this.avatar, 300, 300) + ')'
+      } else if (this.loginUser.avatar) {
+        return 'url(' + this.$utilHelper.getCompressionUrl(this.loginUser.avatar, 300, 300) + ')'
+      } else {
+        return 'url(' + require('~/assets/img/avatar-default.svg') + ')'
+      }
     }
   },
   watch: {
     isShowSettingDialog(val, oldVal) {
       if (val) {
-        console.log(111,val)
         this.initQiNiu()
       }
     }
@@ -159,21 +174,21 @@ export default {
       this.selectedOptionIndex = index
       this.commitCheak = false
     },
-    setInfo() {
-      if (this.about === '') {
-        return
-      }
-      const data = {
-        about: this.about
-      }
-      this.$axios.userService.updateUser(data)
-        .then(res => {
-          if (res.status == 200) {
-            this.$toast.notice('个人简介设置成功')
-            this.$store.commit('login/loginUser', res.data)
-          }
-        })
-    },
+    // setInfo() {
+    //   if (this.about === '') {
+    //     return
+    //   }
+    //   const data = {
+    //     about: this.about
+    //   }
+    //   this.$axios.userService.updateUser(data)
+    //     .then(res => {
+    //       if (res.status == 200) {
+    //         this.$toast.notice('个人简介设置成功')
+    //         this.$store.commit('login/loginUser', res.data)
+    //       }
+    //     })
+    // },
     async setNick() {
       if (this.nick) {
         const reg1 = /^[\u4E00-\u9FA5A-Za-z][\u4E00-\u9FA5A-Za-z0-9_]{2,23}$/
@@ -181,27 +196,38 @@ export default {
           this.$toast.warn('昵称应为3~24位汉字字母数字组合,且不能以数字开头!')
           return
         }
-
-        const data = {
-          nickname: this.nick || this.loginUser.nickname
-        }
-
-        const res = await this.$axios.userService.updateUser(data)
-        if (res.status == 200) {
-          this.$toast.notice('昵称设置成功')
-          this.$store.commit('login/loginUser', res.data)
-          this.cancel()
-        }
       }
+      const data = {
+        nickname: this.nick || this.loginUser.nickname,
+        name: this.loginUser.name
+      }
+
       if (this.about) {
-        if (!this.nick) {
-          this.setInfo()
-          return
-        }
-        setTimeout(() => {
-          this.setInfo()
-        }, 1000)
+        data.about = this.about
       }
+
+      if (this.avatar != '') {
+        data.avatar = this.avatar
+      } else {
+        data.avatar = this.loginUser.avatar
+      }
+
+      const res = await this.$axios.userService.completeUserInfo(data)
+      if (res.status == 200) {
+        this.$toast.notice('设置成功')
+        this.$store.commit('login/loginUser', res.data)
+        this.cancel()
+      }
+
+      // if (this.about) {
+      //   if (!this.nick) {
+      //     this.setInfo()
+      //     return
+      //   }
+      //   setTimeout(() => {
+      //     this.setInfo()
+      //   }, 1000)
+      // }
     },
     // 重新绑定手机号
     async setPhone() {
@@ -211,37 +237,39 @@ export default {
 
       if (!(/^[0-9]{11}$/.test(this.phone))) {
         this.$toast.warn('请输入正确的验证码')
-
         return
       }
 
       if (!this.smcode) {
         this.$toast.warn('您还没有填写验证码')
-
         return
       }
 
       // 获取服务器时间
-      const timeRes = await this.$axios.commonService.getServerTime()
+      // const timeRes = await this.$axios.commonService.getServerTime()
 
-      let time = null
+      // let time = null
 
-      if (timeRes.data.out === '1') {
-        time = timeRes.data.data.time
-      } else {
-        time = (new Date().getTime() / 1000).toFixed(0)
-      }
+      // if (timeRes.data.out === '1') {
+      //   time = timeRes.data.data.time
+      // } else {
+      //   time = (new Date().getTime() / 1000).toFixed(0)
+      // }
+
+      // const rqBody = {
+      //   phone: '0086' + this.phone,
+      //   smcode: 'test:' + this.$utilHelper.rsa_encrypt(this.smcode + '@' + time)
+      // }
 
       const rqBody = {
-        phone: '0086' + this.phone,
-        smcode: 'test:' + this.$utilHelper.rsa_encrypt(this.smcode + '@' + time)
+        phone: this.phone,
+        code: this.smcode
       }
 
-      const res = await this.$axios.userService.bindPhone(rqBody)
+      const res = await this.$axios.userService.updateUser(rqBody)
 
-      if (res.data.out === '1') {
+      if (res.status == 200) {
         this.loginUser.phone = this.phone
-
         this.$store.commit('login/loginUser', this.loginUser)
       } else {
         this.$toast.warn(res.data.msg)
@@ -266,24 +294,28 @@ export default {
       }
 
       // 获取服务器时间
-      const timeRes = await this.$axios.commonService.getServerTime()
+      // const timeRes = await this.$axios.commonService.getServerTime()
 
-      let time = null
+      // let time = null
 
-      if (timeRes.data.out === '1') {
-        time = timeRes.data.data.time
-      } else {
-        time = (new Date().getTime() / 1000).toFixed(0)
-      }
+      // if (timeRes.data.out === '1') {
+      //   time = timeRes.data.data.time
+      // } else {
+      //   time = (new Date().getTime() / 1000).toFixed(0)
+      // }
+
+      // const rqBody = {
+      //   scene: 'regist',
+      //   phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.phone + '@' + time)
+      // }
 
       const rqBody = {
-        scene: 'regist',
-        phone: 'test:' + this.$utilHelper.rsa_encrypt('0086' + this.phone + '@' + time)
+        phone: this.phone
       }
 
       const res = await this.$axios.commonService.smcode(rqBody)
 
-      if (res.data.out === '1') {
+      if (res.status == 200) {
         this.isTimer = true
 
         this.time = 60
@@ -309,13 +341,15 @@ export default {
       }
 
       const data = {
-        old_password: 'test:' + this.$utilHelper.rsa_encrypt(this.oldPassword),
-        password: 'test:' + this.$utilHelper.rsa_encrypt(this.newPassword)
+        // old_password: 'test:' + this.$utilHelper.rsa_encrypt(this.oldPassword),
+        // password: 'test:' + this.$utilHelper.rsa_encrypt(this.newPassword)
+        old_password: this.oldPassword,
+        password: this.newPassword
       }
       this.$axios.userService.updateUser(data)
         .then(res => {
           if (res.status == 200) {
-            this.$toast.notice(res.data)
+            this.$toast.notice('修改成功！')
             this.cancel()
           } else {
             this.$toast.warn(res.data)
@@ -343,6 +377,7 @@ export default {
     },
     initQiNiu() {
       this.$nextTick(() => {
+        // eslint-disable-next-line no-undef
         const qiniu = new QiniuJsSDK()
         this.uploader = qiniu.uploader({
           runtimes: 'html5,flash,html4',
@@ -355,8 +390,17 @@ export default {
             getUptoken(data, request => {
               if (request.status === 200) {
                 const res = JSON.parse(request.responseText)
-                if (res.out === '1') {
-                  this.uploadData = res.data
+                // if (res.out === '1') {
+                //   this.uploadData = res.data
+                // } else {
+                //   this.$toast.warn(res.msg)
+                //   this.uploadData = {}
+                // }
+                if (res) {
+                  this.uploadData = res
+                  this.uploadData.uptoken = res.token
+                  this.uploadData.bucket = 'gaga-images'
+                  this.uploadData.base_url = 'http://images.gaga.me/'
                 } else {
                   this.$toast.warn(res.msg)
                   this.uploadData = {}
@@ -396,13 +440,14 @@ export default {
               const key = infoJson.key
               const url = 'http://images.gaga.me/' + key
               // 发送修改头像的请求
-              this.$axios.userService.updateUser({ 'avatar': url })
-                .then(res => {
-                  if (res.status == 200) {
-                    this.$store.commit('login/loginUser', res.data.data)
-                    this.$toast.notice('头像修改成功')
-                  }
-                })
+              // this.$axios.userService.updateUser({ 'avatar': url })
+              //   .then(res => {
+              //     if (res.status == 200) {
+              //       this.$store.commit('login/loginUser', res.data.data)
+              //       this.$toast.notice('头像修改成功')
+              //     }
+              //   })
+              this.avatar = url
             },
             'Error': (up, err, errTip) => {
               if (err.code == -600) {

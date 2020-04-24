@@ -49,16 +49,21 @@ export default {
       this.isFetching = true
 
       const reBody = {
-        type: '6',
-        tag_id: this.tagId
+        type: 1,
+        userId: this.loginUser.id
       }
 
-      const res = await this.$axios.mediaService.notInTagList(reBody)
+      const res = await this.$axios.userService.getUserDatas(reBody)
 
-      if (res.data.out === '1') {
-        this.mediaIdList.push(...res.data.data)
+      if (res.status == 200) {
+        // this.mediaIdList.push(...res.data.content)
 
-        this.loadMore()
+        // this.loadMore()
+        this.mediaList.push(...res.data.data)
+
+        this.mediaList.forEach(e => {
+          e.isSelected = false
+        })
       }
 
       setTimeout(() => {

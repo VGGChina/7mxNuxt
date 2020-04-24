@@ -167,7 +167,7 @@ export default {
               const infoJson = JSON.parse(info)
               const key = infoJson.key
               const url = 'http://images.gaga.me/' + key
-              console.log(111, url)
+              // console.log(111, url)
               // 发送修改头像的请求
               // this.$axios.userService.setAvatar({ 'avatar': url })
               //   .then(res => {
